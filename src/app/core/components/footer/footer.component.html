@@ -1,0 +1,70 @@
+<mat-divider class="mt-2"></mat-divider>
+<div class="container">
+  <!-- Transloco directive for Footer -->
+  <footer
+    *transloco="let t; prefix: translationTemplate"
+    class="mat-body-medium d-flex flex-column align-items-center p-3"
+  >
+    <!-- Top row: Logo and links -->
+    <div
+      class="d-flex flex-column w-100 flex-sm-row align-items-center justify-content-center mb-2"
+    >
+      <!-- Logo Column -->
+      <div class="flex-sm-shrink-1 text-center text-sm-start">
+        <img
+          src="/assets/images/full-logo.svg"
+          alt="Bridges Logo"
+          class="img-fluid"
+        />
+      </div>
+
+      <!-- Links Column -->
+      <div
+        class="flex-sm-grow-1 d-flex flex-column flex-sm-row justify-sm-content-end mt-2 mt-md-0"
+      >
+        <!-- <div
+          class="d-flex flex-column flex-md-row justify-content-center justify-content-md-end"
+        > -->
+        <span
+          class="ms-auto mb-2 mb-md-0 mat-body-small text-center text-sm-end flex-shrink-1"
+        >
+          {{ t("CONTACT_TECH_SUPPORT") }}
+        </span>
+        <span class="mx-2 d-none d-sm-inline dot">•</span>
+
+        <span
+          class="mb-2 mb-md-0 mat-body-small text-center text-sm-end flex-shrink-1"
+        >
+          {{ t("RESOURCE_CENTRE") }}
+        </span>
+        <span class="mx-2 d-none d-sm-inline dot">•</span>
+
+        <span
+          class="mb-2 mb-md-0 mat-body-small text-center text-sm-end flex-shrink-1"
+        >
+          {{ t("TERMS_AND_CONDITIONS") }}
+        </span>
+        <span class="mx-2 d-none d-sm-inline dot">•</span>
+
+        <span
+          class="mb-2 mb-md-0 mat-body-small text-center text-sm-end flex-shrink-1"
+        >
+          {{ t("PRIVACY_POLICY") }}
+        </span>
+      </div>
+      <!-- </div> -->
+    </div>
+
+    <!-- Bottom row: Additional content -->
+    <div class="row w-100">
+      <div
+        class="col-12 ps-sm-0 col-sm-4 order-last order-sm-first text-center text-sm-start"
+      >
+        {{ t("COPYRIGHT") }}
+      </div>
+      <div class="col-12 pe-sm-0 col-sm-8 mt-2 mt-md-0 text-center text-sm-end">
+        {{ t("PRODUCT_OF") }}
+      </div>
+    </div>
+  </footer>
+</div>

@@ -1,0 +1,81 @@
+<form>
+  <div>
+    <h2>Input Component:</h2>
+    <brdgs-input
+      [isRequired]="true"
+      [label]="'Input'"
+      [type]="BridgesInputTypes.TEL"
+    ></brdgs-input>
+  </div>
+
+  <div>
+    <h2>Select Component:</h2>
+    <brdgs-select
+      [isRequired]="true"
+      [label]="'Select'"
+      [options]="selectOptions"
+    ></brdgs-select>
+  </div>
+
+  <section>
+    <div class="example-label">Icon</div>
+    <div class="d-flex flex-wrap">
+      <div class="d-flex flex-wrap">
+        @for (icon of icons; track $index) {
+
+        <button class="d-flex align-items-center" mat-icon-button>
+          <mat-icon class="{{ icon }}"></mat-icon>
+        </button>
+        }
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="example-label">Basic</div>
+    <div class="example-button-row">
+      <button mat-button color="primary">Basic</button>
+      <button mat-button color="accent">Basic</button>
+      <button mat-button color="warn">Basic</button>
+      <button mat-button disabled>Disabled</button>
+    </div>
+  </section>
+  <mat-divider></mat-divider>
+  <section>
+    <div class="example-label">Raised</div>
+    <div class="example-button-row">
+      <button mat-raised-button color="primary">Raised</button>
+      <button mat-raised-button color="accent">Raised</button>
+      <button mat-raised-button color="warn">Raised</button>
+      <button mat-raised-button disabled>Disabled</button>
+      <a mat-raised-button href="https://www.google.com/" target="_blank"
+        >Link</a
+      >
+    </div>
+  </section>
+  <mat-divider></mat-divider>
+  <section>
+    <div class="example-label">Stroked</div>
+    <div class="example-button-row">
+      <button mat-stroked-button color="primary">Stroked</button>
+      <button mat-stroked-button color="accent">Stroked</button>
+      <button mat-stroked-button color="warn">Stroked</button>
+      <button mat-stroked-button disabled>Disabled</button>
+      <a mat-stroked-button href="https://www.google.com/" target="_blank"
+        >Link</a
+      >
+    </div>
+  </section>
+  <mat-divider></mat-divider>
+  <section>
+    <div class="example-label">Flat</div>
+    <div class="example-button-row">
+      <button mat-flat-button color="primary">Flat</button>
+      <button mat-flat-button color="accent">Flat</button>
+      <button mat-flat-button class="tonal" color="accent">Flat</button>
+      <button mat-flat-button color="warn">Flat</button>
+      <button mat-flat-button disabled>Disabled</button>
+      <a mat-flat-button href="https://www.google.com/" target="_blank">Link</a>
+    </div>
+  </section>
+</form>

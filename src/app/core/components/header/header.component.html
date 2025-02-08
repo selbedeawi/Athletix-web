@@ -1,0 +1,76 @@
+<mat-toolbar class="bg-surface-container-lowest d-flex align-items-center py-2">
+  <span class="flex-fill">
+    @if(currentView()==='phone'){
+    <button
+      (click)="isSidenavOpen.set(true)"
+      mat-icon-button
+      aria-label="expand"
+    >
+      <mat-icon class="icon-menu"></mat-icon>
+    </button>
+    }
+  </span>
+
+  <div class="notification-container" [matMenuTriggerFor]="notificationsMenu">
+    <mat-icon class="icon-notifications"></mat-icon>
+    <!-- <span class="notification-badge">2</span> -->
+  </div>
+  <!-- @if(notificationService?.getNotifications() | async; as user){ -->
+  <!-- The Notification Menu -->
+  <mat-menu #notificationsMenu="matMenu">
+    <ng-template matMenuContent>
+      <button mat-menu-item>Notification 1</button>
+      <button mat-menu-item>Notification 2</button>
+    </ng-template>
+  </mat-menu>
+  @if(currentView()!=='phone'){
+
+  <mat-divider
+    class="vertical-divider align-self-stretch mx-3"
+    [vertical]="true"
+  ></mat-divider>
+
+  <!-- Language Selector -->
+  <app-change-lang [isMainlayout]="true"></app-change-lang>
+
+  <mat-divider
+    class="vertical-divider align-self-stretch mx-3"
+    [vertical]="true"
+  ></mat-divider>
+
+  <!-- User Info -->
+  <div
+    class="d-flex align-items-center cursor-pointer"
+    [matMenuTriggerFor]="userMenu"
+  >
+    <div class="d-flex flex-column mat-body-medium">
+      @if(userService.currentUser$ | async; as user){
+      <span class="mat-body-medium"
+        >{{ user?.name?.firstName }} {{ user?.name?.lastName }}</span
+      >
+      <span class="tertiary-color mat-label-medium-prominent">{{
+        user?.role
+      }}</span>
+      }
+    </div>
+    <mat-icon class="icon-chevron-down"></mat-icon>
+  </div>
+  <!-- The User Menu itself -->
+
+  <mat-menu #userMenu="matMenu">
+    <ng-template matMenuContent>
+      @if(userService.currentUser$ | async; as user){
+      <div class="p-2 mat-body-large">
+        Hello,
+        {{ user?.name?.firstName }}
+        {{ user?.name?.lastName }}
+      </div>
+      }
+      <mat-divider></mat-divider>
+
+      <button mat-menu-item (click)="logout()">
+        <span class="tertiary-color mat-body-large">Sign out</span>
+      </button>
+    </ng-template> </mat-menu
+  >}
+</mat-toolbar>

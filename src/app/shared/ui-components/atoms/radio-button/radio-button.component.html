@@ -1,0 +1,24 @@
+<label [id]="id" class="col-12 mat-title-medium primary-color">{{
+  label()
+}}</label>
+<mat-radio-group
+  [attr.aria-labelledby]="id"
+  [(ngModel)]="value"
+  [name]="label().toLowerCase()"
+  class="row"
+  [required]="required()"
+>
+  @if(translateOptions()){
+  <ng-container *transloco="let t; prefix: translationTemplate()">
+    @for (option of options(); track option) {
+    <mat-radio-button class="col-12 col-md-6 mt-3" [value]="option.value">{{
+      t(option.key)
+    }}</mat-radio-button>
+    }
+  </ng-container>
+  }@else{ @for (option of options(); track $index) {
+  <mat-radio-button class="col-12 col-md-6 mt-3" [value]="option.value">{{
+    option.key
+  }}</mat-radio-button>
+  }}
+</mat-radio-group>

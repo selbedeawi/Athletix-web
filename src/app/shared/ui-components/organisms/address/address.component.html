@@ -1,0 +1,59 @@
+<div class="row gx-3 gy-1" *transloco="let t; prefix: translationTemplate()">
+  <brdgs-input
+    class="col-12 col-md-6"
+    [label]="t('STREET_NAME')"
+    [(value)]="address().streetName"
+    [isRequired]="true"
+    [isDisabled]="isDisabled()"
+    [type]="bridgesInputType.TEXT"
+  ></brdgs-input>
+  <brdgs-input
+    class="col-12 col-md-6"
+    [label]="t('UNIT')"
+    [(value)]="address().unit"
+    [isRequired]="false"
+    [isDisabled]="isDisabled()"
+    [type]="bridgesInputType.TEXT"
+  ></brdgs-input>
+  <brdgs-input
+    class="col-12 col-md-3"
+    [label]="t('POSTAL_CODE')"
+    [(value)]="address().postalCode"
+    (valueChange)="toUpper()"
+    [isRequired]="true"
+    [isDisabled]="isDisabled()"
+    [mask]="'S0S 0S0'"
+    [type]="bridgesInputType.POSTALCODE"
+  ></brdgs-input>
+  <app-region
+    class="col-12 col-md-3"
+    [(region)]="address().regionId"
+    [isDisabled]="isDisabled()"
+    [translationTemplate]="translationTemplate()"
+    (regionChange)="regionChange()"
+  ></app-region>
+  <app-city
+    class="col-12 col-md-3"
+    [(city)]="address().cityId"
+    [regionId]="address().regionId"
+    [isDisabled]="!address().regionId || isDisabled()"
+    [translationTemplate]="translationTemplate()"
+  ></app-city>
+  <app-province
+    class="col-12 col-md-3"
+    [(province)]="address().provinceId"
+    [isDisabled]="isDisabled()"
+    [translationTemplate]="translationTemplate()"
+  ></app-province>
+
+  @if(allowMainIntersection()){
+  <brdgs-input
+    class="col-12 col-md-6"
+    [label]="t('MAIN_INTERSECTION')"
+    [(value)]="address().mainIntersection"
+    [isRequired]="true"
+    [isDisabled]="isDisabled()"
+    [type]="bridgesInputType.TEXT"
+  ></brdgs-input>
+  }
+</div>

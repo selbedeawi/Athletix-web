@@ -1,0 +1,61 @@
+<ng-container *transloco="let t">
+  <mat-form-field class="w-100">
+    <mat-label>{{lable() }}</mat-label>
+    <input
+      matInput
+      [required]="required()"
+      [(ngModel)]="value"
+      [type]="inputType()"
+      (ngModelChange)="inputValidatorChange()"
+      [name]="inputFormName"
+      #inputTag="ngModel"
+      appMatch
+    />
+    @if(inputTag.errors){
+    <mat-error>{{ t(errorMessage) }}</mat-error>
+    }
+
+    <button
+      mat-icon-button
+      matSuffix
+      (click)="inputType() == 'password' ? inputType.set('text')  : inputType.set('password')"
+      [attr.aria-label]="'Hide password'"
+    >
+      <mat-icon
+        class="{{ inputType() === 'password' ? 'icon-eye' : 'icon-eye-off' }}"
+      ></mat-icon>
+    </button>
+  </mat-form-field>
+  <div class="input-with-validation-dropdown-content">
+    <p class="mat-body-small m-0">
+      {{t("PASSWORD_STRENGTH")}}
+      <strong class="mat-label-medium m-0">
+        {{t(progress <60 ?'PASSWORD_WK':progress <100?'PASSWORD_MD'
+        :'PASSWORD_STG' )}}
+      </strong>
+    </p>
+    <mat-progress-bar
+      mode="determinate"
+      class="budget-progress"
+      [value]="progress"
+    ></mat-progress-bar>
+    @for ( textValidatorItem of inputTemplateValidator; track $index) {
+    <div class="d-flex flex-row align-items-center my-2">
+      @switch (({text: value()||'', action: textValidatorItem} |
+      validateAction)) { @case (true) {
+      <i class="icon-check-circle success-color me-2 f-18"></i>
+      <p class="m-0 success-color mat-label-medium">
+        {{t(textValidatorItem.text) }}
+      </p>
+
+      }@default {
+      <i class="f-18 icon-x-circle error-color me-2 mat-label-medium"> </i>
+      <p class="m-0 error-color me-2 mat-label-medium">
+        {{t(textValidatorItem.text) }}
+      </p>
+
+      } }
+    </div>
+    }
+  </div>
+</ng-container>

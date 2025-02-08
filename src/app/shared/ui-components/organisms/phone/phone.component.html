@@ -1,0 +1,61 @@
+<div
+  class="d-flex flex-column"
+  *transloco="let t; prefix: translationTemplate()"
+>
+  @for (phone of phones(); track $index ;let i=$index ) {
+  <div class="row gx-3 my-1">
+    <brdgs-select
+      class="d-block col-12 col-md-6"
+      [label]="t('PHONE_TYPE')"
+      [(value)]="phone.phoneType"
+      [isRequired]="true"
+      [isDisabled]="!!isDisabled()"
+      [options]="keyValuePhoneTypes"
+      [translateOptions]="true"
+    >
+    </brdgs-select>
+    <div class="d-flex col-12 col-md-6">
+      <brdgs-input
+        class="d-block flex-fill"
+        [label]="t('PHONE_NUMBER')"
+        [isDisabled]="!!isDisabled()"
+        [(value)]="phone.number"
+        [isRequired]="true"
+        [mask]="'000-000-0000'"
+        #phone_number
+        [type]="bridgesInputType.TEL"
+      ></brdgs-input>
+      @if(i ===1 ){
+      <button
+        (click)="
+          phone_number.ngModel().control.markAsDirty(); deleteTelephone()
+        "
+        type="button"
+        [disabled]="isDisabled()"
+        mat-icon-button
+        matTooltip="{{ t('DELETE_TELEPHONE') }}"
+        aria-label="delete telephone"
+      >
+        <mat-icon
+          class="icon-x-circle error-color"
+          aria-label="delete telephone"
+        ></mat-icon></button
+      >}
+    </div>
+  </div>
+
+  }
+  <div class="d-flex col-12">
+    <button
+      (click)="addTelephone()"
+      type="button"
+      [disabled]="isDisabled() || phones().length === 2"
+      mat-button
+      matTooltip="{{ t('ADD_TELEPHONE') }}"
+      aria-label="add telephone"
+    >
+      <mat-icon aria-label="add telephone" class="icon-add"></mat-icon>
+      {{ t("ADD_TELEPHONE") }}
+    </button>
+  </div>
+</div>

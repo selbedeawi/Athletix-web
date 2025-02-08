@@ -1,0 +1,24 @@
+<div class="row gx-3 gy-1" *transloco="let t; prefix: translationTemplate()">
+  <brdgs-input
+    class="d-block col-12 col-md-4"
+    [label]="t('FIRST_NAME')"
+    [(value)]="name().firstName"
+    [isRequired]="true"
+    [type]="bridgesInputType.TEXT"
+  ></brdgs-input>
+
+  <brdgs-input
+    class="d-block col-12 col-md-4"
+    [label]="t('MIDDLE_NAME')"
+    [(value)]="name().middleName"
+    [isRequired]="false"
+    [type]="bridgesInputType.TEXT"
+  ></brdgs-input>
+  <brdgs-input
+    class="d-block col-12 col-md-4"
+    [label]="t('LAST_NAME')"
+    [(value)]="name().lastName"
+    [isRequired]="true"
+    [type]="bridgesInputType.TEXT"
+  ></brdgs-input>
+</div>

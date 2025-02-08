@@ -1,0 +1,11 @@
+<ng-container *transloco="let t; prefix: translationTemplate()">
+  <brdgs-select
+    class="col-12"
+    [label]="t('AGE_CATEGORY')"
+    [(value)]="ageCategory"
+    [isRequired]="isRequired()"
+    [options]="$ageCategoryOptions | async"
+    [translateOptions]="true"
+  >
+  </brdgs-select>
+</ng-container>

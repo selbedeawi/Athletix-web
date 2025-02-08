@@ -1,0 +1,21 @@
+@if(isMainlayout()){
+<button [matMenuTriggerFor]="languageMenu" mat-button color="accent">
+  <div class="d-flex cursor-pointer">
+    <span class="mat-label-large-prominent">ENG</span>
+    <mat-icon class="f-18 on-surface-color icon-chevron-down"></mat-icon>
+  </div>
+</button>
+}@else{
+<button [matMenuTriggerFor]="languageMenu" mat-button color="primary">
+  <span class="secondary-color mat-title-medium d-flex align-items-center"
+    >English
+    <mat-icon class="on-surface-color mt-2 f-18 icon-chevron-down"></mat-icon>
+  </span></button
+>}
+
+<mat-menu #languageMenu="matMenu">
+  <ng-template matMenuContent>
+    <button mat-menu-item (click)="switchLang('en')">English</button>
+    <button mat-menu-item (click)="switchLang('fr')">French</button>
+  </ng-template>
+</mat-menu>

@@ -1,0 +1,414 @@
+.f-18 {
+  font-size: 18px;
+}
+.f-20 {
+  font-size: 20px;
+}
+.f-24 {
+  font-size: 24px;
+}
+.border-1 {
+  border: 1px solid var(--surf-container-high);
+}
+.border-top-1 {
+  border: 1px solid var(--sys-outline-variant);
+}
+.rounded-6 {
+  border-radius: 6px !important;
+  -webkit-border-radius: 6px !important;
+  -moz-border-radius: 6px !important;
+  -ms-border-radius: 6px !important;
+  -o-border-radius: 6px !important;
+}
+.rounded-10 {
+  border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+}
+.rounded-12 {
+  border-radius: 12px;
+  -webkit-border-radius: 12px;
+  -moz-border-radius: 12px;
+  -ms-border-radius: 12px;
+  -o-border-radius: 12px;
+}
+
+.cursor-pointer {
+  cursor: pointer !important;
+}
+
+.primary-color {
+  color: var(--sys-primary) !important;
+}
+// .bg-primary {
+//   background-color: var(--sys-primary) !important;
+// }
+
+// .background-color {
+//   color: var(--sys-background) !important;
+// }
+.bg-background {
+  background-color: var(--sys-background) !important;
+}
+
+// .primary-95-color {
+//   color: var(--sys-primary-95) !important;
+// }
+.bg-primary-95 {
+  background-color: var(--sys-primary-95) !important;
+}
+
+.success-color {
+  color: var(--sys-success) !important;
+}
+// .bg-success {
+//   background-color: var(--sys-success) !important;
+// }
+
+// .warning-color {
+//   color: var(--sys-warning) !important;
+// }
+// .bg-warning {
+//   background-color: var(--sys-warning) !important;
+// }
+
+// .surface-tint-color {
+//   color: var(--sys-surface-tint);
+// }
+// .bg-surface-tint {
+//   background-color: var(--sys-surface-tint);
+// }
+
+// .on-primary-color {
+//   color: var(--sys-on-primary);
+// }
+// .bg-on-primary {
+//   background-color: var(--sys-on-primary);
+// }
+
+// .primary-container-color {
+//   color: var(--sys-primary-container);
+// }
+// .bg-primary-container {
+//   background-color: var(--sys-primary-container) !important;
+// }
+
+.on-primary-container-color {
+  color: var(--sys-on-primary-container) !important;
+}
+// .bg-on-primary-container {
+//   background-color: var(--sys-on-primary-container);
+// }
+
+.secondary-color {
+  color: var(--sys-secondary);
+}
+// .bg-secondary {
+//   background-color: var(--sys-secondary);
+// }
+
+// .on-secondary-color {
+//   color: var(--sys-on-secondary);
+// }
+// .bg-on-secondary {
+//   background-color: var(--sys-on-secondary);
+// }
+
+.secondary-container-color {
+  color: var(--sys-secondary-container) !important;
+}
+// .bg-secondary-container {
+//   background-color: var(--sys-secondary-container) !important;
+// }
+
+.on-secondary-container-color {
+  color: var(--sys-on-secondary-container) !important;
+}
+// .bg-on-secondary-container {
+//   background-color: var(--sys-on-secondary-container);
+// }
+
+.tertiary-color {
+  color: var(--sys-tertiary);
+}
+// .bg-tertiary {
+//   background-color: var(--sys-tertiary);
+// }
+
+// .on-tertiary-color {
+//   color: var(--sys-on-tertiary);
+// }
+// .bg-on-tertiary {
+//   background-color: var(--sys-on-tertiary);
+// }
+
+// .tertiary-container-color {
+//   color: var(--sys-tertiary-container);
+// }
+.bg-tertiary-container {
+  background-color: var(--sys-tertiary-container) !important;
+}
+
+// .on-tertiary-container-color {
+//   color: var(--sys-on-tertiary-container);
+// }
+// .bg-on-tertiary-container {
+//   background-color: var(--sys-on-tertiary-container);
+// }
+
+.error-color {
+  color: var(--sys-error);
+}
+// .bg-error {
+//   background-color: var(--sys-error);
+// }
+
+// .on-error-color {
+//   color: var(--sys-on-error);
+// }
+// .bg-on-error {
+//   background-color: var(--sys-on-error);
+// }
+
+// .error-container-color {
+//   color: var(--sys-error-container);
+// }
+// .bg-error-container {
+//   background-color: var(--sys-error-container);
+// }
+
+// .on-error-container-color {
+//   color: var(--sys-on-error-container);
+// }
+// .bg-on-error-container {
+//   background-color: var(--sys-on-error-container);
+// }
+
+// .background-color {
+//   color: var(--sys-background);
+// }
+// .bg-background {
+//   background-color: var(--sys-background);
+// }
+
+// .on-background-color {
+//   color: var(--sys-on-background);
+// }
+// .bg-on-background {
+//   background-color: var(--sys-on-background);
+// }
+
+// .surface-color {
+//   color: var(--sys-surface);
+// }
+// .bg-surface {
+//   background-color: var(--sys-surface);
+// }
+
+.on-surface-color {
+  color: var(--sys-on-surface);
+}
+// .bg-on-surface {
+//   background-color: var(--sys-on-surface);
+// }
+
+.surface-variant-color {
+  color: var(--sys-surface-variant);
+}
+// .bg-surface-variant {
+//   background-color: var(--sys-surface-variant);
+// }
+
+.on-surface-variant-color {
+  color: var(--sys-on-surface-variant);
+}
+// .bg-on-surface-variant {
+//   background-color: var(--sys-on-surface-variant);
+// }
+
+// .outline-color {
+//   color: var(--sys-outline);
+// }
+// .bg-outline {
+//   background-color: var(--sys-outline);
+// }
+
+// .outline-variant-color {
+//   color: var(--sys-outline-variant);
+// }
+// .bg-outline-variant {
+//   background-color: var(--sys-outline-variant);
+// }
+
+// .shadow-color {
+//   color: var(--sys-shadow);
+// }
+// .bg-shadow {
+//   background-color: var(--sys-shadow);
+// }
+
+// .scrim-color {
+//   color: var(--sys-scrim);
+// }
+// .bg-scrim {
+//   background-color: var(--sys-scrim);
+// }
+
+// .inverse-surface-color {
+//   color: var(--sys-inverse-surface);
+// }
+// .bg-inverse-surface {
+//   background-color: var(--sys-inverse-surface);
+// }
+
+// .inverse-on-surface-color {
+//   color: var(--sys-inverse-on-surface);
+// }
+// .bg-inverse-on-surface {
+//   background-color: var(--sys-inverse-on-surface);
+// }
+
+// .inverse-primary-color {
+//   color: var(--sys-inverse-primary);
+// }
+// .bg-inverse-primary {
+//   background-color: var(--sys-inverse-primary);
+// }
+
+// .primary-fixed-color {
+//   color: var(--sys-primary-fixed);
+// }
+// .bg-primary-fixed {
+//   background-color: var(--sys-primary-fixed);
+// }
+
+// .on-primary-fixed-color {
+//   color: var(--sys-on-primary-fixed);
+// }
+// .bg-on-primary-fixed {
+//   background-color: var(--sys-on-primary-fixed);
+// }
+
+// .primary-fixed-dim-color {
+//   color: var(--sys-primary-fixed-dim);
+// }
+// .bg-primary-fixed-dim {
+//   background-color: var(--sys-primary-fixed-dim);
+// }
+
+// .on-primary-fixed-variant-color {
+//   color: var(--sys-on-primary-fixed-variant);
+// }
+// .bg-on-primary-fixed-variant {
+//   background-color: var(--sys-on-primary-fixed-variant);
+// }
+
+// .secondary-fixed-color {
+//   color: var(--sys-secondary-fixed);
+// }
+// .bg-secondary-fixed {
+//   background-color: var(--sys-secondary-fixed);
+// }
+
+// .on-secondary-fixed-color {
+//   color: var(--sys-on-secondary-fixed);
+// }
+// .bg-on-secondary-fixed {
+//   background-color: var(--sys-on-secondary-fixed);
+// }
+
+// .secondary-fixed-dim-color {
+//   color: var(--sys-secondary-fixed-dim);
+// }
+// .bg-secondary-fixed-dim {
+//   background-color: var(--sys-secondary-fixed-dim);
+// }
+
+// .on-secondary-fixed-variant-color {
+//   color: var(--sys-on-secondary-fixed-variant);
+// }
+// .bg-on-secondary-fixed-variant {
+//   background-color: var(--sys-on-secondary-fixed-variant);
+// }
+
+// .tertiary-fixed-color {
+//   color: var(--sys-tertiary-fixed);
+// }
+.bg-tertiary-fixed {
+  background-color: var(--sys-tertiary-fixed);
+}
+
+.on-tertiary-fixed-color {
+  color: var(--sys-on-tertiary-fixed);
+}
+// .bg-on-tertiary-fixed {
+//   background-color: var(--sys-on-tertiary-fixed);
+// }
+
+// .tertiary-fixed-dim-color {
+//   color: var(--sys-tertiary-fixed-dim);
+// }
+// .bg-tertiary-fixed-dim {
+//   background-color: var(--sys-tertiary-fixed-dim);
+// }
+
+// .on-tertiary-fixed-variant-color {
+//   color: var(--sys-on-tertiary-fixed-variant);
+// }
+// .bg-on-tertiary-fixed-variant {
+//   background-color: var(--sys-on-tertiary-fixed-variant);
+// }
+
+// .surface-dim-color {
+//   color: var(--sys-surface-dim);
+// }
+// .bg-surface-dim {
+//   background-color: var(--sys-surface-dim);
+// }
+
+// .surface-bright-color {
+//   color: var(--sys-surface-bright);
+// }
+// .bg-surface-bright {
+//   background-color: var(--sys-surface-bright);
+// }
+
+// .surface-container-lowest-color {
+//   color: var(--sys-surface-container-lowest);
+// }
+.bg-surface-container-lowest {
+  background-color: var(--sys-surface-container-lowest) !important;
+}
+
+// .surface-container-low-color {
+//   color: var(--sys-surface-container-low);
+// }
+// .bg-surface-container-low {
+//   background-color: var(--sys-surface-container-low) !important;
+// }
+
+// .surface-container-color {
+//   color: var(--sys-surface-container);
+// }
+// .bg-surface-container {
+//   background-color: var(--sys-surface-container);
+// }
+
+// .surface-container-high-color {
+//   color: var(--sys-surface-container-high);
+// }
+// .bg-surface-container-high {
+//   background-color: var(--sys-surface-container-high);
+// }
+
+// .surface-container-highest-color {
+//   color: var(--sys-surface-container-highest);
+// }
+// .bg-surface-container-highest {
+//   background-color: var(--sys-surface-container-highest);
+// }
+// .black-color {
+//   color: #000000;
+// }

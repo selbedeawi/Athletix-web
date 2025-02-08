@@ -1,0 +1,69 @@
+<div
+  *transloco="let t; prefix: translationTemplate"
+  class="d-flex flex-column w-100 px-3"
+>
+  <mat-card class="mx-auto col-12 col-md-6 col-lg-4">
+    <mat-card-content class="p-4">
+      <!-- Page Header -->
+      <div class="mat-title-large mb-4">
+        {{ t("WELCOME_BACK") }}
+      </div>
+
+      <form #loginForm="ngForm">
+        <!-- Email Field -->
+        <brdgs-input
+          class="col-12 mb-2"
+          [label]="t('EMAIL')"
+          [(value)]="form.email"
+          [isRequired]="true"
+          [type]="bridgesInputType.EMAIL"
+        >
+        </brdgs-input>
+
+        <!-- Password Field -->
+        <brdgs-input
+          class="col-12"
+          [label]="t('PASSWORD')"
+          [(value)]="form.password"
+          [isRequired]="true"
+          [type]="bridgesInputType.PASSWORD"
+        >
+        </brdgs-input>
+
+        <!-- Forgot Password Link -->
+        <div class="text-end mb-3">
+          <a
+            class="text-decoration-none mat-title-small tertiary-color"
+            [routerLink]="['/', APP_ROUTES.AUTH, APP_ROUTES.RESET_PASSWORD]"
+          >
+            {{ t("FORGOT_PASSWORD") }}
+          </a>
+        </div>
+
+        <!-- Sign In Button -->
+        <button
+          mat-flat-button
+          color="primary"
+          class="w-100"
+          [disabled]="loginForm.invalid"
+          (click)="login()"
+        >
+          {{ t("SIGN_IN") }}
+        </button>
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Extra links (Sign Up) -->
+  <div class="text-center">
+    <p class="mb-0">
+      {{ t("NO_ACCOUNT") }}
+      <a
+        style="color: var(--sys-primary); text-decoration: none"
+        [routerLink]="['/', APP_ROUTES.CREATE_ACCOUNT]"
+      >
+        {{ t("SIGN_UP") }}
+      </a>
+    </p>
+  </div>
+</div>

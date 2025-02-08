@@ -1,0 +1,11 @@
+<ng-container *transloco="let t; prefix: translationTemplate()">
+  <brdgs-select
+    class="w-100"
+    [label]="t('PROVINCE')"
+    [(value)]="province"
+    [isRequired]="isRequired()"
+    [options]="$province | async"
+    [isDisabled]="isDisabled()"
+  >
+  </brdgs-select>
+</ng-container>

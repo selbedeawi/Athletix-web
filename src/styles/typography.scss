@@ -1,0 +1,255 @@
+:root {
+  --sys-body-large: var(--sys-body-large-weight) var(--sys-body-large-size) /
+    var(--sys-body-large-line-height) var(--sys-body-large-font);
+  --sys-body-large-font: "Poppins", serif;
+  --sys-body-large-line-height: 1.5rem;
+  --sys-body-large-size: 1rem;
+  --sys-body-large-tracking: 0.031rem;
+  --sys-body-large-weight: 400;
+
+  --sys-body-medium: var(--sys-body-medium-weight) var(--sys-body-medium-size) /
+    var(--sys-body-medium-line-height) var(--sys-body-medium-font);
+  --sys-body-medium-font: "Poppins", serif;
+  --sys-body-medium-line-height: 1.25rem;
+  --sys-body-medium-size: 0.875rem;
+  --sys-body-medium-tracking: 0.016rem;
+  --sys-body-medium-weight: 400;
+
+  --sys-body-small: var(--sys-body-small-weight) var(--sys-body-small-size) /
+    var(--sys-body-small-line-height) var(--sys-body-small-font);
+  --sys-body-small-font: "Poppins", serif;
+  --sys-body-small-line-height: 1rem;
+  --sys-body-small-size: 0.75rem;
+  --sys-body-small-tracking: 0.025rem;
+  --sys-body-small-weight: 400;
+
+  --sys-display-large: var(--sys-display-large-weight)
+    var(--sys-display-large-size) / var(--sys-display-large-line-height)
+    var(--sys-display-large-font);
+  --sys-display-large-font: "Poppins", serif;
+  --sys-display-large-line-height: 4rem;
+  --sys-display-large-size: 3.563rem;
+  --sys-display-large-tracking: -0.016rem;
+  --sys-display-large-weight: 700;
+
+  --sys-display-medium: var(--sys-display-medium-weight)
+    var(--sys-display-medium-size) / var(--sys-display-medium-line-height)
+    var(--sys-display-medium-font);
+  --sys-display-medium-font: "Poppins", serif;
+  --sys-display-medium-line-height: 3.25rem;
+  --sys-display-medium-size: 2.813rem;
+  --sys-display-medium-tracking: 0rem;
+  --sys-display-medium-weight: 700;
+
+  --sys-display-small: var(--sys-display-small-weight)
+    var(--sys-display-small-size) / var(--sys-display-small-line-height)
+    var(--sys-display-small-font);
+  --sys-display-small-font: "Poppins", serif;
+  --sys-display-small-line-height: 2.5rem;
+  --sys-display-small-size: 1.875rem;
+  --sys-display-small-tracking: 0rem;
+  --sys-display-small-weight: 700;
+
+  --sys-headline-large: var(--sys-headline-large-weight)
+    var(--sys-headline-large-size) / var(--sys-headline-large-line-height)
+    var(--sys-headline-large-font);
+  --sys-headline-large-font: "Poppins", serif;
+  --sys-headline-large-line-height: 2.5rem;
+  --sys-headline-large-size: 2rem;
+  --sys-headline-large-tracking: 0rem;
+  --sys-headline-large-weight: 400;
+
+  --sys-headline-medium: var(--sys-headline-medium-weight)
+    var(--sys-headline-medium-size) / var(--sys-headline-medium-line-height)
+    var(--sys-headline-medium-font);
+  --sys-headline-medium-font: "Poppins", serif;
+  --sys-headline-medium-line-height: 2.25rem;
+  --sys-headline-medium-size: 1.75rem;
+  --sys-headline-medium-tracking: 0rem;
+  --sys-headline-medium-weight: 400;
+
+  --sys-headline-small: var(--sys-headline-small-weight)
+    var(--sys-headline-small-size) / var(--sys-headline-small-line-height)
+    var(--sys-headline-small-font);
+  --sys-headline-small-font: "Poppins", serif;
+  --sys-headline-small-line-height: 2rem;
+  --sys-headline-small-size: 1.5rem;
+  --sys-headline-small-tracking: 0rem;
+  --sys-headline-small-weight: 400;
+
+  --sys-label-large: var(--sys-label-large-weight) var(--sys-label-large-size) /
+    var(--sys-label-large-line-height) var(--sys-label-large-font);
+  --sys-label-large-font: "Poppins", serif;
+  --sys-label-large-line-height: 1.25rem;
+  --sys-label-large-size: 0.875rem;
+  --sys-label-large-tracking: 0.006rem;
+  --sys-label-large-weight: 500;
+  --sys-label-large-weight-prominent: 700;
+
+  --sys-label-medium: var(--sys-label-medium-weight)
+    var(--sys-label-medium-size) / var(--sys-label-medium-line-height)
+    var(--sys-label-medium-font);
+  --sys-label-medium-font: "Poppins", serif;
+  --sys-label-medium-line-height: 1rem;
+  --sys-label-medium-size: 0.75rem;
+  --sys-label-medium-tracking: 0.031rem;
+  --sys-label-medium-weight: 500;
+  --sys-label-medium-weight-prominent: 700;
+
+  --sys-label-small: var(--sys-label-small-weight) var(--sys-label-small-size) /
+    var(--sys-label-small-line-height) var(--sys-label-small-font);
+  --sys-label-small-font: "Poppins", serif;
+  --sys-label-small-line-height: 1rem;
+  --sys-label-small-size: 0.688rem;
+  --sys-label-small-tracking: 0.031rem;
+  --sys-label-small-weight: 500;
+
+  --sys-title-large: var(--sys-title-large-weight) var(--sys-title-large-size) /
+    var(--sys-title-large-line-height) var(--sys-title-large-font);
+  --sys-title-large-font: "Poppins", serif;
+  --sys-title-large-line-height: 1.75rem;
+  --sys-title-large-size: 1.375rem;
+  --sys-title-large-tracking: 0rem;
+  --sys-title-large-weight: 500;
+
+  --sys-title-medium: var(--sys-title-medium-weight)
+    var(--sys-title-medium-size) / var(--sys-title-medium-line-height)
+    var(--sys-title-medium-font);
+  --sys-title-medium-font: "Poppins", serif;
+  --sys-title-medium-line-height: 1.5rem;
+  --sys-title-medium-size: 1rem;
+  --sys-title-medium-tracking: 0.009rem;
+  --sys-title-medium-weight: 500;
+
+  --sys-title-small: var(--sys-title-small-weight) var(--sys-title-small-size) /
+    var(--sys-title-small-line-height) var(--sys-title-small-font);
+  --sys-title-small-font: "Poppins", serif;
+  --sys-title-small-line-height: 1.25rem;
+  --sys-title-small-size: 0.875rem;
+  --sys-title-small-tracking: 0.006rem;
+  --sys-title-small-weight: 500;
+}
+// display
+.mat-display-large {
+  font: var(--sys-display-large-font);
+  line-height: var(--sys-display-large-line-height);
+  font-size: var(--sys-display-large-size);
+  letter-spacing: var(--sys-display-large-tracking);
+  font-weight: var(--sys-display-large-weight);
+}
+.mat-display-medium {
+  font: var(--sys-display-medium-font);
+  line-height: var(--sys-display-medium-line-height);
+  font-size: var(--sys-display-medium-size);
+  letter-spacing: var(--sys-display-medium-tracking);
+  font-weight: var(--sys-display-medium-weight);
+}
+.mat-display-small {
+  font: var(--sys-display-small-font);
+  line-height: var(--sys-display-small-line-height);
+  font-size: var(--sys-display-small-size);
+  letter-spacing: var(--sys-display-small-tracking);
+  font-weight: var(--sys-display-small-weight);
+}
+// headline
+.mat-headline-large {
+  font: var(--sys-headline-large-font);
+  line-height: var(--sys-headline-large-line-height);
+  font-size: var(--sys-headline-large-size);
+  letter-spacing: var(--sys-headline-large-tracking);
+  font-weight: var(--sys-headline-large-weight);
+}
+.mat-headline-medium {
+  font: var(--sys-headline-medium-font);
+  line-height: var(--sys-headline-medium-line-height);
+  font-size: var(--sys-headline-medium-size);
+  letter-spacing: var(--sys-headline-medium-tracking);
+  font-weight: var(--sys-headline-medium-weight);
+}
+.mat-headline-small {
+  font: var(--sys-headline-small-font);
+  line-height: var(--sys-headline-small-line-height);
+  font-size: var(--sys-headline-small-size);
+  letter-spacing: var(--sys-headline-small-tracking);
+  font-weight: var(--sys-headline-small-weight);
+}
+// title
+.mat-title-large {
+  font: var(--sys-title-large-font);
+  line-height: var(--sys-title-large-line-height);
+  font-size: var(--sys-title-large-size);
+  letter-spacing: var(--sys-title-large-tracking);
+  font-weight: var(--sys-title-large-weight);
+}
+.mat-title-medium {
+  font: var(--sys-title-medium-font) !important;
+  line-height: var(--sys-title-medium-line-height) !important;
+  font-size: var(--sys-title-medium-size) !important;
+  letter-spacing: var(--sys-title-medium-tracking) !important;
+  font-weight: var(--sys-title-medium-weight) !important;
+}
+.mat-title-small {
+  font: var(--sys-title-small-font);
+  line-height: var(--sys-title-small-line-height);
+  font-size: var(--sys-title-small-size);
+  letter-spacing: var(--sys-title-small-tracking);
+  font-weight: var(--sys-title-small-weight);
+}
+// body
+.mat-body-large {
+  font: var(--sys-body-large-font);
+  line-height: var(--sys-body-large-line-height);
+  font-size: var(--sys-body-large-size);
+  letter-spacing: var(--sys-body-large-tracking);
+  font-weight: var(--sys-body-large-weight);
+}
+.mat-body-medium {
+  font: var(--sys-body-medium-font);
+  line-height: var(--sys-body-medium-line-height);
+  font-size: var(--sys-body-medium-size);
+  letter-spacing: var(--sys-body-medium-tracking);
+  font-weight: var(--sys-body-medium-weight);
+}
+.mat-body-small {
+  font: var(--sys-body-small-font);
+  line-height: var(--sys-body-small-line-height);
+  font-size: var(--sys-body-small-size);
+  letter-spacing: var(--sys-body-small-tracking);
+  font-weight: var(--sys-body-small-weight);
+}
+// label
+.mat-label-large {
+  font: var(--sys-label-large-font) !important;
+  line-height: var(--sys-label-large-line-height) !important;
+  font-size: var(--sys-label-large-size) !important;
+  letter-spacing: var(--sys-label-large-tracking) !important;
+  font-weight: var(--sys-label-large-weight) !important;
+}
+.mat-label-large-prominent {
+  font: var(--sys-label-large-font) !important;
+  line-height: var(--sys-label-large-line-height) !important;
+  font-size: var(--sys-label-large-size) !important;
+  letter-spacing: var(--sys-label-large-tracking) !important;
+  font-weight: var(--sys-label-large-weight-prominent) !important;
+}
+.mat-label-medium-prominent {
+  font: var(--sys-label-medium-font);
+  line-height: var(--sys-label-medium-line-height);
+  font-size: var(--sys-label-medium-size);
+  letter-spacing: var(--sys-label-medium-tracking);
+  font-weight: var(--sys-label-medium-weight-prominent);
+}
+.mat-label-medium {
+  font: var(--sys-label-medium-font);
+  line-height: var(--sys-label-medium-line-height);
+  font-size: var(--sys-label-medium-size);
+  letter-spacing: var(--sys-label-medium-tracking);
+  font-weight: var(--sys-label-medium-weight);
+}
+.mat-label-small {
+  font: var(--sys-label-small-font);
+  line-height: var(--sys-label-small-line-height);
+  font-size: var(--sys-label-small-size);
+  letter-spacing: var(--sys-label-small-tracking);
+  font-weight: var(--sys-label-small-weight);
+}

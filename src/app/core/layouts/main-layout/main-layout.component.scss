@@ -1,0 +1,14 @@
+:host ::ng-deep {
+  .toggle-btn-container {
+    position: absolute;
+    z-index: 100;
+  }
+  .mat-drawer-inner-container {
+    overflow: hidden;
+  }
+  .scroll-container {
+    min-height: calc(100vh - 64px);
+    max-height: calc(100vh - 64px);
+    overflow-y: auto;
+  }
+}

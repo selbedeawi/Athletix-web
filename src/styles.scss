@@ -1,1 +1,420 @@
-/* You can add global styles to this file, and also import other style files */
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+
+@use "@angular/material" as mat;
+
+$light-theme: mat.define-theme(
+  (
+    color: (
+      theme-type: light,
+      use-system-variables: true,
+      system-variables-prefix: sys,
+    ),
+    typography: (
+      use-system-variables: true,
+      system-variables-prefix: sys,
+    ),
+    density: (
+      scale: 0,
+    ),
+  )
+);
+// Customize the entire app. Change :root to your selector if you want to scope the styles.
+
+:root {
+  @include mat.all-component-themes($light-theme);
+  @include mat.form-field-density(-3);
+  @include mat.tabs-overrides(
+    (
+      active-indicator-color: var(--sys-tertiary),
+      active-hover-indicator-color: var(--sys-tertiary),
+      active-focus-indicator-color: var(--sys-tertiary),
+    )
+  );
+
+  @include mat.divider-overrides(
+    (
+      color: var(--sys-outline-variant),
+    )
+  );
+  @include mat.list-overrides(
+    (
+      active-indicator-shape: 4px,
+      active-indicator-color: var(--sys-secondary-container),
+      list-item-label-text-color: var(--sys-primary),
+      list-item-leading-icon-color: var(--sys-primary),
+      list-item-leading-icon-start-space: 14px,
+      //
+      list-item-hover-label-text-color: var(--sys-on-secondary-container),
+      list-item-hover-leading-icon-color: var(--sys-on-secondary-container),
+      list-item-hover-state-layer-color: var(--sys-secondary-container),
+      list-item-hover-state-layer-opacity: 0.3,
+      //
+      list-item-focus-label-text-color: var(--sys-on-secondary-container),
+      list-item-focus-state-layer-color: var(--sys-secondary),
+      list-item-focus-state-layer-opacity: 0.2,
+    )
+  );
+
+  @include mat.sidenav-overrides(
+    (
+      container-shape: 0px,
+      container-divider-color: var(--sys-outline-variant),
+      container-background-color: var(--sys-surface-container-lowest),
+      content-background-color: var(--sys-background),
+    )
+  );
+
+  @include mat.button-overrides(
+    (
+      filled-container-shape: 4px,
+      outlined-container-shape: 4px,
+      protected-container-shape: 4px,
+      text-container-shape: 4px,
+    )
+  );
+
+  .mat-accent {
+    @include mat.button-overrides(
+      (
+        outlined-label-text-color: var(--sys-tertiary),
+        filled-container-color: var(--sys-secondary-container),
+        filled-label-text-color: var(--sys-on-secondary-container),
+        text-label-text-color: var(--sys-tertiary),
+        text-state-layer-color: var(--sys-tertiary),
+      )
+    );
+  }
+  .tonal.mat-accent {
+    @include mat.button-overrides(
+      (
+        filled-container-color: var(--sys-tertiary-container),
+        filled-label-text-color: var(--sys-on-tertiary-container),
+      )
+    );
+  }
+  .mat-warn {
+    @include mat.button-overrides(
+      (
+        outlined-label-text-color: var(--sys-error),
+        outlined-outline-color: var(--sys-error),
+        filled-container-color: var(--sys-tertiary),
+        filled-label-text-color: var(--sys-on-tertiary),
+        text-label-text-color: var(--sys-error),
+      )
+    );
+  }
+
+  .success-snackbar {
+    @include mat.snack-bar-overrides(
+      (
+        container-color: var(--sys-success),
+        supporting-text-color: var(--sys-on-tertiary),
+        button-color: var(--sys-on-tertiary),
+      )
+    );
+  }
+  .error-snackbar {
+    @include mat.snack-bar-overrides(
+      (
+        container-color: var(--sys-error),
+        supporting-text-color: var(--sys-on-error),
+        button-color: var(--sys-on-error),
+      )
+    );
+  }
+  // card overrides
+  @include mat.card-overrides(
+    (
+      elevated-container-color: var(--sys-surface-container-lowest),
+    )
+  );
+
+  .mat-mdc-card {
+    border: 1px solid var(--sys-surface-variant) !important;
+  }
+
+  @include mat.menu-overrides(
+    (
+      container-color: var(--sys-surface-container-lowest),
+    )
+  );
+}
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  .container-md,
+  .container-sm,
+  .container {
+    max-width: 991px !important;
+  }
+}
+
+table.brdgs-table {
+  border-radius: 12px 12px 12px 12px;
+  border: 1px solid var(--sys-surface-variant) !important;
+  overflow: hidden;
+  border-spacing: 0px;
+  thead {
+    border-bottom: 1px solid var(--sys-surface-variant) !important;
+    background: var(--sys-primary-container);
+    padding: 0px 24px;
+  }
+
+  tr {
+    position: relative;
+    display: flex !important;
+    flex-direction: row;
+    font-weight: 400;
+    font-size: 14px;
+    th {
+      color: var(--sys-on-primary-container) !important;
+      border: none !important;
+      text-align: start;
+      vertical-align: middle;
+      font-size: 12px;
+      font-weight: 500;
+      line-height: 18px;
+      padding: 13px 0px;
+    }
+  }
+  tbody {
+    display: flex !important;
+    flex-direction: column !important;
+    padding: 0px 0px;
+    position: relative;
+
+    tr {
+      padding: 10px 24px;
+      border-bottom: 1px solid var(--sys-surface-variant) !important;
+      background-color: var(--sys-surface-container-lowest);
+      min-height: 73px;
+      td {
+        align-content: center;
+      }
+      &:last-child {
+        border-bottom: unset !important;
+      }
+    }
+    // .table_action {
+    //   > div {
+    //     width: 115px;
+    //   }
+    // }
+  }
+  tfoot {
+    border-top: 1px solid var(--sys-surface-variant) !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .mat-mdc-paginator-range-label {
+    display: none;
+  }
+  table.brdgs-table {
+    border-radius: unset;
+    border: unset !important;
+    * {
+      box-sizing: border-box;
+    }
+    tbody tr {
+      display: flex;
+      flex-wrap: wrap !important;
+      padding: 24px 24px !important;
+      margin-bottom: 16px;
+      border-radius: 12px 12px 12px 12px;
+      border: 1px solid var(--sys-surface-variant) !important;
+      td {
+        align-content: normal;
+        line-height: var(--sys-body-large-line-height);
+        font-size: var(--sys-body-large-size);
+        letter-spacing: var(--sys-body-large-tracking);
+        font-weight: var(--sys-body-large-weight);
+
+        &.table-card-title {
+          color: var(--sys-tertiary) !important;
+          line-height: var(--sys-title-large-line-height) !important;
+          font-size: var(--sys-title-large-size) !important;
+          letter-spacing: var(--sys-title-large-tracking) !important;
+          font-weight: var(--sys-title-large-weight) !important;
+        }
+
+        .list-item-label-sm {
+          display: block !important;
+          color: var(--sys-primary) !important;
+          line-height: var(--sys-label-large-line-height) !important;
+          font-size: var(--sys-label-large-size) !important;
+          letter-spacing: var(--sys-label-large-tracking) !important;
+          font-weight: var(--sys-label-large-weight) !important;
+          min-width: 60px;
+        }
+      }
+      .table_action {
+        button {
+          margin-top: 16px;
+        }
+      }
+    }
+  }
+}
+
+mat-checkbox {
+  .mat-internal-form-field {
+    background-color: var(--sys-surface-container);
+    width: 100%;
+    min-height: 48px;
+  }
+}
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: "Poppins", serif;
+}
+* {
+  font-family: "Poppins", serif;
+  box-sizing: border-box;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Poppins", serif;
+  margin-top: 0;
+}
+
+@-webkit-keyframes slide-right {
+  0% {
+    -webkit-transform: translateX(100%);
+    transform: translateX(100%);
+  }
+  100% {
+    -webkit-transform: translateX(0px);
+    transform: translateX(0px);
+  }
+}
+@keyframes slide-right {
+  0% {
+    -webkit-transform: translateX(100%);
+    transform: translateX(100%);
+  }
+  100% {
+    -webkit-transform: translateX(0px);
+    transform: translateX(0px);
+  }
+}
+
+@-webkit-keyframes slide-left {
+  0% {
+    -webkit-transform: translateX(0px);
+    transform: translateX(0px);
+  }
+  100% {
+    -webkit-transform: translateX(100%);
+    transform: translateX(100%);
+  }
+}
+@keyframes slide-left {
+  0% {
+    -webkit-transform: translateX(0px);
+    transform: translateX(0px);
+  }
+  100% {
+    -webkit-transform: translateX(100%);
+    transform: translateX(100%);
+  }
+}
+
+@-webkit-keyframes slide-up {
+  0% {
+    -webkit-transform: translateY(-200%);
+    transform: translateY(-200%);
+  }
+  100% {
+    -webkit-transform: translateY(0px);
+    transform: translateY(0px);
+  }
+}
+@keyframes slide-up {
+  0% {
+    -webkit-transform: translateY(100%);
+    transform: translateY(100%);
+  }
+  100% {
+    -webkit-transform: translateY(0px);
+    transform: translateY(0px);
+  }
+}
+
+@-webkit-keyframes slide-down {
+  0% {
+    -webkit-transform: translateY(0px);
+    transform: translateY(0px);
+  }
+  100% {
+    -webkit-transform: translateY(100%);
+    transform: translateY(100%);
+  }
+}
+@keyframes slide-down {
+  0% {
+    -webkit-transform: translateY(0px);
+    transform: translateY(0px);
+  }
+  100% {
+    -webkit-transform: translateY(100%);
+    transform: translateY(100%);
+  }
+}
+
+.animation-slide-right {
+  -webkit-animation: slide-right 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  animation: slide-right 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+.animation-slide-left {
+  -webkit-animation: slide-left 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  animation: slide-left 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+@media (max-width: 576px) {
+  .animation-slide-right {
+    -webkit-animation: slide-up 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+    animation: slide-up 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  }
+  .animation-slide-left {
+    -webkit-animation: slide-down 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+    animation: slide-down 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  }
+  .Brdgs-overlay-panel-class {
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100vw !important;
+    max-width: unset !important;
+    max-height: unset !important;
+    height: fit-content !important;
+  }
+}
+
+.Brdgs-overlay-panel-class {
+  right: 0;
+  background-color: #fff;
+  box-shadow: 0px 0px 24px rgba(0, 0, 0, 0.25);
+  @extend .animation-slide-right;
+}
+
+.Brdgs-overlay-panel-class.closing {
+  @extend .animation-slide-left;
+}
+
+.Brdgs-overlay-backdrop {
+  background-color: rgba(0, 0, 0, 0.25);
+}
+
+.Brdgs-overlay-panel-class-no-animation {
+  // right: 0;
+  background-color: #fff;
+  box-shadow: 0px 0px 24px rgba(0, 0, 0, 0.25);
+}

@@ -1,0 +1,24 @@
+<mat-form-field class="w-100">
+  <mat-label>{{ label() }}</mat-label>
+  @if (prefix()) {
+  <span matPrefix>{{ prefix() }}</span>
+  }
+  <input
+    matInput
+    [type]="type()"
+    [(ngModel)]="value"
+    #valueInput="ngModel"
+    name="{{ rondom }}-{{ label() }}"
+    [disabled]="isDisabled()"
+    mask="{{ mask() }}"
+  />
+
+  @if (suffix()) {
+  <span matSuffix>{{ suffix() }}</span>
+  }
+
+  <mat-error>
+    @if(valueInput.hasError('required')) { This field is required } @else if(
+    valueInput.control) { Invalid {{ type().toLowerCase() }} format. }
+  </mat-error>
+</mat-form-field>

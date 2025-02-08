@@ -1,0 +1,94 @@
+<ng-container *transloco="let t; prefix: translationTemplates">
+  <!-- LOGO -->
+  <div class="mb-3 pt-3 d-flex align-items-center justify-content-between">
+    @if(!isCollapsed()){
+    <img src="assets/images/full-logo.svg" alt="Full Logo" class="logo-full" />
+    <div>
+      @if(currentView() ==='phone') {
+
+      <button
+        (click)="isSidenavOpen.set(false)"
+        mat-icon-button
+        aria-label="close side nav"
+      >
+        <mat-icon class="icon-close"></mat-icon>
+      </button>
+
+      }
+    </div>
+    } @else{
+    <img
+      src="assets/images/small-logo.svg"
+      alt="Small Logo"
+      class="logo-small"
+    />
+
+    }
+  </div>
+
+  <!-- NAVIGATION LINKS -->
+  <mat-nav-list class="p-0">
+    @for(menuItem of sidenavMenuItems();track $index){
+    <mat-list-item
+      class="d-flex align-items-center text-decoration-none menu-item"
+      [routerLink]="menuItem.path"
+      [routerLinkActive]="'active'"
+      #rla="routerLinkActive"
+      [activated]="rla.isActive"
+    >
+      <!-- Icon -->
+      <mat-icon
+        matListItemIcon
+        class="me-2 {{ menuItem.icon }}"
+        [ngClass]="{'on-secondary-container-color':rla.isActive,
+
+        }"
+      ></mat-icon>
+
+      <!-- Label (hidden if collapsed) -->
+      @if(!isCollapsed()){
+      <span
+        matListItemTitle
+        [ngClass]="{'on-secondary-container-color mat-label-large-prominent':rla.isActive,
+          'mat-label-large':!rla.isActive,
+        }"
+      >
+        {{ t(menuItem.label) }}
+      </span>
+      }
+    </mat-list-item>
+    }
+  </mat-nav-list>
+
+  @if(currentView() ==='phone') {
+
+  <!-- <mat-divider class=""></mat-divider> -->
+  <!-- Language Selector -->
+  <div class="d-flex my-2 mt-auto justify-content-between align-items-center">
+    <h6 class="mat-title-medium primary-color m-0">{{ t("LANGUAGE") }}</h6>
+    <app-change-lang [isMainlayout]="true"></app-change-lang>
+  </div>
+  <mat-divider class=""></mat-divider>
+  <!-- User Info -->
+  <div class="d-flex my-2 justify-content-between align-items-center">
+    <div class="d-flex align-items-center">
+      <div class="d-flex flex-column mat-body-medium">
+        @if(userService.currentUser$ | async; as user){
+        <span class="mat-body-medium"
+          >{{ user?.name?.firstName }} {{ user?.name?.lastName }}</span
+        >
+        <span class="tertiary-color mat-label-medium-prominent">{{
+          user?.role
+        }}</span>
+        }
+      </div>
+    </div>
+    <button mat-icon-button class="bg-tertiary-container">
+      <mat-icon
+        class="icon-log-out f-20 tertiary-color"
+        (click)="logout()"
+      ></mat-icon>
+    </button>
+  </div>
+  }
+</ng-container>
