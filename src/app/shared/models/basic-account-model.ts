@@ -1,30 +1,31 @@
-import { AccountType } from '../../core/enums/account-type-enum';
+import { Database, Tables } from "../../../../database.types";
+import { AccountType } from "../../core/enums/account-type-enum";
 
-export class BasicAccount {
-  id: string;
+export class BasicAccount implements Tables<"accounts"> {
+  createdAt: string | null;
+  dateOfBirth: string | null;
+  email: string | null;
   firstName: string;
-  lastName: string;
-  userName: string;
+  id: string;
   isActive: boolean;
-  role: AccountType;
-  phoneNumber?: string;
-  dateOfBirth?: string; // Stored as ISO date string (YYYY-MM-DD)
-  nationalId?: string;
   isFirstTime: boolean;
-  createdAt: string; // Stored as ISO timestamp
-
+  lastName: string;
+  nationalId: string | null;
+  phoneNumber: string | null;
+  role: AccountType;
+  userName: string;
   constructor(
     id: string,
     firstName: string,
     lastName: string,
     userName: string,
     isActive: boolean,
-    role: AccountType = AccountType.Member,
+    role: AccountType = "Member",
     isFirstTime: boolean = true,
     createdAt: string = new Date().toISOString(),
     phoneNumber?: string,
     dateOfBirth?: string,
-    nationalId?: string
+    nationalId?: string,
   ) {
     this.id = id;
     this.firstName = firstName;
@@ -32,10 +33,11 @@ export class BasicAccount {
     this.userName = userName;
     this.isActive = isActive;
     this.role = role;
-    this.phoneNumber = phoneNumber;
-    this.dateOfBirth = dateOfBirth;
-    this.nationalId = nationalId;
+    this.phoneNumber = phoneNumber ?? null;
+    this.dateOfBirth = dateOfBirth ?? null;
+    this.nationalId = nationalId ?? null;
     this.isFirstTime = isFirstTime;
     this.createdAt = createdAt;
+    this.email = "";
   }
 }

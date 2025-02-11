@@ -6,7 +6,8 @@ export interface LookupValue {
 
 export interface BEResponse<t> {
   data: t;
-  metadata: null;
-  nextCursor: number;
-  totalCount: number;
+  error: any;
+  count: null | number;
+  status: number;
+  statusText: string;
 }

@@ -4,22 +4,22 @@ import {
   inject,
   model,
   OnInit,
-} from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+} from "@angular/core";
+import { ActivatedRoute, Router } from "@angular/router";
 
-import { ConfirmPasswordComponent } from '../../../shared/ui-components/organisms/confirm-password/confirm-password.component';
-import { FormsModule } from '@angular/forms';
-import { MatCardModule } from '@angular/material/card';
-import { InputComponent } from '../../../shared/ui-components/atoms/input/input.component';
-import { BridgesInputType } from '../../../shared/ui-components/atoms/input/enum/bridges-input-type.enum';
-import { MatButtonModule } from '@angular/material/button';
-import { AuthService } from '../../../core/services/auth/auth.service';
-import { TranslationTemplates } from '../../../shared/enums/translation-templates-enum';
-import { TranslocoDirective } from '@jsverse/transloco';
-import { LoginCredentials } from '../login/login.component';
+import { ConfirmPasswordComponent } from "../../../shared/ui-components/organisms/confirm-password/confirm-password.component";
+import { FormsModule } from "@angular/forms";
+import { MatCardModule } from "@angular/material/card";
+import { InputComponent } from "../../../shared/ui-components/atoms/input/input.component";
+import { BridgesInputType } from "../../../shared/ui-components/atoms/input/enum/bridges-input-type.enum";
+import { MatButtonModule } from "@angular/material/button";
+
+import { TranslationTemplates } from "../../../shared/enums/translation-templates-enum";
+import { TranslocoDirective } from "@jsverse/transloco";
+import { LoginCredentials } from "../login/login.component";
 
 @Component({
-  selector: 'app-confirm-reset-password',
+  selector: "app-confirm-reset-password",
   imports: [
     ConfirmPasswordComponent,
     FormsModule,
@@ -28,42 +28,42 @@ import { LoginCredentials } from '../login/login.component';
     MatButtonModule,
     TranslocoDirective,
   ],
-  templateUrl: './confirm-reset-password.component.html',
-  styleUrl: './confirm-reset-password.component.scss',
+  templateUrl: "./confirm-reset-password.component.html",
+  styleUrl: "./confirm-reset-password.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ConfirmResetPasswordComponent implements OnInit {
-  passwordToken: string = '';
+  passwordToken: string = "";
   bridgesInputType = BridgesInputType;
   account = new LoginCredentials();
   translationTemplate = TranslationTemplates.AUTH;
   route = inject(ActivatedRoute);
-  authService = inject(AuthService);
+
   router = inject(Router);
 
   ngOnInit(): void {
-    this.passwordToken =
-      this.route.snapshot.paramMap.get('passwordToken') || '';
+    this.passwordToken = this.route.snapshot.paramMap.get("passwordToken") ||
+      "";
     this.account.email = decodeURIComponent(
-      this.route.snapshot.queryParamMap.get('email') || ''
+      this.route.snapshot.queryParamMap.get("email") || "",
     );
   }
 
   resetPassword() {
-    this.authService
-      .confirmChangePassword(
-        this.passwordToken,
-        this.account.password,
-        this.account.email
-      )
-      .subscribe({
-        next: () => {
-          console.log('Password reset successful');
-          this.router.navigate(['/login']);
-        },
-        error: (error) => {
-          console.error('Password reset failed', error);
-        },
-      });
+    // this.authService
+    //   .confirmChangePassword(
+    //     this.passwordToken,
+    //     this.account.password,
+    //     this.account.email
+    //   )
+    //   .subscribe({
+    //     next: () => {
+    //       console.log('Password reset successful');
+    //       this.router.navigate(['/login']);
+    //     },
+    //     error: (error) => {
+    //       console.error('Password reset failed', error);
+    //     },
+    //   });
   }
 }

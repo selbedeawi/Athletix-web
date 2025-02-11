@@ -1,4 +1,4 @@
-import { AsyncPipe, NgClass } from '@angular/common';
+import { AsyncPipe, NgClass } from "@angular/common";
 import {
   Component,
   inject,
@@ -6,26 +6,25 @@ import {
   model,
   OnDestroy,
   signal,
-} from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
-import { MatDividerModule } from '@angular/material/divider';
-import { MatIconModule } from '@angular/material/icon';
-import { MatListModule } from '@angular/material/list';
-import { FormsModule } from '@angular/forms';
-import { SidenavMenuItem } from './sidebar-menu-items.interface';
-import { Router, RouterLinkActive, RouterModule } from '@angular/router';
-import { UserService } from '../../services/user/user.service';
-import { Subject, takeUntil } from 'rxjs';
-import { APP_ROUTES } from '../../enums/pages-urls-enum';
-import { AccountType } from '../../enums/account-type-enum';
-import { TranslocoDirective } from '@jsverse/transloco';
-import { TranslationTemplates } from '../../../shared/enums/translation-templates-enum';
+} from "@angular/core";
+import { MatButtonModule } from "@angular/material/button";
+import { MatDividerModule } from "@angular/material/divider";
+import { MatIconModule } from "@angular/material/icon";
+import { MatListModule } from "@angular/material/list";
+import { FormsModule } from "@angular/forms";
+import { SidenavMenuItem } from "./sidebar-menu-items.interface";
+import { Router, RouterLinkActive, RouterModule } from "@angular/router";
+import { UserService } from "../../services/user/user.service";
+import { Subject, takeUntil } from "rxjs";
+import { APP_ROUTES } from "../../enums/pages-urls-enum";
+import { AccountType } from "../../enums/account-type-enum";
+import { TranslocoDirective } from "@jsverse/transloco";
+import { TranslationTemplates } from "../../../shared/enums/translation-templates-enum";
 
-import { ChangeLangComponent } from '../../../shared/ui-components/molecules/change-lang/change-lang.component';
-import { AuthService } from '../../services/auth/auth.service';
+import { ChangeLangComponent } from "../../../shared/ui-components/molecules/change-lang/change-lang.component";
 
 @Component({
-  selector: 'brdgs-sidenav',
+  selector: "brdgs-sidenav",
   imports: [
     MatIconModule,
     MatButtonModule,
@@ -41,127 +40,68 @@ import { AuthService } from '../../services/auth/auth.service';
     ChangeLangComponent,
   ],
 
-  templateUrl: './sidebar.component.html',
-  styleUrl: './sidebar.component.scss',
+  templateUrl: "./sidebar.component.html",
+  styleUrl: "./sidebar.component.scss",
 })
 export class BrdgsSidenavComponent implements OnDestroy {
-  private authService = inject(AuthService);
   private router = inject(Router);
   public userService = inject(UserService);
 
   translationTemplates = TranslationTemplates.SIDE_NAVE;
 
-  accountType = AccountType;
   APP_ROUTES = APP_ROUTES;
 
   isCollapsed = model.required<boolean>();
   isSidenavOpen = model.required<boolean>();
-  currentView = input.required<'Laptop' | 'iPad' | 'phone'>();
-  public sidenavMenuItems = signal<SidenavMenuItem[]>([]);
-
-  familySidenavItems: SidenavMenuItem[] = [
+  currentView = input.required<"Laptop" | "iPad" | "phone">();
+  public sidenavMenuItems = signal<SidenavMenuItem[]>([
     {
-      icon: 'icon-dashboard',
-      label: 'NAV_FAMILY_DASHBOARD',
-      path: ['/', APP_ROUTES.FAMILY, APP_ROUTES.FAMILY_DASHBOARD],
+      icon: "icon-dashboard_2",
+      label: "NAV_ADMIN_DASHBOARD",
+      path: ["/", APP_ROUTES.ADMIN_DASHBOARD],
+      permissions: ["SuperAdmin"],
     },
     {
-      icon: 'icon-user-square',
-      label: 'NAV_FAMILY_PROFILE',
-      path: ['/', APP_ROUTES.FAMILY, APP_ROUTES.FAMILY_PROFILE],
+      icon: "icon-gmail_groups",
+      label: "NAV_MEMBERS_LIST",
+      path: ["/", APP_ROUTES.MEMBERS_LIST],
+      permissions: [
+        "SuperAdmin",
+        "Sales",
+        "Receptionist",
+        "SalesManager",
+      ],
     },
     {
-      icon: 'icon-Experience-and-Preferences',
-      label: 'NAV_FAMILY_MANAGE_PREFERENCES',
-      path: ['/', APP_ROUTES.FAMILY, APP_ROUTES.FAMILY_MANAGE_PREFERENCES],
+      icon: "icon-staff",
+      label: "NAV_STAFF_LIST",
+      path: ["/", APP_ROUTES.STAFF_LIST],
+      permissions: ["SuperAdmin"],
     },
     {
-      icon: 'icon-users-01',
-      label: 'NAV_FAMILY_ASSOCIATES',
-      path: ['/', APP_ROUTES.FAMILY, APP_ROUTES.FAMILY_ASSOCIATES],
+      icon: "icon-list",
+      label: "NAV_SESSIONS_LIST",
+      path: ["/", APP_ROUTES.SESSIONS_LIST],
+      permissions: ["SuperAdmin", "SessionManager"],
     },
     {
-      icon: 'icon-book-open-01',
-      label: 'NAV_FAMILY_RESOURCES',
-      path: ['/', APP_ROUTES.FAMILY, APP_ROUTES.RESOURCE_CENTRE],
-    },
-  ];
-
-  associateSidenavItems: SidenavMenuItem[] = [
-    {
-      icon: 'icon-dashboard',
-      label: 'NAV_ASSOCIATE_DASHBOARD',
-      path: ['/', APP_ROUTES.ASSOCIATE, APP_ROUTES.ASSOCIATE_DASHBOARD],
+      icon: "icon-today",
+      label: "NAV_SCHEDULE_MANAGEMENT",
+      path: ["/", APP_ROUTES.SCHEDULE_MANAGEMENT],
+      permissions: ["SuperAdmin", "SessionManager"],
     },
     {
-      icon: 'icon-user-square',
-      label: 'NAV_ASSOCIATE_PROFILE',
-      path: ['/', APP_ROUTES.ASSOCIATE, APP_ROUTES.ASSOCIATE_PROFILE],
+      icon: "icon-bookedsessions",
+      label: "NAV_BOOKED_SESSIONS",
+      path: ["/", APP_ROUTES.BOOKED_SESSIONS],
+      permissions: [
+        "SuperAdmin",
+        "Receptionist",
+        "SessionManager",
+        "Coach",
+      ],
     },
-    {
-      icon: 'icon-experience',
-      label: 'NAV_ASSOCIATE_EXPERIENCE',
-      path: ['/', APP_ROUTES.ASSOCIATE, APP_ROUTES.ASSOCIATE_EXPERIENCE],
-    },
-    {
-      icon: 'icon-availability',
-      label: 'NAV_ASSOCIATE_AVAILABILITY',
-      path: ['/', APP_ROUTES.ASSOCIATE, APP_ROUTES.ASSOCIATE_AVAILABILITY],
-    },
-    {
-      icon: 'icon-users-01',
-      label: 'NAV_ASSOCIATE_FAMILIES',
-      path: ['/', APP_ROUTES.ASSOCIATE, APP_ROUTES.ASSOCIATE_FAMILIES],
-    },
-
-    {
-      icon: 'icon-book-open-01',
-      label: 'ASSOCIATE_RESOURCE_CENTRE',
-      path: ['/', APP_ROUTES.ASSOCIATE, APP_ROUTES.RESOURCE_CENTRE],
-    },
-  ];
-
-  coordinatorSidenavItems: SidenavMenuItem[] = [
-    {
-      icon: 'icon-user-square',
-      label: 'NAV_COORDINATOR_PROFILE',
-      path: ['/', APP_ROUTES.COORDINATOR, APP_ROUTES.COORDINATOR_PROFILE],
-    },
-    {
-      icon: 'icon-clipboard-check',
-      label: 'NAV_COORDINATOR_TASKS',
-      path: ['/', APP_ROUTES.COORDINATOR, APP_ROUTES.COORDINATOR_TASKS],
-    },
-    {
-      icon: 'icon-users-01',
-      label: 'NAV_COORDINATOR_USERS',
-      path: ['/', APP_ROUTES.COORDINATOR, APP_ROUTES.COORDINATOR_USERS],
-    },
-    {
-      icon: 'icon-puzzle-piece-02',
-      label: 'NAV_COORDINATOR_MATCHING_TOOL',
-      path: ['/', APP_ROUTES.COORDINATOR, APP_ROUTES.COORDINATOR_MATCHING_TOOL],
-    },
-
-    {
-      icon: 'icon-book-open-01',
-      label: 'NAV_COORDINATOR_REPORT',
-      path: ['/', APP_ROUTES.COORDINATOR, APP_ROUTES.COORDINATOR_REPORT],
-    },
-  ];
-
-  adminSidenavItems: SidenavMenuItem[] = [
-    {
-      icon: 'icon-users-01',
-      label: 'NAV_ADMIN_COORDINATORS',
-      path: ['/', APP_ROUTES.ADMIN, APP_ROUTES.ADMIN_COORDINATORS],
-    },
-    {
-      icon: 'icon-translate-01',
-      label: 'NAV_ADMIN_TRANSLATIONS',
-      path: ['/', APP_ROUTES.ADMIN, APP_ROUTES.ADMIN_TRANSLATIONS],
-    },
-  ];
+  ]);
 
   /**
    * Toggle the sidebar between collapsed and expanded
@@ -169,34 +109,12 @@ export class BrdgsSidenavComponent implements OnDestroy {
 
   destroy$ = new Subject();
   constructor() {
-    this.userService.currentUser$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        if (!res) return;
-        switch (res.role) {
-          case AccountType.SuperAdmin:
-            this.sidenavMenuItems.set([...this.familySidenavItems]);
-            break;
-          // case AccountType.COORDINATOR:
-          //   this.sidenavMenuItems.set([...this.coordinatorSidenavItems]);
-          //   break;
-          // case AccountType.ASSOCIATE:
-          //   this.sidenavMenuItems.set([...this.associateSidenavItems]);
-          //   break;
-          // case AccountType.ADMIN:
-          //   this.sidenavMenuItems.set([...this.adminSidenavItems]);
-          //   break;
-          default:
-            this.sidenavMenuItems;
-        }
-      });
   }
 
   ngOnDestroy(): void {
     this.destroy$.next(true);
   }
   logout() {
-    this.authService.logout();
-    this.router.navigate(['/login']);
+    this.userService.logout();
   }
 }

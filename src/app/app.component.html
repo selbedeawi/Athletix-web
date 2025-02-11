@@ -1,5 +1,6 @@
 <app-global-loader></app-global-loader>
-@defer (when layout) { @if (layout === 'main') {
+@if(supabaseService.isSupabaseReady |async){ @defer (when layout) { @if (layout
+=== 'main') {
 <app-main-layout>
   <router-outlet></router-outlet>
 </app-main-layout>
@@ -10,4 +11,4 @@
 } @else{
 <router-outlet></router-outlet>
 
-} }
+} }}

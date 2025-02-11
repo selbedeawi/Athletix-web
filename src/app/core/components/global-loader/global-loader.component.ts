@@ -1,12 +1,12 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { Observable } from 'rxjs';
-import { LoadingService } from '../../services/loading/loading.service';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { AsyncPipe } from '@angular/common';
+import { ChangeDetectionStrategy, Component, inject } from "@angular/core";
+import { Observable } from "rxjs";
+import { LoadingService } from "../../services/loading/loading.service";
+import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
+import { AsyncPipe } from "@angular/common";
 
 @Component({
-  selector: 'app-global-loader',
-  imports: [MatProgressSpinnerModule,AsyncPipe],
+  selector: "app-global-loader",
+  imports: [MatProgressSpinnerModule, AsyncPipe],
   template: `
     @if (isLoading$ | async) {
     <div class="overlay">

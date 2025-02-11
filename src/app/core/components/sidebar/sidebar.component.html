@@ -75,7 +75,7 @@
       <div class="d-flex flex-column mat-body-medium">
         @if(userService.currentUser$ | async; as user){
         <span class="mat-body-medium"
-          >{{ user?.name?.firstName }} {{ user?.name?.lastName }}</span
+          >{{ user?.firstName }} {{ user?.lastName }}</span
         >
         <span class="tertiary-color mat-label-medium-prominent">{{
           user?.role
