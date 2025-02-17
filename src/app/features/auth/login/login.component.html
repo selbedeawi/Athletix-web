@@ -5,8 +5,8 @@
   <mat-card class="mx-auto col-12 col-md-6 col-lg-4">
     <mat-card-content class="p-4">
       <!-- Page Header -->
-      <div class="mat-title-large mb-4">
-        {{ t("WELCOME_BACK") }}
+      <div class="mat-headline-large text-center mb-4">
+        {{ t("LOGIN") }}
       </div>
 
       <form #loginForm="ngForm">
@@ -17,6 +17,7 @@
           [(value)]="form.email"
           [isRequired]="true"
           [type]="bridgesInputType.EMAIL"
+          [prefix]="'icon-person'"
         >
         </brdgs-input>
 
@@ -27,6 +28,7 @@
           [(value)]="form.password"
           [isRequired]="true"
           [type]="bridgesInputType.PASSWORD"
+          [prefix]="'icon-password'"
         >
         </brdgs-input>
 

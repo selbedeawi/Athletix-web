@@ -2,7 +2,7 @@
   <!-- LOGO -->
   <div class="mb-3 pt-3 d-flex align-items-center justify-content-between">
     @if(!isCollapsed()){
-    <img src="assets/images/full-logo.svg" alt="Full Logo" class="logo-full" />
+    <img src="assets/images/full-logo.webp" alt="Full Logo" class="logo-full" />
     <div>
       @if(currentView() ==='phone') {
 
@@ -18,9 +18,10 @@
     </div>
     } @else{
     <img
-      src="assets/images/small-logo.svg"
+      src="assets/images/small-logo.webp"
       alt="Small Logo"
-      class="logo-small"
+      class="logo-small mt-2"
+      width="40px"
     />
 
     }
@@ -30,29 +31,18 @@
   <mat-nav-list class="p-0">
     @for(menuItem of sidenavMenuItems();track $index){
     <mat-list-item
-      class="d-flex align-items-center text-decoration-none menu-item"
+      class="d-flex align-items-center text-decoration-none menu-item mb-2"
       [routerLink]="menuItem.path"
       [routerLinkActive]="'active'"
       #rla="routerLinkActive"
       [activated]="rla.isActive"
     >
       <!-- Icon -->
-      <mat-icon
-        matListItemIcon
-        class="me-2 {{ menuItem.icon }}"
-        [ngClass]="{'on-secondary-container-color':rla.isActive,
-
-        }"
-      ></mat-icon>
+      <mat-icon matListItemIcon class="mx-2 {{ menuItem.icon }}"></mat-icon>
 
       <!-- Label (hidden if collapsed) -->
       @if(!isCollapsed()){
-      <span
-        matListItemTitle
-        [ngClass]="{'on-secondary-container-color mat-label-large-prominent':rla.isActive,
-          'mat-label-large':!rla.isActive,
-        }"
-      >
+      <span matListItemTitle>
         {{ t(menuItem.label) }}
       </span>
       }

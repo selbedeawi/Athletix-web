@@ -1,7 +1,8 @@
 <mat-form-field class="w-100">
   <mat-label>{{ label() }}</mat-label>
   @if (prefix()) {
-  <span matPrefix>{{ prefix() }}</span>
+  <mat-icon matPrefix class="{{ prefix() }} f-24 ps-2 pe-2"></mat-icon>
+
   }
   <input
     matInput
@@ -11,14 +12,17 @@
     name="{{ rondom }}-{{ label() }}"
     [disabled]="isDisabled()"
     mask="{{ mask() }}"
+    [validation]="allowValidation()"
   />
 
   @if (suffix()) {
-  <span matSuffix>{{ suffix() }}</span>
+  <mat-icon matSuffix class="{{ suffix() }} f-24 ps-2 pe-2"></mat-icon>
   }
 
-  <mat-error>
-    @if(valueInput.hasError('required')) { This field is required } @else if(
-    valueInput.control) { Invalid {{ type().toLowerCase() }} format. }
+  <mat-error *transloco="let t; prefix: translationTemplate()">
+    @if(valueInput.hasError('required')) {
+    {{ t("FIELD_IS_REQUIRED") }}
+    } @else if(valueInput.control) {
+    {{ t("FIELD_INVALID_" + type().toLowerCase() + "_FORMAT") }} }
   </mat-error>
 </mat-form-field>

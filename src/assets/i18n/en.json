@@ -1,1 +1,18 @@
-{}
+{
+  "Navigation": {
+    "NAV_ADMIN_DASHBOARD": "Dashboard",
+    "NAV_MEMBERS_LIST": "Members List",
+    "NAV_STAFF_LIST": "Staff List",
+    "NAV_SESSIONS_LIST": "Sessions List",
+    "NAV_SCHEDULE_MANAGEMENT": "Schedule Management",
+    "NAV_BOOKED_SESSIONS": "Booked Sessions"
+  },
+  "Auth": {
+    "LOGIN": "Login",
+    "EMAIL": "Email",
+    "PASSWORD": "password",
+    "FORGOT_PASSWORD": "Forgot Password",
+
+    "SIGN_IN": "Sign in"
+  }
+}

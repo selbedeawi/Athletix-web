@@ -30,7 +30,7 @@ import { ChangeLangComponent } from "../../../shared/ui-components/molecules/cha
     MatButtonModule,
     MatListModule,
     MatDividerModule,
-    NgClass,
+
     FormsModule,
     RouterModule,
     TranslocoDirective,

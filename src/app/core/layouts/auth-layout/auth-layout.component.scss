@@ -1,7 +1,5 @@
 .auth-layout-img {
-  background: url("/assets/images/login-BG.svg") no-repeat center bottom;
-  background-size: contain;
-  @media (min-width: 1024px) {
-    background-position: center 125%;
-  }
+  background: url("/assets/images/login-BG.webp") no-repeat;
+  background-size: cover;
+  background-position: center;
 }

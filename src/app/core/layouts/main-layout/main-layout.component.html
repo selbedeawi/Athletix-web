@@ -5,8 +5,8 @@
 >
   <button mat-icon-button class="mt-2" (click)="toggleSidebar()">
     <mat-icon
-      class="secondary-color bg-surface-container-lowest rounded-circle"
-      [ngClass]="isCollapsed() ? 'icon-expand-menu' : 'icon-collapse-menu'"
+      class="primary-color bg-surface-container-lowest rounded-circle"
+      [ngClass]="isCollapsed() ? 'icon-arrow_back' : 'icon-arrow_forward'"
     ></mat-icon>
   </button>
 </div>
@@ -19,7 +19,7 @@
     [opened]="isSidenavOpen()"
     [disableClose]="true"
     [@sidebarAnimation]="isCollapsed() ? 'collapsed' : 'expanded'"
-    class="border-end"
+    class="p-3 pe-0 border-0 bg-"
     ><brdgs-sidenav
       [(isCollapsed)]="isCollapsed"
       [(isSidenavOpen)]="isSidenavOpen"
@@ -46,7 +46,6 @@
     <div class="scroll-container">
       <div class="container d-flex flex-column pt-3">
         <ng-content></ng-content>
-        <app-footer class="mt-auto"></app-footer>
       </div>
     </div>
   </mat-drawer-content>
