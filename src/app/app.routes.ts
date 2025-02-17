@@ -2,6 +2,7 @@ import { Routes } from "@angular/router";
 import { APP_ROUTES } from "./core/enums/pages-urls-enum";
 import { RoleGuard } from "./core/guards/role-guard/role-guard.guard";
 import { AccountType } from "./core/enums/account-type-enum";
+import { LoginGuard } from "./core/guards/login-guard/login.guard";
 
 export const routes: Routes = [
   { path: "", redirectTo: APP_ROUTES.LOGIN, pathMatch: "full" },
@@ -9,6 +10,7 @@ export const routes: Routes = [
     path: APP_ROUTES.AUTH,
     loadChildren: () => import("./features/auth/auth.routes"),
     data: { layout: "auth" },
+    canActivate: [LoginGuard],
   },
   {
     path: APP_ROUTES.ADMIN_DASHBOARD,
@@ -16,7 +18,6 @@ export const routes: Routes = [
       import("./features/dashboard/dashboard.component").then(
         (c) => c.DashboardComponent,
       ),
-
     data: { layout: "main" },
     canActivate: [RoleGuard(["SuperAdmin"])],
   },

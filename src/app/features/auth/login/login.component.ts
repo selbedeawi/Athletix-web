@@ -84,7 +84,7 @@ export class LoginComponent {
           if (userRole) {
             const route = roleRouteMapping[userRole];
             if (route) {
-              this.router.navigate([route]);
+              this.router.navigate(["/", route]);
             } else {
               console.error("No route defined for this role:", userRole);
             }
@@ -105,29 +105,3 @@ export class LoginComponent {
       });
   }
 }
-
-// import { inject } from "@angular/core";
-// import { CanActivateFn, Router } from "@angular/router";
-
-// import { combineLatest, filter, map, take } from "rxjs";
-// import { UserService } from "../../services/user/user.service";
-// import { roleRouteMapping } from "../../../shared/models/auth.model";
-
-// export const LoginGuard: CanActivateFn = (route, state) => {
-//   const userService = inject(UserService);
-//   const router = inject(Router);
-//   console.log("tppp");
-
-//   return combineLatest([userService.currentUser$, userService.initialized$])
-//     .pipe(
-//       // Only continue when initialization is complete.
-//       filter(([_, initialized]) => initialized),
-//       take(1),
-//       map(([user]) => {
-//         if (user) {
-//           return router.createUrlTree(["/", roleRouteMapping[user.role]]);
-//         }
-//         return true;
-//       }),
-//     );
-// };
