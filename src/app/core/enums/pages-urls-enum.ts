@@ -8,7 +8,9 @@ export enum APP_ROUTES {
   ADMIN = "admin",
   ADMIN_DASHBOARD = "admin-dashboard",
   MEMBERS_LIST = "members-list",
-  STAFF_LIST = "staff-list",
+  STAFF_LIST = "staff",
+  ADD_STAFF = "add",
+
   SESSIONS_LIST = "sessions-list",
   SCHEDULE_MANAGEMENT = "schedule-management",
   BOOKED_SESSIONS = "booked-sessions",

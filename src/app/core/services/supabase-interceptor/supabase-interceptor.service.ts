@@ -22,6 +22,8 @@ export class SupabaseInterceptorService {
 
     try {
       const response = await fetch(input, init);
+      console.log("wqd");
+
       if (!response.ok) {
         const errorText = await response.text();
         if (errorText.length) {

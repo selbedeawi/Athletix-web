@@ -23,6 +23,7 @@ export const routes: Routes = [
   },
   {
     path: APP_ROUTES.MEMBERS_LIST,
+
     loadComponent: () =>
       import("./features/members-list/members-list.component").then(
         (c) => c.MembersListComponent,
@@ -40,10 +41,8 @@ export const routes: Routes = [
   },
   {
     path: APP_ROUTES.STAFF_LIST,
-    loadComponent: () =>
-      import("./features/staff-list/staff-list.component").then(
-        (c) => c.StaffListComponent,
-      ),
+    loadChildren: () => import("./features/staff-list/staff.routes"),
+
     data: { layout: "main" },
     canActivate: [RoleGuard(["SuperAdmin"])],
   },

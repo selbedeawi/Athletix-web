@@ -1,0 +1,23 @@
+<mat-form-field class="w-100">
+  <mat-label>{{ label() }}</mat-label>
+
+  <input
+    matInput
+    [(ngModel)]="value"
+    #valueInput="ngModel"
+    name="{{ rondom }}-{{ label() }}"
+    [disabled]="isDisabled()"
+    [matDatepicker]="picker"
+  />
+  <mat-hint>MM/DD/YYYY</mat-hint>
+  <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+  <mat-datepicker #picker></mat-datepicker>
+
+  <mat-error *transloco="let t; prefix: translationTemplate()">
+    @if(valueInput.hasError('required')) {
+    {{ t("FIELD_IS_REQUIRED") }}
+    } @else if(valueInput.hasError('matDatepickerParse')){
+    {{ t("MAT_DATEPICKER_PARSE_ERROR") }}
+    }
+  </mat-error>
+</mat-form-field>

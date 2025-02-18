@@ -1,8 +1,9 @@
 import { inject, Injectable } from "@angular/core";
 import { BehaviorSubject, filter, Observable, take } from "rxjs";
-import { BasicAccount } from "../../../shared/models/basic-account-model";
+
 import { Router } from "@angular/router";
 import { SupabaseService } from "../supabase/supabase.service";
+import { StaffAccount } from "../../../features/staff-list/models/staff";
 
 @Injectable({
   providedIn: "root",
@@ -10,7 +11,7 @@ import { SupabaseService } from "../supabase/supabase.service";
 export class UserService {
   private supabaseService = inject(SupabaseService);
   // A BehaviorSubject to hold the current user (or null if not logged in)
-  private userSubject = new BehaviorSubject<BasicAccount | null>(null);
+  private userSubject = new BehaviorSubject<StaffAccount | null>(null);
   // Expose the user as an observable for components to subscribe to
   public currentUser$ = this.userSubject.asObservable();
 
@@ -34,7 +35,7 @@ export class UserService {
           if (session?.user) {
             // If there is a session, fetch the account details from the "accounts" table
             const { data: account, error } = await this.supabaseService.supabase
-              .from("accounts")
+              .from("Staff")
               .select()
               .eq("id", session.user.id)
               .single();
@@ -45,7 +46,7 @@ export class UserService {
               console.error("Error fetching account data:", error.message);
               this.userSubject.next(null);
             } else {
-              this.userSubject.next(account as BasicAccount);
+              this.userSubject.next(account as StaffAccount);
             }
             this.initializedSubject.next(true);
           } else {
@@ -68,7 +69,7 @@ export class UserService {
     const session = await this.supabaseService.getSession();
     if (session?.user) {
       const { data: account, error } = await this.supabaseService.supabase
-        .from("accounts")
+        .from("Staff")
         .select()
         .eq("id", session.user.id)
         .single();
@@ -76,7 +77,7 @@ export class UserService {
         console.error("Error fetching account data:", error.message);
         this.userSubject.next(null);
       } else {
-        this.userSubject.next(account as BasicAccount);
+        this.userSubject.next(account as StaffAccount);
       }
       this.initializedSubject.next(true);
     } else {
@@ -88,7 +89,7 @@ export class UserService {
   /**
    * Synchronously returns the latest value of the current user.
    */
-  get currentUser(): BasicAccount | null {
+  get currentUser(): StaffAccount | null {
     return this.userSubject.value;
   }
 

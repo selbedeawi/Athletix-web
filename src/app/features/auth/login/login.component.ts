@@ -15,7 +15,6 @@ import { TranslationTemplates } from "../../../shared/enums/translation-template
 import { TranslocoDirective } from "@jsverse/transloco";
 import { SnackbarService } from "../../../core/services/snackbar/snackbar.service";
 import { SupabaseService } from "../../../core/services/supabase/supabase.service";
-import { BasicAccount } from "../../../shared/models/basic-account-model";
 
 export class LoginCredentials {
   email!: string;

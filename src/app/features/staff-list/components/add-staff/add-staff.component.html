@@ -1,0 +1,131 @@
+<section *transloco="let t; prefix: translationTemplate">
+  <div class="d-flex flex-column">
+    <div>
+      <button
+        mat-button
+        class="p-0"
+        color="primary"
+        type="button"
+        [routerLink]="['/', APP_ROUTES.SESSIONS_LIST]"
+      >
+        <mat-icon class="icon-arrow_back"></mat-icon>{{ t("BACK") }}
+      </button>
+    </div>
+
+    <h2 class="mat-headline-small primary-color mb-1">{{ t("ADD_TITLE") }}</h2>
+  </div>
+
+  <mat-divider></mat-divider>
+  <form #staffForm="ngForm" (ngSubmit)="addStaff()">
+    <mat-card class="mt-2 p-0">
+      <mat-card-header>
+        <mat-card-title class="mat-title-medium primary-color mb-3">
+          {{ t("PERSONAL_DETAILS") }}
+        </mat-card-title>
+      </mat-card-header>
+
+      <mat-card-content class="d-flex row gx-3 gy-1">
+        <brdgs-input
+          class="col-12 col-md-6"
+          [label]="t('FIRST_NAME')"
+          [(value)]="staffAccount().firstName"
+          [isRequired]="true"
+          [type]="bridgesInputType.TEXT"
+          [isDisabled]="false"
+        ></brdgs-input>
+        <brdgs-input
+          class="col-12 col-md-6"
+          [label]="t('LAST_NAME')"
+          [(value)]="staffAccount().lastName"
+          [isRequired]="true"
+          [type]="bridgesInputType.TEXT"
+          [isDisabled]="false"
+        ></brdgs-input>
+
+        <brdgs-input
+          class="col-12 col-md-6"
+          [label]="t('email')"
+          [(value)]="staffAccount().email"
+          [isRequired]="true"
+          [type]="bridgesInputType.EMAIL"
+          [isDisabled]="false"
+        ></brdgs-input>
+
+        <brdgs-input
+          class="col-12 col-md-6"
+          [label]="t('PHONE_NUMBER')"
+          [(value)]="staffAccount().phoneNumber"
+          [isRequired]="true"
+          [type]="bridgesInputType.TEL"
+          [isDisabled]="false"
+        ></brdgs-input>
+        <brdgs-input
+          class="col-12 col-md-6"
+          [label]="t('PASSWORD')"
+          [(value)]="staffAccount().password"
+          [isRequired]="true"
+          [type]="bridgesInputType.TEXT"
+          [isDisabled]="false"
+        ></brdgs-input>
+        <brdgs-input
+          class="col-12 col-md-6"
+          [label]="t('userName')"
+          [(value)]="staffAccount().userName"
+          [isRequired]="true"
+          [type]="bridgesInputType.TEXT"
+          [isDisabled]="false"
+        ></brdgs-input>
+        <brdgs-select
+          class="col-12 col-md-4"
+          [label]="t('FILTER_IS_ACTIVE')"
+          [(value)]="staffAccount().role"
+          [isRequired]="false"
+          [options]="[
+            { key: t('DR_Sales'), value: 'Sales' },
+            { key: t('DR_RECEPTIONIST'), value: 'Receptionist' },
+            { key: t('DR_COACH'), value: 'Coach' },
+            { key: t('DR_SALES_MANAGER'), value: 'SalesManager' },
+            { key: t('DR_SESSION_MANAGER'), value: 'SessionManager' }
+          ]"
+        >
+        </brdgs-select>
+        <!-- <brdgs-date-picker
+    class="col-12 col-md-4"
+    [label]="t('CREATED_AFTER')"
+    [(value)]="staffAccount().dateOfBirth"
+    [isRequired]="false"
+  ></brdgs-date-picker> -->
+      </mat-card-content>
+    </mat-card>
+    <mat-card class="mt-2 p-0">
+      <mat-card-header>
+        <mat-card-title class="mat-title-medium primary-color mb-3">
+          {{ t("ACCOUNT_CONTACT") }}
+        </mat-card-title>
+      </mat-card-header>
+
+      <mat-card-content class="d-flex row gx-3 gy-1">
+        <!-- <brdgs-input
+            class="col-12 col-md-6"
+            [label]="t('EMAIL')"
+            [(value)]="coordinator().email"
+            [isRequired]="true"
+            [type]="bridgesInputType.EMAIL"
+            [isDisabled]="!!coordinator().id"
+          ></brdgs-input> -->
+      </mat-card-content>
+    </mat-card>
+
+    <div class="d-flex py-3">
+      <button
+        mat-flat-button
+        type="submit"
+        class="ms-auto"
+        color="primary"
+        [disabled]="staffForm.invalid || staffForm.pristine"
+      >
+        {{ t("ADD") }}
+      </button>
+    </div>
+  </form>
+</section>

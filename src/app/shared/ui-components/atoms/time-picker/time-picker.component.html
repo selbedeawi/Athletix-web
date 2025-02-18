@@ -1,0 +1,24 @@
+<mat-form-field class="w-100">
+  <mat-label>{{ label() }}</mat-label>
+  <input
+    matInput
+    [(ngModel)]="dateTime"
+    #valueInput="ngModel"
+    name="{{ rondom }}-{{ label() }}"
+    [disabled]="isDisabled()"
+    [matTimepicker]="picker"
+    (ngModelChange)="setValue($event)"
+    [matTimepickerMax]="timepickerMax()"
+    [matTimepickerMin]="timepickerMin()"
+  />
+  <mat-timepicker-toggle matIconSuffix [for]="picker" />
+  <mat-timepicker [interval]="interval()" #picker />
+  <mat-error *transloco="let t; prefix: translationTemplates">
+    @if(valueInput.hasError('required')) { {{ t("REQUIRED_FIELD") }} } @else if
+    (valueInput.errors?.['matTimepickerParse']) {
+    {{ t("VALUE_ISNT_VALID_TIME") }} } @else if
+    (valueInput.errors?.['matTimepickerMin']) { {{ t("VALUE_IS_TOO_EARLY") }} }
+    @else if (valueInput.errors?.['matTimepickerMax']) {
+    {{ t("VALUE_IS_TOO_LATE") }} }
+  </mat-error>
+</mat-form-field>

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { BridgesCheckboxComponent } from './bridges-checkbox.component';
+import { StaffFilterComponent } from './staff-filter.component';
 
-describe('BridgesCheckboxComponent', () => {
-  let component: BridgesCheckboxComponent;
-  let fixture: ComponentFixture<BridgesCheckboxComponent>;
+describe('StaffFilterComponent', () => {
+  let component: StaffFilterComponent;
+  let fixture: ComponentFixture<StaffFilterComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [BridgesCheckboxComponent]
+      imports: [StaffFilterComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(BridgesCheckboxComponent);
+    fixture = TestBed.createComponent(StaffFilterComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

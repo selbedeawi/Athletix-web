@@ -14,8 +14,6 @@ export class LoadingService {
     // A new request has started
     this.requestsCount++;
 
-    console.log("true");
-
     // If this is the first request, display the loader
     if (this.requestsCount === 1) {
       this.loadingSubject.next(true);

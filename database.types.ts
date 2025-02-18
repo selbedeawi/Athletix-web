@@ -9,11 +9,56 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      accounts: {
+      Branch: {
         Row: {
-          createdAt: string | null
+          id: string
+          name: string
+        }
+        Insert: {
+          id?: string
+          name: string
+        }
+        Update: {
+          id?: string
+          name?: string
+        }
+        Relationships: []
+      }
+      BranchMembership: {
+        Row: {
+          branchid: string
+          membershipid: string
+        }
+        Insert: {
+          branchid: string
+          membershipid: string
+        }
+        Update: {
+          branchid?: string
+          membershipid?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "BranchMembership_branchid_fkey"
+            columns: ["branchid"]
+            isOneToOne: false
+            referencedRelation: "Branch"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "BranchMembership_membershipid_fkey"
+            columns: ["membershipid"]
+            isOneToOne: false
+            referencedRelation: "Memberships"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      Members: {
+        Row: {
+          createdBy: string | null
           dateOfBirth: string | null
-          email: string | null
+          email: string
           firstName: string
           id: string
           isActive: boolean
@@ -25,11 +70,11 @@ export type Database = {
           userName: string
         }
         Insert: {
-          createdAt?: string | null
+          createdBy?: string | null
           dateOfBirth?: string | null
-          email?: string | null
+          email: string
           firstName: string
-          id?: string
+          id: string
           isActive?: boolean
           isFirstTime?: boolean
           lastName: string
@@ -39,9 +84,9 @@ export type Database = {
           userName: string
         }
         Update: {
-          createdAt?: string | null
+          createdBy?: string | null
           dateOfBirth?: string | null
-          email?: string | null
+          email?: string
           firstName?: string
           id?: string
           isActive?: boolean
@@ -52,7 +97,306 @@ export type Database = {
           role?: Database["public"]["Enums"]["user_role"]
           userName?: string
         }
+        Relationships: [
+          {
+            foreignKeyName: "Members_createdBy_fkey"
+            columns: ["createdBy"]
+            isOneToOne: false
+            referencedRelation: "Staff"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      Memberships: {
+        Row: {
+          freezePeriod: number | null
+          id: string
+          invitations: number | null
+          name: string
+          numberOfSessions: number | null
+          price: number
+          type: string | null
+          visits: number | null
+        }
+        Insert: {
+          freezePeriod?: number | null
+          id?: string
+          invitations?: number | null
+          name: string
+          numberOfSessions?: number | null
+          price: number
+          type?: string | null
+          visits?: number | null
+        }
+        Update: {
+          freezePeriod?: number | null
+          id?: string
+          invitations?: number | null
+          name?: string
+          numberOfSessions?: number | null
+          price?: number
+          type?: string | null
+          visits?: number | null
+        }
         Relationships: []
+      }
+      ScheduledSession: {
+        Row: {
+          coachId: string | null
+          createdAt: string
+          createdBy: string | null
+          endTime: string | null
+          id: string
+          isPrivate: boolean
+          memberId: string | null
+          scheduledDate: string | null
+          sessionId: string
+          startTime: string | null
+        }
+        Insert: {
+          coachId?: string | null
+          createdAt?: string
+          createdBy?: string | null
+          endTime?: string | null
+          id?: string
+          isPrivate?: boolean
+          memberId?: string | null
+          scheduledDate?: string | null
+          sessionId: string
+          startTime?: string | null
+        }
+        Update: {
+          coachId?: string | null
+          createdAt?: string
+          createdBy?: string | null
+          endTime?: string | null
+          id?: string
+          isPrivate?: boolean
+          memberId?: string | null
+          scheduledDate?: string | null
+          sessionId?: string
+          startTime?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ScheduledSession_coachId_fkey"
+            columns: ["coachId"]
+            isOneToOne: false
+            referencedRelation: "Staff"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ScheduledSession_createdBy_fkey"
+            columns: ["createdBy"]
+            isOneToOne: false
+            referencedRelation: "Staff"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ScheduledSession_memberId_fkey"
+            columns: ["memberId"]
+            isOneToOne: false
+            referencedRelation: "Members"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ScheduledSession_sessionId_fkey"
+            columns: ["sessionId"]
+            isOneToOne: false
+            referencedRelation: "Sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      Sessions: {
+        Row: {
+          description: string | null
+          id: string
+          isActive: boolean
+          name: string
+        }
+        Insert: {
+          description?: string | null
+          id?: string
+          isActive?: boolean
+          name: string
+        }
+        Update: {
+          description?: string | null
+          id?: string
+          isActive?: boolean
+          name?: string
+        }
+        Relationships: []
+      }
+      Staff: {
+        Row: {
+          email: string
+          firstName: string
+          id: string
+          isActive: boolean
+          lastName: string
+          phoneNumber: string | null
+          role: Database["public"]["Enums"]["user_role"]
+          userName: string
+        }
+        Insert: {
+          email: string
+          firstName: string
+          id: string
+          isActive?: boolean
+          lastName: string
+          phoneNumber?: string | null
+          role: Database["public"]["Enums"]["user_role"]
+          userName: string
+        }
+        Update: {
+          email?: string
+          firstName?: string
+          id?: string
+          isActive?: boolean
+          lastName?: string
+          phoneNumber?: string | null
+          role?: Database["public"]["Enums"]["user_role"]
+          userName?: string
+        }
+        Relationships: []
+      }
+      StaffBranch: {
+        Row: {
+          branchId: string
+          staffId: string
+        }
+        Insert: {
+          branchId: string
+          staffId: string
+        }
+        Update: {
+          branchId?: string
+          staffId?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "StaffBranch_branchId_fkey"
+            columns: ["branchId"]
+            isOneToOne: false
+            referencedRelation: "Branch"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "StaffBranch_staffId_fkey"
+            columns: ["staffId"]
+            isOneToOne: false
+            referencedRelation: "Staff"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      UserMembership: {
+        Row: {
+          actualFreezePeriod: number | null
+          actualInvitations: number | null
+          actualPrice: number
+          actualSessions: number | null
+          actualVisits: number | null
+          expiryDate: string
+          id: string
+          isActive: boolean
+          memberId: string
+          memberShipId: string
+          salesId: string | null
+          startDate: string
+        }
+        Insert: {
+          actualFreezePeriod?: number | null
+          actualInvitations?: number | null
+          actualPrice: number
+          actualSessions?: number | null
+          actualVisits?: number | null
+          expiryDate: string
+          id?: string
+          isActive?: boolean
+          memberId: string
+          memberShipId: string
+          salesId?: string | null
+          startDate: string
+        }
+        Update: {
+          actualFreezePeriod?: number | null
+          actualInvitations?: number | null
+          actualPrice?: number
+          actualSessions?: number | null
+          actualVisits?: number | null
+          expiryDate?: string
+          id?: string
+          isActive?: boolean
+          memberId?: string
+          memberShipId?: string
+          salesId?: string | null
+          startDate?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "UserMembership_memberId_fkey"
+            columns: ["memberId"]
+            isOneToOne: false
+            referencedRelation: "Members"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "UserMembership_memberShipId_fkey"
+            columns: ["memberShipId"]
+            isOneToOne: false
+            referencedRelation: "Memberships"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "UserMembership_salesId_fkey"
+            columns: ["salesId"]
+            isOneToOne: false
+            referencedRelation: "Staff"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      UserSessions: {
+        Row: {
+          bookingDate: string
+          createdAt: string
+          id: string
+          scheduledSessionId: string
+          userMemberShipId: string
+        }
+        Insert: {
+          bookingDate: string
+          createdAt?: string
+          id?: string
+          scheduledSessionId: string
+          userMemberShipId: string
+        }
+        Update: {
+          bookingDate?: string
+          createdAt?: string
+          id?: string
+          scheduledSessionId?: string
+          userMemberShipId?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "UserSessions_scheduledSessionId_fkey"
+            columns: ["scheduledSessionId"]
+            isOneToOne: false
+            referencedRelation: "ScheduledSession"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "UserSessions_userMemberShipId_fkey"
+            columns: ["userMemberShipId"]
+            isOneToOne: false
+            referencedRelation: "UserMembership"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {

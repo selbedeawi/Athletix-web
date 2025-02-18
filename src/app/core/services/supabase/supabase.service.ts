@@ -1,21 +1,16 @@
-import { inject, Injectable } from "@angular/core";
+import { Injectable } from "@angular/core";
 import {
   AuthChangeEvent,
   AuthSession,
   createClient,
   Session,
   SupabaseClient,
-  User,
 } from "@supabase/supabase-js";
 import { environment } from "../../../../environments/environment";
 import { Database } from "../../../../../database.types";
-import { BasicAccount } from "../../../shared/models/basic-account-model";
-import { AccountType } from "../../enums/account-type-enum";
 
-// import { environment } from 'src/environments/environment';
-// import { Database } from 'src/schema';
 import { SupabaseInterceptorService } from "../supabase-interceptor/supabase-interceptor.service";
-import { BehaviorSubject, from, map, switchMap } from "rxjs";
+import { BehaviorSubject, from, switchMap } from "rxjs";
 
 @Injectable({
   providedIn: "root",
@@ -29,18 +24,10 @@ export class SupabaseService {
     this.supabase = createClient<Database>(
       environment.supabaseUrl,
       environment.supabaseKey,
-      {
-        global: {
-          // Ensure the input type includes URL (and RequestInfo)
-          fetch: (input: any, init?: RequestInit) =>
-            this.supabaseInterceptor.fetchWrapper(input, init),
-        },
-      },
     );
 
     // Update _session automatically on auth state changes.
     this.supabase.auth.onAuthStateChange((event, session) => {
-      console.log("mo");
       this.isSupabaseReadyBehaviorSubject.next(true);
       this._session = session;
     });
@@ -78,7 +65,7 @@ export class SupabaseService {
       console.log(res.data.user);
 
       return from(
-        this.supabase.from("accounts").select().eq(
+        this.supabase.from("Staff").select().eq(
           "id",
           (res.data.user as any).id,
         ),

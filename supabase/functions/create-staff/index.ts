@@ -73,8 +73,7 @@ serve(async (req) => {
     if (!requesterRole) {
       throw new Error("Requesting user's role not found in token metadata");
     }
-    // 4. Authorization check:
-
+    // 4. Authorization check: only SuperAdmin can create staff accounts.
     if (requesterRole !== AccountType.SuperAdmin) {
       throw new Error("You do not have permission to create staff accounts");
     }
@@ -104,15 +103,18 @@ serve(async (req) => {
       throw createError || new Error("Failed to create user");
     }
 
-    // 8. Insert a record into the public accounts table.
-    // (Optionally, you can remove the "role" field here if you rely solely on auth.user_metadata.)
+    // 8. Insert a record into the "Staff" table.
+    // Expected accountData properties: firstName, lastName, userName, phoneNumber, dateOfBirth, nationalId, etc.
     const { error: dbError } = await supabase
-      .from("accounts")
+      .from("Staff")
       .insert({
         id: authUser.user.id,
         email,
         role: newUserRole,
-        ...accountData,
+        firstName: accountData.firstName,
+        lastName: accountData.lastName,
+        userName: accountData.userName,
+        phoneNumber: accountData.phoneNumber,
       });
     if (dbError) {
       // Cleanup auth user if account creation fails.
@@ -121,11 +123,9 @@ serve(async (req) => {
     }
 
     // 9. Send an email with the credentials to the new user.
-    // WARNING: Sending passwords in plain text is insecure. Consider alternatives.
     await sendCredentialsEmail(email, password);
 
     // 10. Return a successful response.
-
     return new Response(
       JSON.stringify({ success: true, user_id: authUser.user.id }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" } },
