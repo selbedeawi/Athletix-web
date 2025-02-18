@@ -24,6 +24,13 @@ export class SupabaseService {
     this.supabase = createClient<Database>(
       environment.supabaseUrl,
       environment.supabaseKey,
+      {
+        global: {
+          // Ensure the input type includes URL (and RequestInfo)
+          fetch: (input: any, init?: RequestInit) =>
+            this.supabaseInterceptor.fetchWrapper(input, init),
+        },
+      },
     );
 
     // Update _session automatically on auth state changes.

@@ -6,8 +6,14 @@
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-import { corsHeaders } from "../_shared/cors.ts";
+// import { corsHeaders } from "../_shared/cors.ts";
 import { SmtpClient } from "https://deno.land/x/smtp@v0.7.0/mod.ts";
+export const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+  "Access-Control-Allow-Headers":
+    "Authorization, Content-Type, x-client-info, apikey",
+};
 
 // Define the allowed account types for staff creation.
 export enum AccountType {
@@ -123,7 +129,7 @@ serve(async (req) => {
     }
 
     // 9. Send an email with the credentials to the new user.
-    await sendCredentialsEmail(email, password);
+    // await sendCredentialsEmail(email, password);
 
     // 10. Return a successful response.
     return new Response(
