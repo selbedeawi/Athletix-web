@@ -16,12 +16,12 @@ import { BehaviorSubject, from, switchMap } from "rxjs";
   providedIn: "root",
 })
 export class SupabaseService {
-  public supabase: SupabaseClient<Database>;
+  public sb: SupabaseClient<Database>;
   private _session: AuthSession | null = null;
   private isSupabaseReadyBehaviorSubject = new BehaviorSubject<boolean>(false);
   isSupabaseReady = this.isSupabaseReadyBehaviorSubject.asObservable();
   constructor(private supabaseInterceptor: SupabaseInterceptorService) {
-    this.supabase = createClient<Database>(
+    this.sb = createClient<Database>(
       environment.supabaseUrl,
       environment.supabaseKey,
       {
@@ -34,7 +34,7 @@ export class SupabaseService {
     );
 
     // Update _session automatically on auth state changes.
-    this.supabase.auth.onAuthStateChange((event, session) => {
+    this.sb.auth.onAuthStateChange((event, session) => {
       this.isSupabaseReadyBehaviorSubject.next(true);
       this._session = session;
     });
@@ -45,7 +45,7 @@ export class SupabaseService {
    * This method fetches the latest session and updates the local _session variable.
    */
   async getSession(): Promise<AuthSession | null> {
-    const { data, error } = await this.supabase.auth.getSession();
+    const { data, error } = await this.sb.auth.getSession();
     if (error) {
       console.error("Error fetching session:", error.message);
       return null;
@@ -61,18 +61,18 @@ export class SupabaseService {
   authChanges(
     callback: (event: AuthChangeEvent, session: Session | null) => void,
   ) {
-    return this.supabase.auth.onAuthStateChange(callback);
+    return this.sb.auth.onAuthStateChange(callback);
   }
 
   signIn(email: string, password: string) {
-    return from(this.supabase.auth.signInWithPassword({
-      email: "mohammedzelrais0@gmail.com",
-      password: "As123456",
+    return from(this.sb.auth.signInWithPassword({
+      email,
+      password,
     })).pipe(switchMap((res) => {
       console.log(res.data.user);
 
       return from(
-        this.supabase.from("Staff").select().eq(
+        this.sb.from("Staff").select().eq(
           "id",
           (res.data.user as any).id,
         ),
@@ -81,7 +81,7 @@ export class SupabaseService {
   }
 
   async signOut(): Promise<void> {
-    const { error } = await this.supabase.auth.signOut();
+    const { error } = await this.sb.auth.signOut();
     if (error) {
       throw error;
     }

@@ -36,7 +36,7 @@ async function sendCredentialsEmail(email: string, password: string) {
   await client.connectTLS({
     hostname: Deno.env.get("SMTP_HOST")!,
     port: Number(Deno.env.get("SMTP_PORT")!),
-    username: Deno.env.get("SMTP_USER")!,
+
     password: Deno.env.get("SMTP_PASS")!,
   });
 
@@ -84,10 +84,23 @@ serve(async (req) => {
       throw new Error("You do not have permission to create staff accounts");
     }
     // 5. Parse the incoming JSON data.
-    const { email, password, role: newUserRole, ...accountData } = await req
+    const {
+      firstName,
+      lastName,
+      email,
+      password,
+      phoneNumber,
+      branchIds,
+      role: newUserRole,
+    } = await req
       .json();
-    if (!email || !password || !newUserRole) {
-      throw new Error("Missing required fields (email, password, role)");
+    if (
+      !firstName || !lastName || !email || !password || !newUserRole ||
+      !branchIds || !branchIds.length
+    ) {
+      throw new Error(
+        "Missing required fields (firstName, lastName, email, password, role, branchIds)",
+      );
     }
 
     // 6. Validate that the new role is one of the allowed AccountType values.
@@ -117,10 +130,9 @@ serve(async (req) => {
         id: authUser.user.id,
         email,
         role: newUserRole,
-        firstName: accountData.firstName,
-        lastName: accountData.lastName,
-        userName: accountData.userName,
-        phoneNumber: accountData.phoneNumber,
+        firstName,
+        lastName,
+        phoneNumber,
       });
     if (dbError) {
       // Cleanup auth user if account creation fails.
@@ -128,6 +140,24 @@ serve(async (req) => {
       throw dbError;
     }
 
+    // Insert staff-branch relationships into StaffBranch table
+    const { error: errorST } = await supabase.from("StaffBranch").insert(
+      branchIds.map((branchId: number) => ({
+        staffId: authUser.user.id,
+        branchId: branchId,
+      })),
+    );
+
+    if (errorST) {
+      // Cleanup auth user if account creation fails.
+      await supabase.auth.admin.deleteUser(authUser.user.id);
+
+      // Cleanup the staff record to prevent orphaned data.
+      await supabase.from("Staff").delete().eq("id", authUser.user.id);
+
+      // Throw the actual error from StaffBranch insertion.
+      throw errorST;
+    }
     // 9. Send an email with the credentials to the new user.
     // await sendCredentialsEmail(email, password);
 

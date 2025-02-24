@@ -15,6 +15,9 @@ import { TranslocoDirective } from "@jsverse/transloco";
 import { MatButtonModule } from "@angular/material/button";
 import { SelectComponent } from "../../../../shared/ui-components/atoms/select/select.component";
 import { DatePickerComponent } from "../../../../shared/ui-components/atoms/date-picker/date-picker.component";
+import { LookupService } from "../../../../core/services/lookup/lookup.service";
+import { AsyncPipe } from "@angular/common";
+import { ConfirmPasswordComponent } from "../../../../shared/ui-components/organisms/confirm-password/confirm-password.component";
 
 @Component({
   selector: "app-add-staff",
@@ -28,7 +31,8 @@ import { DatePickerComponent } from "../../../../shared/ui-components/atoms/date
     TranslocoDirective,
     MatButtonModule,
     SelectComponent,
-    DatePickerComponent,
+    AsyncPipe,
+    ConfirmPasswordComponent,
   ],
   templateUrl: "./add-staff.component.html",
   styleUrl: "./add-staff.component.scss",
@@ -41,20 +45,21 @@ export class AddStaffComponent {
   private router = inject(Router);
   staffAccount = signal(new StaffAccount("Receptionist"));
   bridgesInputType = BridgesInputType;
+  lookupService = inject(LookupService);
   constructor() {}
   ngOnInit(): void {}
 
   addStaff() {
-    console.log("sad");
-
     this.staffService
       .createStaffAccount(this.staffAccount())
       .subscribe((res) => {
-        this.snackbarService.success("ADD_STAFF_SUCCESS");
-        this.router.navigate([
-          "/",
-          APP_ROUTES.STAFF_LIST,
-        ]);
+        if (!res.error) {
+          this.snackbarService.success("ADD_STAFF_SUCCESS");
+          this.router.navigate([
+            "/",
+            APP_ROUTES.STAFF_LIST,
+          ]);
+        }
       });
   }
 }

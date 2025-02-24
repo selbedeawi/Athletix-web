@@ -6,7 +6,7 @@
         class="p-0"
         color="primary"
         type="button"
-        [routerLink]="['/', APP_ROUTES.SESSIONS_LIST]"
+        [routerLink]="['/', APP_ROUTES.STAFF_LIST]"
       >
         <mat-icon class="icon-arrow_back"></mat-icon>{{ t("BACK") }}
       </button>
@@ -44,39 +44,16 @@
 
         <brdgs-input
           class="col-12 col-md-6"
-          [label]="t('email')"
-          [(value)]="staffAccount().email"
-          [isRequired]="true"
-          [type]="bridgesInputType.EMAIL"
-          [isDisabled]="false"
-        ></brdgs-input>
-
-        <brdgs-input
-          class="col-12 col-md-6"
           [label]="t('PHONE_NUMBER')"
           [(value)]="staffAccount().phoneNumber"
           [isRequired]="true"
           [type]="bridgesInputType.TEL"
           [isDisabled]="false"
+          [mask]="'000 0000 0000'"
         ></brdgs-input>
-        <brdgs-input
-          class="col-12 col-md-6"
-          [label]="t('PASSWORD')"
-          [(value)]="staffAccount().password"
-          [isRequired]="true"
-          [type]="bridgesInputType.TEXT"
-          [isDisabled]="false"
-        ></brdgs-input>
-        <brdgs-input
-          class="col-12 col-md-6"
-          [label]="t('userName')"
-          [(value)]="staffAccount().userName"
-          [isRequired]="true"
-          [type]="bridgesInputType.TEXT"
-          [isDisabled]="false"
-        ></brdgs-input>
+
         <brdgs-select
-          class="col-12 col-md-4"
+          class="col-12 col-md-6"
           [label]="t('FILTER_IS_ACTIVE')"
           [(value)]="staffAccount().role"
           [isRequired]="false"
@@ -89,12 +66,6 @@
           ]"
         >
         </brdgs-select>
-        <!-- <brdgs-date-picker
-    class="col-12 col-md-4"
-    [label]="t('CREATED_AFTER')"
-    [(value)]="staffAccount().dateOfBirth"
-    [isRequired]="false"
-  ></brdgs-date-picker> -->
       </mat-card-content>
     </mat-card>
     <mat-card class="mt-2 p-0">
@@ -105,14 +76,28 @@
       </mat-card-header>
 
       <mat-card-content class="d-flex row gx-3 gy-1">
-        <!-- <brdgs-input
-            class="col-12 col-md-6"
-            [label]="t('EMAIL')"
-            [(value)]="coordinator().email"
-            [isRequired]="true"
-            [type]="bridgesInputType.EMAIL"
-            [isDisabled]="!!coordinator().id"
-          ></brdgs-input> -->
+        <brdgs-input
+          class="col-12 col-md-6"
+          [label]="t('email')"
+          [(value)]="staffAccount().email"
+          [isRequired]="true"
+          [type]="bridgesInputType.EMAIL"
+          [isDisabled]="false"
+        ></brdgs-input>
+        <brdgs-select
+          class="col-12 col-md-6"
+          [label]="t('BRANCHS')"
+          [(value)]="staffAccount().branchIds"
+          [isRequired]="false"
+          [options]="lookupService.getOptions('Branch') | async"
+          [isDisabled]="false"
+          [isMultiple]="true"
+        >
+        </brdgs-select>
+        <app-confirm-password
+          [translationTemplate]="translationTemplate"
+          [(account)]="staffAccount"
+        ></app-confirm-password>
       </mat-card-content>
     </mat-card>
 

@@ -22,8 +22,6 @@ export class SupabaseInterceptorService {
 
     try {
       const response = await fetch(input, init);
-      console.log("wqd");
-
       if (!response.ok) {
         const errorText = await response.text();
         if (errorText.length) {
@@ -34,6 +32,7 @@ export class SupabaseInterceptorService {
             this.snackbarService.error(errorText);
           }
         }
+
         throw new Error(errorText);
       }
       return response;
@@ -42,6 +41,8 @@ export class SupabaseInterceptorService {
         const err = JSON.parse(error.message);
         if (err?.message) {
           this.snackbarService.error(err.message);
+        } else if (err.error) {
+          this.snackbarService.error(err.error);
         } else {
           this.snackbarService.error(error);
         }
@@ -55,3 +56,57 @@ export class SupabaseInterceptorService {
     }
   }
 }
+
+// import { inject, Injectable } from "@angular/core";
+// import { LoadingService } from "../loading/loading.service";
+// import { SnackbarService } from "../snackbar/snackbar.service";
+
+// @Injectable({
+//   providedIn: "root",
+// })
+// export class SupabaseInterceptorService {
+//   private loadingService = inject(LoadingService);
+//   private snackbarService = inject(SnackbarService);
+//   constructor() {}
+//   async fetchWrapper(input: RequestInfo, init?: RequestInit): Promise<Response>;
+//   async fetchWrapper(input: URL, init?: RequestInit): Promise<Response>;
+//   async fetchWrapper(
+//     input: RequestInfo | URL,
+//     init?: RequestInit,
+//   ): Promise<Response> {
+//     this.loadingService.show();
+//     if (input instanceof URL) {
+//       input = input.toString();
+//     }
+
+//     try {
+//       const response = await fetch(input, init);
+
+//       if (!response.ok) {
+//         const errorText = await response.text();
+//         console.log("Raw error response:", errorText); // Add logging
+
+//         try {
+//           const err = JSON.parse(errorText);
+//           if (err?.error) {
+//             this.snackbarService.error(err.error);
+//           } else {
+//             this.snackbarService.error(errorText);
+//           }
+//           throw new Error(JSON.stringify(err)); // Throw parsed error
+//         } catch (parseError) {
+//           this.snackbarService.error(errorText);
+//           throw new Error(errorText);
+//         }
+//       }
+
+//       return response;
+//     } catch (error: any) {
+//       console.log("Fetch error:", error); // Add logging
+//       this.snackbarService.error(error.message || "Fetch error");
+//       throw error;
+//     } finally {
+//       this.loadingService.hide();
+//     }
+//   }
+// }

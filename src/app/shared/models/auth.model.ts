@@ -3,10 +3,10 @@ import { APP_ROUTES } from "../../core/enums/pages-urls-enum";
 
 export const roleRouteMapping: { [key in AccountType]: APP_ROUTES } = {
   ["SuperAdmin"]: APP_ROUTES.ADMIN_DASHBOARD,
-  ["SalesManager"]: APP_ROUTES.SALES_MANAGER,
-  ["SessionManager"]: APP_ROUTES.SESSION_MANAGER,
-  ["Sales"]: APP_ROUTES.SALES,
-  ["Receptionist"]: APP_ROUTES.RECEPTIONIST,
-  ["Coach"]: APP_ROUTES.COACH,
+  ["SalesManager"]: APP_ROUTES.MEMBERS_LIST,
+  ["SessionManager"]: APP_ROUTES.SESSIONS_LIST,
+  ["Sales"]: APP_ROUTES.MEMBERS_LIST,
+  ["Receptionist"]: APP_ROUTES.MEMBERS_LIST,
+  ["Coach"]: APP_ROUTES.BOOKED_SESSIONS,
   ["Member"]: APP_ROUTES.MEMBER,
 };

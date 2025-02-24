@@ -7,10 +7,11 @@ export class StaffAccount implements Tables<"Staff"> {
   lastName: string;
   phoneNumber: string | null;
   role: "Sales" | "Receptionist" | "Coach" | "SalesManager" | "SessionManager";
-  userName: string;
+
   email: string;
   password!: string;
-
+  confirmPassword!: string;
+  branchIds: string[];
   constructor(
     role:
       | "Sales"
@@ -24,7 +25,8 @@ export class StaffAccount implements Tables<"Staff"> {
     this.email = "";
     this.phoneNumber = "";
     this.role = role;
-    this.userName = "";
+
     this.isActive = true;
+    this.branchIds = [];
   }
 }

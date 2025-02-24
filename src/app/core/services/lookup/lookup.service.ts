@@ -1,67 +1,49 @@
-import {
-  BEResponse,
-  LookupValue,
-} from './../../../shared/models/shared-models';
-import { HttpClient } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { inject, Injectable, signal } from "@angular/core";
 
-import { DropdownOptionsModel } from '../../../shared/ui-components/atoms/select/select.model';
-import { LookupKeys } from '../../../shared/enums/Lookup-Keys-enum';
-declare var FixedID: number;
-@Injectable({
-  providedIn: 'root',
-})
+import { BehaviorSubject, Observable } from "rxjs";
+import { tap } from "rxjs/operators";
+import { Database } from "../../../../../database.types";
+
+import { DropdownOptionsModel } from "../../../shared/ui-components/atoms/select/select.model";
+import { SupabaseService } from "../supabase/supabase.service";
+
+@Injectable({ providedIn: "root" })
 export class LookupService {
-  private http = inject(HttpClient);
-
+  private supabase = inject(SupabaseService);
   private cache = new Map<
-    LookupKeys,
-    BehaviorSubject<DropdownOptionsModel<number | number[]>[]>
+    keyof Database["public"]["Tables"],
+    BehaviorSubject<DropdownOptionsModel<string | string[]>[]>
   >();
 
   getOptions(
-    key: LookupKeys
-  ): Observable<DropdownOptionsModel<number | number[]>[]> {
+    key: keyof Database["public"]["Tables"],
+  ): Observable<DropdownOptionsModel<string | string[]>[]> {
     if (!this.cache.has(key)) {
       this.cache.set(
         key,
-        new BehaviorSubject<DropdownOptionsModel<number | number[]>[]>([])
+        new BehaviorSubject<DropdownOptionsModel<string | string[]>[]>([]),
       );
       this.fetchOptions(key);
     }
     return this.cache.get(key)!.asObservable();
   }
 
-  private fetchOptions(key: LookupKeys) {
-    const url = `api/${key}?pageSize=1000`;
-    this.http
-      .get<BEResponse<LookupValue[]>>(url)
-      .pipe(
-        tap((options) =>
-          this.cache.get(key)?.next(
-            this.moveFixedIDToEnd(
-              options.data?.map((city) => {
-                return {
-                  key: city.name,
-                  value: city.id,
-                  regionId: city?.regionId,
-                };
-              }),
-              FixedID
-            )
-          )
-        )
-      )
-      .subscribe();
-  }
-  private moveFixedIDToEnd(
-    options: { key: string; value: number; regionId?: number }[],
-    fixedID: number
-  ) {
-    const fixedItem = options.find((op) => op.value === fixedID);
-    return fixedItem
-      ? [...options.filter((op) => op.value !== fixedID), fixedItem]
-      : options;
+  private async fetchOptions(key: keyof Database["public"]["Tables"]) {
+    const { data, error } = await this.supabase.sb
+      .from(key)
+      .select("*")
+      .limit(1000);
+
+    if (error) {
+      console.error("Error fetching lookup options:", error);
+      return;
+    }
+
+    if (data) {
+      this.cache.get(key)?.next(data.map((item: any) => ({
+        key: item.name,
+        value: item.id,
+      })));
+    }
   }
 }

@@ -1,4 +1,4 @@
-<ng-container *transloco="let t">
+<ng-container *transloco="let t;prefix   translationTemplate() ">
   <mat-form-field class="w-100">
     <mat-label>{{lable() }}</mat-label>
     <input
@@ -18,11 +18,12 @@
     <button
       mat-icon-button
       matSuffix
+      type="button"
       (click)="inputType() == 'password' ? inputType.set('text')  : inputType.set('password')"
       [attr.aria-label]="'Hide password'"
     >
       <mat-icon
-        class="{{ inputType() === 'password' ? 'icon-eye' : 'icon-eye-off' }}"
+        class="{{ inputType() === 'password' ? 'icon-eye' : 'icon-visibility_off' }}"
       ></mat-icon>
     </button>
   </mat-form-field>

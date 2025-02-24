@@ -4,6 +4,7 @@ import { BehaviorSubject, filter, Observable, take } from "rxjs";
 import { Router } from "@angular/router";
 import { SupabaseService } from "../supabase/supabase.service";
 import { StaffAccount } from "../../../features/staff-list/models/staff";
+import { APP_ROUTES } from "../../enums/pages-urls-enum";
 
 @Injectable({
   providedIn: "root",
@@ -34,7 +35,7 @@ export class UserService {
         this.supabaseService.authChanges(async (_event, session) => {
           if (session?.user) {
             // If there is a session, fetch the account details from the "accounts" table
-            const { data: account, error } = await this.supabaseService.supabase
+            const { data: account, error } = await this.supabaseService.sb
               .from("Staff")
               .select()
               .eq("id", session.user.id)
@@ -68,7 +69,7 @@ export class UserService {
   async initializeUser(): Promise<void> {
     const session = await this.supabaseService.getSession();
     if (session?.user) {
-      const { data: account, error } = await this.supabaseService.supabase
+      const { data: account, error } = await this.supabaseService.sb
         .from("Staff")
         .select()
         .eq("id", session.user.id)
@@ -100,6 +101,6 @@ export class UserService {
   async logout(): Promise<void> {
     await this.supabaseService.signOut();
     this.userSubject.next(null);
-    this.router.navigate(["/login"]);
+    this.router.navigate(["/", APP_ROUTES.AUTH, APP_ROUTES.LOGIN]);
   }
 }

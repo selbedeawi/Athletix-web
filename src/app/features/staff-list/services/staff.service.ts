@@ -1,5 +1,5 @@
 import { inject, Injectable } from "@angular/core";
-import { from, map, Observable } from "rxjs";
+import { catchError, from, map, Observable, throwError } from "rxjs";
 import { StaffAccount } from "../models/staff";
 import { SupabaseService } from "../../../core/services/supabase/supabase.service";
 
@@ -20,11 +20,9 @@ export class StaffService {
    * @param staff A NewStaffAccount object containing staff details and password.
    * @returns An Observable with the result of the function invocation.
    */
-  createStaffAccount(staff: StaffAccount): Observable<any> {
-    console.log(staff);
-
+  createStaffAccount(staff: StaffAccount) {
     return from(
-      this.supabaseService.supabase.functions.invoke("create-staff", {
+      this.supabaseService.sb.functions.invoke("create-staff", {
         body: staff,
       }),
     );
@@ -37,7 +35,7 @@ export class StaffService {
    */
   getStaff(id: string): Observable<StaffAccount> {
     return from(
-      this.supabaseService.supabase
+      this.supabaseService.sb
         .from("Staff")
         .select("*")
         .eq("id", id)
@@ -51,7 +49,7 @@ export class StaffService {
    */
   getAllStaff(): Observable<StaffAccount[]> {
     return from(
-      this.supabaseService.supabase
+      this.supabaseService.sb
         .from("Staff")
         .select("*"),
     ).pipe(map((res: any) => res.data as StaffAccount[]));
@@ -65,7 +63,7 @@ export class StaffService {
    */
   updateStaff(id: string, staff: Partial<StaffAccount>): Observable<any> {
     return from(
-      this.supabaseService.supabase
+      this.supabaseService.sb
         .from("Staff")
         .update(staff)
         .eq("id", id),
@@ -79,7 +77,7 @@ export class StaffService {
    */
   deleteStaff(id: string): Observable<any> {
     return from(
-      this.supabaseService.supabase
+      this.supabaseService.sb
         .from("Staff")
         .delete()
         .eq("id", id),

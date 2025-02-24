@@ -18,6 +18,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { ValidateTemplatePipe } from './action.validate.input.pipe';
 import { MatIcon } from '@angular/material/icon';
 import { MatIconButton } from '@angular/material/button';
+import { TranslationTemplates } from '../../../enums/translation-templates-enum';
 
 @Component({
   selector: 'app-input-with-validation',
@@ -37,6 +38,7 @@ import { MatIconButton } from '@angular/material/button';
   viewProviders: [{ provide: ControlContainer, useExisting: NgForm }],
 })
 export class InputWithValidationComponent {
+  translationTemplate = input<TranslationTemplates>(TranslationTemplates.GLOB);
   value = model.required<string>();
   lable = input.required<string>();
   required = input.required<boolean>();
