@@ -207,14 +207,14 @@ table.brdgs-table {
         border-radius: 8px;
         > .active-true {
           border-radius: 50px;
-          width: 11px;
+          width: 8px;
           display: inline-block;
           height: 8px;
           background: #388f4b;
         }
         > .active-false {
           border-radius: 50px;
-          width: 11px;
+          width: 8px;
           display: inline-block;
           height: 8px;
           background: var(--sys-error);

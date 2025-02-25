@@ -113,7 +113,8 @@ export class StaffService {
 
           // Apply staff ID filtering
           query = query.in("id", staffIds).range(start, end);
-
+          // Sort by first name (ascending order)
+          query = query.order("firstName", { ascending: true });
           return from(query) as any;
         }),
       ) as Observable<BEResponse<StaffAccount[]>>;
@@ -138,7 +139,8 @@ export class StaffService {
       query = query.eq("role", filters.role);
     }
     query = query.range(start, end);
-
+    // Sort by first name (ascending order)
+    query = query.order("firstName", { ascending: true });
     return from(query) as any;
   }
 

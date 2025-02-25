@@ -3,9 +3,8 @@ import { APP_ROUTES } from "../../core/enums/pages-urls-enum";
 import { authGuard } from "../../core/guards/auth/auth.guard";
 
 export default [
-  { path: "", redirectTo: APP_ROUTES.STAFF_LIST, pathMatch: "full" },
   {
-    path: APP_ROUTES.STAFF_LIST,
+    path: "",
     loadComponent: () =>
       import(
         "./staff-list.component"

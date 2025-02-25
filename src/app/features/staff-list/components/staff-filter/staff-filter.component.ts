@@ -75,13 +75,15 @@ export class StaffFilterComponent {
       });
   }
 
-  // reset() {
-  //   this.filter = {
-  //     searchKey: '',
-  //     module: '',
-  //   };
-  //   this.search();
-  // }
+  reset() {
+    this.filter = {
+      name: "",
+      isActive: "All",
+      role: null,
+      branchIds: [],
+    };
+    this.search();
+  }
 
   search() {
     this.pageNumber.set(1);
