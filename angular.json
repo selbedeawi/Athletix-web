@@ -42,8 +42,14 @@
                 "glob": "**/*",
                 "input": "src/assets",
                 "output": "/assets"
+              },
+              {
+                "input": "src",
+                "glob": "_redirects",
+                "output": "/"
               }
             ],
+
             "styles": [
               "src/styles.scss",
               "./node_modules/bootstrap/scss/bootstrap-grid.scss",
