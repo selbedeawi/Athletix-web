@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --port 4702 --ssl --host 0.0.0.0",
-    "build": "ng build",
+    "build": "ng build --base-href /",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "supabase": "supabase gen types typescript --project-id htvaworvwztiimqmcmnc > database.types.ts"
