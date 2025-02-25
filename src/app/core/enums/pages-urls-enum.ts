@@ -10,6 +10,7 @@ export enum APP_ROUTES {
   MEMBERS_LIST = "members-list",
   STAFF_LIST = "staff",
   ADD_STAFF = "add",
+  STAFF_EDIT = "edit",
 
   SESSIONS_LIST = "sessions-list",
   SCHEDULE_MANAGEMENT = "schedule-management",

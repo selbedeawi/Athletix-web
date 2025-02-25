@@ -1,17 +1,15 @@
-import { Component, inject, signal } from "@angular/core";
+import { Component } from "@angular/core";
 import { APP_ROUTES } from "../../core/enums/pages-urls-enum";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCard, MatCardContent } from "@angular/material/card";
 import { MatDivider } from "@angular/material/divider";
-import { MatIcon } from "@angular/material/icon";
 import { MatPaginator } from "@angular/material/paginator";
-import { Router, RouterLink } from "@angular/router";
+import { RouterLink } from "@angular/router";
 import { TranslocoDirective } from "@jsverse/transloco";
-import { NgxMaskPipe } from "ngx-mask";
 import { TranslationTemplates } from "../../shared/enums/translation-templates-enum";
-import { StaffService } from "./services/staff.service";
-import { SnackbarService } from "../../core/services/snackbar/snackbar.service";
-import { StaffAccount } from "./models/staff";
+import { StaffFilterComponent } from "./components/staff-filter/staff-filter.component";
+import { EmptyResultComponent } from "../../shared/ui-components/templates/empty-result/empty-result.component";
+import { MatIcon } from "@angular/material/icon";
 
 @Component({
   selector: "app-staff-list",
@@ -21,13 +19,14 @@ import { StaffAccount } from "./models/staff";
     MatCardContent,
     TranslocoDirective,
     MatButtonModule,
-    // MatPaginator,
-    // EmptyResultComponent,
+    MatPaginator,
+    EmptyResultComponent,
     RouterLink,
-    // NgxMaskPipe,
-    // MatIcon,
+    StaffFilterComponent,
+    MatIcon,
   ],
   templateUrl: "./staff-list.component.html",
+
   styleUrl: "./staff-list.component.scss",
 })
 export class StaffListComponent {

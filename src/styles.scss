@@ -150,12 +150,12 @@ $light-theme: mat.define-theme(
 
 table.brdgs-table {
   border-radius: 12px 12px 12px 12px;
-  border: 1px solid var(--sys-surface-variant) !important;
+  border: 1px solid var(--sys-on-secondary-container) !important;
   overflow: hidden;
   border-spacing: 0px;
   thead {
     border-bottom: 1px solid var(--sys-surface-variant) !important;
-    background: var(--sys-primary-container);
+    background: var(--sys-secondary-container);
     padding: 0px 24px;
   }
 
@@ -193,6 +193,33 @@ table.brdgs-table {
       &:last-child {
         border-bottom: unset !important;
       }
+      .table-primary {
+        color: var(--sys-primary);
+        line-height: var(--sys-label-large-line-height) !important;
+        font-size: var(--sys-label-large-size) !important;
+        letter-spacing: var(--sys-label-large-tracking) !important;
+        font-weight: var(--sys-label-large-weight) !important;
+      }
+      .table-active {
+        // display: flex;
+        border: 1px solid var(--sys-secondary-fixed-dim);
+        padding: 6px 12px;
+        border-radius: 8px;
+        > .active-true {
+          border-radius: 50px;
+          width: 11px;
+          display: inline-block;
+          height: 8px;
+          background: #388f4b;
+        }
+        > .active-false {
+          border-radius: 50px;
+          width: 11px;
+          display: inline-block;
+          height: 8px;
+          background: var(--sys-error);
+        }
+      }
     }
     // .table_action {
     //   > div {
@@ -205,7 +232,7 @@ table.brdgs-table {
   }
 }
 
-@media (max-width: 767px) {
+@media (max-width: 991px) {
   .mat-mdc-paginator-range-label {
     display: none;
   }
@@ -228,7 +255,11 @@ table.brdgs-table {
         font-size: var(--sys-body-large-size);
         letter-spacing: var(--sys-body-large-tracking);
         font-weight: var(--sys-body-large-weight);
+        padding-bottom: 16px;
 
+        &.table_action {
+          padding-bottom: 0px !important;
+        }
         &.table-card-title {
           color: var(--sys-tertiary) !important;
           line-height: var(--sys-title-large-line-height) !important;
@@ -245,6 +276,13 @@ table.brdgs-table {
           letter-spacing: var(--sys-label-large-tracking) !important;
           font-weight: var(--sys-label-large-weight) !important;
           min-width: 60px;
+        }
+        .table-primary {
+          color: inherit !important;
+          line-height: inherit !important;
+          font-size: inherit !important;
+          letter-spacing: inherit !important;
+          font-weight: inherit !important;
         }
       }
       .table_action {

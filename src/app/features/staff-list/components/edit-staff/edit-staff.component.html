@@ -1,1 +1,135 @@
-<p>edit-staff works!</p>
+<section *transloco="let t; prefix: translationTemplate">
+  <div class="d-flex flex-column">
+    <div>
+      <button
+        mat-button
+        class="p-0"
+        color="primary"
+        type="button"
+        [routerLink]="['/', APP_ROUTES.STAFF_LIST]"
+      >
+        <mat-icon class="icon-arrow_back"></mat-icon>{{ t("BACK") }}
+      </button>
+    </div>
+    <div class="d-flex flex-wrap align-items-center mb-2">
+      <h2 class="mat-headline-medium mb-1">{{ t("EDIT_TITLE") }}</h2>
+      @if(this.staffAccount().isActive){
+      <button
+        mat-flat-button
+        class="ms-auto"
+        color="warn"
+        type="button"
+        (click)="toggleActivate(false)"
+      >
+        {{ t("DE_ACTIVATE_BTN") }}
+      </button>
+      }@else{
+      <button
+        mat-flat-button
+        color="primary"
+        class="ms-auto"
+        type="button"
+        (click)="toggleActivate(true)"
+      >
+        {{ t("ACTIVATE_BTN") }}
+      </button>
+      }
+    </div>
+  </div>
+
+  <mat-divider></mat-divider>
+  <form #staffForm="ngForm" (ngSubmit)="updateStaff()">
+    <mat-card class="mt-2 p-0">
+      <mat-card-header>
+        <mat-card-title class="mat-title-medium primary-color mb-3">
+          {{ t("PERSONAL_DETAILS") }}
+        </mat-card-title>
+      </mat-card-header>
+
+      <mat-card-content class="d-flex row gx-3 gy-1">
+        <brdgs-input
+          class="col-12 col-md-6"
+          [label]="t('FIRST_NAME')"
+          [(value)]="staffAccount().firstName"
+          [isRequired]="true"
+          [type]="bridgesInputType.TEXT"
+          [isDisabled]="false"
+        ></brdgs-input>
+        <brdgs-input
+          class="col-12 col-md-6"
+          [label]="t('LAST_NAME')"
+          [(value)]="staffAccount().lastName"
+          [isRequired]="true"
+          [type]="bridgesInputType.TEXT"
+          [isDisabled]="false"
+        ></brdgs-input>
+
+        <brdgs-input
+          class="col-12 col-md-6"
+          [label]="t('PHONE_NUMBER')"
+          [(value)]="staffAccount().phoneNumber"
+          [isRequired]="true"
+          [type]="bridgesInputType.TEXT"
+          [isDisabled]="false"
+          [mask]="'000 0000 0000'"
+        ></brdgs-input>
+
+        <brdgs-select
+          class="col-12 col-md-6"
+          [label]="t('FILTER_IS_ACTIVE')"
+          [(value)]="staffAccount().role"
+          [isRequired]="false"
+          [options]="[
+            { key: t('DR_Sales'), value: 'Sales' },
+            { key: t('DR_RECEPTIONIST'), value: 'Receptionist' },
+            { key: t('DR_COACH'), value: 'Coach' },
+            { key: t('DR_SALES_MANAGER'), value: 'SalesManager' },
+            { key: t('DR_SESSION_MANAGER'), value: 'SessionManager' }
+          ]"
+          [isDisabled]="true"
+        >
+        </brdgs-select>
+      </mat-card-content>
+    </mat-card>
+    <mat-card class="mt-2 p-0">
+      <mat-card-header>
+        <mat-card-title class="mat-title-medium primary-color mb-3">
+          {{ t("ACCOUNT_CONTACT") }}
+        </mat-card-title>
+      </mat-card-header>
+
+      <mat-card-content class="d-flex row gx-3 gy-1">
+        <brdgs-input
+          class="col-12 col-md-6"
+          [label]="t('email')"
+          [(value)]="staffAccount().email"
+          [isRequired]="true"
+          [type]="bridgesInputType.EMAIL"
+          [isDisabled]="true"
+        ></brdgs-input>
+        <brdgs-select
+          class="col-12 col-md-6"
+          [label]="t('BRANCHS')"
+          [(value)]="staffAccount().branchIds"
+          [isRequired]="false"
+          [options]="lookupService.getOptions('Branch') | async"
+          [isDisabled]="false"
+          [isMultiple]="true"
+        >
+        </brdgs-select>
+      </mat-card-content>
+    </mat-card>
+
+    <div class="d-flex py-3">
+      <button
+        mat-flat-button
+        type="submit"
+        class="ms-auto"
+        color="primary"
+        [disabled]="staffForm.invalid || staffForm.pristine"
+      >
+        {{ t("UPDATE") }}
+      </button>
+    </div>
+  </form>
+</section>

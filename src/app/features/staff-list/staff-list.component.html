@@ -15,108 +15,95 @@
   <mat-divider></mat-divider>
   <mat-card class="mt-2">
     <mat-card-content class="pb-0">
-      <!-- <app-coordinators-filter #coordinatorsFilter></app-coordinators-filter> -->
+      <app-staff-filter #staffFilter></app-staff-filter>
     </mat-card-content>
   </mat-card>
 
-  <!-- @if(coordinatorsFilter.coordinators().length){
-  <table class="brdgs-table w-100 mt-3">
+  @if(staffFilter.staff().length){
+  <table class="brdgs-table w-100 mt-3 mb-3">
     <thead class="d-none d-lg-block">
       <tr>
-        <th class="col-lg-1">
-          {{ t("USER_ID") }}
-        </th>
         <th class="col-lg-3">
           {{ t("TABLE_NAME") }}
         </th>
-        <th class="col-lg-1">
-          {{ t("TABLE_ISACTIVE") }}
+
+        <th class="col-lg-2">
+          {{ t("TABLE_ROLE") }}
         </th>
         <th class="col-lg-3">
-          {{ t("TABLE_EMAIL") }}
+          {{ t("TABLE_BRANCHS") }}
         </th>
         <th class="col-lg-2">
-          {{ t("TABLE_PHONES") }}
+          {{ t("TABLE_ISACTIVE") }}
         </th>
-
-        <th class="col-lg-2">
-
-        </th>
+        <th class="col-lg-2"></th>
       </tr>
     </thead>
     <tbody>
-      @for (coordinator of coordinatorsFilter.coordinators(); track
-      coordinator.id) {
+      @for (staff of staffFilter.staff(); track staff.id) {
       <tr class="d-flex">
-        <td class="col-12 col-sm-6 col-lg-1 order-2 order-lg-1">
-          <span class="d-none primary-color list-item-label-sm">
-            {{ t("USER_ID") }}
-          </span>
-          {{ coordinator.id }}
-        </td>
         <td
-          class="col-12 col-sm-12 col-lg-3 order-1 order-lg-2 table-card-title table-primary text-truncate"
+          class="col-12 col-sm-12 col-lg-3 table-card-title table-primary text-truncate"
         >
           <a
             [routerLink]="[
               '/',
-              APP_ROUTES.ADMIN,
-              APP_ROUTES.ADMIN_COORDINATORS,
-              APP_ROUTES.ADMIN_COORDINATORS_EDIT,
-              coordinator.id
+              APP_ROUTES.STAFF_LIST,
+              APP_ROUTES.STAFF_EDIT,
+              staff.id
             ]"
-            class="table-primary text-decoration-none pe-2"
+            class="text-decoration-none table-primary pe-2"
           >
-            {{ coordinator.name.firstName }} {{ coordinator.name.lastName }}
+            {{ staff.firstName }} {{ staff.lastName }}
           </a>
         </td>
-        <td class="col-12 col-sm-6 col-lg-1 order-3">
+        <td class="col-12 col-sm-6 col-lg-2">
+          <span class="d-none list-item-label-sm">
+            {{ t("TABLE_ROLE") }}
+          </span>
+
+          {{ staff.role }}
+        </td>
+        <td class="col-12 col-sm-6 col-lg-3">
+          <span class="d-none list-item-label-sm">
+            {{ t("TABLE_BRANCHS") }}
+          </span>
+          <div class="text-truncate pe-2">
+            @for (branch of staff.StaffBranch; track $index;let last =$last) {
+            <span>
+              {{ branch.Branch.name }}
+              @if(!last){ , }
+            </span>
+            }
+          </div>
+        </td>
+        <td class="col-12 col-sm-6 col-lg-2">
           <span class="d-none list-item-label-sm">
             {{ t("TABLE_ISACTIVE") }}
           </span>
-          {{ t(coordinator.isActive ? "TD_IS_ACTIVE" : "TD_NOT_ACTIVE") }}
-        </td>
-        <td class="col-12 col-sm-6 col-lg-3 order-4">
-          <span class="d-none list-item-label-sm">
-            {{ t("TABLE_EMAIL") }}
-          </span>
-          <div class="text-truncate pe-2">
-            {{ coordinator.email }}
+          <div class="d-flex align-items-center table-active">
+            <span class="me-2 active-{{ staff.isActive }}"></span>
+            <strong class="text-truncate">
+              {{ t(staff.isActive ? "TD_IS_ACTIVE" : "TD_NOT_ACTIVE") }}</strong
+            >
           </div>
         </td>
-        <td class="col-12 col-sm-6 col-lg-2 order-5">
-          <span class="d-none list-item-label-sm">
-            {{ t("TABLE_PHONES") }}
-          </span>
-          {{ (coordinator?.phones?.[0]?.number||'') | mask: '000-000-0000'}}
-        </td>
-        <td class="col-12 col-lg-2 table_action order-5">
+
+        <td class="col-12 col-lg-2 table_action">
           <div class="d-flex flex-wrap justify-content-end align-items-center">
-            @if(coordinator.lockoutEnd){
-            <div>
-              <button
-                (click)="unLockUser(coordinator)"
-                class="d-flex align-items-center bg-secondary-container"
-                mat-icon-button
-              >
-                <mat-icon class="icon-unlock primary-color"></mat-icon>
-              </button>
-            </div>
-            }
             <div>
               <button
                 [routerLink]="[
                   '/',
-                  APP_ROUTES.ADMIN,
-                  APP_ROUTES.ADMIN_COORDINATORS,
-                  APP_ROUTES.ADMIN_COORDINATORS_EDIT,
-                  coordinator.id
+                  APP_ROUTES.STAFF_LIST,
+                  APP_ROUTES.STAFF_EDIT,
+                  staff.id
                 ]"
                 mat-button
                 type="button"
                 color="primary"
               >
-                {{ t("EDIT") }}
+                <mat-icon class="icon-edit"></mat-icon> {{ t("EDIT") }}
               </button>
             </div>
           </div>
@@ -124,16 +111,16 @@
       </tr>
       }
     </tbody>
-    @if(coordinatorsFilter.originalCount() > coordinatorsFilter.pageSize()){
+    @if(staffFilter.originalCount() > staffFilter.pageSize()){
     <tfoot>
       <div class="d-flex justify-content-end p-2 bg-surface-container-lowest">
         <mat-paginator
-          [length]="coordinatorsFilter.originalCount()"
-          [pageIndex]="coordinatorsFilter.pageNumber() - 1"
-          [pageSize]="coordinatorsFilter.pageSize()"
+          [length]="staffFilter.originalCount()"
+          [pageIndex]="staffFilter.pageNumber() - 1"
+          [pageSize]="staffFilter.pageSize()"
           (page)="
-            coordinatorsFilter.pageNumber.set($event.pageIndex + 1);
-            coordinatorsFilter.getAll()
+            staffFilter.pageNumber.set($event.pageIndex + 1);
+            staffFilter.getAll()
           "
           showFirstLastButtons
           [hidePageSize]="true"
@@ -151,5 +138,5 @@
       [image]="'icon-users-01'"
     ></app-empty-result>
   </div>
-  } -->
+  }
 </section>

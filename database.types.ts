@@ -400,7 +400,59 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      update_staff_with_branches:
+        | {
+            Args: {
+              staff_id: string
+              first_name: string
+              last_name: string
+              is_active: boolean
+              phone_number: string
+              new_branch_ids: string[]
+            }
+            Returns: {
+              updated_staff_id: string
+              success: boolean
+              message: string
+            }[]
+          }
+        | {
+            Args: {
+              staff_id: string
+              first_name: string
+              last_name: string
+              new_email: string
+              is_active: boolean
+              new_role: Database["public"]["Enums"]["user_role"]
+              phone_number: string
+              new_branch_ids: string[]
+            }
+            Returns: {
+              updated_staff_id: string
+              success: boolean
+              message: string
+            }[]
+          }
+        | {
+            Args: {
+              staff_id: string
+              first_name: string
+              last_name: string
+              user_name: string
+              email: string
+              is_active: boolean
+              role: Database["public"]["Enums"]["user_role"]
+              phone_number: string
+              date_of_birth: string
+              national_id: string
+              new_branch_ids: string[]
+            }
+            Returns: {
+              updated_staff_id: string
+              success: boolean
+              message: string
+            }[]
+          }
     }
     Enums: {
       user_role:

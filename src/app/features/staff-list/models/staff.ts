@@ -12,6 +12,13 @@ export class StaffAccount implements Tables<"Staff"> {
   password!: string;
   confirmPassword!: string;
   branchIds: string[];
+  StaffBranch?: {
+    Branch: {
+      name: string;
+    };
+    branchId: string;
+  }[];
+
   constructor(
     role:
       | "Sales"

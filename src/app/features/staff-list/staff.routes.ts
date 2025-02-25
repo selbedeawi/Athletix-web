@@ -20,4 +20,12 @@ export default [
       ).then((c) => c.AddStaffComponent),
     // canActivate: [authGuard],
   },
+  {
+    path: `${APP_ROUTES.STAFF_EDIT}/:id`,
+    loadComponent: () =>
+      import(
+        "./components/edit-staff/edit-staff.component"
+      ).then((c) => c.EditStaffComponent),
+    // canActivate: [authGuard],
+  },
 ] satisfies Route[];

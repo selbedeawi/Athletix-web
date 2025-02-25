@@ -15,6 +15,7 @@ import { TranslationTemplates } from "../../../shared/enums/translation-template
 import { TranslocoDirective } from "@jsverse/transloco";
 import { SnackbarService } from "../../../core/services/snackbar/snackbar.service";
 import { SupabaseService } from "../../../core/services/supabase/supabase.service";
+import { AccountType } from "../../../core/enums/account-type-enum";
 
 export class LoginCredentials {
   email!: string;
@@ -79,9 +80,9 @@ export class LoginComponent {
       .pipe(take(1))
       .subscribe({
         next: (user) => {
-          const userRole = user.data?.[0].role;
-          if (userRole) {
-            const route = roleRouteMapping[userRole];
+          const userRole = user.role;
+          if (userRole as AccountType) {
+            const route = roleRouteMapping[userRole as AccountType];
             if (route) {
               this.router.navigate(["/", route]);
             } else {
@@ -90,6 +91,7 @@ export class LoginComponent {
           }
         },
         error: (error: any) => {
+          this.snackbarService.error(error.message || "Login failed");
           // if (
           //   error.error?.errors?.[0]?.errorCode === "USER_EMAIL_NOT_CONFIRMED"
           // ) {

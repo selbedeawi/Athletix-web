@@ -1,0 +1,10 @@
+:host {
+  min-height: calc(100vh - 550px);
+  display: flex;
+  max-width: calc(100vw);
+  .card-image {
+    position: absolute;
+    left: 40px;
+    top: 11px;
+  }
+}
