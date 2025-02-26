@@ -24,36 +24,6 @@ export type Database = {
         }
         Relationships: []
       }
-      BranchMembership: {
-        Row: {
-          branchid: string
-          membershipid: string
-        }
-        Insert: {
-          branchid: string
-          membershipid: string
-        }
-        Update: {
-          branchid?: string
-          membershipid?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "BranchMembership_branchid_fkey"
-            columns: ["branchid"]
-            isOneToOne: false
-            referencedRelation: "Branch"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "BranchMembership_membershipid_fkey"
-            columns: ["membershipid"]
-            isOneToOne: false
-            referencedRelation: "Memberships"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       Members: {
         Row: {
           createdBy: string | null
@@ -107,36 +77,96 @@ export type Database = {
           },
         ]
       }
-      Memberships: {
+      MembershipBranches: {
         Row: {
-          freezePeriod: number | null
-          id: string
-          invitations: number | null
-          name: string
-          numberOfSessions: number | null
-          price: number
-          type: string | null
-          visits: number | null
+          branchId: string
+          membershipId: string
         }
         Insert: {
-          freezePeriod?: number | null
-          id?: string
-          invitations?: number | null
-          name: string
-          numberOfSessions?: number | null
-          price: number
-          type?: string | null
-          visits?: number | null
+          branchId: string
+          membershipId: string
         }
         Update: {
-          freezePeriod?: number | null
+          branchId?: string
+          membershipId?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "MembershipBranches_branchId_fkey"
+            columns: ["branchId"]
+            isOneToOne: false
+            referencedRelation: "Branch"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "MembershipBranches_membershipId_fkey"
+            columns: ["membershipId"]
+            isOneToOne: false
+            referencedRelation: "Memberships"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      Memberships: {
+        Row: {
+          amount: number
+          amountAfterDiscount: number
+          createdAt: string
+          durationInDays: number
+          freezePeriod: number
+          hasGroupFitness: boolean | null
+          hasJacuzzi: boolean | null
+          hasSteam: boolean | null
+          hasSunna: boolean | null
+          id: string
+          inBodyCount: number | null
+          modifiedAt: string
+          name: string
+          numberOfInvitations: number | null
+          numberOfSessions: number | null
+          numberOfVisits: number | null
+          personalTrainerCount: number | null
+          type: Database["public"]["Enums"]["membership_type"]
+        }
+        Insert: {
+          amount: number
+          amountAfterDiscount: number
+          createdAt?: string
+          durationInDays: number
+          freezePeriod?: number
+          hasGroupFitness?: boolean | null
+          hasJacuzzi?: boolean | null
+          hasSteam?: boolean | null
+          hasSunna?: boolean | null
           id?: string
-          invitations?: number | null
-          name?: string
+          inBodyCount?: number | null
+          modifiedAt?: string
+          name: string
+          numberOfInvitations?: number | null
           numberOfSessions?: number | null
-          price?: number
-          type?: string | null
-          visits?: number | null
+          numberOfVisits?: number | null
+          personalTrainerCount?: number | null
+          type: Database["public"]["Enums"]["membership_type"]
+        }
+        Update: {
+          amount?: number
+          amountAfterDiscount?: number
+          createdAt?: string
+          durationInDays?: number
+          freezePeriod?: number
+          hasGroupFitness?: boolean | null
+          hasJacuzzi?: boolean | null
+          hasSteam?: boolean | null
+          hasSunna?: boolean | null
+          id?: string
+          inBodyCount?: number | null
+          modifiedAt?: string
+          name?: string
+          numberOfInvitations?: number | null
+          numberOfSessions?: number | null
+          numberOfVisits?: number | null
+          personalTrainerCount?: number | null
+          type?: Database["public"]["Enums"]["membership_type"]
         }
         Relationships: []
       }
@@ -291,48 +321,92 @@ export type Database = {
       }
       UserMembership: {
         Row: {
-          actualFreezePeriod: number | null
-          actualInvitations: number | null
-          actualPrice: number
-          actualSessions: number | null
-          actualVisits: number | null
-          expiryDate: string
+          branchId: string
+          coachId: string | null
+          createdAt: string
+          createdBy: number
+          endDate: string
+          freezePeriod: number
           id: string
+          inBodyCount: number
           isActive: boolean
           memberId: string
-          memberShipId: string
+          membershipId: string
+          modifiedAt: string
+          modifiedBy: number
+          numberOfInvitations: number
+          numberOfVisits: number
+          personalTrainerCount: number
+          pricePaid: number
+          remainingFreezePeriod: number | null
+          remainingGroupSessions: number | null
+          remainingPTSessions: number | null
           salesId: string | null
           startDate: string
         }
         Insert: {
-          actualFreezePeriod?: number | null
-          actualInvitations?: number | null
-          actualPrice: number
-          actualSessions?: number | null
-          actualVisits?: number | null
-          expiryDate: string
+          branchId: string
+          coachId?: string | null
+          createdAt?: string
+          createdBy: number
+          endDate: string
+          freezePeriod?: number
           id?: string
+          inBodyCount?: number
           isActive?: boolean
           memberId: string
-          memberShipId: string
+          membershipId: string
+          modifiedAt?: string
+          modifiedBy: number
+          numberOfInvitations?: number
+          numberOfVisits?: number
+          personalTrainerCount?: number
+          pricePaid: number
+          remainingFreezePeriod?: number | null
+          remainingGroupSessions?: number | null
+          remainingPTSessions?: number | null
           salesId?: string | null
           startDate: string
         }
         Update: {
-          actualFreezePeriod?: number | null
-          actualInvitations?: number | null
-          actualPrice?: number
-          actualSessions?: number | null
-          actualVisits?: number | null
-          expiryDate?: string
+          branchId?: string
+          coachId?: string | null
+          createdAt?: string
+          createdBy?: number
+          endDate?: string
+          freezePeriod?: number
           id?: string
+          inBodyCount?: number
           isActive?: boolean
           memberId?: string
-          memberShipId?: string
+          membershipId?: string
+          modifiedAt?: string
+          modifiedBy?: number
+          numberOfInvitations?: number
+          numberOfVisits?: number
+          personalTrainerCount?: number
+          pricePaid?: number
+          remainingFreezePeriod?: number | null
+          remainingGroupSessions?: number | null
+          remainingPTSessions?: number | null
           salesId?: string | null
           startDate?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "UserMembership_branchId_fkey"
+            columns: ["branchId"]
+            isOneToOne: false
+            referencedRelation: "Branch"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "UserMembership_coachId_fkey"
+            columns: ["coachId"]
+            isOneToOne: false
+            referencedRelation: "Staff"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "UserMembership_memberId_fkey"
             columns: ["memberId"]
@@ -341,8 +415,8 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "UserMembership_memberShipId_fkey"
-            columns: ["memberShipId"]
+            foreignKeyName: "UserMembership_membershipId_fkey"
+            columns: ["membershipId"]
             isOneToOne: false
             referencedRelation: "Memberships"
             referencedColumns: ["id"]
@@ -384,13 +458,6 @@ export type Database = {
             columns: ["scheduledSessionId"]
             isOneToOne: false
             referencedRelation: "ScheduledSession"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "UserSessions_userMemberShipId_fkey"
-            columns: ["userMemberShipId"]
-            isOneToOne: false
-            referencedRelation: "UserMembership"
             referencedColumns: ["id"]
           },
         ]
@@ -455,6 +522,7 @@ export type Database = {
           }
     }
     Enums: {
+      membership_type: "Individual" | "PrivateCoach" | "SessionBased"
       user_role:
         | "SuperAdmin"
         | "Sales"

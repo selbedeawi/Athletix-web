@@ -1,0 +1,195 @@
+<section *transloco="let t; prefix: translationTemplate">
+  <div class="d-flex flex-column">
+    <div>
+      <button
+        mat-button
+        class="p-0"
+        color="primary"
+        type="button"
+        [routerLink]="['/', APP_ROUTES.MEMBERSHIP_LIST]"
+      >
+        <mat-icon class="icon-arrow_back"></mat-icon>{{ t("BACK") }}
+      </button>
+    </div>
+
+    <h2 class="mat-headline-medium mb-1">
+      {{
+        membership().id ? t("EDIT_MEMBERSHIP_TITLE") : t("ADD_MEMBERSHIP_TITLE")
+      }}
+    </h2>
+  </div>
+
+  <mat-divider></mat-divider>
+  <form
+    #membershipForm="ngForm"
+    (ngSubmit)="membership().id ? updateMembership() : addMembership()"
+  >
+    <mat-card class="mt-2 p-0">
+      <mat-card-header>
+        <mat-card-title class="mat-title-medium primary-color mb-3">
+          {{ t("MEMBERSHIP_DETAILS") }}
+        </mat-card-title>
+      </mat-card-header>
+
+      <mat-card-content class="d-flex row gx-3 gy-1">
+        <brdgs-input
+          class="col-12 col-md-6"
+          [isRequired]="true"
+          [label]="t('MEMBERSHIP_NAME')"
+          [(value)]="membership().name"
+          [isRequired]="true"
+          [type]="bridgesInputType.TEXT"
+        ></brdgs-input>
+
+        <brdgs-input
+          class="col-12 col-md-6"
+          [isRequired]="true"
+          [label]="t('PRICE')"
+          [(value)]="membership().amount"
+          [isRequired]="true"
+          [type]="bridgesInputType.NUMBER"
+        ></brdgs-input>
+
+        <brdgs-input
+          class="col-12 col-md-6"
+          [isRequired]="true"
+          [label]="t('AMOUNT_AFTER_DISCOUNT')"
+          [(value)]="membership().amountAfterDiscount"
+          [isRequired]="true"
+          [type]="bridgesInputType.NUMBER"
+        ></brdgs-input>
+
+        <brdgs-select
+          class="col-12 col-md-6"
+          [isRequired]="true"
+          [label]="t('MEMBERSHIP_TYPE')"
+          [(value)]="membership().type"
+          [isRequired]="true"
+          (valueChange)="onMembershipTypeChange()"
+          [options]="[
+            { key: t('INDIVIDUAL'), value: 'Individual' },
+            { key: t('PRIVATE_COACH'), value: 'PrivateCoach' },
+            { key: t('SESSION_BASED'), value: 'SessionBased' }
+          ]"
+        ></brdgs-select>
+        <brdgs-select
+          class="col-12 col-md-6"
+          [isRequired]="true"
+          [label]="t('BRANCHES')"
+          [(value)]="membership().branchIds"
+          [isRequired]="true"
+          [options]="lookupService.getOptions('Branch') | async"
+          [isMultiple]="true"
+        ></brdgs-select>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="mt-2 p-0">
+      <mat-card-header>
+        <mat-card-title class="mat-title-medium primary-color mb-3">
+          {{ t("MEMBERSHIP_FEATURES") }}
+        </mat-card-title>
+      </mat-card-header>
+
+      <mat-card-content class="d-flex row gx-3 gy-1">
+        <brdgs-input
+          class="col-12 col-md-6"
+          [isRequired]="true"
+          [label]="t('FREEZE_PERIOD')"
+          [(value)]="membership().freezePeriod"
+          [type]="bridgesInputType.NUMBER"
+        ></brdgs-input>
+        <brdgs-input
+          class="col-12 col-md-6"
+          [isRequired]="true"
+          [label]="t('DURATION_IN_DAYS')"
+          [(value)]="membership().durationInDays"
+          [type]="bridgesInputType.NUMBER"
+        ></brdgs-input>
+        @if(membership().type === 'SessionBased' ||membership().type ===
+        'PrivateCoach'){
+        <brdgs-input
+          class="col-12 col-md-6"
+          [isRequired]="true"
+          [label]="t('NUMBER_OF_SESSIONS')"
+          [(value)]="membership().numberOfSessions"
+          [type]="bridgesInputType.NUMBER"
+        ></brdgs-input>
+
+        }@else if(membership().type === 'Individual'){
+
+        <brdgs-input
+          class="col-12 col-md-6"
+          [isRequired]="true"
+          [label]="t('NUMBER_OF_INVITATIONS')"
+          [(value)]="membership().numberOfInvitations"
+          [type]="bridgesInputType.NUMBER"
+        ></brdgs-input>
+        <brdgs-input
+          class="col-12 col-md-6"
+          [isRequired]="true"
+          [label]="t('NUMBER_OF_VISITS')"
+          [(value)]="membership().numberOfVisits"
+          [type]="bridgesInputType.NUMBER"
+        ></brdgs-input>
+
+        <brdgs-input
+          class="col-12 col-md-6"
+          [isRequired]="true"
+          [label]="t('INBODY_COUNT')"
+          [(value)]="membership().inBodyCount"
+          [type]="bridgesInputType.NUMBER"
+        ></brdgs-input>
+        <brdgs-input
+          class="col-12 col-md-6"
+          [isRequired]="true"
+          [label]="t('PERSONAL_TRAINER_COUNT')"
+          [(value)]="membership().personalTrainerCount"
+          [type]="bridgesInputType.NUMBER"
+        ></brdgs-input>
+
+        <mat-checkbox
+          class="col-12 col-md-6"
+          [(ngModel)]="membership().hasGroupFitness"
+          name="hasGroupFitness"
+        >
+          {{ t("HAS_GROUP_FITNESS") }}
+        </mat-checkbox>
+        <mat-checkbox
+          class="col-12 col-md-6"
+          [(ngModel)]="membership().hasJacuzzi"
+          name="hasJacuzzi"
+        >
+          {{ t("HAS_JACUZZI") }}
+        </mat-checkbox>
+        <mat-checkbox
+          class="col-12 col-md-6"
+          [(ngModel)]="membership().hasSteam"
+          name="hasSteam"
+        >
+          {{ t("HAS_STEAM") }}
+        </mat-checkbox>
+        <mat-checkbox
+          class="col-12 col-md-6"
+          [(ngModel)]="membership().hasSunna"
+          name="hasSunna"
+        >
+          {{ t("HAS_SUNNA") }}
+        </mat-checkbox>
+        }
+      </mat-card-content>
+    </mat-card>
+
+    <div class="d-flex py-3">
+      <button
+        mat-flat-button
+        type="submit"
+        class="ms-auto"
+        color="primary"
+        [disabled]="membershipForm.invalid || membershipForm.pristine"
+      >
+        {{ membership().id ? t("UPDATE_MEMBERSHIP") : t("ADD_MEMBERSHIP") }}
+      </button>
+    </div>
+  </form>
+</section>

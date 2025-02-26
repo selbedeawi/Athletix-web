@@ -22,6 +22,12 @@ export const routes: Routes = [
     canActivate: [RoleGuard(["SuperAdmin"])],
   },
   {
+    path: APP_ROUTES.MEMBERSHIP_LIST,
+    loadChildren: () => import("./features/membership-list/membership.routes"),
+    data: { layout: "main" },
+    canActivate: [RoleGuard(["SuperAdmin"])],
+  },
+  {
     path: APP_ROUTES.MEMBERS_LIST,
 
     loadComponent: () =>

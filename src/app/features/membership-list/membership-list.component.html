@@ -1,0 +1,134 @@
+<section *transloco="let t; prefix: translationTemplate">
+  <div class="d-flex justify-content-between">
+    <h2 class="mat-headline-small primary-color mb-1">{{ t("TITLE") }}</h2>
+
+    <button
+      mat-flat-button
+      class="mb-2 me-3 me-sm-0"
+      color="primary"
+      type="button"
+      [routerLink]="[
+        '/',
+        APP_ROUTES.MEMBERSHIP_LIST,
+        APP_ROUTES.ADD_MEMBERSHIP
+      ]"
+    >
+      {{ t("ADD") }}
+    </button>
+  </div>
+  <mat-divider></mat-divider>
+  <mat-card class="mt-2">
+    <mat-card-content class="">
+      <app-membership-filter #membershipFilter></app-membership-filter>
+    </mat-card-content>
+  </mat-card>
+
+  @if(membershipFilter.memberships().length){
+  <table class="brdgs-table w-100 mt-3 mb-3">
+    <thead class="d-none d-lg-block">
+      <tr>
+        <th class="col-lg-4">
+          {{ t("TABLE_NAME") }}
+        </th>
+
+        <th class="col-lg-2">
+          {{ t("TABLE_TYPE") }}
+        </th>
+        <th class="col-lg-4">
+          {{ t("TABLE_BRANCHS") }}
+        </th>
+
+        <th class="col-lg-2"></th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (membership of membershipFilter.memberships(); track membership.id) {
+      <tr class="d-flex">
+        <td
+          class="col-12 col-sm-12 col-lg-4 table-card-title table-primary text-truncate"
+        >
+          <a
+            [routerLink]="[
+              '/',
+              APP_ROUTES.MEMBERSHIP_LIST,
+              APP_ROUTES.MEMBERSHIP_EDIT,
+              membership.id
+            ]"
+            class="text-decoration-none table-primary pe-2"
+          >
+            {{ membership.name }}
+          </a>
+        </td>
+        <td class="col-12 col-sm-6 col-lg-2">
+          <span class="d-none list-item-label-sm">
+            {{ t("TABLE_ROLE") }}
+          </span>
+
+          {{ membership.type }}
+        </td>
+        <td class="col-12 col-sm-6 col-lg-4">
+          <span class="d-none list-item-label-sm">
+            {{ t("TABLE_BRANCHS") }}
+          </span>
+          <div class="text-truncate pe-2">
+            @for (branch of membership.MembershipBranches; track $index;let last
+            =$last) {
+            <span>
+              {{ branch.Branch.name }}
+              @if(!last){ , }
+            </span>
+            }
+          </div>
+        </td>
+
+        <td class="col-12 col-lg-2 table_action">
+          <div class="d-flex flex-wrap justify-content-end align-items-center">
+            <div>
+              <button
+                [routerLink]="[
+                  '/',
+                  APP_ROUTES.MEMBERSHIP_LIST,
+                  APP_ROUTES.MEMBERSHIP_EDIT,
+                  membership.id
+                ]"
+                mat-button
+                type="button"
+                color="primary"
+              >
+                <mat-icon class="icon-edit"></mat-icon> {{ t("EDIT") }}
+              </button>
+            </div>
+          </div>
+        </td>
+      </tr>
+      }
+    </tbody>
+    @if(membershipFilter.originalCount() > membershipFilter.pageSize()){
+    <tfoot>
+      <div class="d-flex justify-content-end p-2 bg-surface-container-lowest">
+        <mat-paginator
+          [length]="membershipFilter.originalCount()"
+          [pageIndex]="membershipFilter.pageNumber() - 1"
+          [pageSize]="membershipFilter.pageSize()"
+          (page)="
+            membershipFilter.pageNumber.set($event.pageIndex + 1);
+            membershipFilter.getAll()
+          "
+          showFirstLastButtons
+          [hidePageSize]="true"
+          class="bg-surface-container-lowest"
+        >
+        </mat-paginator>
+      </div>
+    </tfoot>
+    }
+  </table>
+  } @else{
+  <div class="justify-content-center">
+    <app-empty-result
+      [title]="t('NO_RESULT_TITLE')"
+      [image]="'icon-users-01'"
+    ></app-empty-result>
+  </div>
+  }
+</section>

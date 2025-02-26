@@ -79,6 +79,12 @@ export class BrdgsSidenavComponent implements OnDestroy {
       permissions: ["SuperAdmin"],
     },
     {
+      icon: "icon-staff",
+      label: "NAV_MEMBERSHIP_LIST",
+      path: ["/", APP_ROUTES.MEMBERSHIP_LIST],
+      permissions: ["SuperAdmin"],
+    },
+    {
       icon: "icon-list",
       label: "NAV_SESSIONS_LIST",
       path: ["/", APP_ROUTES.SESSIONS_LIST],

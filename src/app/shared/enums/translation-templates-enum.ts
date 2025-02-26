@@ -1,6 +1,7 @@
 export enum TranslationTemplates {
   SIDE_NAVE = "Navigation",
   STAFF = "Staff",
+  MEMBERSHIP = "Memberships",
   AUTH = "Auth",
 
   GLOB = "Global",
