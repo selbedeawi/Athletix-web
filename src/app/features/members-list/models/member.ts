@@ -1,39 +1,25 @@
 import { Tables } from "../../../../../database.types";
 
-export class StaffAccount implements Tables<"Staff"> {
-  firstName: string;
+export class MemberAccount implements Tables<"Members"> {
   id!: string;
-  isActive: boolean;
-  lastName: string;
-  phoneNumber: string | null;
-  role: "Sales" | "Receptionist" | "Coach" | "SalesManager" | "SessionManager";
+  firstName!: string;
+  lastName!: string;
+  memberId!: number;
 
-  email: string;
+  role: "Member" = "Member";
+
+  dateOfBirth!: string;
+  nationalId!: string | null;
+  phoneNumber!: string | null;
+
+  isFirstTime!: boolean;
+
   password!: string;
-  confirmPassword!: string;
-  branchIds: string[];
-  StaffBranch?: {
-    Branch: {
-      name: string;
-    };
-    branchId: string;
-  }[];
+  email!: string;
 
-  constructor(
-    role:
-      | "Sales"
-      | "Receptionist"
-      | "Coach"
-      | "SalesManager"
-      | "SessionManager",
-  ) {
-    this.firstName = "";
-    this.lastName = "";
-    this.email = "";
-    this.phoneNumber = "";
-    this.role = role;
+  isActive!: boolean;
+  createdBy!: string;
 
-    this.isActive = true;
-    this.branchIds = [];
+  constructor() {
   }
 }

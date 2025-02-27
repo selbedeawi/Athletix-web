@@ -1,6 +1,8 @@
-import { inject, Injectable } from "@angular/core";
+import { inject, Injectable, Injector } from "@angular/core";
 import { LoadingService } from "../loading/loading.service";
 import { SnackbarService } from "../snackbar/snackbar.service";
+import { UserService } from "../user/user.service";
+import { SupabaseService } from "../supabase/supabase.service";
 
 @Injectable({
   providedIn: "root",
@@ -8,6 +10,13 @@ import { SnackbarService } from "../snackbar/snackbar.service";
 export class SupabaseInterceptorService {
   private loadingService = inject(LoadingService);
   private snackbarService = inject(SnackbarService);
+  // Remove direct injection of UserService
+  private injector = inject(Injector);
+
+  // Use a getter to lazily retrieve UserService when needed
+  private get supabaseService(): SupabaseService {
+    return this.injector.get(SupabaseService);
+  }
   constructor() {}
   async fetchWrapper(input: RequestInfo, init?: RequestInit): Promise<Response>;
   async fetchWrapper(input: URL, init?: RequestInit): Promise<Response>;
@@ -19,14 +28,25 @@ export class SupabaseInterceptorService {
     if (input instanceof URL) {
       input = input.toString();
     }
+    const urlString = input instanceof URL ? input.toString() : input;
 
     try {
       const response = await fetch(input, init);
+
+      console.log(urlString);
+
+      if (
+        typeof urlString === "string" &&
+        urlString.includes("/auth/v1/token?grant_type=refresh_token")
+      ) {
+        return response;
+      }
+
       if (!response.ok) {
         const errorText = await response.text();
         if (errorText.length) {
           const err = JSON.parse(errorText);
-          if (err) {
+          if (err.error) {
             this.snackbarService.error(err.error);
           } else {
             this.snackbarService.error(errorText);

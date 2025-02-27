@@ -1,1 +1,217 @@
-<p>add-member works!</p>
+<section *transloco="let t; prefix: translationTemplate">
+  <div class="d-flex flex-column">
+    <div>
+      <button
+        mat-button
+        class="p-0"
+        color="primary"
+        type="button"
+        [routerLink]="['/', APP_ROUTES.MEMBERS_LIST]"
+      >
+        <mat-icon class="icon-arrow_back"></mat-icon>{{ t("BACK") }}
+      </button>
+    </div>
+
+    <h2 class="mat-headline-medium mb-1">{{ t("ADD_MEMBER_TITLE") }}</h2>
+  </div>
+
+  <mat-divider class="my-3"></mat-divider>
+
+  <mat-stepper
+    [labelPosition]="'bottom'"
+    [linear]="true"
+    #stepper
+    [orientation]="(stepperOrientation$ | async)!"
+  >
+    <mat-step [stepControl]="memberForm.control">
+      <ng-template matStepLabel>{{ t("STP_ACCOUNT_DETAILS") }}</ng-template>
+      <form #memberForm="ngForm" (ngSubmit)="addMember()">
+        <mat-card class="mt-2 p-0">
+          <mat-card-header>
+            <mat-card-title class="mat-title-medium primary-color mb-3">
+              {{ t("PERSONAL_DETAILS") }}
+            </mat-card-title>
+          </mat-card-header>
+
+          <mat-card-content class="d-flex row gx-3 gy-1">
+            <brdgs-input
+              class="col-12 col-md-6"
+              [label]="t('FIRST_NAME')"
+              [(value)]="member().firstName"
+              [isRequired]="true"
+              [type]="bridgesInputType.TEXT"
+            ></brdgs-input>
+            <brdgs-input
+              class="col-12 col-md-6"
+              [label]="t('LAST_NAME')"
+              [(value)]="member().lastName"
+              [isRequired]="true"
+              [type]="bridgesInputType.TEXT"
+            ></brdgs-input>
+
+            <brdgs-input
+              class="col-12 col-md-6"
+              [label]="t('NATIONAL_ID')"
+              [(value)]="member().nationalId"
+              [isRequired]="false"
+              [type]="bridgesInputType.TEXT"
+              [mask]=""
+              (valueChange)="setBirthDate(member(), $event)"
+            ></brdgs-input>
+            <brdgs-date-picker
+              class="col-12 col-md-6"
+              [label]="t('DATE_OF_BIRTH')"
+              [(value)]="member().dateOfBirth"
+              [isRequired]="true"
+            ></brdgs-date-picker>
+            <brdgs-input
+              class="col-12 col-md-6"
+              [label]="t('PHONE_NUMBER')"
+              [(value)]="member().phoneNumber"
+              [isRequired]="false"
+              [type]="bridgesInputType.TEXT"
+            ></brdgs-input>
+            <brdgs-input
+              class="col-12 col-md-6"
+              [label]="t('MEMBER_ID')"
+              [(value)]="member().memberId"
+              [isRequired]="false"
+              [type]="bridgesInputType.NUMBER"
+            ></brdgs-input>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card class="mt-2 p-0">
+          <mat-card-header>
+            <mat-card-title class="mat-title-medium primary-color mb-3">
+              {{ t("CONTACT_DETAILS") }}
+            </mat-card-title>
+          </mat-card-header>
+
+          <mat-card-content class="d-flex row gx-3 gy-1">
+            <brdgs-input
+              class="col-12 col-md-6 me-auto"
+              [label]="t('EMAIL')"
+              [(value)]="member().email"
+              [isRequired]="true"
+              [type]="bridgesInputType.EMAIL"
+            ></brdgs-input>
+            <app-confirm-password
+              [translationTemplate]="translationTemplate"
+              [(account)]="member"
+            ></app-confirm-password>
+          </mat-card-content>
+        </mat-card>
+
+        <div class="d-flex py-3">
+          <button
+            mat-flat-button
+            type="submit"
+            class="ms-auto"
+            color="primary"
+            [disabled]="memberForm.invalid || memberForm.pristine"
+          >
+            {{ t("ADD_MEMBER") }}
+          </button>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step [stepControl]="memberForm.control">
+      <ng-template matStepLabel>{{ t("STP_ACCOUNT_DETAILS") }}</ng-template>
+      <form #memberForm="ngForm" (ngSubmit)="addMember()">
+        <mat-card class="mt-2 p-0">
+          <mat-card-header>
+            <mat-card-title class="mat-title-medium primary-color mb-3">
+              {{ t("PERSONAL_DETAILS") }}
+            </mat-card-title>
+          </mat-card-header>
+
+          <mat-card-content class="d-flex row gx-3 gy-1">
+            <brdgs-input
+              class="col-12 col-md-6"
+              [label]="t('FIRST_NAME')"
+              [(value)]="member().firstName"
+              [isRequired]="true"
+              [type]="bridgesInputType.TEXT"
+            ></brdgs-input>
+            <brdgs-input
+              class="col-12 col-md-6"
+              [label]="t('LAST_NAME')"
+              [(value)]="member().lastName"
+              [isRequired]="true"
+              [type]="bridgesInputType.TEXT"
+            ></brdgs-input>
+            <brdgs-input
+              class="col-12 col-md-6"
+              [label]="t('MEMBER_ID')"
+              [(value)]="member().memberId"
+              [isRequired]="true"
+              [type]="bridgesInputType.NUMBER"
+            ></brdgs-input>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card class="mt-2 p-0">
+          <mat-card-header>
+            <mat-card-title class="mat-title-medium primary-color mb-3">
+              {{ t("CONTACT_DETAILS") }}
+            </mat-card-title>
+          </mat-card-header>
+
+          <mat-card-content class="d-flex row gx-3 gy-1">
+            <brdgs-input
+              class="col-12 col-md-6"
+              [label]="t('EMAIL')"
+              [(value)]="member().email"
+              [isRequired]="true"
+              [type]="bridgesInputType.EMAIL"
+            ></brdgs-input>
+            <brdgs-input
+              class="col-12 col-md-6"
+              [label]="t('PHONE_NUMBER')"
+              [(value)]="member().phoneNumber"
+              [isRequired]="false"
+              [type]="bridgesInputType.TEXT"
+            ></brdgs-input>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card class="mt-2 p-0">
+          <mat-card-header>
+            <mat-card-title class="mat-title-medium primary-color mb-3">
+              {{ t("MEMBER_INFO") }}
+            </mat-card-title>
+          </mat-card-header>
+
+          <mat-card-content class="d-flex row gx-3 gy-1">
+            <brdgs-date-picker
+              class="col-12 col-md-6"
+              [label]="t('DATE_OF_BIRTH')"
+              [(value)]="member().dateOfBirth"
+              [isRequired]="true"
+            ></brdgs-date-picker>
+            <brdgs-input
+              class="col-12 col-md-6"
+              [label]="t('NATIONAL_ID')"
+              [(value)]="member().nationalId"
+              [isRequired]="false"
+              [type]="bridgesInputType.TEXT"
+            ></brdgs-input>
+          </mat-card-content>
+        </mat-card>
+
+        <div class="d-flex py-3">
+          <button
+            mat-flat-button
+            type="submit"
+            class="ms-auto"
+            color="primary"
+            [disabled]="memberForm.invalid || memberForm.pristine"
+          >
+            {{ t("ADD_MEMBER") }}
+          </button>
+        </div>
+      </form>
+    </mat-step>
+  </mat-stepper>
+</section>

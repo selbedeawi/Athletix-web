@@ -34,10 +34,10 @@ export type Database = {
           isActive: boolean
           isFirstTime: boolean
           lastName: string
+          memberId: number
           nationalId: string | null
           phoneNumber: string | null
           role: Database["public"]["Enums"]["user_role"]
-          userName: string
         }
         Insert: {
           createdBy?: string | null
@@ -48,10 +48,10 @@ export type Database = {
           isActive?: boolean
           isFirstTime?: boolean
           lastName: string
+          memberId?: number
           nationalId?: string | null
           phoneNumber?: string | null
           role?: Database["public"]["Enums"]["user_role"]
-          userName: string
         }
         Update: {
           createdBy?: string | null
@@ -62,10 +62,10 @@ export type Database = {
           isActive?: boolean
           isFirstTime?: boolean
           lastName?: string
+          memberId?: number
           nationalId?: string | null
           phoneNumber?: string | null
           role?: Database["public"]["Enums"]["user_role"]
-          userName?: string
         }
         Relationships: [
           {

@@ -29,12 +29,7 @@ export const routes: Routes = [
   },
   {
     path: APP_ROUTES.MEMBERS_LIST,
-
-    loadComponent: () =>
-      import("./features/members-list/members-list.component").then(
-        (c) => c.MembersListComponent,
-      ),
-
+    loadChildren: () => import("./features/members-list/membership.routes"),
     data: { layout: "main" },
     canActivate: [
       RoleGuard([
