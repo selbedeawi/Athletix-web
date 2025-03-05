@@ -259,6 +259,21 @@ export type Database = {
         }
         Relationships: []
       }
+      SessionsBranches: {
+        Row: {
+          branchId: string | null
+          sessionId: string | null
+        }
+        Insert: {
+          branchId?: string | null
+          sessionId?: string | null
+        }
+        Update: {
+          branchId?: string | null
+          sessionId?: string | null
+        }
+        Relationships: []
+      }
       Staff: {
         Row: {
           email: string

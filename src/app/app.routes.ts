@@ -49,15 +49,13 @@ export const routes: Routes = [
   },
   {
     path: APP_ROUTES.SESSIONS_LIST,
-    loadComponent: () =>
-      import("./features/sessions-list/sessions-list.component").then(
-        (c) => c.SessionsListComponent,
-      ),
+    loadChildren: () => import("./features/sessions-list/sessions.routes"),
     data: { layout: "main" },
     canActivate: [
       RoleGuard(["SuperAdmin", "SessionManager"]),
     ],
   },
+  
   {
     path: APP_ROUTES.SCHEDULE_MANAGEMENT,
     loadComponent: () =>

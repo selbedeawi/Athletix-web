@@ -1,0 +1,76 @@
+<section *transloco="let t; prefix: translationTemplate">
+  <div class="d-flex flex-column">
+    <div>
+      <button
+        mat-button
+        class="p-0"
+        color="primary"
+        type="button"
+        [routerLink]="['/', APP_ROUTES.SESSIONS_LIST]"
+      >
+        <mat-icon class="icon-arrow_back"></mat-icon>{{ t("BACK") }}
+      </button>
+    </div>
+
+    <h2 class="mat-headline-medium mb-1">
+      {{
+        session().id ? t("EDIT_SESSION_TITLE") : t("ADD_SESSION_TITLE")
+      }}
+    </h2>
+  </div>
+
+  <mat-divider></mat-divider>
+  <form
+    #sessionForm="ngForm"
+    (ngSubmit)="session().id ? updateSession() : addSession()"
+  >
+    <mat-card class="mt-2 p-0">
+      <mat-card-header>
+        <mat-card-title class="mat-title-medium primary-color mb-3">
+          {{ t("SESSIONS_DETAILS") }}
+        </mat-card-title>
+      </mat-card-header>
+
+      <mat-card-content class="d-flex row gx-3 gy-1">
+        <brdgs-input
+          class="col-12 col-md-6"
+          [isRequired]="true"
+          [label]="t('SESSION_NAME')"
+          [(value)]="session().name"
+          [isRequired]="true"
+          [type]="bridgesInputType.TEXT"
+        ></brdgs-input>
+
+        <brdgs-input
+        class="col-12 col-md-6"
+        [isRequired]="true"
+        [label]="t('SESSION_DESCRIPTION')"
+        [(value)]="session().description"
+        [isRequired]="true"
+        [type]="bridgesInputType.TEXT"
+      ></brdgs-input>
+        <brdgs-select
+          class="col-12 col-md-6"
+          [isRequired]="true"
+          [label]="t('BRANCHES')"
+          [(value)]="session().branchIds"
+          [isRequired]="true"
+          [options]="lookupService.getOptions('Branch') | async"
+          [isMultiple]="true"
+        ></brdgs-select>
+      </mat-card-content>
+    </mat-card>
+
+    <div class="d-flex py-3">
+      <button
+        mat-flat-button
+        type="submit"
+        class="ms-auto"
+        color="primary"
+        [disabled]="sessionForm.invalid || sessionForm.pristine"
+      >
+        {{ session().id ? t("UPDATE_SESSION") : t("ADD_SESSION") }}
+      </button>
+    </div>
+  </form>
+</section>

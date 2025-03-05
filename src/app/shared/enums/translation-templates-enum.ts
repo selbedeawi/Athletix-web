@@ -4,6 +4,7 @@ export enum TranslationTemplates {
   MEMBERSHIP = "Memberships",
   MEMBER = "Member",
   AUTH = "Auth",
+  SESSIONS = "Sessions",
 
   GLOB = "Global",
   // CONFIRM_PASSWORD = 'ConfirmResetPassword',

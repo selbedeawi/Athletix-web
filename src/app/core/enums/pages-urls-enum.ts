@@ -18,6 +18,9 @@ export enum APP_ROUTES {
   STAFF_EDIT = "edit",
 
   SESSIONS_LIST = "sessions-list",
+  SESSION_ADD="session-add",
+  SESSION_EDIT="session-edit",
+
   SCHEDULE_MANAGEMENT = "schedule-management",
   BOOKED_SESSIONS = "booked-sessions",
 
@@ -27,4 +30,5 @@ export enum APP_ROUTES {
   RECEPTIONIST = "RECEPTIONIST",
   COACH = "COACH",
   MEMBER = "MEMBER",
+ADD_SESSION="ADD_SESSION",
 }
