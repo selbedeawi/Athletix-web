@@ -85,7 +85,54 @@ export class MembershipService {
     },
     page: number = 1,
     pageSize: number = 10,
-  ): Observable<any> {
+  ) {
+    const start = (page - 1) * pageSize;
+    const end = start + pageSize - 1;
+
+    let query = this.supabaseService.sb
+      .from("Memberships")
+      .select("*, MembershipBranches(branchId, Branch(name))", {
+        count: "exact",
+      })
+      .order("name", { ascending: true })
+      .range(start, end);
+
+    if (filters.name) {
+      query = query.ilike("name", `%${filters.name}%`);
+    }
+    if (filters.type && filters.type !== "All") {
+      query = query.eq("type", filters.type as MembershipType);
+    }
+    if (filters.branchIds && filters.branchIds.length > 0) {
+      return from(
+        this.supabaseService.sb
+          .from("MembershipBranches")
+          .select("membershipId")
+          .in("branchId", filters.branchIds),
+      ).pipe(
+        switchMap(({ data, error }) => {
+          if (error) {
+            return throwError(() => error);
+          }
+          const membershipIds = data?.map((item) => item.membershipId) || [];
+          if (membershipIds.length === 0) {
+            return from([{ data: [], error: null }]);
+          }
+          return from(query.in("id", membershipIds));
+        }),
+      );
+    }
+    return from(query);
+  }
+  getAllMemberships2(
+    filters: {
+      name?: string;
+      type?: string | null;
+      branchIds?: string[];
+    },
+    page: number = 1,
+    pageSize: number = 10,
+  ) {
     const start = (page - 1) * pageSize;
     const end = start + pageSize - 1;
 

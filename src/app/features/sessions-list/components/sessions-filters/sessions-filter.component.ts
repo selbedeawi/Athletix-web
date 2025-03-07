@@ -58,8 +58,6 @@ export class SessionsFilterComponent {
       .getAllSessions(this.filter, this.pageNumber(), this.pageSize())
       .pipe(finalize(() => this.loading.set(false)))
       .subscribe((res) => {
-        console.log(res);
-
         this.sessions.set(res.data);
         this.originalCount.set(res.count || res.data?.length);
       });

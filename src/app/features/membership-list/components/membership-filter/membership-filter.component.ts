@@ -60,10 +60,10 @@ export class MembershipFilterComponent {
       .getAllMemberships(this.filter, this.pageNumber(), this.pageSize())
       .pipe(finalize(() => this.loading.set(false)))
       .subscribe((res) => {
-        console.log(res);
-
-        this.memberships.set(res.data);
-        this.originalCount.set(res.count || res.data?.length);
+        if (res.data) {
+          this.memberships.set(res.data as any);
+          this.originalCount.set((res as any).count || res.data?.length);
+        }
       });
   }
 

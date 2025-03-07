@@ -11,27 +11,10 @@
     }
   </span>
 
-  <div class="notification-container" [matMenuTriggerFor]="notificationsMenu">
-    <mat-icon class="icon-notifications"></mat-icon>
-    <!-- <span class="notification-badge">2</span> -->
-  </div>
-  <!-- @if(notificationService?.getNotifications() | async; as user){ -->
-  <!-- The Notification Menu -->
-  <mat-menu #notificationsMenu="matMenu">
-    <ng-template matMenuContent>
-      <button mat-menu-item>Notification 1</button>
-      <button mat-menu-item>Notification 2</button>
-    </ng-template>
-  </mat-menu>
-  @if(currentView()!=='phone'){
-
-  <mat-divider
-    class="vertical-divider align-self-stretch mx-3"
-    [vertical]="true"
-  ></mat-divider>
-
-  <!-- Language Selector -->
-  <app-change-lang [isMainlayout]="true"></app-change-lang>
+  @if(currentView()!=='phone'){ @if(userService.currentUser$ | async; as user){
+  @if( !!user?.id){
+  <app-branch-select [staffId]="user.id"></app-branch-select>
+  }}
 
   <mat-divider
     class="vertical-divider align-self-stretch mx-3"

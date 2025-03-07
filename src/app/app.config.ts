@@ -21,8 +21,6 @@ import { TranslocoHttpLoader } from "./transloco-loader";
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
-
-    provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(
       routes,
       withInMemoryScrolling({
@@ -34,12 +32,14 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(),
     provideTransloco({
       config: {
-        availableLangs: ["en"],
+        availableLangs: ["en", "ar"],
         defaultLang: "en",
         // Remove this option if your application doesn't support changing language in runtime.
         reRenderOnLangChange: true,
-        prodMode: true,
-        // !isDevMode(),
+        prodMode: true, //  !isDevMode(),
+        missingHandler: {
+          logMissingKey: false,
+        },
       },
     }),
     provideTranslocoPersistTranslations({
@@ -52,18 +52,7 @@ export const appConfig: ApplicationConfig = {
       provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
       useValue: { appearance: "outline" },
     },
-    provideRouter(routes),
+
     provideAnimationsAsync(),
-    provideHttpClient(),
-    provideTransloco({
-      config: {
-        availableLangs: ["en", "ar"],
-        defaultLang: "en",
-        // Remove this option if your application doesn't support changing language in runtime.
-        reRenderOnLangChange: true,
-        prodMode: !isDevMode(),
-      },
-      loader: TranslocoHttpLoader,
-    }),
   ],
 };

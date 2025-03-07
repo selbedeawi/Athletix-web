@@ -1,0 +1,21 @@
+<button [matMenuTriggerFor]="languageMenu" mat-button color="accent">
+  <div class="d-flex cursor-pointer">
+    <span class="mat-label-large-prominent">{{
+      (branchesService.currentBranch$ | async)?.name
+    }}</span>
+    <!-- <mat-icon class="f-18 on-surface-color arrow_drop_down"></mat-icon> -->
+  </div>
+</button>
+
+<mat-menu #languageMenu="matMenu">
+  <ng-template matMenuContent>
+    @for (item of branchesService.branches$ | async; track $index) {
+    <button
+      mat-menu-item
+      (click)="branchesService.setSelectedBranch(item.value)"
+    >
+      {{ item.value.name }}
+    </button>
+    }
+  </ng-template>
+</mat-menu>

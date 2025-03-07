@@ -4,7 +4,6 @@ import { CanActivateFn, Router } from "@angular/router";
 import { combineLatest, filter, map, take } from "rxjs";
 import { UserService } from "../../services/user/user.service";
 import { roleRouteMapping } from "../../../shared/models/auth.model";
-import { APP_ROUTES } from "../../enums/pages-urls-enum";
 
 export const LoginGuard: CanActivateFn = (route, state) => {
   const userService = inject(UserService);

@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { inject, Injectable } from "@angular/core";
 import {
   AuthChangeEvent,
   AuthSession,
@@ -19,6 +19,7 @@ import {
   switchMap,
   throwError,
 } from "rxjs";
+import { DOCUMENT } from "@angular/common";
 
 @Injectable({
   providedIn: "root",
@@ -34,7 +35,6 @@ export class SupabaseService {
       environment.supabaseKey,
       {
         global: {
-          // Ensure the input type includes URL (and RequestInfo)
           fetch: (input: any, init?: RequestInit) =>
             this.supabaseInterceptor.fetchWrapper(input, init),
         },
@@ -121,21 +121,6 @@ export class SupabaseService {
       }),
     );
   }
-  // signIn(email: string, password: string) {
-  //   return from(this.sb.auth.signInWithPassword({
-  //     email,
-  //     password,
-  //   })).pipe(switchMap((res) => {
-  //
-
-  //     return from(
-  //       this.sb.from("Staff").select().eq(
-  //         "id",
-  //         (res.data.user as any).id,
-  //       ),
-  //     );
-  //   }));
-  // }
 
   async signOut(): Promise<void> {
     const { error } = await this.sb.auth.signOut();
@@ -145,21 +130,3 @@ export class SupabaseService {
     this._session = null;
   }
 }
-// const mo = {
-//   nationalId: "234234324",
-//   phoneNumber: "2342342342",
-//   email: "mohammedzelrais0+2@gmail.com",
-//   password: "As123456",
-//   firstName: "mo1",
-//   lastName: "mo2",
-//   isActive: true,
-
-//   role: AccountType.Coach,
-
-//   dateOfBirth: "12/12/1990", // Stored as ISO date string (YYYY-MM-DD)
-
-//   isFirstTime: false,
-// };
-// return this.supabase.functions.invoke("create-account", {
-//   body: mo,
-// });

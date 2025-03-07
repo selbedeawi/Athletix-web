@@ -23,7 +23,7 @@
     #stepper
     [orientation]="(stepperOrientation$ | async)!"
   >
-    <mat-step [stepControl]="memberForm.control">
+    <mat-step [completed]="member().id">
       <ng-template matStepLabel>{{ t("STP_ACCOUNT_DETAILS") }}</ng-template>
       <form #memberForm="ngForm" (ngSubmit)="addMember()">
         <mat-card class="mt-2 p-0">
@@ -115,87 +115,90 @@
         </div>
       </form>
     </mat-step>
-    <mat-step [stepControl]="memberForm.control">
+    <mat-step [stepControl]="membershipsForm.control">
       <ng-template matStepLabel>{{ t("STP_ACCOUNT_DETAILS") }}</ng-template>
-      <form #memberForm="ngForm" (ngSubmit)="addMember()">
+      <form #membershipsForm="ngForm" (ngSubmit)="addMemberships()">
         <mat-card class="mt-2 p-0">
           <mat-card-header>
             <mat-card-title class="mat-title-medium primary-color mb-3">
-              {{ t("PERSONAL_DETAILS") }}
+              {{ t("MEMBER_MEMBERSHIPS") }}
             </mat-card-title>
           </mat-card-header>
 
           <mat-card-content class="d-flex row gx-3 gy-1">
+            @for (membership of userMemberships(); track $index; let i =$index)
+            {
+            <app-select-membership
+              [(id)]="membership.membershipId"
+              [translationTemplate]="translationTemplate"
+              (membershipChanged)="setMembership(i, $event)"
+            >
+            </app-select-membership>
             <brdgs-input
               class="col-12 col-md-6"
-              [label]="t('FIRST_NAME')"
-              [(value)]="member().firstName"
               [isRequired]="true"
-              [type]="bridgesInputType.TEXT"
-            ></brdgs-input>
-            <brdgs-input
-              class="col-12 col-md-6"
-              [label]="t('LAST_NAME')"
-              [(value)]="member().lastName"
-              [isRequired]="true"
-              [type]="bridgesInputType.TEXT"
-            ></brdgs-input>
-            <brdgs-input
-              class="col-12 col-md-6"
-              [label]="t('MEMBER_ID')"
-              [(value)]="member().memberId"
-              [isRequired]="true"
+              [label]="t('PRICE_PAID')"
+              [(value)]="membership.pricePaid"
               [type]="bridgesInputType.NUMBER"
             ></brdgs-input>
-          </mat-card-content>
-        </mat-card>
-
-        <mat-card class="mt-2 p-0">
-          <mat-card-header>
-            <mat-card-title class="mat-title-medium primary-color mb-3">
-              {{ t("CONTACT_DETAILS") }}
-            </mat-card-title>
-          </mat-card-header>
-
-          <mat-card-content class="d-flex row gx-3 gy-1">
             <brdgs-input
               class="col-12 col-md-6"
-              [label]="t('EMAIL')"
-              [(value)]="member().email"
               [isRequired]="true"
-              [type]="bridgesInputType.EMAIL"
+              [label]="t('FREEZE_PERIOD')"
+              [(value)]="membership.freezePeriod"
+              [type]="bridgesInputType.NUMBER"
             ></brdgs-input>
+            <!-- <brdgs-input
+            class="col-12 col-md-6"
+            [isRequired]="true"
+            [label]="t('DURATION_IN_DAYS')"
+            [(value)]="membership.durationInDays"
+            [type]="bridgesInputType.NUMBER"
+          ></brdgs-input> -->
+            @if(membership.type === 'SessionBased' ||membership.type ===
+            'PrivateCoach'){
             <brdgs-input
               class="col-12 col-md-6"
-              [label]="t('PHONE_NUMBER')"
-              [(value)]="member().phoneNumber"
-              [isRequired]="false"
-              [type]="bridgesInputType.TEXT"
-            ></brdgs-input>
-          </mat-card-content>
-        </mat-card>
-
-        <mat-card class="mt-2 p-0">
-          <mat-card-header>
-            <mat-card-title class="mat-title-medium primary-color mb-3">
-              {{ t("MEMBER_INFO") }}
-            </mat-card-title>
-          </mat-card-header>
-
-          <mat-card-content class="d-flex row gx-3 gy-1">
-            <brdgs-date-picker
-              class="col-12 col-md-6"
-              [label]="t('DATE_OF_BIRTH')"
-              [(value)]="member().dateOfBirth"
               [isRequired]="true"
-            ></brdgs-date-picker>
+              [label]="t('NUMBER_OF_SESSIONS')"
+              [(value)]="membership.numberOfSessions"
+              [type]="bridgesInputType.NUMBER"
+            ></brdgs-input>
+
+            }@else if(membership.type === 'Individual'){
+
             <brdgs-input
               class="col-12 col-md-6"
-              [label]="t('NATIONAL_ID')"
-              [(value)]="member().nationalId"
-              [isRequired]="false"
-              [type]="bridgesInputType.TEXT"
+              [isRequired]="true"
+              [label]="t('NUMBER_OF_INVITATIONS')"
+              [(value)]="membership.numberOfInvitations"
+              [type]="bridgesInputType.NUMBER"
             ></brdgs-input>
+            <brdgs-input
+              class="col-12 col-md-6"
+              [isRequired]="true"
+              [label]="t('NUMBER_OF_VISITS')"
+              [(value)]="membership.numberOfVisits"
+              [type]="bridgesInputType.NUMBER"
+            ></brdgs-input>
+
+            <brdgs-input
+              class="col-12 col-md-6"
+              [isRequired]="true"
+              [label]="t('INBODY_COUNT')"
+              [(value)]="membership.numberOfInBody"
+              [type]="bridgesInputType.NUMBER"
+            ></brdgs-input>
+            <brdgs-input
+              class="col-12 col-md-6"
+              [isRequired]="true"
+              [label]="t('PERSONAL_TRAINER_COUNT')"
+              [(value)]="membership.numberOfPersonalTrainer"
+              [type]="bridgesInputType.NUMBER"
+            ></brdgs-input
+            >}
+            <!--  -->
+            }
           </mat-card-content>
         </mat-card>
 
@@ -205,9 +208,9 @@
             type="submit"
             class="ms-auto"
             color="primary"
-            [disabled]="memberForm.invalid || memberForm.pristine"
+            [disabled]="membershipsForm.invalid || membershipsForm.pristine"
           >
-            {{ t("ADD_MEMBER") }}
+            {{ t("ADD_MEMBER_SHIP") }}
           </button>
         </div>
       </form>

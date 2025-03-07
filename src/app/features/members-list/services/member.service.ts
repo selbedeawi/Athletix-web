@@ -1,13 +1,5 @@
 import { inject, Injectable } from "@angular/core";
-import {
-  catchError,
-  from,
-  map,
-  Observable,
-  of,
-  switchMap,
-  throwError,
-} from "rxjs";
+import { from, map, Observable } from "rxjs";
 import { SupabaseService } from "../../../core/services/supabase/supabase.service";
 import { BEResponse } from "../../../shared/models/shared-models";
 import { MemberAccount } from "../models/member";

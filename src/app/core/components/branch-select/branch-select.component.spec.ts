@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AgeCategoryComponent } from './age-category.component';
+import { BranchSelectComponent } from './branch-select.component';
 
-describe('AgeCategoryComponent', () => {
-  let component: AgeCategoryComponent;
-  let fixture: ComponentFixture<AgeCategoryComponent>;
+describe('BranchSelectComponent', () => {
+  let component: BranchSelectComponent;
+  let fixture: ComponentFixture<BranchSelectComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AgeCategoryComponent]
+      imports: [BranchSelectComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(AgeCategoryComponent);
+    fixture = TestBed.createComponent(BranchSelectComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

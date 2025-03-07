@@ -21,7 +21,7 @@ import { AccountType } from "../../enums/account-type-enum";
 import { TranslocoDirective } from "@jsverse/transloco";
 import { TranslationTemplates } from "../../../shared/enums/translation-templates-enum";
 
-import { ChangeLangComponent } from "../../../shared/ui-components/molecules/change-lang/change-lang.component";
+import { BranchSelectComponent } from "../branch-select/branch-select.component";
 
 @Component({
   selector: "brdgs-sidenav",
@@ -30,14 +30,13 @@ import { ChangeLangComponent } from "../../../shared/ui-components/molecules/cha
     MatButtonModule,
     MatListModule,
     MatDividerModule,
-
     FormsModule,
     RouterModule,
     TranslocoDirective,
     AsyncPipe,
-
     RouterLinkActive,
-    ChangeLangComponent,
+
+    BranchSelectComponent,
   ],
 
   templateUrl: "./sidebar.component.html",

@@ -82,7 +82,7 @@ export class AddSessionComponent {
   addSession() {
     const clone = structuredClone(this.session());
     delete (clone as any).branchIds;
-    console.log(clone);
+
     this.sessionService.createSession(clone, this.session().branchIds)
       .subscribe(
         (res) => {

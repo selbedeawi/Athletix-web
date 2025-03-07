@@ -155,8 +155,6 @@ export class StaffService {
     staffData: StaffAccount,
     branchIds: string[],
   ): Observable<any> {
-    console.log(branchIds);
-
     return from(
       this.supabaseService.sb.rpc("update_staff_with_branches", {
         staff_id: staffId,

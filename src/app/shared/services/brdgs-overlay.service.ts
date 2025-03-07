@@ -1,27 +1,27 @@
-import { Overlay, OverlayRef } from '@angular/cdk/overlay';
-import { ComponentPortal, ComponentType } from '@angular/cdk/portal';
-import { Injectable, InjectionToken, Injector } from '@angular/core';
-import { fromEvent, Subject, take } from 'rxjs';
+import { Overlay, OverlayRef } from "@angular/cdk/overlay";
+import { ComponentPortal, ComponentType } from "@angular/cdk/portal";
+import { Injectable, InjectionToken, Injector } from "@angular/core";
+import { fromEvent, Subject, take } from "rxjs";
 
-export const BRDGS_OVERLAY_DATA = new InjectionToken<any>('BRDGS_OVERLAY_DATA');
+export const BRDGS_OVERLAY_DATA = new InjectionToken<any>("BRDGS_OVERLAY_DATA");
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class BrdgsOverlayService {
   constructor(private overlay: Overlay, private injector: Injector) {}
 
   open<T, D = any>(
     component: ComponentType<T>,
-    data?: D
+    data?: D,
   ): BrdgsOverlayRef<T, D> {
     const overlayRef = this.overlay.create({
-      height: '100vh',
-      maxWidth: '440px',
-      width: '100%',
+      height: "100vh",
+      maxWidth: "440px",
+      width: "100%",
       hasBackdrop: true,
-      panelClass: 'Brdgs-overlay-panel-class',
-      backdropClass: 'Brdgs-overlay-backdrop-class',
+      panelClass: "Brdgs-overlay-panel-class",
+      backdropClass: "Brdgs-overlay-backdrop-class",
       disposeOnNavigation: true,
     });
 
@@ -49,17 +49,15 @@ export class BrdgsOverlayRef<T, D = any> {
   constructor(private overlayRef: OverlayRef) {}
 
   close(result?: any): void {
-    console.log(result);
-
     const element = this.overlayRef.overlayElement;
 
-    fromEvent(element, 'animationend')
+    fromEvent(element, "animationend")
       .pipe(take(1))
       .subscribe(() => {
         this.overlayRef.dispose();
         this.afterClosedSubject.next(result);
         this.afterClosedSubject.complete();
       });
-    element.classList.add('closing');
+    element.classList.add("closing");
   }
 }

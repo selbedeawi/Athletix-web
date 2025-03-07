@@ -68,7 +68,7 @@ export class StaffFilterComponent {
       .getAllStaff(this.filter, this.pageNumber(), this.pageSize())
       .pipe(finalize(() => this.loading.set(false)))
       .subscribe((res) => {
-        console.log(res);
+
 
         this.staff.set(res.data);
         this.originalCount.set(res.count || res.data.length);

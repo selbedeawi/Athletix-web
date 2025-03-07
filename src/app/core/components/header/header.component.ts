@@ -16,6 +16,7 @@ import { Router } from "@angular/router";
 import { NotificationsService } from "../../services/notifications/notifications.service";
 import { ChangeLangComponent } from "../../../shared/ui-components/molecules/change-lang/change-lang.component";
 import { MatIconButton } from "@angular/material/button";
+import { BranchSelectComponent } from "../branch-select/branch-select.component";
 
 @Component({
   selector: "app-header",
@@ -27,6 +28,7 @@ import { MatIconButton } from "@angular/material/button";
     AsyncPipe,
     ChangeLangComponent,
     MatIconButton,
+    BranchSelectComponent,
   ],
   providers: [NotificationsService],
   templateUrl: "./header.component.html",

@@ -52,11 +52,12 @@
 
   @if(currentView() ==='phone') {
 
-  <!-- <mat-divider class=""></mat-divider> -->
-  <!-- Language Selector -->
   <div class="d-flex my-2 mt-auto justify-content-between align-items-center">
-    <h6 class="mat-title-medium primary-color m-0">{{ t("LANGUAGE") }}</h6>
-    <app-change-lang [isMainlayout]="true"></app-change-lang>
+    <h6 class="mat-title-medium primary-color m-0">{{ t("BRANCH") }}</h6>
+
+    @if(userService.currentUser$ | async; as user){ @if( !!user?.id){
+    <app-branch-select [staffId]="user.id"></app-branch-select>
+    }}
   </div>
   <mat-divider class=""></mat-divider>
   <!-- User Info -->

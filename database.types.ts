@@ -9,6 +9,24 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      Banners: {
+        Row: {
+          id: number
+          Name: string | null
+          Url: string | null
+        }
+        Insert: {
+          id?: number
+          Name?: string | null
+          Url?: string | null
+        }
+        Update: {
+          id?: number
+          Name?: string | null
+          Url?: string | null
+        }
+        Relationships: []
+      }
       Branch: {
         Row: {
           id: string
@@ -238,6 +256,30 @@ export type Database = {
           },
         ]
       }
+      Services: {
+        Row: {
+          Contact: string | null
+          Description: string | null
+          id: number
+          ImageUrl: string | null
+          Title: string
+        }
+        Insert: {
+          Contact?: string | null
+          Description?: string | null
+          id?: number
+          ImageUrl?: string | null
+          Title: string
+        }
+        Update: {
+          Contact?: string | null
+          Description?: string | null
+          id?: number
+          ImageUrl?: string | null
+          Title?: string
+        }
+        Relationships: []
+      }
       Sessions: {
         Row: {
           description: string | null
@@ -272,7 +314,22 @@ export type Database = {
           branchId?: string | null
           sessionId?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "SessionsBranches_branchId_fkey"
+            columns: ["branchId"]
+            isOneToOne: false
+            referencedRelation: "Branch"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "SessionsBranches_sessionId_fkey"
+            columns: ["sessionId"]
+            isOneToOne: false
+            referencedRelation: "Sessions"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       Staff: {
         Row: {
@@ -339,73 +396,106 @@ export type Database = {
           branchId: string
           coachId: string | null
           createdAt: string
-          createdBy: number
+          createdBy: string | null
           endDate: string
           freezePeriod: number
+          hasGroupFitness: boolean
+          hasJacuzzi: boolean
+          hasSteam: boolean
+          hasSunna: boolean
           id: string
-          inBodyCount: number
           isActive: boolean
           memberId: string
           membershipId: string
           modifiedAt: string
-          modifiedBy: number
+          modifiedBy: string | null
+          name: string
+          numberOfInBody: number
           numberOfInvitations: number
+          numberOfPersonalTrainer: number
+          numberOfSessions: number | null
           numberOfVisits: number
-          personalTrainerCount: number
           pricePaid: number
           remainingFreezePeriod: number | null
           remainingGroupSessions: number | null
+          remainingInBody: number
+          remainingInvitations: number
+          remainingPersonalTrainer: number
           remainingPTSessions: number | null
+          remainingVisits: number
           salesId: string | null
           startDate: string
+          type: Database["public"]["Enums"]["membership_type"]
         }
         Insert: {
           branchId: string
           coachId?: string | null
           createdAt?: string
-          createdBy: number
+          createdBy?: string | null
           endDate: string
           freezePeriod?: number
+          hasGroupFitness: boolean
+          hasJacuzzi: boolean
+          hasSteam: boolean
+          hasSunna: boolean
           id?: string
-          inBodyCount?: number
           isActive?: boolean
           memberId: string
           membershipId: string
           modifiedAt?: string
-          modifiedBy: number
+          modifiedBy?: string | null
+          name: string
+          numberOfInBody?: number
           numberOfInvitations?: number
+          numberOfPersonalTrainer?: number
+          numberOfSessions?: number | null
           numberOfVisits?: number
-          personalTrainerCount?: number
           pricePaid: number
           remainingFreezePeriod?: number | null
           remainingGroupSessions?: number | null
+          remainingInBody?: number
+          remainingInvitations?: number
+          remainingPersonalTrainer?: number
           remainingPTSessions?: number | null
+          remainingVisits?: number
           salesId?: string | null
           startDate: string
+          type: Database["public"]["Enums"]["membership_type"]
         }
         Update: {
           branchId?: string
           coachId?: string | null
           createdAt?: string
-          createdBy?: number
+          createdBy?: string | null
           endDate?: string
           freezePeriod?: number
+          hasGroupFitness?: boolean
+          hasJacuzzi?: boolean
+          hasSteam?: boolean
+          hasSunna?: boolean
           id?: string
-          inBodyCount?: number
           isActive?: boolean
           memberId?: string
           membershipId?: string
           modifiedAt?: string
-          modifiedBy?: number
+          modifiedBy?: string | null
+          name?: string
+          numberOfInBody?: number
           numberOfInvitations?: number
+          numberOfPersonalTrainer?: number
+          numberOfSessions?: number | null
           numberOfVisits?: number
-          personalTrainerCount?: number
           pricePaid?: number
           remainingFreezePeriod?: number | null
           remainingGroupSessions?: number | null
+          remainingInBody?: number
+          remainingInvitations?: number
+          remainingPersonalTrainer?: number
           remainingPTSessions?: number | null
+          remainingVisits?: number
           salesId?: string | null
           startDate?: string
+          type?: Database["public"]["Enums"]["membership_type"]
         }
         Relationships: [
           {
@@ -423,6 +513,13 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "UserMembership_createdBy_fkey"
+            columns: ["createdBy"]
+            isOneToOne: false
+            referencedRelation: "Staff"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "UserMembership_memberId_fkey"
             columns: ["memberId"]
             isOneToOne: false
@@ -434,6 +531,13 @@ export type Database = {
             columns: ["membershipId"]
             isOneToOne: false
             referencedRelation: "Memberships"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "UserMembership_modifiedBy_fkey"
+            columns: ["modifiedBy"]
+            isOneToOne: false
+            referencedRelation: "Staff"
             referencedColumns: ["id"]
           },
           {

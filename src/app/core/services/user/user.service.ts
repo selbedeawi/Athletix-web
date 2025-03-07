@@ -33,28 +33,29 @@ export class UserService {
         // Subscribe to Supabase auth state changes.
         // This will update the user state whenever the authentication changes.
         this.supabaseService.authChanges(async (_event, session) => {
-          if (session?.user) {
-            // If there is a session, fetch the account details from the "accounts" table
-            const { data: account, error } = await this.supabaseService.sb
-              .from("Staff")
-              .select()
-              .eq("id", session.user.id)
-              .single();
+          setTimeout(async () => {
+            if (session?.user) {
+              // If there is a session, fetch the account details from the "accounts" table
+              const { data: account, error } = await this.supabaseService.sb
+                .from("Staff")
+                .select()
+                .eq("id", session.user.id)
+                .single();
 
-            console.log(account);
-
-            if (error) {
-              console.error("Error fetching account data:", error.message);
-              this.userSubject.next(null);
+              if (error) {
+                console.error("Error fetching account data:", error.message);
+                this.userSubject.next(null);
+              } else {
+                this.userSubject.next(account as StaffAccount);
+              }
+              this.initializedSubject.next(true);
             } else {
-              this.userSubject.next(account as StaffAccount);
+              // If there is no session, clear the user state
+              this.userSubject.next(null);
+              this.initializedSubject.next(true);
             }
-            this.initializedSubject.next(true);
-          } else {
-            // If there is no session, clear the user state
-            this.userSubject.next(null);
-            this.initializedSubject.next(true);
-          }
+          }, 0);
+
           // Mark initialization as complete after each auth change.
         });
         // Initialize the user (check for an existing session)
