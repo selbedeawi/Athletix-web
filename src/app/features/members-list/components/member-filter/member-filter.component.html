@@ -1,1 +1,76 @@
-<p>member-filter works!</p>
+<form
+  #filterForm="ngForm"
+  *transloco="let t; read: translationTemplate"
+  (ngSubmit)="search()"
+>
+  <div class="row gx-3 gy-1">
+    <brdgs-input
+      class="col-12 col-md-4"
+      [label]="t('SEARCH')"
+      [(value)]="filters.searchQuery"
+      [isRequired]="false"
+      [type]="bridgesInputType.TEXT"
+      [prefix]="'icon-search'"
+    ></brdgs-input>
+
+    <brdgs-select
+      class="col-12 col-md-4"
+      [label]="t('MEMBERSHIP_TYPE')"
+      [(value)]="filters.type"
+      [isRequired]="false"
+      [options]="[
+        { key: t('INDIVIDUAL'), value: 'Individual' },
+        { key: t('PRIVATE_COACH'), value: 'PrivateCoach' },
+        { key: t('SESSION_BASED'), value: 'SessionBased' }
+      ]"
+    ></brdgs-select>
+
+    <brdgs-date-picker
+      class="col-12 col-md-4"
+      [label]="t('RENEWAL_DATE')"
+      [(value)]="filters.endDateFrom"
+      [isRequired]="false"
+    ></brdgs-date-picker>
+    <brdgs-date-picker
+      class="col-12 col-md-4"
+      [label]="t('RENEWAL_DATE')"
+      [(value)]="filters.endDateTo"
+      [isRequired]="false"
+    ></brdgs-date-picker>
+
+    <app-select-membership
+      class="col-12 col-md-4"
+      [(id)]="filters.membershipId"
+      [translationTemplate]="translationTemplate"
+      [isRequired]="false"
+      [addAllOption]="true"
+    >
+    </app-select-membership>
+
+    <div class="col-auto ms-auto d-flex flex-wrap">
+      <div>
+        <button
+          mat-stroked-button
+          color="primary"
+          class="me-3 mb-3 mt-1 mb-md-0"
+          type="button"
+          (click)="reset()"
+        >
+          {{ t("RESET") }}
+        </button>
+      </div>
+      <div>
+        <button
+          mat-flat-button
+          cdkFocusInitial
+          color="primary"
+          class="mb-3 mt-1 mb-md-0"
+          type="submit"
+          [disabled]="filterForm.invalid"
+        >
+          {{ t("SEARCH") }}
+        </button>
+      </div>
+    </div>
+  </div>
+</form>

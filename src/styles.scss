@@ -38,25 +38,27 @@ $light-theme: mat.define-theme(
       color: var(--sys-outline-variant),
     )
   );
-  @include mat.list-overrides(
-    (
-      active-indicator-shape: 100px,
-      active-indicator-color: var(--sys-primary-container),
-      list-item-label-text-color: var(--sys-on-primary),
-      list-item-leading-icon-color: var(--sys-on-primary),
-      list-item-leading-icon-start-space: 14px,
-      //
-      list-item-hover-label-text-color: var(--sys-on-primary-container),
-      list-item-hover-leading-icon-color: var(--sys-on-primary-container),
-      list-item-hover-state-layer-color: var(--sys-primary-container),
-      list-item-hover-state-layer-opacity: 0.3,
-      //
-      list-item-focus-label-text-color: var(--sys-on-primary-container),
-      list-item-focus-state-layer-color: var(--sys-primary),
-      list-item-focus-state-layer-opacity: 0.2,
-      list-item-one-line-container-height: 44px,
-    )
-  );
+  .nav-list {
+    @include mat.list-overrides(
+      (
+        active-indicator-shape: 100px,
+        active-indicator-color: var(--sys-primary-container),
+        list-item-label-text-color: var(--sys-on-primary),
+        list-item-leading-icon-color: var(--sys-on-primary),
+        list-item-leading-icon-start-space: 14px,
+        //
+        list-item-hover-label-text-color: var(--sys-on-primary-container),
+        list-item-hover-leading-icon-color: var(--sys-on-primary-container),
+        list-item-hover-state-layer-color: var(--sys-primary-container),
+        list-item-hover-state-layer-opacity: 0.3,
+        //
+        list-item-focus-label-text-color: var(--sys-on-primary-container),
+        list-item-focus-state-layer-color: var(--sys-primary),
+        list-item-focus-state-layer-opacity: 0.2,
+        list-item-one-line-container-height: 44px,
+      )
+    );
+  }
 
   @include mat.sidenav-overrides(
     (
@@ -65,13 +67,28 @@ $light-theme: mat.define-theme(
       content-background-color: var(--sys-background),
     )
   );
+  @include mat.core-overrides(
+    (
+      option-selected-state-layer-color: var(--sys-surface-container-highest),
+      option-selected-state-label-text-color: var(--sys-on-surface),
+    )
+  );
+  @include mat.select-overrides(
+    (
+      panel-background-color: var(--sys-surface-bright),
+    )
+  );
 
+  @include mat.dialog-overrides(
+    (
+      container-color: var(--sys-surface-container-lowest),
+    )
+  );
   @include mat.button-overrides(
     (
-      filled-container-shape: 4px,
-      outlined-container-shape: 4px,
-      protected-container-shape: 4px,
-      text-container-shape: 4px,
+      filled-container-color: var(--sys-primary-container),
+      outlined-label-text-color: var(--sys-primary-container),
+      outlined-outline-color: var(--sys-primary-container),
     )
   );
 
@@ -135,11 +152,11 @@ $light-theme: mat.define-theme(
     border: 1px solid var(--sys-surface-variant) !important;
   }
 
-  @include mat.menu-overrides(
-    (
-      container-color: var(--sys-surface-container-lowest),
-    )
-  );
+  // @include mat.menu-overrides(
+  //   (
+  //     // container-color: var(--sys-surface-container-lowest),
+  //   )
+  // );
 }
 @media only screen and (min-width: 768px) and (max-width: 991px) {
   .container-md,

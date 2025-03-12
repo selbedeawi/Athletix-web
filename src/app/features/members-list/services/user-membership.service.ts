@@ -39,6 +39,35 @@ export class UserMembershipService {
   }
 
   /**
+   * Retrieve a user membership record by ID.
+   * @param id The user membership ID.
+   * @returns Observable emitting the UserMembership details.
+   */
+  getMembershipByUserId(
+    memberId: string,
+    isActive?: boolean,
+    isFreeze?: boolean,
+  ) {
+    let query = this.supabaseService.sb
+      .from("UserMembership")
+      .select("*, Members(*)")
+      .eq("memberId", memberId);
+
+    if (typeof isActive === "boolean") {
+      query.eq("isActive", isActive);
+    }
+    if (typeof isFreeze === "boolean") {
+      query.eq("isFreeze", isFreeze);
+    }
+
+    return from(
+      query,
+    ).pipe(
+      map((res) => res.data),
+    );
+  }
+
+  /**
    * Retrieve paginated user membership records with optional filters.
    * @param filters Filtering parameters.
    * @param page Page number (starting from 1).

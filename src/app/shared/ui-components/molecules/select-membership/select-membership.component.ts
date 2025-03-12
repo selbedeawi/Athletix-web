@@ -16,6 +16,8 @@ import { TranslocoDirective } from "@jsverse/transloco";
 export class SelectMembershipComponent {
   translationTemplate = input.required<TranslationTemplates>();
   id = model.required<string>();
+  isRequired = input(true);
+  addAllOption = input(false);
   membershipService = inject(MembershipService);
   branchesService = inject(BranchesService);
   private destroyed$ = new Subject<void>();
@@ -37,9 +39,14 @@ export class SelectMembershipComponent {
         }).subscribe((res) => {
           if (res.data) {
             this.memberships = [...res.data] as any;
-            this.membershipsOptions.set(res.data.map((m) => {
+
+            const mShips = res.data.map((m) => {
               return { key: m.name, value: m.id, option: m as Memberships };
-            }));
+            });
+            if (this.addAllOption()) {
+              mShips.unshift({ key: "ALL", value: "All" } as any);
+            }
+            this.membershipsOptions.set(mShips);
           }
         });
       });

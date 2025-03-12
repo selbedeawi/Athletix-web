@@ -1,0 +1,65 @@
+<ng-container *transloco="let t; prefix: translationTemplate()">
+  <app-select-membership
+    [(id)]="membership().membershipId"
+    [translationTemplate]="translationTemplate()"
+    (membershipChanged)="setMembership($event)"
+  >
+  </app-select-membership>
+  <brdgs-input
+    class="col-12 col-md-6"
+    [isRequired]="true"
+    [label]="t('PRICE_PAID')"
+    [(value)]="membership().pricePaid"
+    [type]="bridgesInputType.NUMBER"
+  ></brdgs-input>
+  <brdgs-input
+    class="col-12 col-md-6"
+    [isRequired]="true"
+    [label]="t('FREEZE_PERIOD')"
+    [(value)]="membership().freezePeriod"
+    [type]="bridgesInputType.NUMBER"
+  ></brdgs-input>
+
+  @if(membership().type === 'SessionBased' ||membership().type ===
+  'PrivateCoach'){
+  <brdgs-input
+    class="col-12 col-md-6"
+    [isRequired]="true"
+    [label]="t('NUMBER_OF_SESSIONS')"
+    [(value)]="membership().numberOfSessions"
+    [type]="bridgesInputType.NUMBER"
+  ></brdgs-input>
+
+  }@else if(membership().type === 'Individual'){
+
+  <brdgs-input
+    class="col-12 col-md-6"
+    [isRequired]="true"
+    [label]="t('NUMBER_OF_INVITATIONS')"
+    [(value)]="membership().numberOfInvitations"
+    [type]="bridgesInputType.NUMBER"
+  ></brdgs-input>
+  <brdgs-input
+    class="col-12 col-md-6"
+    [isRequired]="true"
+    [label]="t('NUMBER_OF_VISITS')"
+    [(value)]="membership().numberOfVisits"
+    [type]="bridgesInputType.NUMBER"
+  ></brdgs-input>
+
+  <brdgs-input
+    class="col-12 col-md-6"
+    [isRequired]="true"
+    [label]="t('INBODY_COUNT')"
+    [(value)]="membership().numberOfInBody"
+    [type]="bridgesInputType.NUMBER"
+  ></brdgs-input>
+  <brdgs-input
+    class="col-12 col-md-6"
+    [isRequired]="true"
+    [label]="t('PERSONAL_TRAINER_COUNT')"
+    [(value)]="membership().numberOfPersonalTrainer"
+    [type]="bridgesInputType.NUMBER"
+  ></brdgs-input
+  >}
+</ng-container>

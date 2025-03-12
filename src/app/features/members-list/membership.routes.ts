@@ -25,6 +25,45 @@ export default [
       import(
         "./components/edit-member/edit-member.component"
       ).then((c) => c.EditMemberComponent),
-    // canActivate: [authGuard],
+    children: [
+      {
+        path: "",
+        redirectTo: APP_ROUTES.MEMBER_PROFILE,
+        pathMatch: "full",
+      },
+      {
+        path: APP_ROUTES.MEMBER_PROFILE,
+        loadComponent: () =>
+          import(
+            "./components/member-profile/member-profile.component"
+          ).then((c) => c.MemberProfileComponent),
+        data: {
+          route: APP_ROUTES.MEMBER_PROFILE,
+          label: "MEMBER_PROFILE",
+        },
+      },
+      {
+        path: APP_ROUTES.MEMBER_MEMBERSHIPS,
+        loadComponent: () =>
+          import(
+            "./components/member-active-membership/member-active-membership.component"
+          ).then((c) => c.MemberActiveMembershipComponent),
+        data: {
+          route: APP_ROUTES.MEMBER_MEMBERSHIPS,
+          label: "MEMBER_MEMBERSHIPS",
+        },
+      },
+      {
+        path: APP_ROUTES.MEMBER_HISTORY,
+        loadComponent: () =>
+          import(
+            "./components/member-membership-history/member-membership-history.component"
+          ).then((c) => c.MemberMembershipHistoryComponent),
+        data: {
+          route: APP_ROUTES.MEMBER_HISTORY,
+          label: "MEMBER_HISTORY",
+        },
+      },
+    ],
   },
 ] satisfies Route[];

@@ -1,1 +1,42 @@
-<p>edit-member works!</p>
+<section *transloco="let t; prefix: translationTemplates">
+  <div class="d-flex flex-column">
+    <div class="col-12">
+      <button
+        mat-button
+        class="p-0"
+        color="primary"
+        type="button"
+        [routerLink]="['/', APP_ROUTES.MEMBERS_LIST]"
+      >
+        <mat-icon class="icon-arrow_back"></mat-icon>{{ t("BACK") }}
+      </button>
+    </div>
+    <div class="col-12 d-flex flex-wrap">
+      <h2 class="mat-headline-small primary-color mb-1">
+        {{ t("DETAILS_TITLE") }}
+      </h2>
+    </div>
+  </div>
+  <nav mat-tab-nav-bar [tabPanel]="tabPanel" [mat-stretch-tabs]="false">
+    @for (tab of navLinks; track $index) {
+    <span
+      mat-tab-link
+      [routerLink]="[
+        '/',
+        APP_ROUTES.MEMBERS_LIST,
+        APP_ROUTES.MEMBERS_EDIT,
+        id(),
+        tab.route
+      ]"
+      routerLinkActive
+      #rla="routerLinkActive"
+      [active]="rla.isActive"
+    >
+      {{ t(tab.label) }}
+    </span>
+    }
+  </nav>
+  <mat-tab-nav-panel #tabPanel>
+    <router-outlet></router-outlet>
+  </mat-tab-nav-panel>
+</section>

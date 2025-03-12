@@ -8,6 +8,8 @@
     name="{{ rondom }}-{{ label() }}"
     [disabled]="isDisabled()"
     [matDatepicker]="picker"
+    [min]="datePickerMin()"
+    [max]="datePickerMax()"
   />
   <mat-hint>MM/DD/YYYY</mat-hint>
   <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>

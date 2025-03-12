@@ -50,9 +50,15 @@ export class MemberService {
    */
   getAllMembers(
     filters: {
-      name?: string;
-      isActive?: boolean | "All";
-      branchIds?: string[];
+      searchQuery?: string;
+      branchId?: string;
+      membershipId?: string;
+      type?: "Individual" | "PrivateCoach" | "SessionBased";
+      endDateFrom?: string;
+      endDateTo?: string;
+      createdFrom?: string;
+      createdTo?: string;
+      isActive?: boolean;
     },
     page: number = 1,
     pageSize: number = 10,
@@ -60,21 +66,52 @@ export class MemberService {
     const start = (page - 1) * pageSize;
     const end = start + pageSize - 1;
 
-    let query = this.supabaseService.sb.from("Members").select("*", {
-      count: "exact",
-    });
+    let query = this.supabaseService.sb
+      .from("Members")
+      .select("*, UserMembership(*)", { count: "exact" });
 
-    if (filters.name) {
-      query = query.ilike("firstName", `%${filters.name}%`).or(
-        `lastName.ilike.%${filters.name}%`,
+    // .select("*, UserMembership!inner(*)", { count: "exact" });
+    // Apply search filter across multiple fields
+    if (filters.searchQuery) {
+      query = query.or(
+        `firstName.ilike.%${filters.searchQuery}%,lastName.ilike.%${filters.searchQuery}%,memberId.ilike.%${filters.searchQuery}%,nationalId.ilike.%${filters.searchQuery}%,phoneNumber.ilike.%${filters.searchQuery}%`,
       );
     }
-    if (filters.isActive !== undefined && filters.isActive !== "All") {
-      query = query.eq("isActive", filters.isActive);
+
+    // Filter by branchId if provided
+    if (filters.branchId) {
+      query = query.eq("UserMembership.branchId", filters.branchId);
     }
-    if (filters.branchIds && filters.branchIds.length > 0) {
-      query = query.in("branchId", filters.branchIds);
+
+    // Filter by membershipId if provided
+    if (filters.membershipId) {
+      query = query.eq("UserMembership.membershipId", filters.membershipId);
     }
+
+    // Filter by type if provided
+    if (filters.type) {
+      query = query.eq("UserMembership.type", filters.type);
+    }
+
+    if (filters.endDateFrom) {
+      query = query.gte("UserMembership.endDate", filters.endDateFrom);
+    }
+    if (filters.endDateTo) {
+      query = query.lte("UserMembership.endDate", filters.endDateTo);
+    }
+    if (filters.endDateFrom) {
+      query = query.gte("UserMembership.endDate", filters.endDateFrom);
+    }
+    if (filters.endDateTo) {
+      query = query.lte("UserMembership.endDate", filters.endDateTo);
+    }
+    if (filters.createdFrom) {
+      query = query.gte("UserMembership.createdAt", filters.createdFrom);
+    }
+    if (filters.createdTo) {
+      query = query.lte("UserMembership.createdAt", filters.createdTo);
+    }
+
     query = query.range(start, end);
     return from(query) as any;
   }

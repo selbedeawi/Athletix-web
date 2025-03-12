@@ -11,12 +11,11 @@ import { APP_ROUTES } from "../../enums/pages-urls-enum";
 })
 export class UserService {
   private supabaseService = inject(SupabaseService);
-  // A BehaviorSubject to hold the current user (or null if not logged in)
+
   private userSubject = new BehaviorSubject<StaffAccount | null>(null);
-  // Expose the user as an observable for components to subscribe to
+
   public currentUser$ = this.userSubject.asObservable();
 
-  // A subject to signal when initialization is complete.
   private initializedSubject = new BehaviorSubject<boolean>(false);
   public initialized$ = this.initializedSubject.asObservable();
 
@@ -35,7 +34,6 @@ export class UserService {
         this.supabaseService.authChanges(async (_event, session) => {
           setTimeout(async () => {
             if (session?.user) {
-              // If there is a session, fetch the account details from the "accounts" table
               const { data: account, error } = await this.supabaseService.sb
                 .from("Staff")
                 .select()
@@ -50,7 +48,6 @@ export class UserService {
               }
               this.initializedSubject.next(true);
             } else {
-              // If there is no session, clear the user state
               this.userSubject.next(null);
               this.initializedSubject.next(true);
             }
