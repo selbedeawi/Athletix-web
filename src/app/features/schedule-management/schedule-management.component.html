@@ -1,1 +1,43 @@
-<p>schedule-management works!</p>
+<div class="p-3">
+  <app-schedule-calendar-header
+    [view]="view"
+    [(viewDate)]="viewDate"
+  ></app-schedule-calendar-header>
+</div>
+
+<ng-template #customCellTemplate let-day="day" let-locale="locale">
+  <div class="cal-cell-top">
+    <span class="cal-day-badge" *ngIf="day.badgeTotal > 0">{{
+      day.badgeTotal
+    }}</span>
+    <span
+      class="m-2 float-start mat-label-large on-secondary-container-color"
+      >{{ day.date | calendarDate : "monthViewDayNumber" : locale }}</span
+    >
+  </div>
+  <small style="margin: 5px"
+    >There are {{ day.events.length }} events on this day</small
+  >
+</ng-template>
+
+<div [ngSwitch]="view">
+  <mwl-calendar-month-view
+    *ngSwitchCase="'month'"
+    [viewDate]="viewDate"
+    [events]="events"
+    [cellTemplate]="customCellTemplate"
+  >
+  </mwl-calendar-month-view>
+  <mwl-calendar-week-view
+    *ngSwitchCase="'week'"
+    [viewDate]="viewDate"
+    [events]="events"
+  >
+  </mwl-calendar-week-view>
+  <mwl-calendar-day-view
+    *ngSwitchCase="'day'"
+    [viewDate]="viewDate"
+    [events]="events"
+  >
+  </mwl-calendar-day-view>
+</div>

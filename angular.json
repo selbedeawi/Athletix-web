@@ -54,6 +54,7 @@
               "src/styles.scss",
               "./node_modules/bootstrap/scss/bootstrap-grid.scss",
               "./node_modules/bootstrap/scss/bootstrap-utilities.scss",
+              "./node_modules/angular-calendar/css/angular-calendar.css",
               "src/styles/theme.scss",
               "src/styles/typography.scss",
               "src/styles/_template.scss",
@@ -124,5 +125,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": false
   }
 }

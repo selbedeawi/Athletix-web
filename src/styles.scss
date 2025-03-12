@@ -2,6 +2,7 @@
 // For more information: https://material.angular.io/guide/theming
 
 @use "@angular/material" as mat;
+@import "../node_modules/angular-calendar/css/angular-calendar.css";
 
 $light-theme: mat.define-theme(
   (
@@ -455,4 +456,39 @@ h6 {
   // right: 0;
   background-color: #fff;
   box-shadow: 0px 0px 24px rgba(0, 0, 0, 0.25);
+}
+
+// calendar Override styles
+.cal-month-view {
+  .cal-header {
+    color: var(--sys-surface-container-lowest) !important;
+    background-color: var(--sys-on-secondary-fixed) !important;
+    padding: 12px 0;
+    line-height: var(--sys-body-small-line-height);
+    font-size: var(--sys-body-small-size);
+    letter-spacing: var(--sys-body-small-tracking);
+    font-weight: var(--sys-body-small-weight);
+  }
+  .cal-header:hover {
+    color: var(--sys-surface-container-lowest) !important;
+    background-color: var(--sys-on-secondary-fixed) !important;
+  }
+  .cal-cell-row .cal-cell:hover {
+    background-color: transparent !important;
+  }
+  .cal-cell-top {
+    min-height: 20px !important;
+    max-height: 25px !important;
+  }
+  .cal-day-cell {
+    min-height: 148px !important;
+  }
+  .cal-day-cell.cal-out-month {
+    background-color: var(--sys-secondary-95) !important;
+  }
+  .cal-cell-top .cal-day-cell.cal-today .cal-day-number {
+    font-size: var(--sys-label-large-size) !important;
+    background-color: var(--sys-primary-container) !important;
+    color: var(--sys-surface-container-lowest) !important;
+  }
 }
