@@ -1,0 +1,82 @@
+<div class="d-flex justify-content-between align-items-center gap-3">
+  <div class="rounded-8 d-flex gap-2 align-items-center">
+    <!-- date badge -->
+    <div
+      class="rounded-8 overflow-hidden border-secondary-1"
+      style="width: 60px; max-height: fit-content"
+    >
+      <p
+        class="m-0 py-1 mat-label-large text-center surface-container-lowest-color bg-primary-container"
+      >
+        {{ viewDate() | date : "MMM" }}
+      </p>
+      <p
+        class="m-0 py-1 mat-title-medium text-center bg-surface-container-lowest"
+      >
+        {{ viewDate() | date : "dd" }}
+      </p>
+    </div>
+    <div class="d-flex flex-column align-items-start">
+      <p class="m-0 mat-title-medium">{{ viewDate() | date : "MMMM yyyy" }}</p>
+      <p class="m-0 mat-body-medium secoundry-color">
+        <span> {{ MonthStart() | date : "MMM d ,yyyy" }}</span>
+        <span> - </span>
+        <span>{{ MonthEnd() | date : "MMM d ,yyyy" }}</span>
+      </p>
+    </div>
+  </div>
+  <div class="d-flex justify-content-center align-items-center gap-3">
+    <div
+      class="d-flex justify-content-center align-items-center width-fit border-primary-container-1 rounded-circle cursor-pointer"
+      mwlCalendarPreviousView
+      [view]="view()"
+      [(viewDate)]="viewDate"
+      (viewDateChange)="viewDateChange.emit(viewDate())"
+    >
+      <i class="icon-navigate_before primary-container-color f-24"></i>
+    </div>
+    <div
+      class="m-0 mat-title-medium primary-container-color"
+      mwlCalendarToday
+      [(viewDate)]="viewDate"
+      (viewDateChange)="viewDateChange.emit(viewDate())"
+    >
+      Today
+    </div>
+    <div
+      class="d-flex justify-content-center align-items-center width-fit border-primary-container-1 rounded-circle cursor-pointer"
+      mwlCalendarNextView
+      [view]="view()"
+      [(viewDate)]="viewDate"
+      (viewDateChange)="viewDateChange.emit(viewDate())"
+    >
+      <i class="icon-navigate_next primary-container-color f-24"></i>
+    </div>
+  </div>
+
+  <!-- <div class="col-md-4">
+    <div class="btn-group">
+     <div
+        class="btn btn-primary"
+        (click)="viewChange.emit(CalendarView.Month)"
+        [class.active]="view() === CalendarView.Month"
+      >
+        Month
+      </div> 
+      <div
+            class="btn btn-primary"
+            (click)="viewChange.emit(CalendarView.Week)"
+            [class.active]="view() === CalendarView.Week"
+          >
+            Week
+          </div>
+          <div
+            class="btn btn-primary"
+            (click)="viewChange.emit(CalendarView.Day)"
+            [class.active]="view() === CalendarView.Day"
+          >
+            Day
+          </div> 
+    </div>
+  </div> -->
+</div>
