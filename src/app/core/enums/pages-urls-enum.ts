@@ -10,6 +10,9 @@ export enum APP_ROUTES {
   MEMBERS_LIST = "members",
   MEMBERS_ADD = "add",
   MEMBERS_EDIT = "edit",
+  MEMBER_PROFILE = "profile",
+  MEMBER_MEMBERSHIPS = "memberships",
+  MEMBER_HISTORY = "history",
   MEMBERSHIP_LIST = "memberships",
   ADD_MEMBERSHIP = "add",
   MEMBERSHIP_EDIT = "edit",
@@ -18,8 +21,8 @@ export enum APP_ROUTES {
   STAFF_EDIT = "edit",
 
   SESSIONS_LIST = "sessions-list",
-  SESSION_ADD="session-add",
-  SESSION_EDIT="session-edit",
+  SESSION_ADD = "session-add",
+  SESSION_EDIT = "session-edit",
 
   SCHEDULE_MANAGEMENT = "schedule-management",
   BOOKED_SESSIONS = "booked-sessions",
@@ -30,5 +33,5 @@ export enum APP_ROUTES {
   RECEPTIONIST = "RECEPTIONIST",
   COACH = "COACH",
   MEMBER = "MEMBER",
-ADD_SESSION="ADD_SESSION",
+  ADD_SESSION = "ADD_SESSION",
 }

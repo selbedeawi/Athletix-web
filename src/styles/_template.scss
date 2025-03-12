@@ -88,9 +88,9 @@
 //   background-color: var(--sys-on-primary);
 // }
 
-// .primary-container-color {
-//   color: var(--sys-primary-container);
-// }
+.primary-container-color {
+  color: var(--sys-primary-container);
+}
 // .bg-primary-container {
 //   background-color: var(--sys-primary-container) !important;
 // }
@@ -109,9 +109,9 @@
 //   background-color: var(--sys-secondary);
 // }
 
-// .on-secondary-color {
-//   color: var(--sys-on-secondary);
-// }
+.on-secondary-color {
+  color: var(--sys-on-secondary) !important;
+}
 // .bg-on-secondary {
 //   background-color: var(--sys-on-secondary);
 // }
@@ -119,9 +119,9 @@
 .secondary-container-color {
   color: var(--sys-secondary-container) !important;
 }
-// .bg-secondary-container {
-//   background-color: var(--sys-secondary-container) !important;
-// }
+.bg-secondary-container {
+  background-color: var(--sys-secondary-container) !important;
+}
 
 .on-secondary-container-color {
   color: var(--sys-on-secondary-container) !important;
@@ -154,9 +154,9 @@
 // .on-tertiary-container-color {
 //   color: var(--sys-on-tertiary-container);
 // }
-// .bg-on-tertiary-container {
-//   background-color: var(--sys-on-tertiary-container);
-// }
+.bg-on-tertiary-container {
+  background-color: var(--sys-on-tertiary-container) !important;
+}
 
 .error-color {
   color: var(--sys-error);

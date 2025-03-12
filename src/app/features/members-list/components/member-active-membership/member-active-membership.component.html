@@ -1,0 +1,114 @@
+<ng-container *transloco="let t; prefix: translationTemplate">
+  <h4 class="mat-title-large mt-3 d-flex flex-wrap">
+    <span
+      >{{ t("TITLE_MEMBERSHIP_COUNT") }} ({{ userMembership().length }})</span
+    >
+    <div class="ms-auto">
+      <button mat-flat-button (click)="addMembership()">
+        {{ t("FREEZE") }}
+      </button>
+    </div>
+  </h4>
+
+  @for (membership of userMembership(); track $index) {
+  <mat-card class="mt-2 p-0 bg-on-tertiary-container">
+    <mat-card-header class="d-flex flex-wrap align-items-center mb-3">
+      <span class="mat-title-medium primary-container-color">
+        {{ membership.name }}
+      </span>
+      <div class="ms-auto">
+        <button class="me-2" mat-stroked-button (click)="cancel()">
+          {{ t("CANCEL") }}
+        </button>
+        <button class="me-2" mat-stroked-button (click)="renew()">
+          {{ t("RENEW") }}
+        </button>
+        @if(membership.isFreeze){
+        <button mat-flat-button (click)="unFreeze(membership)">
+          {{ t("UN_FREEZE") }}
+        </button>
+        }@else {
+        <button mat-flat-button (click)="freeze(membership)">
+          {{ t("FREEZE") }}
+        </button>
+        }
+      </div>
+    </mat-card-header>
+
+    <mat-card-content class="d-flex row gx-3 gy-1">
+      <div class="col-12 col-md-6 d-flex flex-column mb-2">
+        <span class="mat-title-medium primary-color">{{
+          t("PRICE_PAID")
+        }}</span>
+
+        <span class="mat-body-large">
+          {{ membership.pricePaid | currency : "EGP" }}
+        </span>
+      </div>
+      <div class="col-12 col-md-6 d-flex flex-column mb-2">
+        <span class="mat-title-medium primary-color">{{
+          t("FREEZE_PERIOD")
+        }}</span>
+
+        <span class="mat-body-large"> {{ membership.freezePeriod }} Day </span>
+      </div>
+      <div class="col-12 col-md-6 d-flex flex-column mb-2">
+        <span class="mat-title-medium primary-color">{{
+          t("FREEZE_PERIOD")
+        }}</span>
+
+        <span class="mat-body-large"> {{ membership.freezePeriod }} Day </span>
+      </div>
+      @if(membership.type === 'SessionBased' ||membership.type ===
+      'PrivateCoach'){
+      <div class="col-12 col-md-6 d-flex flex-column mb-2">
+        <span class="mat-title-medium primary-color">{{
+          t("NUMBER_OF_SESSIONS")
+        }}</span>
+
+        <span class="mat-body-large">
+          {{ membership.numberOfSessions }}
+        </span>
+      </div>
+      }@else if(membership.type === 'Individual'){
+      <div class="col-12 col-md-6 d-flex flex-column mb-2">
+        <span class="mat-title-medium primary-color">{{
+          t("NUMBER_OF_INVITATIONS")
+        }}</span>
+
+        <span class="mat-body-large">
+          {{ membership.numberOfInvitations }}
+        </span>
+      </div>
+      <div class="col-12 col-md-6 d-flex flex-column mb-2">
+        <span class="mat-title-medium primary-color">{{
+          t("NUMBER_OF_VISITS")
+        }}</span>
+
+        <span class="mat-body-large">
+          {{ membership.numberOfVisits }}
+        </span>
+      </div>
+      <div class="col-12 col-md-6 d-flex flex-column mb-2">
+        <span class="mat-title-medium primary-color">{{
+          t("NUMBER_OF_INBODY")
+        }}</span>
+
+        <span class="mat-body-large">
+          {{ membership.numberOfInBody }}
+        </span>
+      </div>
+      <div class="col-12 col-md-6 d-flex flex-column mb-2">
+        <span class="mat-title-medium primary-color">{{
+          t("NUMBER_OF_PT")
+        }}</span>
+
+        <span class="mat-body-large">
+          {{ membership.numberOfPersonalTrainer }}
+        </span>
+      </div>
+      }
+    </mat-card-content>
+  </mat-card>
+  }
+</ng-container>

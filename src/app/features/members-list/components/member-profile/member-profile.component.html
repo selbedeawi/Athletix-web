@@ -1,0 +1,22 @@
+<form
+  *transloco="let t; prefix: translationTemplate"
+  #memberForm="ngForm"
+  (ngSubmit)="update()"
+>
+  <app-member-form
+    [translationTemplate]="translationTemplate"
+    [(member)]="member"
+  ></app-member-form>
+  <div class="d-flex py-3">
+    <button
+      mat-flat-button
+      type="submit"
+      class="ms-auto"
+      color="primary"
+      matStepperNext
+      [disabled]="memberForm.invalid || memberForm.pristine"
+    >
+      {{ t("ADD_MEMBER") }}
+    </button>
+  </div>
+</form>

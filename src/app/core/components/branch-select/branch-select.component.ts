@@ -16,7 +16,6 @@ import { MatButtonModule } from "@angular/material/button";
     AsyncPipe,
     MatButtonModule,
     MatMenuModule,
-    MatIcon,
   ],
   templateUrl: "./branch-select.component.html",
   styleUrl: "./branch-select.component.scss",

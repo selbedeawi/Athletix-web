@@ -4,7 +4,7 @@ export class MemberAccount implements Tables<"Members"> {
   id!: string;
   firstName!: string;
   lastName!: string;
-  memberId!: number;
+  memberId!: string | null;
 
   role: "Member" = "Member";
 
@@ -19,7 +19,8 @@ export class MemberAccount implements Tables<"Members"> {
 
   isActive!: boolean;
   createdBy!: string;
-
+  //FE
+  UserMembership!: UserMembership[];
   constructor() {
   }
 }
@@ -65,7 +66,11 @@ export class UserMembership implements Tables<"UserMembership"> {
   remainingPersonalTrainer!: number;
   remainingVisits!: number;
   type!: "Individual" | "PrivateCoach" | "SessionBased";
-  constructor(memberId: string) {
-    this.memberId = memberId;
-  }
+  freezeEnd!: string | null;
+  freezeStart!: string | null;
+  isCanceled!: boolean;
+  isFreeze!: boolean;
+
+  // FE only
+  Members!: MemberAccount;
 }

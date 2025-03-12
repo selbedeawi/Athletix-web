@@ -4,24 +4,24 @@ import {
   input,
   model,
   viewChild,
-} from '@angular/core';
+} from "@angular/core";
 import {
   ControlContainer,
   FormsModule,
   NgForm,
   NgModel,
   Validators,
-} from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { provideNativeDateAdapter } from '@angular/material/core';
-import { JsonPipe } from '@angular/common';
-import { TranslocoDirective } from '@jsverse/transloco';
-import { TranslationTemplates } from '../../../enums/translation-templates-enum';
+} from "@angular/forms";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatInputModule } from "@angular/material/input";
+import { MatDatepickerModule } from "@angular/material/datepicker";
+import { provideNativeDateAdapter } from "@angular/material/core";
+import { JsonPipe } from "@angular/common";
+import { TranslocoDirective } from "@jsverse/transloco";
+import { TranslationTemplates } from "../../../enums/translation-templates-enum";
 
 @Component({
-  selector: 'brdgs-date-picker',
+  selector: "brdgs-date-picker",
   imports: [
     MatFormFieldModule,
     MatDatepickerModule,
@@ -29,8 +29,8 @@ import { TranslationTemplates } from '../../../enums/translation-templates-enum'
     FormsModule,
     TranslocoDirective,
   ],
-  templateUrl: './date-picker.component.html',
-  styleUrl: './date-picker.component.scss',
+  templateUrl: "./date-picker.component.html",
+  styleUrl: "./date-picker.component.scss",
   providers: [provideNativeDateAdapter()],
   changeDetection: ChangeDetectionStrategy.OnPush,
   viewProviders: [{ provide: ControlContainer, useExisting: NgForm }],
@@ -39,7 +39,7 @@ export class DatePickerComponent {
   rondom = Math.random();
   translationTemplate = input<TranslationTemplates>(TranslationTemplates.GLOB);
 
-  public ngModel = viewChild.required<NgModel>('valueInput');
+  public ngModel = viewChild.required<NgModel>("valueInput");
   // Input properties
   public isRequired = input.required<boolean>();
   public label = input.required<string>();
@@ -48,6 +48,8 @@ export class DatePickerComponent {
   public placeholder = input<string>();
   public value = model<Date | string | number | null>();
 
+  public datePickerMax = input<string | null>(null);
+  public datePickerMin = input<string | null>(null);
   ngAfterViewInit() {
     const validationArray = [];
     if (this.isRequired()) {

@@ -23,84 +23,13 @@
     #stepper
     [orientation]="(stepperOrientation$ | async)!"
   >
-    <mat-step [completed]="member().id">
+    <mat-step [stepControl]="memberForm.control">
       <ng-template matStepLabel>{{ t("STP_ACCOUNT_DETAILS") }}</ng-template>
-      <form #memberForm="ngForm" (ngSubmit)="addMember()">
-        <mat-card class="mt-2 p-0">
-          <mat-card-header>
-            <mat-card-title class="mat-title-medium primary-color mb-3">
-              {{ t("PERSONAL_DETAILS") }}
-            </mat-card-title>
-          </mat-card-header>
-
-          <mat-card-content class="d-flex row gx-3 gy-1">
-            <brdgs-input
-              class="col-12 col-md-6"
-              [label]="t('FIRST_NAME')"
-              [(value)]="member().firstName"
-              [isRequired]="true"
-              [type]="bridgesInputType.TEXT"
-            ></brdgs-input>
-            <brdgs-input
-              class="col-12 col-md-6"
-              [label]="t('LAST_NAME')"
-              [(value)]="member().lastName"
-              [isRequired]="true"
-              [type]="bridgesInputType.TEXT"
-            ></brdgs-input>
-
-            <brdgs-input
-              class="col-12 col-md-6"
-              [label]="t('NATIONAL_ID')"
-              [(value)]="member().nationalId"
-              [isRequired]="false"
-              [type]="bridgesInputType.TEXT"
-              (valueChange)="setBirthDate(member(), $event)"
-            ></brdgs-input>
-            <brdgs-date-picker
-              class="col-12 col-md-6"
-              [label]="t('DATE_OF_BIRTH')"
-              [(value)]="member().dateOfBirth"
-              [isRequired]="true"
-            ></brdgs-date-picker>
-            <brdgs-input
-              class="col-12 col-md-6"
-              [label]="t('PHONE_NUMBER')"
-              [(value)]="member().phoneNumber"
-              [isRequired]="false"
-              [type]="bridgesInputType.TEXT"
-            ></brdgs-input>
-            <brdgs-input
-              class="col-12 col-md-6"
-              [label]="t('MEMBER_ID')"
-              [(value)]="member().memberId"
-              [isRequired]="false"
-              [type]="bridgesInputType.NUMBER"
-            ></brdgs-input>
-          </mat-card-content>
-        </mat-card>
-
-        <mat-card class="mt-2 p-0">
-          <mat-card-header>
-            <mat-card-title class="mat-title-medium primary-color mb-3">
-              {{ t("CONTACT_DETAILS") }}
-            </mat-card-title>
-          </mat-card-header>
-
-          <mat-card-content class="d-flex row gx-3 gy-1">
-            <brdgs-input
-              class="col-12 col-md-6 me-auto"
-              [label]="t('EMAIL')"
-              [(value)]="member().email"
-              [isRequired]="true"
-              [type]="bridgesInputType.EMAIL"
-            ></brdgs-input>
-            <app-confirm-password
-              [translationTemplate]="translationTemplate"
-              [(account)]="member"
-            ></app-confirm-password>
-          </mat-card-content>
-        </mat-card>
+      <form #memberForm="ngForm">
+        <app-member-form
+          [translationTemplate]="translationTemplate"
+          [(member)]="member"
+        ></app-member-form>
 
         <div class="d-flex py-3">
           <button
@@ -108,6 +37,7 @@
             type="submit"
             class="ms-auto"
             color="primary"
+            matStepperNext
             [disabled]="memberForm.invalid || memberForm.pristine"
           >
             {{ t("ADD_MEMBER") }}
@@ -117,7 +47,7 @@
     </mat-step>
     <mat-step [stepControl]="membershipsForm.control">
       <ng-template matStepLabel>{{ t("STP_ACCOUNT_DETAILS") }}</ng-template>
-      <form #membershipsForm="ngForm" (ngSubmit)="addMemberships()">
+      <form #membershipsForm="ngForm">
         <mat-card class="mt-2 p-0">
           <mat-card-header>
             <mat-card-title class="mat-title-medium primary-color mb-3">
@@ -128,77 +58,42 @@
           <mat-card-content class="d-flex row gx-3 gy-1">
             @for (membership of userMemberships(); track $index; let i =$index)
             {
-            <app-select-membership
-              [(id)]="membership.membershipId"
-              [translationTemplate]="translationTemplate"
-              (membershipChanged)="setMembership(i, $event)"
+            <h4
+              class="mat-body-large on-surface-variant-color d-flex flex-wrap align-items-center"
             >
-            </app-select-membership>
-            <brdgs-input
-              class="col-12 col-md-6"
-              [isRequired]="true"
-              [label]="t('PRICE_PAID')"
-              [(value)]="membership.pricePaid"
-              [type]="bridgesInputType.NUMBER"
-            ></brdgs-input>
-            <brdgs-input
-              class="col-12 col-md-6"
-              [isRequired]="true"
-              [label]="t('FREEZE_PERIOD')"
-              [(value)]="membership.freezePeriod"
-              [type]="bridgesInputType.NUMBER"
-            ></brdgs-input>
-            <!-- <brdgs-input
-            class="col-12 col-md-6"
-            [isRequired]="true"
-            [label]="t('DURATION_IN_DAYS')"
-            [(value)]="membership.durationInDays"
-            [type]="bridgesInputType.NUMBER"
-          ></brdgs-input> -->
-            @if(membership.type === 'SessionBased' ||membership.type ===
-            'PrivateCoach'){
-            <brdgs-input
-              class="col-12 col-md-6"
-              [isRequired]="true"
-              [label]="t('NUMBER_OF_SESSIONS')"
-              [(value)]="membership.numberOfSessions"
-              [type]="bridgesInputType.NUMBER"
-            ></brdgs-input>
+              <span class="d-flex align-items-center" style="height: 40px"
+                >{{ t("MEMBERSHIP_DETAILS") }} - {{ 1 + i }}</span
+              >
+              @if(i>0){
+              <button
+                (click)="removeMemberships(i)"
+                type="button"
+                mat-button
+                color="accent"
+                aria-label="delete Range"
+                class="ms-auto"
+              >
+                {{ t("DELETE_BTN") }}</button
+              >}
+            </h4>
+            <app-member-membership-form
+              class="row"
+              [(membership)]="userMemberships()[i]"
+              [translationTemplate]="translationTemplate"
+            ></app-member-membership-form>
 
-            }@else if(membership.type === 'Individual'){
-
-            <brdgs-input
-              class="col-12 col-md-6"
-              [isRequired]="true"
-              [label]="t('NUMBER_OF_INVITATIONS')"
-              [(value)]="membership.numberOfInvitations"
-              [type]="bridgesInputType.NUMBER"
-            ></brdgs-input>
-            <brdgs-input
-              class="col-12 col-md-6"
-              [isRequired]="true"
-              [label]="t('NUMBER_OF_VISITS')"
-              [(value)]="membership.numberOfVisits"
-              [type]="bridgesInputType.NUMBER"
-            ></brdgs-input>
-
-            <brdgs-input
-              class="col-12 col-md-6"
-              [isRequired]="true"
-              [label]="t('INBODY_COUNT')"
-              [(value)]="membership.numberOfInBody"
-              [type]="bridgesInputType.NUMBER"
-            ></brdgs-input>
-            <brdgs-input
-              class="col-12 col-md-6"
-              [isRequired]="true"
-              [label]="t('PERSONAL_TRAINER_COUNT')"
-              [(value)]="membership.numberOfPersonalTrainer"
-              [type]="bridgesInputType.NUMBER"
-            ></brdgs-input
-            >}
-            <!--  -->
             }
+            <div class="d-flex col-12 pt-3">
+              <button
+                (click)="addMemberships()"
+                type="button"
+                mat-button
+                aria-label="add membership"
+              >
+                <mat-icon aria-label="add Range" class="icon-add"></mat-icon>
+                {{ t("ADD_MEMBERSHIP_BTN") }}
+              </button>
+            </div>
           </mat-card-content>
         </mat-card>
 
@@ -208,6 +103,7 @@
             type="submit"
             class="ms-auto"
             color="primary"
+            (click)="finalizeRegistration()"
             [disabled]="membershipsForm.invalid || membershipsForm.pristine"
           >
             {{ t("ADD_MEMBER_SHIP") }}

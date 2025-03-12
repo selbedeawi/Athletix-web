@@ -1,0 +1,90 @@
+<ng-container *transloco="let t; prefix: translationTemplate()">
+  <mat-card class="mt-2 p-0">
+    <mat-card-header>
+      <mat-card-title class="mat-title-medium primary-color mb-3">
+        {{ t("PERSONAL_DETAILS") }}
+      </mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content class="d-flex row gx-3 gy-1">
+      <brdgs-input
+        class="col-12 col-md-6"
+        [label]="t('FIRST_NAME')"
+        [(value)]="member().firstName"
+        [isRequired]="true"
+        [type]="bridgesInputType.TEXT"
+      ></brdgs-input>
+      <brdgs-input
+        class="col-12 col-md-6"
+        [label]="t('LAST_NAME')"
+        [(value)]="member().lastName"
+        [isRequired]="true"
+        [type]="bridgesInputType.TEXT"
+      ></brdgs-input>
+
+      <brdgs-input
+        class="col-12 col-md-6"
+        [label]="t('NATIONAL_ID')"
+        [(value)]="member().nationalId"
+        [isRequired]="true"
+        [type]="bridgesInputType.TEXT"
+        mask="000 00 00 00 000 00"
+      ></brdgs-input>
+      <brdgs-date-picker
+        class="col-12 col-md-6"
+        [label]="t('DATE_OF_BIRTH')"
+        [(value)]="member().dateOfBirth"
+        [isRequired]="true"
+      ></brdgs-date-picker>
+      <!-- <brdgs-input
+        class="col-12 col-md-6"
+        [label]="t('PHONE_NUMBER')"
+        [(value)]="member().phoneNumber"
+        [isRequired]="true"
+        [type]="bridgesInputType.TEXT"
+        mask="000 0000 0000"
+      ></brdgs-input> -->
+      <brdgs-input
+        class="col-12 col-md-6"
+        [label]="t('MEMBER_ID')"
+        [(value)]="member().memberId"
+        [isRequired]="true"
+        [type]="bridgesInputType.TEXT"
+      ></brdgs-input>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="mt-2 p-0">
+    <mat-card-header>
+      <mat-card-title class="mat-title-medium primary-color mb-3">
+        {{ t("CONTACT_DETAILS") }}
+      </mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content class="d-flex row gx-3 gy-1">
+      <brdgs-input
+        class="col-12 col-md-6 me-auto"
+        [label]="t('EMAIL')"
+        [(value)]="member().email"
+        [isRequired]="true"
+        [type]="bridgesInputType.EMAIL"
+        [isDisabled]="!!member().id"
+      ></brdgs-input>
+      <brdgs-input
+        class="col-12 col-md-6"
+        [label]="t('PHONE_NUMBER')"
+        [(value)]="member().phoneNumber"
+        [isRequired]="true"
+        [type]="bridgesInputType.TEXT"
+        mask="000 0000 0000"
+      ></brdgs-input>
+
+      @if(!member().id){
+      <app-confirm-password
+        [translationTemplate]="translationTemplate()"
+        [(account)]="member"
+      ></app-confirm-password
+      >}
+    </mat-card-content>
+  </mat-card>
+</ng-container>

@@ -52,7 +52,7 @@ export type Database = {
           isActive: boolean
           isFirstTime: boolean
           lastName: string
-          memberId: number
+          memberId: string | null
           nationalId: string | null
           phoneNumber: string | null
           role: Database["public"]["Enums"]["user_role"]
@@ -66,7 +66,7 @@ export type Database = {
           isActive?: boolean
           isFirstTime?: boolean
           lastName: string
-          memberId?: number
+          memberId?: string | null
           nationalId?: string | null
           phoneNumber?: string | null
           role?: Database["public"]["Enums"]["user_role"]
@@ -80,7 +80,7 @@ export type Database = {
           isActive?: boolean
           isFirstTime?: boolean
           lastName?: string
-          memberId?: number
+          memberId?: string | null
           nationalId?: string | null
           phoneNumber?: string | null
           role?: Database["public"]["Enums"]["user_role"]
@@ -190,7 +190,6 @@ export type Database = {
       }
       ScheduledSession: {
         Row: {
-          coachId: string | null
           createdAt: string
           createdBy: string | null
           endTime: string | null
@@ -202,7 +201,6 @@ export type Database = {
           startTime: string | null
         }
         Insert: {
-          coachId?: string | null
           createdAt?: string
           createdBy?: string | null
           endTime?: string | null
@@ -214,7 +212,6 @@ export type Database = {
           startTime?: string | null
         }
         Update: {
-          coachId?: string | null
           createdAt?: string
           createdBy?: string | null
           endTime?: string | null
@@ -226,13 +223,6 @@ export type Database = {
           startTime?: string | null
         }
         Relationships: [
-          {
-            foreignKeyName: "ScheduledSession_coachId_fkey"
-            columns: ["coachId"]
-            isOneToOne: false
-            referencedRelation: "Staff"
-            referencedColumns: ["id"]
-          },
           {
             foreignKeyName: "ScheduledSession_createdBy_fkey"
             columns: ["createdBy"]
@@ -284,19 +274,25 @@ export type Database = {
         Row: {
           description: string | null
           id: string
+          imageUrl: string | null
           isActive: boolean
+          level: string | null
           name: string
         }
         Insert: {
           description?: string | null
           id?: string
+          imageUrl?: string | null
           isActive?: boolean
+          level?: string | null
           name: string
         }
         Update: {
           description?: string | null
           id?: string
+          imageUrl?: string | null
           isActive?: boolean
+          level?: string | null
           name?: string
         }
         Relationships: []
@@ -327,6 +323,36 @@ export type Database = {
             columns: ["sessionId"]
             isOneToOne: false
             referencedRelation: "Sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      SheduleCoaches: {
+        Row: {
+          coachId: string
+          slotId: string
+        }
+        Insert: {
+          coachId: string
+          slotId: string
+        }
+        Update: {
+          coachId?: string
+          slotId?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "SheduleCoaches_coachId_fkey"
+            columns: ["coachId"]
+            isOneToOne: false
+            referencedRelation: "Staff"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "SheduleCoaches_slotId_fkey"
+            columns: ["slotId"]
+            isOneToOne: true
+            referencedRelation: "ScheduledSession"
             referencedColumns: ["id"]
           },
         ]
@@ -398,13 +424,17 @@ export type Database = {
           createdAt: string
           createdBy: string | null
           endDate: string
+          freezeEnd: string | null
           freezePeriod: number
+          freezeStart: string | null
           hasGroupFitness: boolean
           hasJacuzzi: boolean
           hasSteam: boolean
           hasSunna: boolean
           id: string
           isActive: boolean
+          isCanceled: boolean
+          isFreeze: boolean
           memberId: string
           membershipId: string
           modifiedAt: string
@@ -433,13 +463,17 @@ export type Database = {
           createdAt?: string
           createdBy?: string | null
           endDate: string
+          freezeEnd?: string | null
           freezePeriod?: number
+          freezeStart?: string | null
           hasGroupFitness: boolean
           hasJacuzzi: boolean
           hasSteam: boolean
           hasSunna: boolean
           id?: string
           isActive?: boolean
+          isCanceled?: boolean
+          isFreeze?: boolean
           memberId: string
           membershipId: string
           modifiedAt?: string
@@ -468,13 +502,17 @@ export type Database = {
           createdAt?: string
           createdBy?: string | null
           endDate?: string
+          freezeEnd?: string | null
           freezePeriod?: number
+          freezeStart?: string | null
           hasGroupFitness?: boolean
           hasJacuzzi?: boolean
           hasSteam?: boolean
           hasSunna?: boolean
           id?: string
           isActive?: boolean
+          isCanceled?: boolean
+          isFreeze?: boolean
           memberId?: string
           membershipId?: string
           modifiedAt?: string

@@ -1,0 +1,75 @@
+<form
+  #memberForm="ngForm"
+  (ngSubmit)="freeze()"
+  *transloco="let t; prefix: translationTemplate"
+>
+  <h1 matDialogTitle class="bg-secondary-container on-secondary-color">
+    <span class="mat-title-large"> {{ t("FREEZE_MEMBERSHIP") }} </span>
+  </h1>
+
+  <mat-dialog-content>
+    <mat-card class="my-3 bg-on-tertiary-container">
+      <mat-card-content class="p-2 d-flex row gx-3 gy-1">
+        <h5 class="col-12 primary-container-color mat-label-large mb-1">
+          {{ t("MEMBERSHIP_DETAILS") }}
+        </h5>
+        <div class="col-12 col-md-4 d-flex flex-column mb-2">
+          <span class="mat-label-large primary-color">{{
+            t("MEMBER_NAME")
+          }}</span>
+
+          <span class="mat-body-large">
+            {{ membership().Members.firstName }}
+            {{ membership().Members.lastName }}
+          </span>
+        </div>
+        <div class="col-12 col-md-4 d-flex flex-column mb-2">
+          <span class="mat-label-large primary-color">{{
+            t("MEMBERSHIP_TYPE")
+          }}</span>
+
+          <span class="mat-body-large">
+            {{ membership().name }}
+          </span>
+        </div>
+        <div class="col-12 col-md-4 d-flex flex-column mb-2">
+          <span class="mat-label-large primary-color">{{
+            t("REMAINING_FREEZE_PERIOD")
+          }}</span>
+
+          <span class="mat-body-large">
+            {{ membership().remainingFreezePeriod }} Days
+          </span>
+        </div></mat-card-content
+      >
+    </mat-card>
+
+    <h4 class="mat-label-large secondary-color mt-4">
+      {{ t("FREEZE_DETAILS") }}
+    </h4>
+    <div class="d-flex row gx-3 gy-1 pb-2">
+      <brdgs-date-picker
+        class="col-12 col-md-6"
+        [label]="t('FREEZE_START')"
+        [(value)]="membership().freezeStart"
+        [isRequired]="true"
+        [datePickerMin]="membership().startDate"
+        [datePickerMax]="membership().freezeEnd"
+      ></brdgs-date-picker>
+
+      <brdgs-date-picker
+        class="col-12 col-md-6"
+        [label]="t('FREEZE_END')"
+        [(value)]="membership().freezeEnd"
+        [isRequired]="true"
+        [datePickerMin]="membership().freezeStart"
+        [datePickerMax]="membership().endDate"
+      ></brdgs-date-picker>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions>
+    <button mat-button matDialogClose type="button">{{ t("CLOSE") }}</button>
+    <button mat-flat-button type="submit">{{ t("FREEZE_MEMBERSHIP") }}</button>
+  </mat-dialog-actions>
+</form>

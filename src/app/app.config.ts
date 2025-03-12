@@ -36,10 +36,10 @@ export const appConfig: ApplicationConfig = {
         defaultLang: "en",
         // Remove this option if your application doesn't support changing language in runtime.
         reRenderOnLangChange: true,
-        prodMode: true, //  !isDevMode(),
-        missingHandler: {
-          logMissingKey: false,
-        },
+        prodMode: false, //  !isDevMode(),
+        // missingHandler: {
+        //   logMissingKey: false,
+        // },
       },
     }),
     provideTranslocoPersistTranslations({
