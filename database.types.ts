@@ -188,53 +188,102 @@ export type Database = {
         }
         Relationships: []
       }
+      PrivateSessionsBooking: {
+        Row: {
+          BookingDate: string | null
+          branchId: string | null
+          coachId: string | null
+          created_at: string
+          id: number
+          Time: string | null
+          userMembershipId: string | null
+        }
+        Insert: {
+          BookingDate?: string | null
+          branchId?: string | null
+          coachId?: string | null
+          created_at?: string
+          id?: number
+          Time?: string | null
+          userMembershipId?: string | null
+        }
+        Update: {
+          BookingDate?: string | null
+          branchId?: string | null
+          coachId?: string | null
+          created_at?: string
+          id?: number
+          Time?: string | null
+          userMembershipId?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "PrivateSessionsBooking_branchId_fkey"
+            columns: ["branchId"]
+            isOneToOne: false
+            referencedRelation: "Branch"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "PrivateSessionsBooking_coachId_fkey"
+            columns: ["coachId"]
+            isOneToOne: false
+            referencedRelation: "Staff"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "PrivateSessionsBooking_userMembershipId_fkey"
+            columns: ["userMembershipId"]
+            isOneToOne: false
+            referencedRelation: "UserMembership"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       ScheduledSession: {
         Row: {
+          branchId: string | null
           createdAt: string
           createdBy: string | null
           endTime: string | null
           id: string
-          isPrivate: boolean
-          memberId: string | null
           scheduledDate: string | null
           sessionId: string
           startTime: string | null
         }
         Insert: {
+          branchId?: string | null
           createdAt?: string
           createdBy?: string | null
           endTime?: string | null
           id?: string
-          isPrivate?: boolean
-          memberId?: string | null
           scheduledDate?: string | null
           sessionId: string
           startTime?: string | null
         }
         Update: {
+          branchId?: string | null
           createdAt?: string
           createdBy?: string | null
           endTime?: string | null
           id?: string
-          isPrivate?: boolean
-          memberId?: string | null
           scheduledDate?: string | null
           sessionId?: string
           startTime?: string | null
         }
         Relationships: [
           {
+            foreignKeyName: "ScheduledSession_branchId_fkey"
+            columns: ["branchId"]
+            isOneToOne: false
+            referencedRelation: "Branch"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "ScheduledSession_createdBy_fkey"
             columns: ["createdBy"]
             isOneToOne: false
             referencedRelation: "Staff"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "ScheduledSession_memberId_fkey"
-            columns: ["memberId"]
-            isOneToOne: false
-            referencedRelation: "Members"
             referencedColumns: ["id"]
           },
           {
@@ -330,15 +379,15 @@ export type Database = {
       SheduleCoaches: {
         Row: {
           coachId: string
-          slotId: string
+          scheduledSessionId: string
         }
         Insert: {
           coachId: string
-          slotId: string
+          scheduledSessionId: string
         }
         Update: {
           coachId?: string
-          slotId?: string
+          scheduledSessionId?: string
         }
         Relationships: [
           {
@@ -349,8 +398,8 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "SheduleCoaches_slotId_fkey"
-            columns: ["slotId"]
+            foreignKeyName: "SheduleCoaches_scheduledSessionId_fkey"
+            columns: ["scheduledSessionId"]
             isOneToOne: true
             referencedRelation: "ScheduledSession"
             referencedColumns: ["id"]
@@ -590,6 +639,7 @@ export type Database = {
       UserSessions: {
         Row: {
           bookingDate: string
+          branchId: string | null
           createdAt: string
           id: string
           scheduledSessionId: string
@@ -597,6 +647,7 @@ export type Database = {
         }
         Insert: {
           bookingDate: string
+          branchId?: string | null
           createdAt?: string
           id?: string
           scheduledSessionId: string
@@ -604,6 +655,7 @@ export type Database = {
         }
         Update: {
           bookingDate?: string
+          branchId?: string | null
           createdAt?: string
           id?: string
           scheduledSessionId?: string
@@ -611,10 +663,24 @@ export type Database = {
         }
         Relationships: [
           {
+            foreignKeyName: "UserSessions_branchId_fkey"
+            columns: ["branchId"]
+            isOneToOne: false
+            referencedRelation: "Branch"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "UserSessions_scheduledSessionId_fkey"
             columns: ["scheduledSessionId"]
             isOneToOne: false
             referencedRelation: "ScheduledSession"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "UserSessions_userMemberShipId_fkey"
+            columns: ["userMemberShipId"]
+            isOneToOne: false
+            referencedRelation: "UserMembership"
             referencedColumns: ["id"]
           },
         ]
