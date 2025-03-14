@@ -11,10 +11,10 @@ export interface BookedSessionFilter {
   // Use a single searchKey to search across member fields
   searchKey?: string;
   // Other filters:
-  scheduledSessionId?: string;
+  scheduledSessionId?: string|null;
   coachIds?: string[];
   branchId?: string;
-  scheduledDateFrom?: string; // e.g., "2025-03-13"
+  scheduledDateFrom?: string | null; // e.g., "2025-03-13"
   scheduledDateTo?: string; // e.g., "2025-03-15"
 }
 

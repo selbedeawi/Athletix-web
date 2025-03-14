@@ -85,6 +85,22 @@ export const routes: Routes = [
     ],
   },
   {
+    path: APP_ROUTES.PT_SESSIONS,
+    loadComponent: () =>
+      import("./features/PT-Sessions/pt-sessions.component").then(
+        (c) => c.PtSessionsComponent,
+      ),
+    data: { layout: "main" },
+    canActivate: [
+      RoleGuard([
+        "SuperAdmin",
+        "Receptionist",
+        "SessionManager",
+        "Coach",
+      ]),
+    ],
+  },
+  {
     path: "playground",
     loadComponent: () =>
       import("./features/ui-playground/ui-playground.component").then(

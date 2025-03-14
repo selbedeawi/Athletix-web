@@ -1,15 +1,16 @@
 <section *transloco="let t; prefix: translationTemplate">
-  <div class="d-flex justify-content-between">
+  <div class="d-flex justify-content-between my-3">
     <h2 class="mat-headline-small primary-color mb-1">{{ t("TITLE") }}</h2>
+    <button mat-flat-button (click)="openBookSessionDialog()">{{ t("BOOK_SESSION") }}</button>
   </div>
   <mat-divider></mat-divider>
   <mat-card class="mt-2">
     <mat-card-content class="">
-      <app-book-sessions-fillter #sessionsFilter></app-book-sessions-fillter>
+      <app-pt-sessions-fillter #ptSessionsFilter></app-pt-sessions-fillter>
     </mat-card-content>
   </mat-card>
 
-  @if(sessionsFilter.sessions().length){
+  @if(ptSessionsFilter.sessions().length){
   <table class="brdgs-table w-100 mt-3 mb-3">
     <thead class="d-none d-lg-block">
       <tr>
@@ -21,10 +22,10 @@
         </th>
 
         <th class="col-lg-3">
-          {{ t("TABLE_SESSION_NAME") }}
+          {{ t("COACH_NAME") }}
         </th>
         <th class="col-lg-2">
-          {{ t("TABLE_START_DATE") }}
+          {{ t("START_DATE") }}
         </th>
 
         <th class="col-lg-2"> 
@@ -33,22 +34,24 @@
       </tr>
     </thead>
     <tbody>
-      @for (session of sessionsFilter.sessions(); track $index) {
+      @for (session of ptSessionsFilter.sessions(); track $index) {
       <tr class="d-flex">
         <td
-          class="col-12 col-sm-12 col-lg-2 table-card-title  text-truncate"
+          class="col-12 col-sm-12 col-lg-4 table-card-title table-primary text-truncate"
         >
+         
             {{ session.id}}
-        </td>
-        <td class="col-12 col-sm-6 col-lg-3 table-primary">
-          {{ session.UserMembership.name }}
-        </td>
-        <td class="col-12 col-sm-6 col-lg-3">
-          {{ session.ScheduledSession.sessionId }}
+        
         </td>
         <td class="col-12 col-sm-6 col-lg-2">
-          {{ session.bookingDate}} <br>
-          {{ session.ScheduledSession.startTime | timeFormat   }}
+          <span class="d-none list-item-label-sm">
+            {{ t("TABLE_ROLE") }}
+          </span>
+
+          {{ session.UserMembership}}
+        </td>
+        <td class="col-12 col-sm-6 col-lg-4">
+            {{session.ScheduledSession.sessionId}}
         </td>
 
         <td class="col-12 col-lg-2 table_action">
@@ -68,16 +71,16 @@
       </tr>
       }
     </tbody>
-    @if(sessionsFilter.originalCount() > sessionsFilter.pageSize()){
+    @if(ptSessionsFilter.originalCount() > ptSessionsFilter.pageSize()){
     <tfoot>
       <div class="d-flex justify-content-end p-2 bg-surface-container-lowest">
         <mat-paginator
-          [length]="sessionsFilter.originalCount()"
-          [pageIndex]="sessionsFilter.pageNumber() - 1"
-          [pageSize]="sessionsFilter.pageSize()"
+          [length]="ptSessionsFilter.originalCount()"
+          [pageIndex]="ptSessionsFilter.pageNumber() - 1"
+          [pageSize]="ptSessionsFilter.pageSize()"
           (page)="
-            sessionsFilter.pageNumber.set($event.pageIndex + 1);
-            sessionsFilter.getAll()
+            ptSessionsFilter.pageNumber.set($event.pageIndex + 1);
+            ptSessionsFilter.getAll()
           "
           showFirstLastButtons
           [hidePageSize]="true"
