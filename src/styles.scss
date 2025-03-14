@@ -504,8 +504,20 @@ h6 {
     background-color: var(--sys-secondary-95) !important;
   }
   .cal-cell-top .cal-day-cell.cal-today .cal-day-number {
-    font-size: var(--sys-label-large-size) !important;
-    background-color: var(--sys-primary-container) !important;
-    color: var(--sys-surface-container-lowest) !important;
+    // font-size: var(--sys-label-large-size) !important;
+    // background-color: var(--sys-primary-container) !important;
+    // color: var(--sys-surface-container-lowest) !important;
   }
 }
+.cal-month-view .cal-day-cell.cal-today {
+  background-color: unset !important;
+}
+// .cal-month-view .cal-day-cell.cal-today:hover {
+//   background-color: var(--sys-surface-container-highest) !important;
+// }
+//   .cal-cell-top .cal-day-cell.cal-today .cal-day-number {
+//     font-size: var(--sys-label-large-size) !important;
+//     background-color: var(--sys-primary-container) !important;
+//     color: var(--sys-surface-container-lowest) !important;
+//   }
+// }

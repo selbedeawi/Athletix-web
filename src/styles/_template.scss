@@ -19,6 +19,13 @@
 .border-top-1 {
   border: 1px solid var(--sys-outline-variant);
 }
+.rounded-3 {
+  border-radius: 3px !important;
+  -webkit-border-radius: 3px !important;
+  -moz-border-radius: 3px !important;
+  -ms-border-radius: 3px !important;
+  -o-border-radius: 3px !important;
+}
 .rounded-6 {
   border-radius: 6px !important;
   -webkit-border-radius: 6px !important;

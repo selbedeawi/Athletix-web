@@ -11,12 +11,13 @@
       day.badgeTotal
     }}</span>
     <span
-      class="m-2 float-start mat-label-large on-secondary-container-color"
-      >{{ day.date | calendarDate : "monthViewDayNumber" : locale }}</span
-    >
+      class="cal-day-number m-2 float-start mat-label-large"
+      [ngClass]="{'bg-primary-container on-primary-container-color opacity-100 rounded-3':day.date.getDate()  == viewDate.getDate() }"
+      >{{ day.date | calendarDate : "monthViewDayNumber" : locale }}
+    </span>
   </div>
   <small style="margin: 5px"
-    >There are {{ day.events.length }} events on this day</small
+    >There are {{ day.events }} events on this day</small
   >
 </ng-template>
 
