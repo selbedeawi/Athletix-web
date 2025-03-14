@@ -16,6 +16,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { AsyncPipe } from '@angular/common';
 import { DatePickerComponent } from "../../../../shared/ui-components/atoms/date-picker/date-picker.component";
 import { BookedSessionFilter, BookedSessionsService } from '../../services/booked-sessions.service';
+import { BookedSessionResponse } from '../../models/session';
 
 @Component({
   selector: 'app-book-sessions-fillter',
@@ -39,13 +40,14 @@ export class BookSessionsFillterComponent {
   lookupService = inject(LookupService);
 
   filter: BookedSessionFilter = {
+    searchKey:'',
     scheduledDateFrom: null,   
     scheduledSessionId: null,    
   };  
   bridgesInputType = BridgesInputType;
 
   loading = signal(false);
-  sessions = signal<any[]>([]);
+  sessions = signal<BookedSessionResponse[]>([]);
 
   pageSize = signal(10);
   pageNumber = signal(1);
@@ -74,6 +76,7 @@ export class BookSessionsFillterComponent {
 
   reset() {
     this.filter = {
+      searchKey:'',
       scheduledDateFrom: null, 
       scheduledSessionId: null,  
     };

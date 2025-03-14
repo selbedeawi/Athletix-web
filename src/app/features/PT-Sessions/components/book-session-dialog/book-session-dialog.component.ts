@@ -33,7 +33,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 })
 export class BookSessionDialogComponent {
   private dialogRef = inject(MatDialogRef<BookSessionDialogComponent>);
-  translationTemplate = TranslationTemplates.SESSIONS;
+  translationTemplate = TranslationTemplates.PT_SESSION;
   APP_ROUTES = APP_ROUTES;
 
   bridgesInputType = BridgesInputType;
