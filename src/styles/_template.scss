@@ -16,6 +16,9 @@
 .border-surface-variant-1 {
   border: 1px solid var(--sys-surface-variant);
 }
+.border-outline-variant-1 {
+  border: 1px solid var(--sys-outline-variant);
+}
 .border-secondary-1 {
   border: 1px solid var(--sys-on-secondary-container);
 }
@@ -106,12 +109,12 @@
 //   background-color: var(--sys-surface-tint);
 // }
 
-// .on-primary-color {
-//   color: var(--sys-on-primary);
-// }
-// .bg-on-primary {
-//   background-color: var(--sys-on-primary);
-// }
+.on-primary-color {
+  color: var(--sys-on-primary);
+}
+.bg-on-primary {
+  background-color: var(--sys-on-primary);
+}
 
 .primary-container-color {
   color: var(--sys-primary-container);
