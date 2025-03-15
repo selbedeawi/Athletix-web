@@ -235,6 +235,13 @@ export type Database = {
             foreignKeyName: "PrivateSessionsBooking_userMembershipId_fkey"
             columns: ["userMembershipId"]
             isOneToOne: false
+            referencedRelation: "flattened_user_sessions_full"
+            referencedColumns: ["user_membership_id"]
+          },
+          {
+            foreignKeyName: "PrivateSessionsBooking_userMembershipId_fkey"
+            columns: ["userMembershipId"]
+            isOneToOne: false
             referencedRelation: "UserMembership"
             referencedColumns: ["id"]
           },
@@ -396,6 +403,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "Staff"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "SheduleCoaches_scheduledSessionId_fkey"
+            columns: ["scheduledSessionId"]
+            isOneToOne: true
+            referencedRelation: "flattened_user_sessions_full"
+            referencedColumns: ["scheduled_session_id"]
           },
           {
             foreignKeyName: "SheduleCoaches_scheduledSessionId_fkey"
@@ -610,6 +624,13 @@ export type Database = {
             foreignKeyName: "UserMembership_memberId_fkey"
             columns: ["memberId"]
             isOneToOne: false
+            referencedRelation: "flattened_user_sessions_full"
+            referencedColumns: ["member_id"]
+          },
+          {
+            foreignKeyName: "UserMembership_memberId_fkey"
+            columns: ["memberId"]
+            isOneToOne: false
             referencedRelation: "Members"
             referencedColumns: ["id"]
           },
@@ -673,8 +694,22 @@ export type Database = {
             foreignKeyName: "UserSessions_scheduledSessionId_fkey"
             columns: ["scheduledSessionId"]
             isOneToOne: false
+            referencedRelation: "flattened_user_sessions_full"
+            referencedColumns: ["scheduled_session_id"]
+          },
+          {
+            foreignKeyName: "UserSessions_scheduledSessionId_fkey"
+            columns: ["scheduledSessionId"]
+            isOneToOne: false
             referencedRelation: "ScheduledSession"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "UserSessions_userMemberShipId_fkey"
+            columns: ["userMemberShipId"]
+            isOneToOne: false
+            referencedRelation: "flattened_user_sessions_full"
+            referencedColumns: ["user_membership_id"]
           },
           {
             foreignKeyName: "UserSessions_userMemberShipId_fkey"
@@ -687,7 +722,217 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      flattened_user_sessions_full: {
+        Row: {
+          bookingDate: string | null
+          coachId: string | null
+          createdBy: string | null
+          dateOfBirth: string | null
+          email: string | null
+          endDate: string | null
+          endTime: string | null
+          firstName: string | null
+          freezeEnd: string | null
+          freezePeriod: number | null
+          freezeStart: string | null
+          hasGroupFitness: boolean | null
+          hasJacuzzi: boolean | null
+          hasSteam: boolean | null
+          hasSunna: boolean | null
+          isCanceled: boolean | null
+          isFirstTime: boolean | null
+          isFreeze: boolean | null
+          lastName: string | null
+          member_createdby: string | null
+          member_id: string | null
+          member_isactive: boolean | null
+          member_memberid: string | null
+          member_role: Database["public"]["Enums"]["user_role"] | null
+          memberId: string | null
+          membership_branchid: string | null
+          membership_createdat: string | null
+          membership_isactive: boolean | null
+          membership_name: string | null
+          membership_startdate: string | null
+          membership_type: Database["public"]["Enums"]["membership_type"] | null
+          membershipId: string | null
+          modifiedAt: string | null
+          modifiedBy: string | null
+          nationalId: string | null
+          numberOfInBody: number | null
+          numberOfInvitations: number | null
+          numberOfPersonalTrainer: number | null
+          numberOfSessions: number | null
+          numberOfVisits: number | null
+          phoneNumber: string | null
+          pricePaid: number | null
+          remainingFreezePeriod: number | null
+          remainingGroupSessions: number | null
+          remainingInBody: number | null
+          remainingInvitations: number | null
+          remainingPersonalTrainer: number | null
+          remainingPTSessions: number | null
+          remainingVisits: number | null
+          salesId: string | null
+          scheduled_session_branchid: string | null
+          scheduled_session_createdat: string | null
+          scheduled_session_createdby: string | null
+          scheduled_session_id: string | null
+          scheduledDate: string | null
+          scheduledSessionId: string | null
+          sessionId: string | null
+          shedule_coach_scheduledsessionid: string | null
+          shedule_coachid: string | null
+          startTime: string | null
+          user_membership_id: string | null
+          user_session_branchid: string | null
+          user_session_createdat: string | null
+          user_session_id: string | null
+          userMemberShipId: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "Members_createdBy_fkey"
+            columns: ["member_createdby"]
+            isOneToOne: false
+            referencedRelation: "Staff"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ScheduledSession_branchId_fkey"
+            columns: ["scheduled_session_branchid"]
+            isOneToOne: false
+            referencedRelation: "Branch"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ScheduledSession_createdBy_fkey"
+            columns: ["scheduled_session_createdby"]
+            isOneToOne: false
+            referencedRelation: "Staff"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ScheduledSession_sessionId_fkey"
+            columns: ["sessionId"]
+            isOneToOne: false
+            referencedRelation: "Sessions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "SheduleCoaches_coachId_fkey"
+            columns: ["shedule_coachid"]
+            isOneToOne: false
+            referencedRelation: "Staff"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "SheduleCoaches_scheduledSessionId_fkey"
+            columns: ["shedule_coach_scheduledsessionid"]
+            isOneToOne: true
+            referencedRelation: "flattened_user_sessions_full"
+            referencedColumns: ["scheduled_session_id"]
+          },
+          {
+            foreignKeyName: "SheduleCoaches_scheduledSessionId_fkey"
+            columns: ["shedule_coach_scheduledsessionid"]
+            isOneToOne: true
+            referencedRelation: "ScheduledSession"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "UserMembership_branchId_fkey"
+            columns: ["membership_branchid"]
+            isOneToOne: false
+            referencedRelation: "Branch"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "UserMembership_coachId_fkey"
+            columns: ["coachId"]
+            isOneToOne: false
+            referencedRelation: "Staff"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "UserMembership_createdBy_fkey"
+            columns: ["createdBy"]
+            isOneToOne: false
+            referencedRelation: "Staff"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "UserMembership_memberId_fkey"
+            columns: ["memberId"]
+            isOneToOne: false
+            referencedRelation: "flattened_user_sessions_full"
+            referencedColumns: ["member_id"]
+          },
+          {
+            foreignKeyName: "UserMembership_memberId_fkey"
+            columns: ["memberId"]
+            isOneToOne: false
+            referencedRelation: "Members"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "UserMembership_membershipId_fkey"
+            columns: ["membershipId"]
+            isOneToOne: false
+            referencedRelation: "Memberships"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "UserMembership_modifiedBy_fkey"
+            columns: ["modifiedBy"]
+            isOneToOne: false
+            referencedRelation: "Staff"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "UserMembership_salesId_fkey"
+            columns: ["salesId"]
+            isOneToOne: false
+            referencedRelation: "Staff"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "UserSessions_branchId_fkey"
+            columns: ["user_session_branchid"]
+            isOneToOne: false
+            referencedRelation: "Branch"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "UserSessions_scheduledSessionId_fkey"
+            columns: ["scheduledSessionId"]
+            isOneToOne: false
+            referencedRelation: "flattened_user_sessions_full"
+            referencedColumns: ["scheduled_session_id"]
+          },
+          {
+            foreignKeyName: "UserSessions_scheduledSessionId_fkey"
+            columns: ["scheduledSessionId"]
+            isOneToOne: false
+            referencedRelation: "ScheduledSession"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "UserSessions_userMemberShipId_fkey"
+            columns: ["userMemberShipId"]
+            isOneToOne: false
+            referencedRelation: "flattened_user_sessions_full"
+            referencedColumns: ["user_membership_id"]
+          },
+          {
+            foreignKeyName: "UserSessions_userMemberShipId_fkey"
+            columns: ["userMemberShipId"]
+            isOneToOne: false
+            referencedRelation: "UserMembership"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Functions: {
       update_staff_with_branches:
