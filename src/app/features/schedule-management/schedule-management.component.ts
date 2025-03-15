@@ -2,8 +2,11 @@ import { CommonModule } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
 import { CalendarEvent, CalendarModule, CalendarView } from 'angular-calendar';
 
-import { ScheduleCalendarHeaderComponent } from "./components/schedule-calendar-header/schedule-calendar-header.component";
-import { ScheduledSessionFilter, ScheduledSessionService } from './services/schedule-sessions.service';
+import { ScheduleCalendarHeaderComponent } from './components/schedule-calendar-header/schedule-calendar-header.component';
+import {
+  ScheduledSessionFilter,
+  ScheduledSessionService,
+} from './services/schedule-sessions.service';
 import { startOfMonth, endOfMonth, format } from 'date-fns';
 import { finalize } from 'rxjs';
 import { ScheduleSession } from './models/schedule-session';
@@ -18,71 +21,77 @@ import { ScheduleSingleSessionComponent } from './components/schedule-single-ses
 
 @Component({
   selector: 'app-schedule-management',
-  imports: [CalendarModule, CommonModule, ScheduleCalendarHeaderComponent,TranslocoDirective,MatButtonModule],
+  imports: [
+    CalendarModule,
+    CommonModule,
+    ScheduleCalendarHeaderComponent,
+    TranslocoDirective,
+    MatButtonModule,
+  ],
   templateUrl: './schedule-management.component.html',
   styleUrl: './schedule-management.component.scss',
 })
 export class ScheduleManagementComponent {
-  private scheduleSessionService = inject(ScheduledSessionService)
-  private brdgsOverlayService = inject(BrdgsOverlayService)
-  dialog = inject(MatDialog)
+  private scheduleSessionService = inject(ScheduledSessionService);
+  private brdgsOverlayService = inject(BrdgsOverlayService);
+  dialog = inject(MatDialog);
 
   viewDate = signal(new Date());
   selectedSession = signal<CalendarEvent<ScheduleSession> | null>(null);
-  events = signal<CalendarEvent<ScheduleSession>[]>([])
-  loading = signal(false)
+  events = signal<CalendarEvent<ScheduleSession>[]>([]);
+  loading = signal(false);
 
   monthStart = computed(() =>
     format(startOfMonth(this.viewDate()), 'yyyy-LL-dd')
-  )
+  );
 
-  monthEnd = computed(() =>
-    format(endOfMonth(this.viewDate()), 'yyyy-LL-dd')
-  )
+  monthEnd = computed(() => format(endOfMonth(this.viewDate()), 'yyyy-LL-dd'));
 
   view: CalendarView = CalendarView.Month;
   filter: ScheduledSessionFilter = {
     scheduledDateFrom: this.monthStart(),
     scheduledDateTo: this.monthEnd(),
-  }
-  bridgesInputType = BridgesInputType
-    translationTemplate = TranslationTemplates.SCHEDULEDSESSION;
-  
+  };
+  bridgesInputType = BridgesInputType;
+  translationTemplate = TranslationTemplates.SCHEDULEDSESSION;
+
   constructor() {
-    this.getFilteredSessions()
+    this.getFilteredSessions();
   }
   getFilteredSessions() {
-    this.loading.set(true)
-    this.scheduleSessionService.filterScheduledSessions(this.filter).pipe(finalize(() => this.loading.set(true))).subscribe({
-      next: (res) => {
-        this.events.set([])
-        res.forEach(session => {
-          this.events.update((eventList) => {
-            eventList.push({
-              id: session.sessionId,
-              start: new Date(session.scheduledDate! + 'T' + session.startTime),
-              end: new Date(session.scheduledDate! + 'T' + session.endTime),
-              title: 'Meeting with Team',
-              meta: { ...session }
-
-            })
-            return [...eventList]
-          })
-        })
-        console.log(this.events())
-      }
-    })
+    this.loading.set(true);
+    this.scheduleSessionService
+      .filterScheduledSessions(this.filter)
+      .pipe(finalize(() => this.loading.set(true)))
+      .subscribe({
+        next: (res) => {
+          this.events.set([]);
+          res.forEach((session) => {
+            this.events.update((eventList) => {
+              eventList.push({
+                id: session.sessionId,
+                start: new Date(
+                  session.scheduledDate! + 'T' + session.startTime
+                ),
+                end: new Date(session.scheduledDate! + 'T' + session.endTime),
+                title: '',
+                meta: { ...session },
+              });
+              return [...eventList];
+            });
+          });
+          console.log(this.events());
+        },
+      });
   }
 
   openSingleSession(event: CalendarEvent<ScheduleSession>) {
-    console.log(event)
-    if (event.meta) {
-      this.brdgsOverlayService.open(ScheduleSessionDetailsComponent, event)
-    }
+    console.log(event);
+    this.brdgsOverlayService.open(ScheduleSessionDetailsComponent, event);
   }
   scheduleSingleSession() {
-   this.dialog.open(ScheduleSingleSessionComponent, {
-      minWidth: 615
-    })
+    this.dialog.open(ScheduleSingleSessionComponent, {
+      minWidth: 615,
+    });
   }
 }

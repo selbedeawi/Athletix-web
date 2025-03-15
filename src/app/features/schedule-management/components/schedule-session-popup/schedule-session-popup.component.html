@@ -1,42 +1,88 @@
-<div class="bg-secondary">
-  <p class="ms-3 mat-title-large on-primary-color">Add Member</p>
-</div>
-<div class="bg-on-primary">
-  <div class="m-3">
-    <p class="mat-title-large secondary-color mb-3">Search for member</p>
-    <form>
-      <brdgs-input
-        [label]="'Search member name, ID, Phone or email'"
-        [prefix]="'icon-search'"
-        [isRequired]="false"
-        [type]="bridgesInputType.TEXT"
-        [(value)]="filters.searchQuery"
-        (valueChange)="getAll()"
-      ></brdgs-input>
-      <div class="mt-5 pt-5">
-        <mat-divider></mat-divider>
-      </div>
-      <div class="d-flex justify-content-end align-items-center gap-2">
-        <button
-          mat-stroked-button
-          cdkFocusInitial
-          color="primary"
-          class="mb-3 mt-1 mb-md-0"
-          type="button"
-          matDialogClose
-        >
-          {{ 't("CANCEL")' }}
-        </button>
-        <button
-          mat-flat-button
-          cdkFocusInitial
-          color="primary"
-          class="mb-3 mt-1 mb-md-0"
-          type="button"
-        >
-          {{ 't("Schedule_Session")' }}
-        </button>
-      </div>
-    </form>
+<ng-container *transloco="let t; read: translationTemplate">
+  <div class="bg-secondary">
+    <p class="ms-3 mat-title-large on-primary-color">Add Member</p>
   </div>
-</div>
+  <div class="bg-on-primary">
+    <div class="m-3">
+      <p class="mat-title-large secondary-color mb-3">
+        {{ t("SEARCH_MEMBER") }}
+      </p>
+      <form>
+        <brdgs-input
+          [label]="t('SEARCH_LABEL')"
+          [prefix]="'icon-search'"
+          [type]="bridgesInputType.TEXT"
+          [isRequired]="false"
+          [(value)]="filters.searchQuery"
+          (valueChange)="getAll()"
+        ></brdgs-input>
+        @for (member of members() ; track member) {
+        <mat-option
+          class="bg-surface-bright"
+          [value]="member"
+          (click)="pushMember(member)"
+          >{{ member.firstName }} {{ member.lastName }}</mat-option
+        >
+        }
+        <div class="mt-2 row">
+          @for ( member of selectedMembers() ; track member) {
+          <div class="col-6 p-1">
+            <div
+              class="rounded-8 border-surface-dim-1 bg-surface-bright py-1 px-2"
+            >
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <p class="m-0 primary-container-color mat-label-large">
+                    {{ member.firstName }}
+                    {{ member.lastName }}
+                  </p>
+                  <p
+                    class="m-0 on-secondary-fixed-variant-color mat-label-large"
+                  >
+                    {{ member.phoneNumber }}
+                  </p>
+                </div>
+                <button
+                  mat-button
+                  cdkFocusInitial
+                  color="error"
+                  class="mb-3 mt-1 mb-md-0"
+                  type="button"
+                  (click)="removeMember(member.id)"
+                >
+                  {{ t("REMOVE") }}
+                </button>
+              </div>
+            </div>
+          </div>
+          }
+        </div>
+        <div class="mt-5 pt-5">
+          <mat-divider></mat-divider>
+        </div>
+        <div class="d-flex justify-content-end align-items-center gap-2">
+          <button
+            mat-stroked-button
+            cdkFocusInitial
+            color="primary"
+            class="mb-3 mt-1 mb-md-0"
+            type="button"
+            matDialogClose
+          >
+            {{ t("CANCEL") }}
+          </button>
+          <button
+            mat-flat-button
+            cdkFocusInitial
+            color="primary"
+            class="mb-3 mt-1 mb-md-0"
+            type="button"
+            (click)="scheduleSession()"
+          >
+            {{ t("SCHEDULE_A_SESSION") }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</ng-container>

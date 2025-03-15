@@ -1,105 +1,114 @@
-<div class="bg-secondary">
-  <p class="ms-3 mat-title-large on-primary-color">Schedule a Session</p>
-</div>
-<div class="bg-on-primary mx-3">
-  <p class="m-0 my-3 mat-body-large">Please enter details below</p>
-  <form
-    #sessionForm="ngForm"
-    *transloco="let t; read: translationTemplate"
-    (ngSubmit)="schedule()"
-  >
-    <div class="row gx-3 gy-1">
-      <brdgs-select
-        class="col-12 col-md-6"
-        [label]="t('MEMBERSHIP_TYPE')"
-        [(value)]="session"
-        [isRequired]="false"
-        [options]="[
-          { key: t('INDIVIDUAL'), value: 'Individual' },
-          { key: t('PRIVATE_COACH'), value: 'PrivateCoach' },
-          { key: t('SESSION_BASED'), value: 'SessionBased' }
-        ]"
-      ></brdgs-select>
-      <div class="col-12 col-md-6">
-        <p class="m-0 mat-body-medium">Does it repeat?</p>
-        <mat-radio-group
-          aria-label="Select an option"
-          class="d-flex"
-          [value]="isRepeated()"
-          (change)="isRepeated.set($event.value)"
-        >
-          <mat-radio-button [value]="true">{{ t("YES") }}</mat-radio-button>
-          <mat-radio-button [value]="false">{{ t("NO") }}</mat-radio-button>
-        </mat-radio-group>
-      </div>
-      <brdgs-date-picker
-        class="col-12 col-md-6"
-        [label]="t('START_DATE')"
-        [(value)]="caledar"
-        [isRequired]="true"
-      ></brdgs-date-picker>
+<section *transloco="let t; read: translationTemplate">
+  <div class="bg-secondary">
+    <p class="m-0 p-3 mat-title-large on-primary-color">
+      {{ t("SCHEDULE_A_SESSION") }}
+    </p>
+  </div>
+  <div class="bg-on-primary mx-3">
+    <p class="m-0 my-3 mat-body-large">{{ t("ADD_DETAILS") }}</p>
+    <form #sessionForm="ngForm" (ngSubmit)="schedule(sessionForm)">
+      <div class="row gx-3 gy-1">
+        <brdgs-select
+          class="col-12 col-md-6"
+          [label]="t('SELECT_SESSION')"
+          [(value)]="session"
+          [isRequired]="false"
+          [options]="sessionOptions()"
+        ></brdgs-select>
+        <div class="col-12 col-md-6">
+          <p class="m-0 mat-body-medium">Does it repeat?</p>
+          <mat-radio-group
+            aria-label="Select an option"
+            class="d-flex"
+            [value]="isRepeated()"
+            (change)="isRepeated.set($event.value)"
+          >
+            <mat-radio-button [value]="true">{{ t("YES") }}</mat-radio-button>
+            <mat-radio-button [value]="false">{{ t("NO") }}</mat-radio-button>
+          </mat-radio-group>
+        </div>
+        <brdgs-date-picker
+          class="col-12 col-md-6"
+          [label]="t('START_DATE')"
+          [(value)]="caledar"
+          [isRequired]="true"
+        ></brdgs-date-picker>
 
-      @if(isRepeated()){
+        @if(isRepeated()){
 
-      <brdgs-date-picker
-        class="col-12 col-md-6"
-        [label]="t('END_DATE')"
-        [(value)]="caledar"
-        [isRequired]="true"
-      ></brdgs-date-picker>
-      <brdgs-select
-        class="col-12 col-md-6"
-        [label]="t('WEEK_DAY')"
-        [(value)]="session"
-        [isRequired]="false"
-        [options]="[
-          { key: t('SATURDAY'), value: 'Saturday' },
-          { key: t('SUNDAY'), value: 'Sunday' },
-          { key: t('MONDAY'), value: 'Monday' },
-          { key: t('TUESDAY'), value: 'Tuesday' },
-          { key: t('WEDNESDAY'), value: 'Wednesday' },
-          { key: t('THURSDAY'), value: 'Thursday' },
-          { key: t('FRIDAY'), value: 'Friday' }
-        ]"
-      ></brdgs-select>
-      }
-      <brdgs-time-picker
-        class="col-12 col-md-6"
-        [label]="t('START_TIME')"
-        [(value)]="caledar"
-        [isRequired]="true"
-      ></brdgs-time-picker>
-      <!--  <brdgs-date-picker
+        <brdgs-date-picker
+          class="col-12 col-md-6"
+          [label]="t('END_DATE')"
+          [(value)]="caledar"
+          [isRequired]="true"
+        ></brdgs-date-picker>
+        <brdgs-select
+          class="col-12 col-md-6"
+          [label]="t('WEEK_DAY')"
+          [(value)]="session"
+          [isRequired]="false"
+          [options]="[
+            { key: t('SATURDAY'), value: 'Saturday' },
+            { key: t('SUNDAY'), value: 'Sunday' },
+            { key: t('MONDAY'), value: 'Monday' },
+            { key: t('TUESDAY'), value: 'Tuesday' },
+            { key: t('WEDNESDAY'), value: 'Wednesday' },
+            { key: t('THURSDAY'), value: 'Thursday' },
+            { key: t('FRIDAY'), value: 'Friday' }
+          ]"
+        ></brdgs-select>
+        }
+        <brdgs-time-picker
+          class="col-12 col-md-6"
+          [label]="t('START_TIME')"
+          [(value)]="time"
+          [isRequired]="true"
+        ></brdgs-time-picker>
+        <!--  <brdgs-date-picker
       class="col-12 col-md-4"
       [label]="t('RENEWAL_DATE')"
       [(value)]="filters.endDateTo"
       [isRequired]="false"
     ></brdgs-date-picker> -->
-      <mat-divider class="mt-3"></mat-divider>
-      <div class="col-auto ms-auto d-flex flex-wrap my-3">
+
+        @if(isRepeated()){
         <div>
           <button
-            mat-stroked-button
+            mat-button
             color="primary"
             class="me-3 mb-3 mt-1 mb-md-0"
             type="button"
           >
-            {{ t("CANCEL") }}
+            {{ t("ADD_DAY") }}
           </button>
         </div>
-        <div>
-          <button
-            mat-flat-button
-            cdkFocusInitial
-            color="primary"
-            class="mb-3 mt-1 mb-md-0"
-            type="submit"
-            [disabled]="sessionForm.invalid"
-          >
-            {{ t("SCHEDULE") }}
-          </button>
+        }
+        <mat-divider class="mt-3"></mat-divider>
+        <div class="col-auto ms-auto d-flex flex-wrap my-3">
+          <div>
+            <button
+              mat-stroked-button
+              color="primary"
+              class="me-3 mb-3 mt-1 mb-md-0"
+              type="button"
+            >
+              {{ t("CANCEL") }}
+            </button>
+          </div>
+          <div>
+            <button
+              mat-flat-button
+              cdkFocusInitial
+              color="primary"
+              class="mb-3 mt-1 mb-md-0"
+              type="submit"
+              [disabled]="sessionForm.invalid"
+            >
+              {{ t("SCHEDULE") }}
+            </button>
+          </div>
         </div>
       </div>
-    </div>
-  </form>
-</div>
+    </form>
+  </div>
+</section>
