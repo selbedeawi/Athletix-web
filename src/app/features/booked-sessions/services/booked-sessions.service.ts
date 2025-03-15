@@ -86,6 +86,7 @@ export class BookedSessionsService {
   ) {
     // Query from the flattened view.
     let query = this.supabaseService.sb
+
       .from("flattened_user_sessions_full")
       .select("*");
 
