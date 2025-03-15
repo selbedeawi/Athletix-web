@@ -16,8 +16,13 @@ import { debounceTime, finalize } from 'rxjs';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { TranslationTemplates } from '../../../../shared/enums/translation-templates-enum';
 import { MatOptionModule } from '@angular/material/core';
-import { ScheduledSessionService } from '../../services/schedule-sessions.service';
 import { SnackbarService } from '../../../../core/services/snackbar/snackbar.service';
+import { UserService } from '../../../../core/services/user/user.service';
+import { BranchesService } from '../../../../core/services/branches/branches.service';
+import {
+  BookedSessionsService,
+  UserSessionInsert,
+} from '../../../booked-sessions/services/booked-sessions.service';
 
 @Component({
   selector: 'app-schedule-session-popup',
@@ -35,13 +40,15 @@ import { SnackbarService } from '../../../../core/services/snackbar/snackbar.ser
 })
 export class ScheduleSessionPopupComponent {
   memberService = inject(MemberService);
+  userService = inject(UserService);
+  branchService = inject(BranchesService);
   dialogRef = inject(MatDialogRef);
   snackBar = inject(SnackbarService);
-  private scheduledSessionService = inject(ScheduledSessionService);
+  private bookedSessionsService = inject(BookedSessionsService);
 
   public selectedSession: ScheduleSession = inject(MAT_DIALOG_DATA);
   members = signal<MemberAccount[]>([]);
-  selectedMembers = signal<MemberAccount[]>([]);
+  selectedMember = signal<MemberAccount | null>(null);
   loading = signal(false);
 
   filters: {
@@ -77,14 +84,19 @@ export class ScheduleSessionPopupComponent {
   }
   scheduleSession() {
     // this.loading.set(true);
-    const memberIds: string[] = [];
-    this.selectedMembers().forEach((member) => {
-      memberIds.push(member.id);
-    });
-    console.log(this.selectedSession);
-    console.log(memberIds);
-    this.scheduledSessionService
-      .addSingleScheduledSession(this.selectedSession, memberIds)
+
+    const scheduledSession: UserSessionInsert = {
+      branchId: this.branchService.currentBranch?.id,
+      scheduledSessionId: this.selectedSession.id,
+      bookingDate: new Date(
+        this.selectedSession.scheduledDate || ''
+      ).toISOString(),
+      userMemberShipId:
+        this.selectedMember()?.UserMembership[0].id || '',
+    };
+    console.log(scheduledSession);
+    this.bookedSessionsService
+      .bookSession(scheduledSession)
       .pipe(finalize(() => this.loading.set(false)))
       .subscribe({
         next: (res) => {
@@ -97,17 +109,9 @@ export class ScheduleSessionPopupComponent {
         },
       });
   }
-  pushMember(member: MemberAccount) {
-    this.selectedMembers().push(member);
+  setMember(member: MemberAccount) {
+    this.selectedMember.set(member);
     this.filters.searchQuery = '';
     this.members.set([]);
-    console.log(this.selectedMembers());
-  }
-  removeMember(id: string) {
-    this.selectedMembers.update((list) => {
-      list = list.filter((member) => member.id !== id);
-      return [...list];
-    });
-    console.log(this.selectedMembers());
   }
 }

@@ -35,7 +35,9 @@
   </div>
   <!-- members -->
   <div class="m-3 d-flex justify-content-between align-items-center">
-    <p class="mat-label-large-prominent">Booked Members (3)</p>
+    <p class="mat-label-large-prominent">
+      Booked Members ({{ originalCount() }})
+    </p>
     <button
       mat-flat-button
       cdkFocusInitial
@@ -53,24 +55,22 @@
       [prefix]="'icon-search'"
       [isRequired]="false"
       [type]="bridgesInputType.TEXT"
-      value=""
+      [(value)]="filter.searchKey"
     ></brdgs-input>
-    <!-- [(value)]="filter.searchQuery" -->
   </form>
   <!-- members -->
-  @if(selectedSession.meta?.SheduleCoaches){
-  <!-- @for ( coach of selectedSession.meta?.SheduleCoaches; track $index) { -->
+  @for ( session of bookedSessions(); track $index) {
   <div
     class="mx-3 mb-2 rounded-8 border-surface-dim-1 bg-surface-bright py-1 px-2"
   >
     <div class="d-flex justify-content-between align-items-center">
       <div>
         <p class="m-0 primary-container-color mat-label-large">
-          {{ selectedSession.meta?.SheduleCoaches?.Staff?.firstName }}
-          {{ selectedSession.meta?.SheduleCoaches?.Staff?.lastName }}
+          {{ session.UserMembership.Members.firstName }}
+          {{ session.UserMembership.Members.lastName }}
         </p>
         <p class="m-0 on-secondary-fixed-variant-color mat-label-large">
-          {{ selectedSession.meta?.SheduleCoaches?.Staff?.phoneNumber }}
+          {{ session.UserMembership.Members.phoneNumber }}
         </p>
       </div>
       <button
@@ -79,10 +79,11 @@
         color="error"
         class="mb-3 mt-1 mb-md-0"
         type="button"
+        (click)="removeBooking(session.id)"
       >
         {{ t("REMOVE") }}
       </button>
     </div>
   </div>
-  <!-- } -->}
+  }
 </ng-container>

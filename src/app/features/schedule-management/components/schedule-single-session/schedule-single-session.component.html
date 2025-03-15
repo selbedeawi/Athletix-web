@@ -14,6 +14,7 @@
           [(value)]="session"
           [isRequired]="false"
           [options]="sessionOptions()"
+          (valueChange)="setSession($event)"
         ></brdgs-select>
         <div class="col-12 col-md-6">
           <p class="m-0 mat-body-medium">Does it repeat?</p>

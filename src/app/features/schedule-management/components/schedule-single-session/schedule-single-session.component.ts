@@ -94,4 +94,23 @@ export class ScheduleSingleSessionComponent {
         console.log(this.sessions());
       });
   }
+  setSession(sessionId?:string){
+   const selectedSession = this.sessions().find(session=>session.id===sessionId)
+   console.log(selectedSession)
+    this.sessions.update(list=>{
+      list.map(session=>{
+        return {
+           sessionId: '',
+    createdAt: new Date().toISOString(),
+    startTime: '14:00:00',
+    endTime: '15:00:00',
+    scheduledDate: new Date().toISOString(),
+    branchId: '',
+    createdBy: '',
+        }
+      })
+      return list
+    })
+console.log(event)
+  }
 }

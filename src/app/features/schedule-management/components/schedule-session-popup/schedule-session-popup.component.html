@@ -20,38 +20,28 @@
         <mat-option
           class="bg-surface-bright"
           [value]="member"
-          (click)="pushMember(member)"
+          (click)="setMember(member)"
           >{{ member.firstName }} {{ member.lastName }}</mat-option
         >
         }
         <div class="mt-2 row">
-          @for ( member of selectedMembers() ; track member) {
-          <div class="col-6 p-1">
+          @if ( selectedMember()) {
+          <div class="col-8 p-1">
             <div
               class="rounded-8 border-surface-dim-1 bg-surface-bright py-1 px-2"
             >
               <div class="d-flex justify-content-between align-items-center">
                 <div>
                   <p class="m-0 primary-container-color mat-label-large">
-                    {{ member.firstName }}
-                    {{ member.lastName }}
+                    {{ selectedMember()?.firstName }}
+                    {{ selectedMember()?.lastName }}
                   </p>
                   <p
                     class="m-0 on-secondary-fixed-variant-color mat-label-large"
                   >
-                    {{ member.phoneNumber }}
+                    {{ selectedMember()?.phoneNumber }}
                   </p>
                 </div>
-                <button
-                  mat-button
-                  cdkFocusInitial
-                  color="error"
-                  class="mb-3 mt-1 mb-md-0"
-                  type="button"
-                  (click)="removeMember(member.id)"
-                >
-                  {{ t("REMOVE") }}
-                </button>
               </div>
             </div>
           </div>
