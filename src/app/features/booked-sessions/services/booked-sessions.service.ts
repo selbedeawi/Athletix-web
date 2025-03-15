@@ -5,8 +5,8 @@ import { TablesInsert } from "../../../../../database.types";
 import { SupabaseService } from "../../../core/services/supabase/supabase.service";
 import { BookedSessionResponse } from "../models/session";
 
-// Define the type for inserting into the UserSessions table.
-type UserSessionInsert = TablesInsert<"UserSessions">;
+// Define the type for inserting into UserSessions
+export type UserSessionInsert = TablesInsert<"UserSessions">;
 
 export interface BookedSessionFilter {
   /** A search key to match against member details. */

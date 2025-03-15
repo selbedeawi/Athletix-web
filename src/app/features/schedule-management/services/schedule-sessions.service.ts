@@ -5,8 +5,8 @@ import { TablesInsert } from "../../../../../database.types";
 import { SupabaseService } from "../../../core/services/supabase/supabase.service";
 import { ScheduleSession } from "../models/schedule-session";
 
-type ScheduledSessionInsert = TablesInsert<"ScheduledSession">;
-type SheduleCoachesInsert = TablesInsert<"SheduleCoaches">;
+export type ScheduledSessionInsert = TablesInsert<"ScheduledSession">;
+export type SheduleCoachesInsert = TablesInsert<"SheduleCoaches">;
 
 export interface ScheduledSessionFilter {
   scheduledDateFrom?: string; // e.g., "2025-03-13"
@@ -160,7 +160,7 @@ export class ScheduledSessionService {
     // Start with the base query, including the related SheduleCoaches.
     let query = this.supabaseService.sb
       .from("ScheduledSession")
-      .select("*,Sessions(*), SheduleCoaches(*, Staff(firstName, lastName))");
+      .select("*,Sessions(*), SheduleCoaches(*, Staff(firstName, lastName,phoneNumber))");
 
     // Apply scheduledDate range filters if provided.
     if (filters.scheduledDateFrom) {

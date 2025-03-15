@@ -20,5 +20,5 @@ export class ScheduleSession implements Tables<"ScheduledSession"> {
      SheduleCoaches?: {
     Staff: StaffAccount;
     slotId: string;
-     }[];
+     }
 }

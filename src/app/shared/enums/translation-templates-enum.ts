@@ -6,7 +6,7 @@ export enum TranslationTemplates {
   AUTH = "Auth",
   SESSIONS = "Sessions",
   BOOKED_SESSION="BookedSession",
-  PT_SESSION="PtSession",
+  PT_SESSION="PtSession",  SCHEDULEDSESSION='ScheduledSession',
   GLOB = "Global",
   // CONFIRM_PASSWORD = 'ConfirmResetPassword',
   // RESET_PASSWORD = 'ResetPassword',
