@@ -1,0 +1,76 @@
+<!-- header -->
+<div class="mx-3 my-4 py-1 d-flex justify-content-between align-items-center">
+  <p class="m-0 mat-title-large">Session Details</p>
+  <i
+    class="icon-close f-24 on-secondary-container-color cursor-pointer"
+    (click)="closeOverlay()"
+  ></i>
+</div>
+<mat-divider></mat-divider>
+<!-- details -->
+<div class="m-3">
+  <p class="m-0 mb-2 mat-title-large primary-color">
+    {{ selectedSession.meta?.Sessions?.name }}
+  </p>
+  <p
+    class="m-0 mb-2 mat-body-medium on-secondary-fixed-variant-color d-flex align-items-center"
+  >
+    <i
+      style="margin: 2px"
+      class="icon-today f-24 on-secondary-container-color"
+    ></i>
+    <span>{{ selectedSession.start | date : "EEEE, LLL dd, yyyy" }}</span>
+    <mat-icon
+      style="margin: 2px"
+      class="icon-schedule ms-4 f-24 on-secondary-container-color"
+    ></mat-icon>
+    <span class="">{{ selectedSession.start | date : "h:mm a" }}</span>
+    <span style="margin: 2px">-</span>
+    <span>{{ selectedSession.end | date : "h:mm a" }}</span>
+  </p>
+  <p class="m-0 mb-2 mat-body-medium on-secondary-fixed-variant-color">
+    {{ selectedSession.meta?.Sessions?.description }}
+  </p>
+</div>
+<!-- members -->
+<div class="m-3 d-flex justify-content-between align-items-center">
+  <p class="mat-label-large-prominent">Booked Members (3)</p>
+  <button
+    mat-flat-button
+    cdkFocusInitial
+    color="primary"
+    class="mb-3 mt-1 mb-md-0"
+    type="button"
+    (click)="addMember()"
+  >
+    {{ 't("ADD")' }}
+  </button>
+</div>
+<form class="m-3 mb-2">
+  <brdgs-input
+    [label]="'Search member name, ID, Phone or email'"
+    [prefix]="'icon-search'"
+    [isRequired]="false"
+    [type]="bridgesInputType.TEXT"
+    value=""
+  ></brdgs-input>
+  <!-- [(value)]="filter.searchQuery" -->
+</form>
+<!-- members -->
+@for ( coach of selectedSession.meta?.SheduleCoaches; track $index) {
+<div
+  class="mx-3 mb-2 rounded-8 border-surface-dim-1 bg-surface-bright py-1 px-2"
+>
+  <div class="d-flex justify-content-between align-items-center">
+    <div>
+      <p class="m-0 primary-container-color mat-label-large">
+        {{ coach.Staff.firstName }} {{ coach.Staff.lastName }}
+      </p>
+      <p class="m-0 on-secondary-fixed-variant-color mat-label-large">
+        {{ coach.Staff.phoneNumber }}
+      </p>
+    </div>
+    <div></div>
+  </div>
+</div>
+}

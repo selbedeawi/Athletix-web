@@ -3,6 +3,7 @@ import { from, Observable } from "rxjs";
 import { map, switchMap } from "rxjs/operators";
 import { TablesInsert } from "../../../../../database.types";
 import { SupabaseService } from "../../../core/services/supabase/supabase.service";
+import { ScheduleSession } from "../models/schedule-session";
 
 type ScheduledSessionInsert = TablesInsert<"ScheduledSession">;
 type SheduleCoachesInsert = TablesInsert<"SheduleCoaches">;
@@ -39,8 +40,8 @@ export class ScheduledSessionService {
     // this.addSingleScheduledSession(testSingleSession, testSingleCoachIds)
     //   .subscribe((res) => console.log(res));
 
-    this.filterScheduledSessions({})
-      .subscribe((res) => console.log(res));
+    //   this.filterScheduledSessions({})
+    //     .subscribe((res) => console.log(res));
   }
 
   /**
@@ -155,11 +156,11 @@ export class ScheduledSessionService {
    */
   filterScheduledSessions(
     filters: ScheduledSessionFilter,
-  ): Observable<any[]> {
+  ): Observable<ScheduleSession[]> {
     // Start with the base query, including the related SheduleCoaches.
     let query = this.supabaseService.sb
       .from("ScheduledSession")
-      .select("*, SheduleCoaches(*, Staff(firstName, lastName))");
+      .select("*,Sessions(*), SheduleCoaches(*, Staff(firstName, lastName))");
 
     // Apply scheduledDate range filters if provided.
     if (filters.scheduledDateFrom) {
