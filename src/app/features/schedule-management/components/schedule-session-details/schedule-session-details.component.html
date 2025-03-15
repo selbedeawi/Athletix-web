@@ -79,7 +79,7 @@
         color="error"
         class="mb-3 mt-1 mb-md-0"
         type="button"
-        (click)="removeBooking(session.scheduledSessionId || '')"
+        (click)="removeBooking(session.user_session_id || '')"
       >
         {{ t("REMOVE") }}
       </button>
