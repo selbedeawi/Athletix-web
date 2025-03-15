@@ -1,15 +1,8 @@
 import { Component, inject } from '@angular/core';
-import { RouterLink } from '@angular/router';
-
-import { AsyncPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatDivider } from '@angular/material/divider';
-import { MatIcon } from '@angular/material/icon';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { InputComponent } from '../../../../shared/ui-components/atoms/input/input.component';
-import { SelectComponent } from '../../../../shared/ui-components/atoms/select/select.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { TranslationTemplates } from '../../../../shared/enums/translation-templates-enum';
 import { APP_ROUTES } from '../../../../core/enums/pages-urls-enum';
@@ -17,6 +10,7 @@ import { BridgesInputType } from '../../../../shared/ui-components/atoms/input/e
 import { LookupService } from '../../../../core/services/lookup/lookup.service';
 import { DatePickerComponent } from '../../../../shared/ui-components/atoms/date-picker/date-picker.component';
 import { MatDialogRef } from '@angular/material/dialog';
+import { TimePickerComponent } from "../../../../shared/ui-components/atoms/time-picker/time-picker.component";
 
 @Component({
   selector: 'app-book-session-dialog',
@@ -27,7 +21,8 @@ import { MatDialogRef } from '@angular/material/dialog';
     MatButtonModule,
     MatCheckboxModule,
     DatePickerComponent,
-  ],
+    TimePickerComponent
+],
   templateUrl: './book-session-dialog.component.html',
   styleUrl: './book-session-dialog.component.scss',
 })
