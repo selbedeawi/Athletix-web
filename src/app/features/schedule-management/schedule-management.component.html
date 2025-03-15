@@ -1,47 +1,62 @@
-<div
-  class="border-outline-variant-1 rounded-8 bg-on-primary mb-4 overflow-hidden"
->
-  <div class="p-3">
-    <app-schedule-calendar-header
-      [view]="view"
-      [(viewDate)]="viewDate"
-      (viewDateChange)="getFilteredSessions()"
-    ></app-schedule-calendar-header>
-  </div>
+<section *transloco="let t; prefix: translationTemplate">
+  <div class="d-flex justify-content-between">
+    <h2 class="mat-headline-small primary-color mb-1">{{ t("TITLE") }}</h2>
 
-  <ng-template #customCellTemplate let-day="day" let-locale="locale" class="">
-    <div class="cal-cell-top">
-      <!-- <span class="cal-day-badge" *ngIf="day.badgeTotal > 0">{{
+    <button
+      mat-flat-button
+      class="mb-2 me-3 me-sm-0"
+      color="primary"
+      type="button"
+      (click)="scheduleSingleSession()"
+    >
+      {{ t("SCHEDULE") }}
+    </button>
+  </div>
+  <div
+    class="border-outline-variant-1 rounded-8 bg-on-primary mb-4 overflow-hidden"
+  >
+    <div class="p-3">
+      <app-schedule-calendar-header
+        [view]="view"
+        [(viewDate)]="viewDate"
+        (viewDateChange)="getFilteredSessions()"
+      ></app-schedule-calendar-header>
+    </div>
+
+    <ng-template #customCellTemplate let-day="day" let-locale="locale" class="">
+      <div class="cal-cell-top">
+        <!-- <span class="cal-day-badge" *ngIf="day.badgeTotal > 0">{{
       day.badgeTotal
     }}</span> -->
-      <span
-        class="cal-day-number m-2 float-start mat-label-large"
-        [ngClass]="{
-          'bg-primary-container on-primary-container-color opacity-100 rounded-3':
-            day.date.getDate() == viewDate().getDate()
-        }"
-        >{{ day.date | calendarDate : "monthViewDayNumber" : locale }}
-      </span>
-    </div>
-    <div class="my-1">
-      @for (event of day.events; track $index ) {
-      <p
-        class="my-1 mx-2 mat-label-medium text-truncate d-flex justify-content-between align-items-center gap-1 border-surface-variant-1 primary-container-color"
-        (click)="openSingleSession(event)"
-      >
-        <span style="max-width: 40px" class="overflow-hidden">
-          {{ event.meta.Sessions.name }}</span
+        <span
+          class="cal-day-number m-2 float-start mat-label-large"
+          [ngClass]="{
+            'bg-primary-container on-primary-container-color opacity-100 rounded-3':
+              day.date.getDate() == viewDate().getDate()
+          }"
+          >{{ day.date | calendarDate : "monthViewDayNumber" : locale }}
+        </span>
+      </div>
+      <div class="my-1">
+        @for (event of day.events; track $index ) {
+        <p
+          class="rounded-4-px my-1 mx-2 mat-label-medium text-truncate d-flex justify-content-between align-items-center gap-1 border-surface-variant-1 primary-container-color bg-inverse-on-surface"
+          (click)="openSingleSession(event)"
         >
-        <span> {{ event.start | date : "hh:mm a" }}</span>
-      </p>
-      }
-    </div>
-  </ng-template>
+          <span style="max-width: 40px" class="overflow-hidden">
+            {{ event.meta.Sessions.name }}</span
+          >
+          <span> {{ event.start | date : "hh:mm a" }}</span>
+        </p>
+        }
+      </div>
+    </ng-template>
 
-  <mwl-calendar-month-view
-    [viewDate]="viewDate()"
-    [events]="events()"
-    [cellTemplate]="customCellTemplate"
-  >
-  </mwl-calendar-month-view>
-</div>
+    <mwl-calendar-month-view
+      [viewDate]="viewDate()"
+      [events]="events()"
+      [cellTemplate]="customCellTemplate"
+    >
+    </mwl-calendar-month-view>
+  </div>
+</section>

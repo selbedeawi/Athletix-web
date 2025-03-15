@@ -57,20 +57,29 @@
   <!-- [(value)]="filter.searchQuery" -->
 </form>
 <!-- members -->
-@for ( coach of selectedSession.meta?.SheduleCoaches; track $index) {
+<!-- @for ( coach of selectedSession.meta?.SheduleCoaches; track $index) { -->
 <div
   class="mx-3 mb-2 rounded-8 border-surface-dim-1 bg-surface-bright py-1 px-2"
 >
   <div class="d-flex justify-content-between align-items-center">
     <div>
       <p class="m-0 primary-container-color mat-label-large">
-        {{ coach.Staff.firstName }} {{ coach.Staff.lastName }}
+        {{ selectedSession.meta?.SheduleCoaches?.Staff?.firstName }}
+        {{ selectedSession.meta?.SheduleCoaches?.Staff?.lastName }}
       </p>
       <p class="m-0 on-secondary-fixed-variant-color mat-label-large">
-        {{ coach.Staff.phoneNumber }}
+        {{ selectedSession.meta?.SheduleCoaches?.Staff?.phoneNumber }}
       </p>
     </div>
-    <div></div>
+    <button
+      mat-button
+      cdkFocusInitial
+      color="error"
+      class="mb-3 mt-1 mb-md-0"
+      type="button"
+    >
+      {{ 't("REMOVE")' }}
+    </button>
   </div>
 </div>
-}
+<!-- } -->
