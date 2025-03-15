@@ -1,11 +1,20 @@
-import { CommonModule } from '@angular/common';
-import { Component, computed, inject, signal } from '@angular/core';
+import { CommonModule, DatePipe } from '@angular/common';
+import { Component, computed, inject, signal, viewChild } from '@angular/core';
 import { CalendarEvent, CalendarModule, CalendarView } from 'angular-calendar';
 import { ScheduleCalendarHeaderComponent } from "./components/schedule-calendar-header/schedule-calendar-header.component";
 import { ScheduledSessionFilter, ScheduledSessionService } from './services/schedule-sessions.service';
 import { startOfMonth, endOfMonth, format } from 'date-fns';
 import { finalize } from 'rxjs';
 import { ScheduleSession } from './models/schedule-session';
+import { MatDrawer, MatSidenavModule } from '@angular/material/sidenav';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { InputComponent } from '../../shared/ui-components/atoms/input/input.component';
+import { BridgesInputType } from '../../shared/ui-components/atoms/input/enum/bridges-input-type.enum';
+import { FormsModule } from '@angular/forms';
+import { BrdgsOverlayService } from '../../shared/services/brdgs-overlay.service';
+import { ScheduleSessionDetailsComponent } from './components/schedule-session-details/schedule-session-details.component';
 
 @Component({
   selector: 'app-schedule-management',
@@ -15,9 +24,10 @@ import { ScheduleSession } from './models/schedule-session';
 })
 export class ScheduleManagementComponent {
   private scheduleSessionService = inject(ScheduledSessionService)
+  private brdgsOverlayService = inject(BrdgsOverlayService)
 
   viewDate = signal(new Date());
-  ScheduledSessions = signal<ScheduleSession[]>([]);
+  selectedSession = signal<CalendarEvent<ScheduleSession> | null>(null);
   events = signal<CalendarEvent<ScheduleSession>[]>([])
   loading = signal(false)
 
@@ -30,17 +40,17 @@ export class ScheduleManagementComponent {
   )
 
   view: CalendarView = CalendarView.Month;
-  
+  filter: ScheduledSessionFilter = {
+    scheduledDateFrom: this.monthStart(),
+    scheduledDateTo: this.monthEnd(),
+  }
+  bridgesInputType = BridgesInputType
   constructor() {
     this.getFilteredSessions()
   }
   getFilteredSessions() {
-  const  filter: ScheduledSessionFilter = {
-      scheduledDateFrom: this.monthStart(),
-      scheduledDateTo: this.monthEnd(),
-    }
     this.loading.set(true)
-    this.scheduleSessionService.filterScheduledSessions(filter).pipe(finalize(() => this.loading.set(true))).subscribe({
+    this.scheduleSessionService.filterScheduledSessions(this.filter).pipe(finalize(() => this.loading.set(true))).subscribe({
       next: (res) => {
         this.events.set([])
         res.forEach(session => {
@@ -63,5 +73,8 @@ export class ScheduleManagementComponent {
 
   openSingleSession(event: CalendarEvent<ScheduleSession>) {
     console.log(event)
+    if (event.meta) {
+      this.brdgsOverlayService.open(ScheduleSessionDetailsComponent, event)
+    }
   }
 }

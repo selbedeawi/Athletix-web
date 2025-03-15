@@ -1,4 +1,6 @@
-<div class="border-outline-variant-1 rounded-8 bg-on-primary mb-4 overflow-hidden">
+<div
+  class="border-outline-variant-1 rounded-8 bg-on-primary mb-4 overflow-hidden"
+>
   <div class="p-3">
     <app-schedule-calendar-header
       [view]="view"
@@ -7,13 +9,8 @@
     ></app-schedule-calendar-header>
   </div>
 
-  <ng-template
-    #customCellTemplate
-    let-day="day"
-    let-locale="locale"
-    class=""
-    >
-    <div class="cal-cell-top ">
+  <ng-template #customCellTemplate let-day="day" let-locale="locale" class="">
+    <div class="cal-cell-top">
       <!-- <span class="cal-day-badge" *ngIf="day.badgeTotal > 0">{{
       day.badgeTotal
     }}</span> -->
@@ -33,7 +30,7 @@
         (click)="openSingleSession(event)"
       >
         <span style="max-width: 40px" class="overflow-hidden">
-          {{ event.title }}</span
+          {{ event.meta.Sessions.name }}</span
         >
         <span> {{ event.start | date : "hh:mm a" }}</span>
       </p>

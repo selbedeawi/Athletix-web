@@ -1,0 +1,42 @@
+<div class="bg-secondary">
+  <p class="ms-3 mat-title-large on-primary-color">Add Member</p>
+</div>
+<div class="bg-on-primary">
+  <div class="m-3">
+    <p class="mat-title-large secondary-color mb-3">Search for member</p>
+    <form>
+      <brdgs-input
+        [label]="'Search member name, ID, Phone or email'"
+        [prefix]="'icon-search'"
+        [isRequired]="false"
+        [type]="bridgesInputType.TEXT"
+        [(value)]="filters.searchQuery"
+        (valueChange)="getAll()"
+      ></brdgs-input>
+      <div class="mt-5 pt-5">
+        <mat-divider></mat-divider>
+      </div>
+      <div class="d-flex justify-content-end align-items-center gap-2">
+        <button
+          mat-stroked-button
+          cdkFocusInitial
+          color="primary"
+          class="mb-3 mt-1 mb-md-0"
+          type="button"
+          matDialogClose
+        >
+          {{ 't("CANCEL")' }}
+        </button>
+        <button
+          mat-flat-button
+          cdkFocusInitial
+          color="primary"
+          class="mb-3 mt-1 mb-md-0"
+          type="button"
+        >
+          {{ 't("Schedule_Session")' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

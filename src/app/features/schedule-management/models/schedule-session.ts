@@ -1,4 +1,5 @@
 import { Tables } from "../../../../../database.types";
+import { Sessions } from "../../sessions-list/models/sessions";
 import { StaffAccount } from "../../staff-list/models/staff";
 
 export class ScheduleSession implements Tables<"ScheduledSession"> {
@@ -12,8 +13,10 @@ export class ScheduleSession implements Tables<"ScheduledSession"> {
     scheduledDate!: string | null;
     sessionId!: string;
     branchId!: string | null;
+    
     // FE only
-     coachIds!: string[];
+    Sessions!:Sessions
+    coachIds!: string[];
      SheduleCoaches?: {
     Staff: StaffAccount;
     slotId: string;

@@ -40,8 +40,8 @@ export class ScheduledSessionService {
     // this.addSingleScheduledSession(testSingleSession, testSingleCoachIds)
     //   .subscribe((res) => console.log(res));
 
-  //   this.filterScheduledSessions({})
-  //     .subscribe((res) => console.log(res));
+    //   this.filterScheduledSessions({})
+    //     .subscribe((res) => console.log(res));
   }
 
   /**
@@ -160,7 +160,7 @@ export class ScheduledSessionService {
     // Start with the base query, including the related SheduleCoaches.
     let query = this.supabaseService.sb
       .from("ScheduledSession")
-      .select("*, SheduleCoaches(*, Staff(firstName, lastName))");
+      .select("*,Sessions(*), SheduleCoaches(*, Staff(firstName, lastName))");
 
     // Apply scheduledDate range filters if provided.
     if (filters.scheduledDateFrom) {
