@@ -27,34 +27,30 @@
           {{ t("TABLE_START_DATE") }}
         </th>
 
-        <th class="col-lg-2"> 
-          
-          </th>
+        <th class="col-lg-2"></th>
       </tr>
     </thead>
     <tbody>
       @for (session of sessionsFilter.sessions(); track $index) {
       <tr class="d-flex">
-        <td
-          class="col-12 col-sm-12 col-lg-2 table-card-title  text-truncate"
-        >
-            {{ session.id}}
+        <td class="col-12 col-sm-12 col-lg-2 table-card-title text-truncate">
+          {{ session.member_memberid }}
         </td>
         <td class="col-12 col-sm-6 col-lg-3 table-primary">
-          {{ session.UserMembership.name }}
+          {{ session.firstName }} {{ session.lastName }}
         </td>
         <td class="col-12 col-sm-6 col-lg-3">
-          {{ session.ScheduledSession.sessionId }}
+          {{ session.membership_name }}
         </td>
         <td class="col-12 col-sm-6 col-lg-2">
-          {{ session.bookingDate}} <br>
-          {{ session.ScheduledSession.startTime | timeFormat   }}
+          {{ session.bookingDate }} <br />
+          {{ session.startTime || "" | timeFormat }}
         </td>
 
         <td class="col-12 col-lg-2 table_action">
           <div class="d-flex flex-wrap justify-content-end align-items-center">
             <div>
-                <button
+              <button
                 mat-stroked-button
                 color="primary"
                 class="me-3 mb-3 mt-1 mb-md-0 px-5"
@@ -88,13 +84,12 @@
     </tfoot>
     }
   </table>
+  } @else{
+  <div class="justify-content-center">
+    <app-empty-result
+      [title]="t('NO_RESULT_TITLE')"
+      [image]="'icon-users-01'"
+    ></app-empty-result>
+  </div>
   }
-  @else{
-    <div class="justify-content-center">
-      <app-empty-result
-        [title]="t('NO_RESULT_TITLE')"
-        [image]="'icon-users-01'"
-      ></app-empty-result>
-    </div>
-    }
 </section>
