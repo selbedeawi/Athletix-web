@@ -1,37 +1,37 @@
-import { DatePipe } from '@angular/common';
+import { DatePipe } from "@angular/common";
 import {
   ChangeDetectionStrategy,
   Component,
   inject,
   signal,
-} from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
-import { MatDividerModule } from '@angular/material/divider';
-import { MatIconModule } from '@angular/material/icon';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { InputComponent } from '../../../../shared/ui-components/atoms/input/input.component';
-import { CalendarEvent } from 'angular-calendar';
-import { ScheduleSession } from '../../models/schedule-session';
-import { BridgesInputType } from '../../../../shared/ui-components/atoms/input/enum/bridges-input-type.enum';
+} from "@angular/core";
+import { FormsModule } from "@angular/forms";
+import { MatButtonModule } from "@angular/material/button";
+import { MatDividerModule } from "@angular/material/divider";
+import { MatIconModule } from "@angular/material/icon";
+import { MatSidenavModule } from "@angular/material/sidenav";
+import { InputComponent } from "../../../../shared/ui-components/atoms/input/input.component";
+import { CalendarEvent } from "angular-calendar";
+import { ScheduleSession } from "../../models/schedule-session";
+import { BridgesInputType } from "../../../../shared/ui-components/atoms/input/enum/bridges-input-type.enum";
 import {
   BRDGS_OVERLAY_DATA,
   BrdgsOverlayRef,
-} from '../../../../shared/services/brdgs-overlay.service';
-import { MatDialog } from '@angular/material/dialog';
-import { ScheduleSessionPopupComponent } from '../schedule-session-popup/schedule-session-popup.component';
-import { TranslocoDirective } from '@jsverse/transloco';
-import { TranslationTemplates } from '../../../../shared/enums/translation-templates-enum';
+} from "../../../../shared/services/brdgs-overlay.service";
+import { MatDialog } from "@angular/material/dialog";
+import { ScheduleSessionPopupComponent } from "../schedule-session-popup/schedule-session-popup.component";
+import { TranslocoDirective } from "@jsverse/transloco";
+import { TranslationTemplates } from "../../../../shared/enums/translation-templates-enum";
 import {
   BookedSessionFilter,
   BookedSessionsService,
-} from '../../../booked-sessions/services/booked-sessions.service';
-import { finalize } from 'rxjs';
-import { MemberAccount } from '../../../members-list/models/member';
-import { BookedSessionResponse } from '../../../booked-sessions/models/session';
+} from "../../../booked-sessions/services/booked-sessions.service";
+import { finalize } from "rxjs";
+import { MemberAccount } from "../../../members-list/models/member";
+import { BookedSessionResponse } from "../../../booked-sessions/models/session";
 
 @Component({
-  selector: 'app-schedule-session-details',
+  selector: "app-schedule-session-details",
   imports: [
     FormsModule,
     MatSidenavModule,
@@ -42,16 +42,17 @@ import { BookedSessionResponse } from '../../../booked-sessions/models/session';
     InputComponent,
     TranslocoDirective,
   ],
-  templateUrl: './schedule-session-details.component.html',
-  styleUrl: './schedule-session-details.component.scss',
+  templateUrl: "./schedule-session-details.component.html",
+  styleUrl: "./schedule-session-details.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ScheduleSessionDetailsComponent {
   bookedSessionsService = inject(BookedSessionsService);
   overlayRef = inject(BrdgsOverlayRef);
   dialog = inject(MatDialog);
-  public selectedSession: CalendarEvent<ScheduleSession> =
-    inject(BRDGS_OVERLAY_DATA);
+  public selectedSession: CalendarEvent<ScheduleSession> = inject(
+    BRDGS_OVERLAY_DATA,
+  );
 
   loading = signal(true);
   bookedSessions = signal<BookedSessionResponse[]>([]);
@@ -59,7 +60,7 @@ export class ScheduleSessionDetailsComponent {
   translationTemplate: TranslationTemplates =
     TranslationTemplates.SCHEDULEDSESSION;
   filter: BookedSessionFilter = {
-    searchKey: '',
+    searchKey: "",
     scheduledSessionId: this.selectedSession.meta?.id,
   };
   originalCount = signal(0);
@@ -77,7 +78,7 @@ export class ScheduleSessionDetailsComponent {
     });
   }
   removeBooking(id: string) {}
-  
+
   getAllSessions() {
     this.loading.set(true);
 
@@ -87,7 +88,7 @@ export class ScheduleSessionDetailsComponent {
         .pipe(finalize(() => this.loading.set(false)))
         .subscribe((res) => {
           console.log(res);
-          res.forEach((session) => {
+          res.forEach((session: any) => {
             this.bookedSessions().push(session);
           });
           // this.sessions.set(res);
@@ -95,7 +96,7 @@ export class ScheduleSessionDetailsComponent {
         });
     } else {
       this.loading.set(false);
-      console.error('Filter is not properly initialized.');
+      console.error("Filter is not properly initialized.");
     }
   }
 }
