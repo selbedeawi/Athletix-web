@@ -29,6 +29,7 @@ import {
 import { finalize } from "rxjs";
 import { MemberAccount } from "../../../members-list/models/member";
 import { BookedSessionResponse } from "../../../booked-sessions/models/session";
+import { Tables } from "../../../../../../database.types";
 
 @Component({
   selector: "app-schedule-session-details",
@@ -55,7 +56,7 @@ export class ScheduleSessionDetailsComponent {
   );
 
   loading = signal(true);
-  bookedSessions = signal<BookedSessionResponse[]>([]);
+  bookedSessions = signal<Tables<"flattened_user_sessions_full">[]>([]);
   bridgesInputType = BridgesInputType;
   translationTemplate: TranslationTemplates =
     TranslationTemplates.SCHEDULEDSESSION;
