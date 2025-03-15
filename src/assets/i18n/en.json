@@ -6,6 +6,7 @@
     "NAV_SESSIONS_LIST": "Sessions List",
     "NAV_SCHEDULE_MANAGEMENT": "Schedule Management",
     "NAV_BOOKED_SESSIONS": "Booked Sessions",
+    "NAV_PT_SESSIONS": "Pt Sessions",
     "NAV_MEMBERSHIP_LIST": "Memberships"
   },
   "Auth": {
@@ -68,5 +69,38 @@
     "MEMBERSHIP_TYPE": "Membership Type",
     "REMAINING_FREEZE_PERIOD": "Remaining Freeze Period",
     "DETAILS_TITLE": "Edit Member"
+  },
+  "BookedSession": {
+    "TITLE": "Booked Sessions List",
+    "APPLY": "Apply",
+    "CANCEL": "Cancel",
+    "ALLSESSIONS": "All Sessions",
+    "DATE_OF_BIRTH": "Date & Time",
+    "RESET": "Reset",
+    "SEARCHBYUSERNAME": "Search by member name",
+    "TABLE_ID": "ID",
+    "MEMBER_NAME": "Member Name",
+    "TABLE_SESSION_NAME": "Session Name",
+    "TABLE_START_DATE": "Start Date"
+  },
+  "PtSession": {
+    "TITLE": "Private Trainer Sessions List",
+    "APPLY": "Apply",
+    "CANCEL": "Cancel",
+    "ALLSESSIONS": "All Sessions",
+    "DATE_OF_BIRTH": "Date & Time",
+    "RESET": "Reset",
+    "SEARCH_BY_USERNAME": "Search by member name",
+    "SEARCH_FOR_MEMBER": "Search for member",
+    "FIRST_LABEL": "Search for member name, ID, phone or email",
+    "SECOND_LABEL": "Search for Coach name, ID, phone or email",
+    "THIRD_LABEL": "Select Date",
+    "FOURTH_LABEL": "Start Time",
+    "TABLE_ID": "ID",
+    "MEMBER_NAME": "Member Name",
+    "COACH_NAME": "Coach Name",
+    "START_DATE": "Start Date",
+    "BOOK_SESSION": "Book Session",
+    "ADD_MEMBER": "Add Member"
   }
 }
