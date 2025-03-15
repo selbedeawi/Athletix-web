@@ -1,0 +1,11 @@
+<ng-container *transloco="let t; prefix: translationTemplate()">
+  <brdgs-select
+    class="col-12 col-md-6"
+    [isRequired]="isRequired()"
+    [label]="t('BRANCHE')"
+    [(value)]="id"
+    [options]="sessionsOptions()"
+    [isMultiple]="false"
+    (valueChange)="membershipChange($event)"
+  ></brdgs-select
+></ng-container>

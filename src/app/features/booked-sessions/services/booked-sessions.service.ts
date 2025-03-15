@@ -83,7 +83,8 @@ export class BookedSessionsService {
         *,
         ScheduledSession (
           *,
-          SheduleCoaches ( coachId )
+          SheduleCoaches ( coachId ),
+          Sessions (*)
         ),
         UserMembership (
           *,

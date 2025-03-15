@@ -1,3 +1,4 @@
+import { Sessions } from "../../sessions-list/models/sessions";
 
   
   
@@ -11,6 +12,7 @@
     startTime: string;
     scheduledDate: string;
     SheduleCoaches: string;
+    Sessions:Sessions
   }
   
   interface Member {

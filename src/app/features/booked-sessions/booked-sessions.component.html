@@ -38,13 +38,14 @@
         <td
           class="col-12 col-sm-12 col-lg-2 table-card-title  text-truncate"
         >
-            {{ session.id}}
+            {{ session.UserMembership.memberId}}
         </td>
         <td class="col-12 col-sm-6 col-lg-3 table-primary">
-          {{ session.UserMembership.name }}
+          {{ session.UserMembership.Members.firstName }}
+          {{ session.UserMembership.Members.lastName }}
         </td>
         <td class="col-12 col-sm-6 col-lg-3">
-          {{ session.ScheduledSession.sessionId }}
+          {{session.ScheduledSession.Sessions.name}}
         </td>
         <td class="col-12 col-sm-6 col-lg-2">
           {{ session.bookingDate}} <br>
