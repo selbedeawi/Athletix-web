@@ -86,7 +86,6 @@ export class BookedSessionsService {
   ) {
     // Query from the flattened view.
     let query = this.supabaseService.sb
-
       .from("flattened_user_sessions_full")
       .select("*");
 
@@ -132,6 +131,29 @@ export class BookedSessionsService {
           throw res.error;
         }
         return res.data;
+      }),
+    );
+  }
+  /**
+   * Deletes a session from the UserSessions table by its primary key (id).
+   *
+   * @param sessionId - The primary key (id) of the session to delete.
+   * @returns Observable emitting the deleted session record.
+   */
+  deleteSession(sessionId: string) {
+    return from(
+      this.supabaseService.sb
+        .from("UserSessions")
+        .delete()
+        .eq("id", sessionId)
+        .select(),
+    ).pipe(
+      map((res) => {
+        if (res.error) {
+          throw res.error;
+        }
+        // res.data will be an array of deleted records. Typically just one if the id is unique.
+        return res.data[0];
       }),
     );
   }
