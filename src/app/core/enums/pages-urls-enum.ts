@@ -26,6 +26,7 @@ export enum APP_ROUTES {
 
   SCHEDULE_MANAGEMENT = "schedule-management",
   BOOKED_SESSIONS = "booked-sessions",
+  PT_SESSIONS = "pt-sessions",
 
   SALES_MANAGER = "SALES_MANAGER",
   SESSION_MANAGER = "SESSION_MANAGER",

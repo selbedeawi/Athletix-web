@@ -3,6 +3,7 @@ import { from, Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { TablesInsert } from "../../../../../database.types";
 import { SupabaseService } from "../../../core/services/supabase/supabase.service";
+import { BookedSessionResponse } from "../models/session";
 
 // Define the type for inserting into UserSessions
 type UserSessionInsert = TablesInsert<"UserSessions">;
@@ -11,10 +12,10 @@ export interface BookedSessionFilter {
   // Use a single searchKey to search across member fields
   searchKey?: string;
   // Other filters:
-  scheduledSessionId?: string;
+  scheduledSessionId?: string|null;
   coachIds?: string[];
   branchId?: string;
-  scheduledDateFrom?: string; // e.g., "2025-03-13"
+  scheduledDateFrom?: string | null; // e.g., "2025-03-13"
   scheduledDateTo?: string; // e.g., "2025-03-15"
 }
 
@@ -74,7 +75,7 @@ export class BookedSessionsService {
    * @param filters Filter options to apply.
    * @returns Observable emitting the filtered booked sessions.
    */
-  filterBookedSessions(filters: BookedSessionFilter): Observable<any[]> {
+  filterBookedSessions(filters: BookedSessionFilter): Observable<BookedSessionResponse[]> {
     // Build the base query with joins.
     let query = this.supabaseService.sb
       .from("UserSessions")

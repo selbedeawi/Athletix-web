@@ -1,6 +1,7 @@
 import { CommonModule, DatePipe } from '@angular/common';
 import { Component, computed, inject, signal, viewChild } from '@angular/core';
 import { CalendarEvent, CalendarModule, CalendarView } from 'angular-calendar';
+
 import { ScheduleCalendarHeaderComponent } from "./components/schedule-calendar-header/schedule-calendar-header.component";
 import { ScheduledSessionFilter, ScheduledSessionService } from './services/schedule-sessions.service';
 import { startOfMonth, endOfMonth, format } from 'date-fns';
@@ -20,7 +21,7 @@ import { ScheduleSessionDetailsComponent } from './components/schedule-session-d
   selector: 'app-schedule-management',
   imports: [CalendarModule, CommonModule, ScheduleCalendarHeaderComponent],
   templateUrl: './schedule-management.component.html',
-  styleUrl: './schedule-management.component.scss'
+  styleUrl: './schedule-management.component.scss',
 })
 export class ScheduleManagementComponent {
   private scheduleSessionService = inject(ScheduledSessionService)

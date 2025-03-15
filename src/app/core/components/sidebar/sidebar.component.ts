@@ -106,6 +106,17 @@ export class BrdgsSidenavComponent implements OnDestroy {
         "Coach",
       ],
     },
+    {
+      icon: "icon-bookedsessions",
+      label: "NAV_PT_SESSIONS",
+      path: ["/", APP_ROUTES.PT_SESSIONS],
+      permissions: [
+        "SuperAdmin",
+        "Receptionist",
+        "SessionManager",
+        "Coach",
+      ],
+    },
   ]);
 
   /**
