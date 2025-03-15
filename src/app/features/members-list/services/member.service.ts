@@ -68,7 +68,7 @@ export class MemberService {
 
     let query = this.supabaseService.sb
       .from("Members")
-      .select("*, UserMembership(*)", { count: "exact" });
+      .select("*, UserMembership!inner(*)", { count: "exact" });
 
     // .select("*, UserMembership!inner(*)", { count: "exact" });
     // Apply search filter across multiple fields

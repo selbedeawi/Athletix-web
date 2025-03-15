@@ -102,5 +102,31 @@
     "START_DATE": "Start Date",
     "BOOK_SESSION": "Book Session",
     "ADD_MEMBER": "Add Member"
+  },
+  "ScheduledSession": {
+    "TITLE":"Schedule Management",
+    "YES": "Yes",
+    "NO": "No",
+    "SCHEDULE": "Schedule Session",
+    "SELECT_SESSION": "Select Session",
+    "START_DATE": "Start Date",
+    "END_DATE": "End Date",
+    "WEEK_DAY": "Select Day",
+    "START_TIME": "Start Time",
+    "SATURDAY": "Saturday",
+    "SUNDAY": "Sunday",
+    "MONDAY": "Monday",
+    "TUESDAY": "Tuesday",
+    "WEDNESDAY": "wednesday",
+    "THURSDAY": "Thursday",
+    "FRIDAY": "Friday",
+    "CANCEL": "Cancel",
+    "SCHEDULE_A_SESSION": "Schedule a Session",
+    "ADD_DETAILS": "Please enter details below",
+    "ADD_DAY": "+ Add Another Day",
+    "ADD_MEMBER": "Add Member",
+    "REMOVE": "Remove",
+    "SEARCH_MEMBER":"Search for member",
+    "SEARCH_LABEL":"Search member name, ID, Phone or email"
   }
 }
