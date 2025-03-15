@@ -28,7 +28,7 @@ import {
 } from "../../../booked-sessions/services/booked-sessions.service";
 import { finalize } from "rxjs";
 import { MemberAccount } from "../../../members-list/models/member";
-import { BookedSessionResponse } from "../../../booked-sessions/models/session";
+
 import { Tables } from "../../../../../../database.types";
 
 @Component({

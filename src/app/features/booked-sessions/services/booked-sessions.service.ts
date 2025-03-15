@@ -3,7 +3,6 @@ import { from, Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { TablesInsert } from "../../../../../database.types";
 import { SupabaseService } from "../../../core/services/supabase/supabase.service";
-import { BookedSessionResponse } from "../models/session";
 
 // Define the type for inserting into UserSessions
 export type UserSessionInsert = TablesInsert<"UserSessions">;

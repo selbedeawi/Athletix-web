@@ -19,7 +19,7 @@ import {
   BookedSessionFilter,
   BookedSessionsService,
 } from "../../services/booked-sessions.service";
-import { BookedSessionResponse } from "../../models/session";
+
 import { Tables } from "../../../../../../database.types";
 
 @Component({
