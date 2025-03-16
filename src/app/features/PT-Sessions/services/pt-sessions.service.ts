@@ -22,6 +22,9 @@ export interface PrivateSessionBookingFilter {
   coachId?: string;
   /** Filter by userMembershipId. */
   userMembershipId?: string;
+  bookingTimeTo?: string| null;
+  bookingTimeFrom?: string| null;
+  bookingSessionId?:string
 }
 
 @Injectable({

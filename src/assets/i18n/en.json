@@ -74,8 +74,12 @@
     "TITLE": "Booked Sessions List",
     "APPLY": "Apply",
     "CANCEL": "Cancel",
+    "BRANCHE": "Sessions",
     "ALLSESSIONS": "All Sessions",
-    "DATE_OF_BIRTH": "Date & Time",
+    "DATE_FROM": "Search By Date From",
+    "DATE_TO": "Search By Date To",
+    "BOOKING-TIME-FROM": "Search By Time From ",
+    "BOOKING-TIME-TO": "Search By Time To",
     "RESET": "Reset",
     "SEARCHBYUSERNAME": "Search by member name",
     "TABLE_ID": "ID",
@@ -87,10 +91,14 @@
     "TITLE": "Private Trainer Sessions List",
     "APPLY": "Apply",
     "CANCEL": "Cancel",
-    "ALLSESSIONS": "All Sessions",
-    "DATE_OF_BIRTH": "Date & Time",
+    "ALL_SESSIONS": "Select Sessions",
+    "DATE_FROM": "Search By Date From",
+    "DATE_TO": "Search By Date To",
+    "BOOKING-TIME-FROM": "Search By Time From ",
+    "BOOKING-TIME-TO": "Search By Time To",
     "RESET": "Reset",
     "SEARCH_BY_USERNAME": "Search by member name",
+    "SEARCH_BY_COACH_NAME": "Search by Coach name",
     "SEARCH_FOR_MEMBER": "Search for member",
     "FIRST_LABEL": "Search for member name, ID, phone or email",
     "SECOND_LABEL": "Search for Coach name, ID, phone or email",
@@ -104,7 +112,7 @@
     "ADD_MEMBER": "Add Member"
   },
   "ScheduledSession": {
-    "TITLE":"Schedule Management",
+    "TITLE": "Schedule Management",
     "YES": "Yes",
     "NO": "No",
     "SCHEDULE": "Schedule Session",
@@ -126,7 +134,7 @@
     "ADD_DAY": "+ Add Another Day",
     "ADD_MEMBER": "Add Member",
     "REMOVE": "Remove",
-    "SEARCH_MEMBER":"Search for member",
-    "SEARCH_LABEL":"Search member name, ID, Phone or email"
+    "SEARCH_MEMBER": "Search for member",
+    "SEARCH_LABEL": "Search member name, ID, Phone or email"
   }
 }

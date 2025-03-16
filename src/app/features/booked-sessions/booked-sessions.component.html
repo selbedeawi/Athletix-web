@@ -56,7 +56,8 @@
                 color="primary"
                 class="me-3 mb-3 mt-1 mb-md-0 px-5"
                 type="button"
-              >
+                (click)="deleteSession(session.sessionId )"
+                >
                 {{ t("CANCEL") }}
               </button>
             </div>
