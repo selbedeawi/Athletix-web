@@ -8,13 +8,53 @@
     <p class="m-0 my-3 mat-body-large">{{ t("ADD_DETAILS") }}</p>
     <form #sessionForm="ngForm" (ngSubmit)="schedule(sessionForm)">
       <div class="row gx-3 gy-1">
+        <!-- coaches list -->
+        <brdgs-input
+          [label]="t('SEARCH_LABEL')"
+          [prefix]="'icon-search'"
+          [type]="bridgesInputType.TEXT"
+          [isRequired]="false"
+          [(value)]="filterCoach.name"
+          (valueChange)="getAllCoaches()"
+        ></brdgs-input>
+        @for (member of coaches() ; track member) {
+        <mat-option
+          class="bg-surface-bright"
+          [value]="member"
+          (click)="setMember(member)"
+          >{{ member.firstName }} {{ member.lastName }}</mat-option
+        >
+        }
+        <div class="row">
+          @for ( member of selectedCoaches() ; track member) {
+          <div class="col-8 p-1">
+            <div
+              class="rounded-8 border-surface-dim-1 bg-surface-bright py-1 px-2"
+            >
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <p class="m-0 primary-container-color mat-label-large">
+                    {{ member.firstName }}
+                    {{ member.lastName }}
+                  </p>
+                  <p
+                    class="m-0 on-secondary-fixed-variant-color mat-label-large"
+                  >
+                    {{ member.phoneNumber }}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          }
+        </div>
+        <!--  -->
         <brdgs-select
           class="col-12 col-md-6"
           [label]="t('SELECT_SESSION')"
-          [(value)]="session"
           [isRequired]="false"
           [options]="sessionOptions()"
-          (valueChange)="setSession($event)"
+          [(value)]="sessionId"
         ></brdgs-select>
         <div class="col-12 col-md-6">
           <p class="m-0 mat-body-medium">Does it repeat?</p>
@@ -28,10 +68,12 @@
             <mat-radio-button [value]="false">{{ t("NO") }}</mat-radio-button>
           </mat-radio-group>
         </div>
+        @for (session of scheduledSessions(); track $index) {
+
         <brdgs-date-picker
           class="col-12 col-md-6"
           [label]="t('START_DATE')"
-          [(value)]="caledar"
+          [(value)]="session.scheduledDate"
           [isRequired]="true"
         ></brdgs-date-picker>
 
@@ -46,7 +88,7 @@
         <brdgs-select
           class="col-12 col-md-6"
           [label]="t('WEEK_DAY')"
-          [(value)]="session"
+          [(value)]="sessionDay"
           [isRequired]="false"
           [options]="[
             { key: t('SATURDAY'), value: 'Saturday' },
@@ -62,8 +104,9 @@
         <brdgs-time-picker
           class="col-12 col-md-6"
           [label]="t('START_TIME')"
-          [(value)]="time"
+          [(value)]="session.startTime"
           [isRequired]="true"
+          (valueChange)="updateTime($event, session)"
         ></brdgs-time-picker>
         <!--  <brdgs-date-picker
       class="col-12 col-md-4"
@@ -83,7 +126,8 @@
             {{ t("ADD_DAY") }}
           </button>
         </div>
-        }
+        } }
+
         <mat-divider class="mt-3"></mat-divider>
         <div class="col-auto ms-auto d-flex flex-wrap my-3">
           <div>

@@ -54,7 +54,7 @@ export class ScheduleSessionDetailsComponent {
     inject(BRDGS_OVERLAY_DATA);
 
   loading = signal(true);
-  bookedSessions = signal<BookedSessionResponse[]>([]);
+  bookedSessions = signal<any[]>([]);
   bridgesInputType = BridgesInputType;
   translationTemplate: TranslationTemplates =
     TranslationTemplates.SCHEDULEDSESSION;
@@ -87,9 +87,7 @@ export class ScheduleSessionDetailsComponent {
         .pipe(finalize(() => this.loading.set(false)))
         .subscribe((res) => {
           console.log(res);
-          res.forEach((session) => {
-            this.bookedSessions().push(session);
-          });
+            this.bookedSessions.set([...res]);
           // this.sessions.set(res);
           this.originalCount.set(res.length);
         });
