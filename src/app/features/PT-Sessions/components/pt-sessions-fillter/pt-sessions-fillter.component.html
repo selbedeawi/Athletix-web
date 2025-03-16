@@ -6,29 +6,54 @@
   <div class="row gx-3 gy-1">
     <brdgs-input
       class="col-12 col-md-4"
-      [label]="t('SEARCHBYUSERNAME')"
-      [(value)]="filter.name"
+      [label]="t('SEARCH_BY_USERNAME')"
+      [(value)]="filter.searchKey"
       [isRequired]="false"
       [type]="bridgesInputType.TEXT"
       [prefix]="'icon-search'"
     ></brdgs-input>
 
-    <brdgs-select
+    <app-select-sessions
       class="col-12 col-md-4"
-      [label]="t('ALLSESSIONS')"
-      [(value)]="filter.branchIds"
+      [(id)]="scheduledSessionId" 
+      [translationTemplate]="translationTemplate"
       [isRequired]="false"
-      [options]="lookupService.getOptions('Branch') | async"
-      [isDisabled]="false"
-      [isMultiple]="true"
-    ></brdgs-select>
-
+      [addAllOption]="true"
+    >
+    </app-select-sessions>
+    <brdgs-input
+      class="col-12 col-md-4"
+      [label]="t('SEARCH_BY_COACH_NAME')"
+      [(value)]="filter.coachId"
+      [isRequired]="false"
+      [type]="bridgesInputType.TEXT"
+      [prefix]="'icon-search'"
+    ></brdgs-input>
     <brdgs-date-picker
-    class="col-12 col-md-4"
-    [label]="t('DATE_OF_BIRTH')"
-    [isRequired]="false"
+      class="col-12 col-md-4"
+      [label]="t('DATE_FROM')"
+      [(ngModel)]="filter.bookingDateFrom"
+      [isRequired]="false"
     ></brdgs-date-picker>
 
+    <brdgs-date-picker
+      class="col-12 col-md-4"
+      [label]="t('DATE_TO')"
+      [(ngModel)]="filter.bookingDateTo"
+      [isRequired]="false"
+    ></brdgs-date-picker>
+    <brdgs-time-picker
+      class="col-12 col-md-4"
+      [label]="t('BOOKING-TIME-FROM')"
+      [value]="filter.bookingTimeFrom"
+      [isRequired]="false"
+    ></brdgs-time-picker>
+    <brdgs-time-picker
+      class="col-12 col-md-4"
+      [label]="t('BOOKING-TIME-TO')"
+      [value]="filter.bookingTimeTo"
+      [isRequired]="false"
+    ></brdgs-time-picker>
     <div class="col-auto ms-auto d-flex flex-wrap">
       <div>
         <button

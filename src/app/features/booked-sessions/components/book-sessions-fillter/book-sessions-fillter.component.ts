@@ -1,40 +1,34 @@
-import { Component, inject, signal } from "@angular/core";
-import { finalize } from "rxjs";
-import { BridgesInputType } from "../../../../shared/ui-components/atoms/input/enum/bridges-input-type.enum";
-import {
-  Memberships,
-  MembershipType,
-} from "../../../membership-list/models/membership";
-import { TranslationTemplates } from "../../../../shared/enums/translation-templates-enum";
-import { MembershipService } from "../../../membership-list/services/membership.service";
-import { LookupService } from "../../../../core/services/lookup/lookup.service";
-import { InputComponent } from "../../../../shared/ui-components/atoms/input/input.component";
-import { SelectComponent } from "../../../../shared/ui-components/atoms/select/select.component";
-import { FormsModule } from "@angular/forms";
-import { TranslocoDirective } from "@jsverse/transloco";
-import { MatButtonModule } from "@angular/material/button";
-import { AsyncPipe } from "@angular/common";
-import { DatePickerComponent } from "../../../../shared/ui-components/atoms/date-picker/date-picker.component";
+import { Component, inject, signal } from '@angular/core';
+import { finalize } from 'rxjs';
+import { BridgesInputType } from '../../../../shared/ui-components/atoms/input/enum/bridges-input-type.enum';
+import { TranslationTemplates } from '../../../../shared/enums/translation-templates-enum';
+import { LookupService } from '../../../../core/services/lookup/lookup.service';
+import { InputComponent } from '../../../../shared/ui-components/atoms/input/input.component';
+import { FormsModule } from '@angular/forms';
+import { TranslocoDirective } from '@jsverse/transloco';
+import { MatButtonModule } from '@angular/material/button';
+import { DatePickerComponent } from '../../../../shared/ui-components/atoms/date-picker/date-picker.component';
 import {
   BookedSessionFilter,
   BookedSessionsService,
-} from "../../services/booked-sessions.service";
+} from '../../services/booked-sessions.service';
 
-import { Tables } from "../../../../../../database.types";
-
+import { Tables } from '../../../../../../database.types';
+import { TimePickerComponent } from '../../../../shared/ui-components/atoms/time-picker/time-picker.component';
+import { SelectSessionsComponent } from "../../../../shared/ui-components/molecules/select-sessions/select-sessions.component";
 @Component({
-  selector: "app-book-sessions-fillter",
+  selector: 'app-book-sessions-fillter',
   imports: [
     InputComponent,
-    SelectComponent,
     FormsModule,
     TranslocoDirective,
     MatButtonModule,
-    AsyncPipe,
     DatePickerComponent,
-  ],
-  templateUrl: "./book-sessions-fillter.component.html",
-  styleUrl: "./book-sessions-fillter.component.scss",
+    TimePickerComponent,
+    SelectSessionsComponent
+],
+  templateUrl: './book-sessions-fillter.component.html',
+  styleUrl: './book-sessions-fillter.component.scss',
 })
 export class BookSessionsFillterComponent {
   translationTemplate: TranslationTemplates =
@@ -44,14 +38,17 @@ export class BookSessionsFillterComponent {
   lookupService = inject(LookupService);
 
   filter: BookedSessionFilter = {
-    searchKey: "",
-    scheduledDateFrom: undefined,
-    scheduledSessionId: null,
+    searchKey: '',
+    scheduledDateFrom: null,
+    scheduledTimeFrom: null,
+    scheduledDateTo: null,
+    scheduledTimeTo: null,
+    scheduledSessionId: '',
   };
   bridgesInputType = BridgesInputType;
 
   loading = signal(false);
-  sessions = signal<Tables<"flattened_user_sessions_full">[]>([]);
+  sessions = signal<Tables<'flattened_user_sessions_full'>[]>([]);
 
   pageSize = signal(10);
   pageNumber = signal(1);
@@ -64,7 +61,8 @@ export class BookSessionsFillterComponent {
     this.loading.set(true);
 
     if (this.filter) {
-      this.bookedSessionsService.filterBookedSessions(this.filter)
+      this.bookedSessionsService
+        .filterBookedSessions(this.filter)
         .pipe(finalize(() => this.loading.set(false)))
         .subscribe((res) => {
           this.sessions.set(res);
@@ -72,15 +70,18 @@ export class BookSessionsFillterComponent {
         });
     } else {
       this.loading.set(false);
-      console.error("Filter is not properly initialized.");
+      console.error('Filter is not properly initialized.');
     }
   }
 
   reset() {
     this.filter = {
-      searchKey: "",
+      searchKey: '',
       scheduledDateFrom: null,
       scheduledSessionId: null,
+      scheduledTimeFrom: null,
+      scheduledDateTo: null,
+      scheduledTimeTo: null,
     };
     console.log(this.filter);
     this.search();
@@ -90,4 +91,12 @@ export class BookSessionsFillterComponent {
     this.pageNumber.set(1);
     this.getAll();
   }
+  get scheduledSessionId(): string {
+    return this.filter.scheduledSessionId ?? ''; 
+  }
+  
+  set scheduledSessionId(value: string) {
+    this.filter.scheduledSessionId = value;
+  }
+  
 }

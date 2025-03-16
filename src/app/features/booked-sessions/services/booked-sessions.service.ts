@@ -19,7 +19,9 @@ export interface BookedSessionFilter {
   /** Filter sessions with a scheduled date on or after this value (ISO string). */
   scheduledDateFrom?: string | null;
   /** Filter sessions with a scheduled date on or before this value (ISO string). */
-  scheduledDateTo?: string;
+  scheduledDateTo?: string| null;
+  scheduledTimeTo?: string| null;
+  scheduledTimeFrom?: string| null;
 }
 
 @Injectable({

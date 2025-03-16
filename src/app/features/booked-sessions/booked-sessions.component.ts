@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { BookSessionsFillterComponent } from './components/book-sessions-fillter/book-sessions-fillter.component';
 import { MatCard, MatCardContent } from '@angular/material/card';
 import { MatDivider, MatDividerModule } from '@angular/material/divider';
@@ -9,6 +9,7 @@ import { EmptyResultComponent } from '../../shared/ui-components/templates/empty
 import { TranslationTemplates } from '../../shared/enums/translation-templates-enum';
 import { APP_ROUTES } from '../../core/enums/pages-urls-enum';
 import { TimeFormatPipe } from './time-format.pipe';
+import { BookedSessionsService } from './services/booked-sessions.service';
 
 @Component({
   selector: 'app-booked-sessions',
@@ -28,6 +29,14 @@ import { TimeFormatPipe } from './time-format.pipe';
   styleUrl: './booked-sessions.component.scss',
 })
 export class BookedSessionsComponent {
+  private bookedSessionsService = inject(BookedSessionsService);
+
   translationTemplate = TranslationTemplates.BOOKED_SESSION;
   APP_ROUTES = APP_ROUTES;
+
+  deleteSession(id: any) {
+    this.bookedSessionsService.deleteSession(id).subscribe((res) => {
+      console.log(res);
+    });
+  }
 }

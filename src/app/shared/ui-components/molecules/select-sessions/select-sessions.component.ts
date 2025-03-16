@@ -15,7 +15,7 @@ import { Sessions } from "../../../../features/sessions-list/models/sessions";
 })
 export class SelectSessionsComponent {
   translationTemplate = input.required<TranslationTemplates>();
-  id = model.required<string>();
+  id = model.required<string>();;
   isRequired = input(true);
   addAllOption = input(false);
   sessionsService = inject(SessionService);
