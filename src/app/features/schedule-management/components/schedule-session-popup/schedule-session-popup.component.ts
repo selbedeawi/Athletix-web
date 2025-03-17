@@ -102,7 +102,7 @@ export class ScheduleSessionPopupComponent {
         next: (res) => {
           console.log(res);
           this.snackBar.success('Session Scheduled Successfully');
-          this.dialogRef.close();
+          this.dialogRef.close(true);
         },
         error: (err) => {
           this.snackBar.error(err.message || 'Something went wrong');

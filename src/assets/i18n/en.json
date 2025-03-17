@@ -135,6 +135,7 @@
     "ADD_MEMBER": "Add Member",
     "REMOVE": "Remove",
     "SEARCH_MEMBER": "Search for member",
-    "SEARCH_LABEL": "Search member name, ID, Phone or email"
+    "SEARCH_LABEL": "Search member name, ID, Phone or email",
+    "SELECT_COACH":"Select Coach"
   }
 }

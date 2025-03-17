@@ -92,6 +92,10 @@ export class ScheduleManagementComponent {
   scheduleSingleSession() {
     this.dialog.open(ScheduleSingleSessionComponent, {
       minWidth: 615,
-    });
+    }).afterClosed().subscribe((result)=>{
+      if (result) {
+        this.getFilteredSessions()
+      }
+    })
   }
 }
