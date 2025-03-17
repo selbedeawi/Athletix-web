@@ -11,7 +11,7 @@ export interface BookedSessionFilter {
   /** A search key to match against member details. */
   searchKey?: string;
   /** Filter by a specific scheduled session ID. */
-  scheduledSessionId?: string | null;
+  scheduledSessionId: string;
   /** Filter by an array of coach IDs. */
   coachIds?: string[];
   /** Filter by branch ID (uses the session branch from the view). */
@@ -19,9 +19,9 @@ export interface BookedSessionFilter {
   /** Filter sessions with a scheduled date on or after this value (ISO string). */
   scheduledDateFrom?: string | null;
   /** Filter sessions with a scheduled date on or before this value (ISO string). */
-  scheduledDateTo?: string| null;
-  scheduledTimeTo?: string| null;
-  scheduledTimeFrom?: string| null;
+  scheduledDateTo?: string | null;
+  scheduledTimeTo?: string | null;
+  scheduledTimeFrom?: string | null;
 }
 
 @Injectable({

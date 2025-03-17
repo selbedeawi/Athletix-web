@@ -1,23 +1,24 @@
-import { Component, inject, signal } from '@angular/core';
-import { finalize } from 'rxjs';
-import { BridgesInputType } from '../../../../shared/ui-components/atoms/input/enum/bridges-input-type.enum';
-import { TranslationTemplates } from '../../../../shared/enums/translation-templates-enum';
-import { LookupService } from '../../../../core/services/lookup/lookup.service';
-import { InputComponent } from '../../../../shared/ui-components/atoms/input/input.component';
-import { FormsModule } from '@angular/forms';
-import { TranslocoDirective } from '@jsverse/transloco';
-import { MatButtonModule } from '@angular/material/button';
-import { DatePickerComponent } from '../../../../shared/ui-components/atoms/date-picker/date-picker.component';
+import { Component, inject, signal } from "@angular/core";
+import { finalize } from "rxjs";
+import { BridgesInputType } from "../../../../shared/ui-components/atoms/input/enum/bridges-input-type.enum";
+import { TranslationTemplates } from "../../../../shared/enums/translation-templates-enum";
+import { LookupService } from "../../../../core/services/lookup/lookup.service";
+import { InputComponent } from "../../../../shared/ui-components/atoms/input/input.component";
+import { FormsModule } from "@angular/forms";
+import { TranslocoDirective } from "@jsverse/transloco";
+import { MatButtonModule } from "@angular/material/button";
+import { DatePickerComponent } from "../../../../shared/ui-components/atoms/date-picker/date-picker.component";
 import {
   BookedSessionFilter,
   BookedSessionsService,
-} from '../../services/booked-sessions.service';
+} from "../../services/booked-sessions.service";
 
-import { Tables } from '../../../../../../database.types';
-import { TimePickerComponent } from '../../../../shared/ui-components/atoms/time-picker/time-picker.component';
+import { Tables } from "../../../../../../database.types";
+import { TimePickerComponent } from "../../../../shared/ui-components/atoms/time-picker/time-picker.component";
 import { SelectSessionsComponent } from "../../../../shared/ui-components/molecules/select-sessions/select-sessions.component";
+
 @Component({
-  selector: 'app-book-sessions-fillter',
+  selector: "app-book-sessions-fillter",
   imports: [
     InputComponent,
     FormsModule,
@@ -25,10 +26,10 @@ import { SelectSessionsComponent } from "../../../../shared/ui-components/molecu
     MatButtonModule,
     DatePickerComponent,
     TimePickerComponent,
-    SelectSessionsComponent
-],
-  templateUrl: './book-sessions-fillter.component.html',
-  styleUrl: './book-sessions-fillter.component.scss',
+    SelectSessionsComponent,
+  ],
+  templateUrl: "./book-sessions-fillter.component.html",
+  styleUrl: "./book-sessions-fillter.component.scss",
 })
 export class BookSessionsFillterComponent {
   translationTemplate: TranslationTemplates =
@@ -38,17 +39,17 @@ export class BookSessionsFillterComponent {
   lookupService = inject(LookupService);
 
   filter: BookedSessionFilter = {
-    searchKey: '',
+    searchKey: "",
     scheduledDateFrom: null,
     scheduledTimeFrom: null,
     scheduledDateTo: null,
     scheduledTimeTo: null,
-    scheduledSessionId: '',
+    scheduledSessionId: "",
   };
   bridgesInputType = BridgesInputType;
 
   loading = signal(false);
-  sessions = signal<Tables<'flattened_user_sessions_full'>[]>([]);
+  sessions = signal<Tables<"flattened_user_sessions_full">[]>([]);
 
   pageSize = signal(10);
   pageNumber = signal(1);
@@ -59,7 +60,6 @@ export class BookSessionsFillterComponent {
 
   getAll() {
     this.loading.set(true);
-
     if (this.filter) {
       this.bookedSessionsService
         .filterBookedSessions(this.filter)
@@ -70,15 +70,15 @@ export class BookSessionsFillterComponent {
         });
     } else {
       this.loading.set(false);
-      console.error('Filter is not properly initialized.');
+      console.error("Filter is not properly initialized.");
     }
   }
 
   reset() {
     this.filter = {
-      searchKey: '',
+      searchKey: "",
       scheduledDateFrom: null,
-      scheduledSessionId: null,
+      scheduledSessionId: (null as any),
       scheduledTimeFrom: null,
       scheduledDateTo: null,
       scheduledTimeTo: null,
@@ -92,11 +92,10 @@ export class BookSessionsFillterComponent {
     this.getAll();
   }
   get scheduledSessionId(): string {
-    return this.filter.scheduledSessionId ?? ''; 
+    return this.filter.scheduledSessionId ?? "";
   }
-  
+
   set scheduledSessionId(value: string) {
     this.filter.scheduledSessionId = value;
   }
-  
 }

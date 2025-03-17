@@ -1,31 +1,31 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal } from "@angular/core";
 import {
   MAT_DIALOG_DATA,
   MatDialogModule,
   MatDialogRef,
-} from '@angular/material/dialog';
-import { ScheduleSession } from '../../models/schedule-session';
-import { FormsModule } from '@angular/forms';
-import { InputComponent } from '../../../../shared/ui-components/atoms/input/input.component';
-import { BridgesInputType } from '../../../../shared/ui-components/atoms/input/enum/bridges-input-type.enum';
-import { MatDivider } from '@angular/material/divider';
-import { MatButtonModule } from '@angular/material/button';
-import { MemberService } from '../../../members-list/services/member.service';
-import { MemberAccount } from '../../../members-list/models/member';
-import { debounceTime, finalize } from 'rxjs';
-import { TranslocoDirective } from '@jsverse/transloco';
-import { TranslationTemplates } from '../../../../shared/enums/translation-templates-enum';
-import { MatOptionModule } from '@angular/material/core';
-import { SnackbarService } from '../../../../core/services/snackbar/snackbar.service';
-import { UserService } from '../../../../core/services/user/user.service';
-import { BranchesService } from '../../../../core/services/branches/branches.service';
+} from "@angular/material/dialog";
+import { ScheduleSession } from "../../models/schedule-session";
+import { FormsModule } from "@angular/forms";
+import { InputComponent } from "../../../../shared/ui-components/atoms/input/input.component";
+import { BridgesInputType } from "../../../../shared/ui-components/atoms/input/enum/bridges-input-type.enum";
+import { MatDivider } from "@angular/material/divider";
+import { MatButtonModule } from "@angular/material/button";
+import { MemberService } from "../../../members-list/services/member.service";
+import { MemberAccount } from "../../../members-list/models/member";
+import { debounceTime, finalize } from "rxjs";
+import { TranslocoDirective } from "@jsverse/transloco";
+import { TranslationTemplates } from "../../../../shared/enums/translation-templates-enum";
+import { MatOptionModule } from "@angular/material/core";
+import { SnackbarService } from "../../../../core/services/snackbar/snackbar.service";
+import { UserService } from "../../../../core/services/user/user.service";
+import { BranchesService } from "../../../../core/services/branches/branches.service";
 import {
   BookedSessionsService,
   UserSessionInsert,
-} from '../../../booked-sessions/services/booked-sessions.service';
+} from "../../../booked-sessions/services/booked-sessions.service";
 
 @Component({
-  selector: 'app-schedule-session-popup',
+  selector: "app-schedule-session-popup",
   imports: [
     FormsModule,
     InputComponent,
@@ -35,8 +35,8 @@ import {
     TranslocoDirective,
     MatOptionModule,
   ],
-  templateUrl: './schedule-session-popup.component.html',
-  styleUrl: './schedule-session-popup.component.scss',
+  templateUrl: "./schedule-session-popup.component.html",
+  styleUrl: "./schedule-session-popup.component.scss",
 })
 export class ScheduleSessionPopupComponent {
   memberService = inject(MemberService);
@@ -55,8 +55,8 @@ export class ScheduleSessionPopupComponent {
     searchQuery: string;
     branchId: string;
   } = {
-    searchQuery: '',
-    branchId: '',
+    searchQuery: "",
+    branchId: "",
   };
   bridgesInputType = BridgesInputType;
   translationTemplate: TranslationTemplates =
@@ -72,7 +72,7 @@ export class ScheduleSessionPopupComponent {
         .getAllMembers(this.filters)
         .pipe(
           finalize(() => this.loading.set(false)),
-          debounceTime(250)
+          debounceTime(250),
         )
         .subscribe((res) => {
           if (res.data) {
@@ -89,10 +89,9 @@ export class ScheduleSessionPopupComponent {
       branchId: this.branchService.currentBranch?.id,
       scheduledSessionId: this.selectedSession.id,
       bookingDate: new Date(
-        this.selectedSession.scheduledDate || ''
+        this.selectedSession.scheduledDate || "",
       ).toISOString(),
-      userMemberShipId:
-        this.selectedMember()?.UserMembership[0].id || '',
+      userMemberShipId: this.selectedMember()?.UserMembership.id || "",
     };
     console.log(scheduledSession);
     this.bookedSessionsService
@@ -105,13 +104,13 @@ export class ScheduleSessionPopupComponent {
           this.dialogRef.close(true);
         },
         error: (err) => {
-          this.snackBar.error(err.message || 'Something went wrong');
+          this.snackBar.error(err.message || "Something went wrong");
         },
       });
   }
   setMember(member: MemberAccount) {
     this.selectedMember.set(member);
-    this.filters.searchQuery = '';
+    this.filters.searchQuery = "";
     this.members.set([]);
   }
 }

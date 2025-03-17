@@ -23,7 +23,11 @@
   <table class="brdgs-table w-100 mt-3 mb-3">
     <thead class="d-none d-lg-block">
       <tr>
-        <th class="col-lg-4">
+        <th class="col-lg-1">
+          {{ t("TABLE_MEMBER_ID") }}
+        </th>
+
+        <th class="col-lg-2">
           {{ t("TABLE_NAME") }}
         </th>
 
@@ -40,8 +44,17 @@
     <tbody>
       @for (member of membershipFilter.members(); track member.id) {
       <tr class="d-flex">
+        <td class="col-12 col-sm-6 col-lg-1">
+          <span class="d-none list-item-label-sm">
+            {{ t("TABLE_MEMBER_ID") }}
+          </span>
+
+          <span>
+            {{ member.memberId }}
+          </span>
+        </td>
         <td
-          class="col-12 col-sm-12 col-lg-4 table-card-title table-primary text-truncate"
+          class="col-12 col-sm-12 col-lg-2 table-card-title table-primary text-truncate"
         >
           <a
             [routerLink]="[
@@ -59,26 +72,19 @@
           <span class="d-none list-item-label-sm">
             {{ t("TABLE_membership") }}
           </span>
-          @for (membership of member.UserMembership; track $index;let last
-          =$last) {
+
           <span>
-            {{ membership.name }}
-            @if(!last){ , }
+            {{ member.UserMembership.name }}
           </span>
-          }
         </td>
         <td class="col-12 col-sm-6 col-lg-4">
           <span class="d-none list-item-label-sm">
-            {{ t("TABLE_BRANCHS") }}
+            {{ t("TABLE_END_DATE") }}
           </span>
           <div class="text-truncate pe-2">
-            @for (membership of member.UserMembership; track $index;let last
-            =$last) {
             <span>
-              {{ membership.startDate }}
-              @if(!last){ , }
+              {{ member.UserMembership.endDate }}
             </span>
-            }
           </div>
         </td>
 

@@ -33,7 +33,6 @@
     <tbody>
       @for (session of sessionsFilter.sessions(); track $index) {
       <tr class="d-flex">
-
         <td class="col-12 col-sm-12 col-lg-2 table-card-title text-truncate">
           {{ session.member_memberid }}
         </td>
@@ -56,8 +55,8 @@
                 color="primary"
                 class="me-3 mb-3 mt-1 mb-md-0 px-5"
                 type="button"
-                (click)="deleteSession(session.sessionId )"
-                >
+                (click)="deleteSession(session.user_session_id)"
+              >
                 {{ t("CANCEL") }}
               </button>
             </div>

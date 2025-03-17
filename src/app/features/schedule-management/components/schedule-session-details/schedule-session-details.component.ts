@@ -62,7 +62,7 @@ export class ScheduleSessionDetailsComponent {
     TranslationTemplates.SCHEDULEDSESSION;
   filter: BookedSessionFilter = {
     searchKey: "",
-    scheduledSessionId: this.selectedSession.meta?.id,
+    scheduledSessionId: this.selectedSession.meta.id,
   };
   originalCount = signal(0);
   constructor() {
