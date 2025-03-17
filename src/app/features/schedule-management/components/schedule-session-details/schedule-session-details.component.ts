@@ -56,7 +56,7 @@ export class ScheduleSessionDetailsComponent {
   );
 
   loading = signal(true);
-  bookedSessions = signal<Tables<"flattened_user_sessions_full">[]>([]);
+  bookedSessions = signal<any[]>([]);
   bridgesInputType = BridgesInputType;
   translationTemplate: TranslationTemplates =
     TranslationTemplates.SCHEDULEDSESSION;
@@ -89,9 +89,7 @@ export class ScheduleSessionDetailsComponent {
         .pipe(finalize(() => this.loading.set(false)))
         .subscribe((res) => {
           console.log(res);
-          res.forEach((session: any) => {
-            this.bookedSessions().push(session);
-          });
+            this.bookedSessions.set([...res]);
           // this.sessions.set(res);
           this.originalCount.set(res.length);
         });

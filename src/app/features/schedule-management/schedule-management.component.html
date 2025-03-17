@@ -31,9 +31,10 @@
         <span
           class="cal-day-number m-2 float-start mat-label-large"
           [ngClass]="{
-            'bg-primary-container on-primary-container-color opacity-100 rounded-3':
+            'bg-primary-container on-primary-container-color opacity-100 rounded-3 ':
               day.date.getDate() == viewDate().getDate()
           }"
+          style="padding: 0 2px"
           >{{ day.date | calendarDate : "monthViewDayNumber" : locale }}
         </span>
       </div>
