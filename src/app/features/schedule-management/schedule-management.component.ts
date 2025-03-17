@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe, NgClass, SlicePipe } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
 import { CalendarEvent, CalendarModule, CalendarView } from 'angular-calendar';
 
@@ -7,7 +7,13 @@ import {
   ScheduledSessionFilter,
   ScheduledSessionService,
 } from './services/schedule-sessions.service';
-import { startOfMonth, endOfMonth, format } from 'date-fns';
+import {
+  startOfMonth,
+  endOfMonth,
+  format,
+  isSameMonth,
+  isSameDay,
+} from 'date-fns';
 import { finalize } from 'rxjs';
 import { ScheduleSession } from './models/schedule-session';
 import { BridgesInputType } from '../../shared/ui-components/atoms/input/enum/bridges-input-type.enum';
@@ -23,10 +29,11 @@ import { ScheduleSingleSessionComponent } from './components/schedule-single-ses
   selector: 'app-schedule-management',
   imports: [
     CalendarModule,
-    CommonModule,
+    NgClass,
     ScheduleCalendarHeaderComponent,
     TranslocoDirective,
     MatButtonModule,
+    DatePipe,
   ],
   templateUrl: './schedule-management.component.html',
   styleUrl: './schedule-management.component.scss',
@@ -40,6 +47,7 @@ export class ScheduleManagementComponent {
   selectedSession = signal<CalendarEvent<ScheduleSession> | null>(null);
   events = signal<CalendarEvent<ScheduleSession>[]>([]);
   loading = signal(false);
+  activeDayIsOpen = signal(false);
 
   monthStart = computed(() =>
     format(startOfMonth(this.viewDate()), 'yyyy-LL-dd')
@@ -74,7 +82,7 @@ export class ScheduleManagementComponent {
                   session.scheduledDate! + 'T' + session.startTime
                 ),
                 end: new Date(session.scheduledDate! + 'T' + session.endTime),
-                title: '',
+                title: session.Sessions.name,
                 meta: { ...session },
               });
               return [...eventList];
@@ -90,8 +98,28 @@ export class ScheduleManagementComponent {
     this.brdgsOverlayService.open(ScheduleSessionDetailsComponent, event);
   }
   scheduleSingleSession() {
-    this.dialog.open(ScheduleSingleSessionComponent, {
-      minWidth: 615,
-    });
+    this.dialog
+      .open(ScheduleSingleSessionComponent, {
+        minWidth: 615,
+      })
+      .afterClosed()
+      .subscribe((result) => {
+        if (result) {
+          this.getFilteredSessions();
+        }
+      });
+  }
+  dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
+    if (isSameMonth(date, this.viewDate())) {
+      if (
+        (isSameDay(this.viewDate(), date) && this.activeDayIsOpen()) ||
+        events.length === 0
+      ) {
+        this.activeDayIsOpen.set(false);
+      } else {
+        this.activeDayIsOpen.set(true);
+      }
+      this.viewDate.set(date);
+    }
   }
 }

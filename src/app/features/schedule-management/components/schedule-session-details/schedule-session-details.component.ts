@@ -76,7 +76,11 @@ export class ScheduleSessionDetailsComponent {
     this.dialog.open(ScheduleSessionPopupComponent, {
       data: this.selectedSession.meta,
       minWidth: 615,
-    });
+    }).afterClosed().subscribe((result)=>{
+      if (result) {
+        this.getAllSessions()
+      }
+    })
   }
   removeBooking(id: string) {}
 

@@ -77,6 +77,9 @@
 .width-fit {
   width: fit-content !important;
 }
+.mb-20 {
+  margin-bottom: 20px !important;
+}
 .primary-color {
   color: var(--sys-primary) !important;
 }
@@ -120,14 +123,14 @@
 // }
 
 .on-primary-color {
-  color: var(--sys-on-primary)!important;
+  color: var(--sys-on-primary) !important;
 }
 .bg-on-primary {
   background-color: var(--sys-on-primary) !important;
 }
 
 .primary-container-color {
-  color: var(--sys-primary-container)!important;
+  color: var(--sys-primary-container) !important;
 }
 .bg-primary-container {
   background-color: var(--sys-primary-container) !important;
