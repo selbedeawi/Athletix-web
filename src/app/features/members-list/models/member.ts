@@ -20,7 +20,7 @@ export class MemberAccount implements Tables<"Members"> {
   isActive!: boolean;
   createdBy!: string;
   //FE
-  UserMembership!: UserMembership[];
+  UserMembership!: UserMembership;
   constructor() {
   }
 }

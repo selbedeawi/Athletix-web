@@ -68,7 +68,7 @@ export class MemberService {
 
     let query = this.supabaseService.sb
       .from("Members")
-      .select("*, UserMembership!inner(*)", { count: "exact" });
+      .select("*, UserMembership(*)", { count: "exact" });
 
     // .select("*, UserMembership!inner(*)", { count: "exact" });
     // Apply search filter across multiple fields
@@ -113,7 +113,33 @@ export class MemberService {
     }
 
     query = query.range(start, end);
-    return from(query) as any;
+    return from(query).pipe(
+      map((response) => {
+        const finalMembers: MemberAccount[] = [];
+        if (response.data) {
+          response.data.forEach((member) => {
+            // Check if the member has an array of UserMembership records
+            if (
+              Array.isArray(member.UserMembership) &&
+              member.UserMembership.length > 0
+            ) {
+              member.UserMembership.forEach((userMembership) => {
+                // Create a new object that matches the final MemberAccount shape,
+                // copying member properties and assigning the current userMembership.
+                const newMember = {
+                  ...member,
+                  UserMembership: userMembership as any,
+                };
+                finalMembers.push(newMember as any);
+              });
+            }
+          });
+        }
+        return { ...response, data: finalMembers } as BEResponse<
+          MemberAccount[]
+        >;
+      }),
+    );
   }
 
   /**
