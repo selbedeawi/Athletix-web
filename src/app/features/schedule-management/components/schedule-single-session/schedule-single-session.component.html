@@ -92,33 +92,37 @@
           [(value)]="endDate"
           [isRequired]="true"
         ></brdgs-date-picker
-        >} @for (session of scheduledSessions(); track $index;let i=$index) {
-        @if(isRepeated()){
+        >} @for (session of scheduledSessions(); track $index;let i=$index;let
+        first =$first) { @if(isRepeated()){
 
         <brdgs-select
-          class="col-6"
+          [class]="first ? 'col-6' : 'col-5'"
           [label]="t('WEEK_DAY')"
-          [(value)]="sessionDays()[0]"
           [isRequired]="true"
-          [options]="[
-            { key: t('SATURDAY'), value: 'saturday' },
-            { key: t('SUNDAY'), value: 'sunday' },
-            { key: t('MONDAY'), value: 'monday' },
-            { key: t('TUESDAY'), value: 'tuesday' },
-            { key: t('WEDNESDAY'), value: 'wednesday' },
-            { key: t('THURSDAY'), value: 'thursday' },
-            { key: t('FRIDAY'), value: 'friday' }
-          ]"
+          [options]="daysOptions()"
+          [(value)]="sessionDays()[i]"
         ></brdgs-select>
         }
         <brdgs-time-picker
-          class="col-6"
+          [class]="first ? 'col-6' : 'col-5'"
           [label]="t('START_TIME')"
           [(value)]="scheduledSessions()[i].startTime"
           [isRequired]="true"
           (valueChange)="updateTime($event, session)"
-        ></brdgs-time-picker
-        >}
+        ></brdgs-time-picker>
+        @if(!first){
+        <div
+          class="col-2 d-flex justify-content-start align-items-center mb-20"
+        >
+          <div
+            class="d-flex justify-content-center align-items-center border-primary-container-1 rounded-circle cursor-pointer p-2"
+            (click)="removeSession(i)"
+          >
+            <!-- style="max-width: 40px" -->
+            <i class="icon-delete primary-container-color f-24"></i>
+          </div>
+        </div>
+        } }
         <!--  <brdgs-date-picker
       class="col-12 col-md-4"
       [label]="t('RENEWAL_DATE')"
@@ -148,6 +152,7 @@
               color="primary"
               class="me-3 mb-3 mt-1 mb-md-0"
               type="button"
+              matDialogClose
             >
               {{ t("CANCEL") }}
             </button>
