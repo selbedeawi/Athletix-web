@@ -3,7 +3,6 @@ import { from, Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { TablesInsert } from "../../../../../database.types";
 import { SupabaseService } from "../../../core/services/supabase/supabase.service";
-import { BookedSessionResponse } from "../models/session";
 
 // Define the type for inserting into UserSessions
 export type UserSessionInsert = TablesInsert<"UserSessions">;
@@ -20,7 +19,9 @@ export interface BookedSessionFilter {
   /** Filter sessions with a scheduled date on or after this value (ISO string). */
   scheduledDateFrom?: string | null;
   /** Filter sessions with a scheduled date on or before this value (ISO string). */
-  scheduledDateTo?: string;
+  scheduledDateTo?: string| null;
+  scheduledTimeTo?: string| null;
+  scheduledTimeFrom?: string| null;
 }
 
 @Injectable({
@@ -131,6 +132,29 @@ export class BookedSessionsService {
           throw res.error;
         }
         return res.data;
+      }),
+    );
+  }
+  /**
+   * Deletes a session from the UserSessions table by its primary key (id).
+   *
+   * @param sessionId - The primary key (id) of the session to delete.
+   * @returns Observable emitting the deleted session record.
+   */
+  deleteSession(sessionId: string) {
+    return from(
+      this.supabaseService.sb
+        .from("UserSessions")
+        .delete()
+        .eq("id", sessionId)
+        .select(),
+    ).pipe(
+      map((res) => {
+        if (res.error) {
+          throw res.error;
+        }
+        // res.data will be an array of deleted records. Typically just one if the id is unique.
+        return res.data[0];
       }),
     );
   }

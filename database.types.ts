@@ -190,30 +190,30 @@ export type Database = {
       }
       PrivateSessionsBooking: {
         Row: {
-          BookingDate: string | null
+          bookingDate: string | null
           branchId: string | null
           coachId: string | null
-          created_at: string
+          createdAt: string
           id: number
-          Time: string | null
+          time: string | null
           userMembershipId: string | null
         }
         Insert: {
-          BookingDate?: string | null
+          bookingDate?: string | null
           branchId?: string | null
           coachId?: string | null
-          created_at?: string
+          createdAt?: string
           id?: number
-          Time?: string | null
+          time?: string | null
           userMembershipId?: string | null
         }
         Update: {
-          BookingDate?: string | null
+          bookingDate?: string | null
           branchId?: string | null
           coachId?: string | null
-          created_at?: string
+          createdAt?: string
           id?: number
-          Time?: string | null
+          time?: string | null
           userMembershipId?: string | null
         }
         Relationships: [
@@ -230,6 +230,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "Staff"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "PrivateSessionsBooking_userMembershipId_fkey"
+            columns: ["userMembershipId"]
+            isOneToOne: false
+            referencedRelation: "flattened_private_sessions_booking"
+            referencedColumns: ["membership_id"]
           },
           {
             foreignKeyName: "PrivateSessionsBooking_userMembershipId_fkey"
@@ -708,6 +715,13 @@ export type Database = {
             foreignKeyName: "UserSessions_userMemberShipId_fkey"
             columns: ["userMemberShipId"]
             isOneToOne: false
+            referencedRelation: "flattened_private_sessions_booking"
+            referencedColumns: ["membership_id"]
+          },
+          {
+            foreignKeyName: "UserSessions_userMemberShipId_fkey"
+            columns: ["userMemberShipId"]
+            isOneToOne: false
             referencedRelation: "flattened_user_sessions_full"
             referencedColumns: ["user_membership_id"]
           },
@@ -722,6 +736,69 @@ export type Database = {
       }
     }
     Views: {
+      flattened_private_sessions_booking: {
+        Row: {
+          booking_branchid: string | null
+          booking_createdat: string | null
+          bookingDate: string | null
+          branch_name: string | null
+          coach_email: string | null
+          coach_firstname: string | null
+          coach_lastname: string | null
+          coachId: string | null
+          endDate: string | null
+          member_email: string | null
+          member_firstname: string | null
+          member_lastname: string | null
+          member_nationalid: string | null
+          member_phonenumber: string | null
+          membership_createdat: string | null
+          membership_id: string | null
+          membership_name: string | null
+          membership_startdate: string | null
+          pricePaid: number | null
+          private_booking_id: number | null
+          time: string | null
+          userMembershipId: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "PrivateSessionsBooking_branchId_fkey"
+            columns: ["booking_branchid"]
+            isOneToOne: false
+            referencedRelation: "Branch"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "PrivateSessionsBooking_coachId_fkey"
+            columns: ["coachId"]
+            isOneToOne: false
+            referencedRelation: "Staff"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "PrivateSessionsBooking_userMembershipId_fkey"
+            columns: ["userMembershipId"]
+            isOneToOne: false
+            referencedRelation: "flattened_private_sessions_booking"
+            referencedColumns: ["membership_id"]
+          },
+          {
+            foreignKeyName: "PrivateSessionsBooking_userMembershipId_fkey"
+            columns: ["userMembershipId"]
+            isOneToOne: false
+            referencedRelation: "flattened_user_sessions_full"
+            referencedColumns: ["user_membership_id"]
+          },
+          {
+            foreignKeyName: "PrivateSessionsBooking_userMembershipId_fkey"
+            columns: ["userMembershipId"]
+            isOneToOne: false
+            referencedRelation: "UserMembership"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       flattened_user_sessions_full: {
         Row: {
           bookingDate: string | null
@@ -916,6 +993,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "ScheduledSession"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "UserSessions_userMemberShipId_fkey"
+            columns: ["userMemberShipId"]
+            isOneToOne: false
+            referencedRelation: "flattened_private_sessions_booking"
+            referencedColumns: ["membership_id"]
           },
           {
             foreignKeyName: "UserSessions_userMemberShipId_fkey"

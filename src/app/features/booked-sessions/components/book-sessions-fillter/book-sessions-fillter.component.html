@@ -13,22 +13,39 @@
       [prefix]="'icon-search'"
     ></brdgs-input>
 
-    <brdgs-select
+    <app-select-sessions
       class="col-12 col-md-4"
-      [label]="t('ALLSESSIONS')"
-      [(value)]="filter.scheduledSessionId"
+      [(id)]="scheduledSessionId" 
+      [translationTemplate]="translationTemplate"
       [isRequired]="false"
-      [options]="lookupService.getOptions('Branch') | async"
-      [isDisabled]="false"
-      [isMultiple]="true"
-    ></brdgs-select>
+      [addAllOption]="true"
+    >
+    </app-select-sessions>
 
     <brdgs-date-picker
       class="col-12 col-md-4"
-      [label]="t('DATE_OF_BIRTH')"
+      [label]="t('DATE_FROM')"
       [value]="filter.scheduledDateFrom"
       [isRequired]="false"
     ></brdgs-date-picker>
+    <brdgs-date-picker
+      class="col-12 col-md-4"
+      [label]="t('DATE_TO')"
+      [value]="filter.scheduledDateTo"
+      [isRequired]="false"
+    ></brdgs-date-picker>
+    <brdgs-time-picker
+      class="col-12 col-md-4"
+      [label]="t('BOOKING-TIME-FROM')"
+      [value]="filter.scheduledTimeFrom"
+      [isRequired]="false"
+    ></brdgs-time-picker>
+    <brdgs-time-picker
+      class="col-12 col-md-4"
+      [label]="t('BOOKING-TIME-TO')"
+      [value]="filter.scheduledTimeTo"
+      [isRequired]="false"
+    ></brdgs-time-picker>
 
     <div class="col-auto ms-auto d-flex flex-wrap">
       <div>
@@ -49,7 +66,6 @@
           color="primary"
           class="mb-3 mt-1 mb-md-0"
           type="submit"
-          [disabled]="filterForm.invalid"
         >
           {{ t("APPLY") }}
         </button>

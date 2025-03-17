@@ -10,7 +10,7 @@
     </mat-card-content>
   </mat-card>
 
-  @if(ptSessionsFilter.sessions().length){
+  @if(ptSessionsFilter.ptSessions().length){
   <table class="brdgs-table w-100 mt-3 mb-3">
     <thead class="d-none d-lg-block">
       <tr>
@@ -34,26 +34,21 @@
       </tr>
     </thead>
     <tbody>
-      @for (session of ptSessionsFilter.sessions(); track $index) {
+      @for (session of ptSessionsFilter.ptSessions(); track $index) {
       <tr class="d-flex">
-        <td
-          class="col-12 col-sm-12 col-lg-4 table-card-title table-primary text-truncate"
-        >
-         
-            {{ session.id}}
-        
+        <td class="col-12 col-sm-12 col-lg-2 table-card-title text-truncate">
+        {{ session.private_booking_id }}
+        </td>
+        <td class="col-12 col-sm-6 col-lg-3 table-primary">
+          {{ session.member_firstname }} {{ session.member_lastname }}
+        </td>
+        <td class="col-12 col-sm-6 col-lg-3">
+          {{ session.coach_firstname }} {{ session.coach_lastname }}
         </td>
         <td class="col-12 col-sm-6 col-lg-2">
-          <span class="d-none list-item-label-sm">
-            {{ t("TABLE_ROLE") }}
-          </span>
-
-          {{ session.UserMembership}}
+          {{ session.bookingDate }} <br>
+          {{ session.time |timeFormat}} 
         </td>
-        <td class="col-12 col-sm-6 col-lg-4">
-            {{session.ScheduledSession.sessionId}}
-        </td>
-
         <td class="col-12 col-lg-2 table_action">
           <div class="d-flex flex-wrap justify-content-end align-items-center">
             <div>
@@ -62,6 +57,7 @@
                 color="primary"
                 class="me-3 mb-3 mt-1 mb-md-0 px-5"
                 type="button"
+                (click)="deleteSession(session.private_booking_id)"
               >
                 {{ t("CANCEL") }}
               </button>
