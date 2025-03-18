@@ -59,27 +59,33 @@ export class BookSessionsFillterComponent {
     this.getAll();
   }
 
+  
   getAll() {
     this.loading.set(true);
-    if (this.filter) {
+    
+    const filterPayload = {
+      ...this.filter,
+      scheduledDateFrom: this.convertDateToISO(this.filter.scheduledDateFrom),
+      scheduledDateTo: this.convertDateToISO(this.filter.scheduledDateTo),
+    };
+  
+    if (filterPayload) {
       this.bookedSessionsService
-        .filterBookedSessions(this.filter)
+        .filterBookedSessions(filterPayload)
         .pipe(finalize(() => this.loading.set(false)))
         .subscribe((res) => {
           this.sessions.set(res);
           this.sessions().forEach((session) => {
             this.sessionOptions().push({
-              key: session.membership_name??'',
-              value: session.scheduledSessionId??'',
+              key: session.membership_name ?? '',
+              value: session.scheduledSessionId ?? '',
             });
           });
           this.originalCount.set((res as any).count);
         });
-    } else {
-      this.loading.set(false);
-      console.error("Filter is not properly initialized.");
-    }
+    } 
   }
+  
 
   reset() {
     this.filter = {
@@ -126,6 +132,18 @@ export class BookSessionsFillterComponent {
       });
       return list;
     });
-    console.log(this.sessions);
   }
+
+  convertDateToISO(date: string | Date | null | undefined): string | null {
+    if (date instanceof Date && !isNaN(date.getTime())) {
+      return date.toISOString();  
+    } else if (typeof date === 'string' && date) {
+      console.log(date);
+
+      return new Date(date).toISOString();  
+    }
+    return null; 
+  }
+  
+  
 }
