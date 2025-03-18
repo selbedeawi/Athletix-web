@@ -1,4 +1,4 @@
-import { Component, inject, signal, ViewChild } from '@angular/core';
+import { Component, inject, signal, viewChild, ViewChild } from '@angular/core';
 import { TranslationTemplates } from '../../shared/enums/translation-templates-enum';
 import { APP_ROUTES } from '../../core/enums/pages-urls-enum';
 import { MatDivider } from '@angular/material/divider';
@@ -35,7 +35,7 @@ export class PtSessionsComponent {
   private PrivateSessionsBookingService = inject(PrivateSessionsBookingService);
   translationTemplate = TranslationTemplates.PT_SESSION;
   APP_ROUTES = APP_ROUTES;
-
+  ptSessionsFilter=viewChild(PtSessionsFillterComponent) ; 
   BookedSessionData = 'sss';
   loading = signal(false);
   constructor() {}
@@ -50,19 +50,15 @@ export class PtSessionsComponent {
     });
   }
 
-  
-  @ViewChild(PtSessionsFillterComponent) ptSessionsFilter!: PtSessionsFillterComponent; 
-
   deleteSession(bookingId: number) {
     this.loading.set(true);
       this.PrivateSessionsBookingService.deletePrivateSessionBooking(bookingId)
       .pipe(finalize(() => this.loading.set(false)))
       .subscribe(
         (res) => {
-          this.ptSessionsFilter.ptSessions().forEach((session, index) => {
+          this.ptSessionsFilter()?.ptSessions().forEach((session, index) => {
             if (session.private_booking_id === bookingId) {
-              this.ptSessionsFilter.ptSessions().splice(index, 1); 
-              this.ptSessionsFilter.getAll(); 
+              this.ptSessionsFilter()?.getAll(); 
             }
           });
         },

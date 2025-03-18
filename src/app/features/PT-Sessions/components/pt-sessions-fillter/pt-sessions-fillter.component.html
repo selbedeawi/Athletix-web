@@ -13,14 +13,14 @@
       [prefix]="'icon-search'"
     ></brdgs-input>
 
-    <app-select-sessions
+    <brdgs-select
       class="col-12 col-md-4"
-      [(id)]="scheduledSessionId" 
-      [translationTemplate]="translationTemplate"
+      [label]="t('SELECT_SESSION')"
+      [(value)]="filter.userMembershipId"
       [isRequired]="false"
-      [addAllOption]="true"
-    >
-    </app-select-sessions>
+      [options]="sessionOptions()"
+      (valueChange)="setSession($event)"
+    ></brdgs-select>
     <brdgs-input
       class="col-12 col-md-4"
       [label]="t('SEARCH_BY_COACH_NAME')"
@@ -32,26 +32,26 @@
     <brdgs-date-picker
       class="col-12 col-md-4"
       [label]="t('DATE_FROM')"
-      [(ngModel)]="filter.bookingDateFrom"
+      [(value)]="filter.bookingDateFrom"
       [isRequired]="false"
     ></brdgs-date-picker>
 
     <brdgs-date-picker
       class="col-12 col-md-4"
       [label]="t('DATE_TO')"
-      [(ngModel)]="filter.bookingDateTo"
+      [(value)]="filter.bookingDateTo"
       [isRequired]="false"
     ></brdgs-date-picker>
     <brdgs-time-picker
       class="col-12 col-md-4"
       [label]="t('BOOKING-TIME-FROM')"
-      [value]="filter.bookingTimeFrom"
+      [(value)]="filter.bookingTimeFrom"
       [isRequired]="false"
     ></brdgs-time-picker>
     <brdgs-time-picker
       class="col-12 col-md-4"
       [label]="t('BOOKING-TIME-TO')"
-      [value]="filter.bookingTimeTo"
+      [(value)]="filter.bookingTimeTo"
       [isRequired]="false"
     ></brdgs-time-picker>
     <div class="col-auto ms-auto d-flex flex-wrap">

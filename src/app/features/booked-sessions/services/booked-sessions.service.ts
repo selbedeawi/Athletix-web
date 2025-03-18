@@ -1,11 +1,11 @@
-import { inject, Injectable } from "@angular/core";
-import { from, Observable } from "rxjs";
-import { map } from "rxjs/operators";
-import { TablesInsert } from "../../../../../database.types";
-import { SupabaseService } from "../../../core/services/supabase/supabase.service";
+import { inject, Injectable } from '@angular/core';
+import { from, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { TablesInsert } from '../../../../../database.types';
+import { SupabaseService } from '../../../core/services/supabase/supabase.service';
 
 // Define the type for inserting into UserSessions
-export type UserSessionInsert = TablesInsert<"UserSessions">;
+export type UserSessionInsert = TablesInsert<'UserSessions'>;
 
 export interface BookedSessionFilter {
   /** A search key to match against member details. */
@@ -25,7 +25,7 @@ export interface BookedSessionFilter {
 }
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class BookedSessionsService {
   private supabaseService = inject(SupabaseService);
@@ -35,9 +35,9 @@ export class BookedSessionsService {
     const bookingData: UserSessionInsert = {
       bookingDate: new Date().toISOString(),
       createdAt: new Date().toISOString(),
-      branchId: "78461fa1-90e2-4425-819e-0d384cec0b6d",
-      scheduledSessionId: "addbe7a7-78f3-4fc9-9084-a1b6143bb50d",
-      userMemberShipId: "a3b002cb-fe56-4c91-bad2-3ebe31098033",
+      branchId: '78461fa1-90e2-4425-819e-0d384cec0b6d',
+      scheduledSessionId: 'addbe7a7-78f3-4fc9-9084-a1b6143bb50d',
+      userMemberShipId: 'a3b002cb-fe56-4c91-bad2-3ebe31098033',
     };
 
     // Uncomment to test booking a session:
@@ -52,17 +52,14 @@ export class BookedSessionsService {
    */
   bookSession(booking: UserSessionInsert): Observable<any> {
     return from(
-      this.supabaseService.sb
-        .from("UserSessions")
-        .insert([booking])
-        .select(),
+      this.supabaseService.sb.from('UserSessions').insert([booking]).select()
     ).pipe(
       map((res: any) => {
         if (res.error) {
           throw res.error;
         }
         return res.data[0];
-      }),
+      })
     );
   }
 
@@ -82,13 +79,11 @@ export class BookedSessionsService {
    * @param filters - Filter options to apply.
    * @returns Observable emitting an array of booked session responses.
    */
-  filterBookedSessions(
-    filters: BookedSessionFilter,
-  ) {
+  filterBookedSessions(filters: BookedSessionFilter) {
     // Query from the flattened view.
     let query = this.supabaseService.sb
-      .from("flattened_user_sessions_full")
-      .select("*");
+      .from('flattened_user_sessions_full')
+      .select('*');
 
     // Build the OR filter to search across member details.
     if (filters.searchKey) {
@@ -99,31 +94,31 @@ export class BookedSessionsService {
         `member_memberid.ilike.${pattern}`,
         `nationalId.ilike.${pattern}`,
         `phoneNumber.ilike.${pattern}`,
-      ].join(",");
+      ].join(',');
       query = query.or(searchFilter);
     }
 
     // Filter by scheduled session ID.
     if (filters.scheduledSessionId) {
-      query = query.eq("scheduledSessionId", filters.scheduledSessionId);
+      query = query.eq('scheduledSessionId', filters.scheduledSessionId);
     }
 
     // Filter by branch ID (using the alias from UserSessions in the view).
     if (filters.branchId) {
-      query = query.eq("user_session_branchId", filters.branchId);
+      query = query.eq('user_session_branchId', filters.branchId);
     }
 
     // Filter by scheduled date range (from the ScheduledSession join).
     if (filters.scheduledDateFrom) {
-      query = query.gte("scheduledDate", filters.scheduledDateFrom);
+      query = query.gte('scheduledDate', filters.scheduledDateFrom);
     }
     if (filters.scheduledDateTo) {
-      query = query.lte("scheduledDate", filters.scheduledDateTo);
+      query = query.lte('scheduledDate', filters.scheduledDateTo);
     }
 
     // Filter by coach IDs (using the flattened coach ID from SheduleCoaches).
     if (filters.coachIds && filters.coachIds.length > 0) {
-      query = query.in("shedule_coachId", filters.coachIds);
+      query = query.in('shedule_coachId', filters.coachIds);
     }
 
     return from(query).pipe(
@@ -132,7 +127,7 @@ export class BookedSessionsService {
           throw res.error;
         }
         return res.data;
-      }),
+      })
     );
   }
   /**
@@ -144,10 +139,10 @@ export class BookedSessionsService {
   deleteSession(sessionId: string) {
     return from(
       this.supabaseService.sb
-        .from("UserSessions")
+        .from('UserSessions')
         .delete()
-        .eq("id", sessionId)
-        .select(),
+        .eq('id', sessionId)
+        .select()
     ).pipe(
       map((res) => {
         if (res.error) {
@@ -155,7 +150,7 @@ export class BookedSessionsService {
         }
         // res.data will be an array of deleted records. Typically just one if the id is unique.
         return res.data[0];
-      }),
+      })
     );
   }
 }

@@ -12,11 +12,10 @@ import {
   BookedSessionFilter,
   BookedSessionsService,
 } from "../../services/booked-sessions.service";
-
-import { Tables } from "../../../../../../database.types";
-import { TimePickerComponent } from "../../../../shared/ui-components/atoms/time-picker/time-picker.component";
-import { SelectSessionsComponent } from "../../../../shared/ui-components/molecules/select-sessions/select-sessions.component";
-
+import { Tables } from '../../../../../../database.types';
+import { TimePickerComponent } from '../../../../shared/ui-components/atoms/time-picker/time-picker.component';
+import { SelectComponent } from '../../../../shared/ui-components/atoms/select/select.component';
+import { sessionOption } from '../../../schedule-management/components/schedule-single-session/schedule-single-session.component';
 @Component({
   selector: "app-book-sessions-fillter",
   imports: [
@@ -26,8 +25,8 @@ import { SelectSessionsComponent } from "../../../../shared/ui-components/molecu
     MatButtonModule,
     DatePickerComponent,
     TimePickerComponent,
-    SelectSessionsComponent,
-  ],
+    SelectComponent
+],
   templateUrl: "./book-sessions-fillter.component.html",
   styleUrl: "./book-sessions-fillter.component.scss",
 })
@@ -49,7 +48,9 @@ export class BookSessionsFillterComponent {
   bridgesInputType = BridgesInputType;
 
   loading = signal(false);
-  sessions = signal<Tables<"flattened_user_sessions_full">[]>([]);
+
+  sessions = signal<Tables<'flattened_user_sessions_full'>[]>([]);
+  sessionOptions = signal<sessionOption[]>([]);
 
   pageSize = signal(10);
   pageNumber = signal(1);
@@ -66,6 +67,12 @@ export class BookSessionsFillterComponent {
         .pipe(finalize(() => this.loading.set(false)))
         .subscribe((res) => {
           this.sessions.set(res);
+          this.sessions().forEach((session) => {
+            this.sessionOptions().push({
+              key: session.membership_name??'',
+              value: session.scheduledSessionId??'',
+            });
+          });
           this.originalCount.set((res as any).count);
         });
     } else {
@@ -92,10 +99,33 @@ export class BookSessionsFillterComponent {
     this.getAll();
   }
   get scheduledSessionId(): string {
-    return this.filter.scheduledSessionId ?? "";
+
+    return this.filter.scheduledSessionId ?? '';
   }
 
   set scheduledSessionId(value: string) {
     this.filter.scheduledSessionId = value;
+  }
+
+  setSession(sessionId?: any) {
+    const selectedSession = this.sessions().find(
+      (session) => session.scheduledSessionId === sessionId
+    );
+    console.log(selectedSession);
+    this.sessions.update((list) => {
+      list.map((session) => {
+        return {
+          sessionId: '',
+          createdAt: new Date().toISOString(),
+          startTime: '14:00:00',
+          endTime: '15:00:00',
+          scheduledDate: new Date().toISOString(),
+          branchId: '',
+          createdBy: '',
+        };
+      });
+      return list;
+    });
+    console.log(this.sessions);
   }
 }
