@@ -13,37 +13,38 @@
       [prefix]="'icon-search'"
     ></brdgs-input>
 
-    <app-select-sessions
-      class="col-12 col-md-4"
-      [(id)]="filter.scheduledSessionId"
-      [translationTemplate]="translationTemplate"
-      [isRequired]="false"
-      [addAllOption]="true"
-    >
-    </app-select-sessions>
+
+    <brdgs-select
+    class="col-12 col-md-4"
+    [label]="t('SELECT_SESSION')"
+    [(value)]="filter.scheduledSessionId"
+    [isRequired]="false"
+    [options]="sessionOptions()"
+    (valueChange)="setSession($event)"
+  ></brdgs-select>
 
     <brdgs-date-picker
       class="col-12 col-md-4"
       [label]="t('DATE_FROM')"
-      [value]="filter.scheduledDateFrom"
+      [(value)]="filter.scheduledDateFrom"
       [isRequired]="false"
     ></brdgs-date-picker>
     <brdgs-date-picker
       class="col-12 col-md-4"
       [label]="t('DATE_TO')"
-      [value]="filter.scheduledDateTo"
+      [(value)]="filter.scheduledDateTo"
       [isRequired]="false"
     ></brdgs-date-picker>
     <brdgs-time-picker
       class="col-12 col-md-4"
       [label]="t('BOOKING-TIME-FROM')"
-      [value]="filter.scheduledTimeFrom"
+      [(value)]="filter.scheduledTimeFrom"
       [isRequired]="false"
     ></brdgs-time-picker>
     <brdgs-time-picker
       class="col-12 col-md-4"
       [label]="t('BOOKING-TIME-TO')"
-      [value]="filter.scheduledTimeTo"
+      [(value)]="filter.scheduledTimeTo"
       [isRequired]="false"
     ></brdgs-time-picker>
 

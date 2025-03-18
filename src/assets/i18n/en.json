@@ -85,7 +85,8 @@
     "TABLE_ID": "ID",
     "MEMBER_NAME": "Member Name",
     "TABLE_SESSION_NAME": "Session Name",
-    "TABLE_START_DATE": "Start Date"
+    "TABLE_START_DATE": "Start Date",
+    "SELECT_SESSION": "Select Session"
   },
   "PtSession": {
     "TITLE": "Private Trainer Sessions List",
@@ -109,7 +110,9 @@
     "COACH_NAME": "Coach Name",
     "START_DATE": "Start Date",
     "BOOK_SESSION": "Book Session",
-    "ADD_MEMBER": "Add Member"
+    "ADD_MEMBER": "Add Member",
+    "SELECT_SESSION": "Select Session",
+    "SEARCH_LABEL":"Search for member name, ID, phone or email"
   },
   "ScheduledSession": {
     "TITLE": "Schedule Management",

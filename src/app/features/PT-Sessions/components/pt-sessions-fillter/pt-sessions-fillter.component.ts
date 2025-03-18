@@ -13,7 +13,8 @@ import {
   PrivateSessionsBookingService,
 } from '../../services/pt-sessions.service';
 import { TimePickerComponent } from '../../../../shared/ui-components/atoms/time-picker/time-picker.component';
-import { SelectSessionsComponent } from "../../../../shared/ui-components/molecules/select-sessions/select-sessions.component";
+import { sessionOption } from '../../../schedule-management/components/schedule-single-session/schedule-single-session.component';
+import { SelectComponent } from "../../../../shared/ui-components/atoms/select/select.component";
 
 @Component({
   selector: 'app-pt-sessions-fillter',
@@ -24,16 +25,17 @@ import { SelectSessionsComponent } from "../../../../shared/ui-components/molecu
     MatButtonModule,
     DatePickerComponent,
     TimePickerComponent,
-    SelectSessionsComponent
+    SelectComponent
 ],
   templateUrl: './pt-sessions-fillter.component.html',
   styleUrl: './pt-sessions-fillter.component.scss',
 })
 export class PtSessionsFillterComponent {
-  translationTemplate: TranslationTemplates = TranslationTemplates.PT_SESSION;
-
   private privateSessionsService = inject(PrivateSessionsBookingService);
   lookupService = inject(LookupService);
+  translationTemplate: TranslationTemplates = TranslationTemplates.PT_SESSION;
+  
+  sessionOptions = signal<sessionOption[]>([]);
   sessions = signal<any[]>([]);
 
   filter: PrivateSessionBookingFilter = {
@@ -61,16 +63,20 @@ export class PtSessionsFillterComponent {
 
   getAll() {
     this.loading.set(true);
-
+    console.log('Sending filter data:', this.filter);
     this.privateSessionsService
       .filterPrivateSessionsBooking(this.filter)
       .pipe(finalize(() => this.loading.set(false)))
       .subscribe((res) => {
         if (res) {
           this.ptSessions.set(res);
-          console.log(this.ptSessions());
+          this.sessions().forEach((session) => {
+            this.sessionOptions().push({
+              key: session.membership_name??'',
+              value: session.scheduledSessionId??'',
+            });
+          });
           this.originalCount.set((res as any).count);
-          console.log(this.originalCount());
         }
       });
   }
@@ -90,6 +96,14 @@ export class PtSessionsFillterComponent {
   }
 
   search() {
+    if (!this.filter.bookingTimeFrom) {
+      this.filter.bookingTimeFrom = '';  
+    }
+    if (!this.filter.bookingTimeTo) {
+      this.filter.bookingTimeTo = '';  
+    }
+  
+    console.log('Filter before sending request:', this.filter);
     this.pageNumber.set(1);
     this.getAll();
   }
@@ -99,5 +113,27 @@ export class PtSessionsFillterComponent {
   
   set scheduledSessionId(value: string) {
     this.filter.bookingSessionId = value;
+  }
+
+  setSession(sessionId?: any) {
+    const selectedSession = this.sessions().find(
+      (session) => session.scheduledSessionId === sessionId
+    );
+    console.log(selectedSession);
+    this.sessions.update((list) => {
+      list.map((session) => {
+        return {
+          sessionId: '',
+          createdAt: new Date().toISOString(),
+          startTime: '14:00:00',
+          endTime: '15:00:00',
+          scheduledDate: new Date().toISOString(),
+          branchId: '',
+          createdBy: '',
+        };
+      });
+      return list;
+    });
+    console.log(this.sessions);
   }
 }
