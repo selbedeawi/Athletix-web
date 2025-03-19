@@ -92,7 +92,6 @@ export class ScheduleSessionDetailsComponent {
         .filterBookedSessions(this.filter)
         .pipe(finalize(() => this.loading.set(false)))
         .subscribe((res) => {
-          console.log(res);
             this.bookedSessions.set([...res]);
           // this.sessions.set(res);
           this.originalCount.set(res.length);

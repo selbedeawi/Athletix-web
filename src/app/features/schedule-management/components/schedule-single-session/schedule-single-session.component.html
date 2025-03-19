@@ -80,6 +80,7 @@
         <brdgs-date-picker
           class="col-6"
           [label]="t('START_DATE')"
+          [datePickerMin]="date.toISOString()"
           [(value)]="scheduledSessions()[0].scheduledDate"
           [isRequired]="true"
         ></brdgs-date-picker>
@@ -89,6 +90,7 @@
         <brdgs-date-picker
           class="col-6"
           [label]="t('END_DATE')"
+          [datePickerMin]="date.toISOString()"
           [(value)]="endDate"
           [isRequired]="true"
         ></brdgs-date-picker

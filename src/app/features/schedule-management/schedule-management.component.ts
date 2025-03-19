@@ -56,10 +56,7 @@ export class ScheduleManagementComponent {
   monthEnd = computed(() => format(endOfMonth(this.viewDate()), 'yyyy-LL-dd'));
 
   view: CalendarView = CalendarView.Month;
-  filter: ScheduledSessionFilter = {
-    scheduledDateFrom: this.monthStart(),
-    scheduledDateTo: this.monthEnd(),
-  };
+
   bridgesInputType = BridgesInputType;
   translationTemplate = TranslationTemplates.SCHEDULEDSESSION;
 
@@ -68,8 +65,12 @@ export class ScheduleManagementComponent {
   }
   getFilteredSessions() {
     this.loading.set(true);
+    const filter: ScheduledSessionFilter = {
+      scheduledDateFrom: this.monthStart(),
+      scheduledDateTo: this.monthEnd(),
+    };
     this.scheduleSessionService
-      .filterScheduledSessions(this.filter)
+      .filterScheduledSessions(filter)
       .pipe(finalize(() => this.loading.set(true)))
       .subscribe({
         next: (res) => {
@@ -88,13 +89,11 @@ export class ScheduleManagementComponent {
               return [...eventList];
             });
           });
-          console.log(this.events());
         },
       });
   }
 
   openSingleSession(event: CalendarEvent<ScheduleSession>) {
-    console.log(event);
     this.brdgsOverlayService.open(ScheduleSessionDetailsComponent, event);
   }
   scheduleSingleSession() {

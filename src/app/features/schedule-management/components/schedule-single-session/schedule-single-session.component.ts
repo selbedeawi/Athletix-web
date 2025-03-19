@@ -29,6 +29,7 @@ import { StaffService } from '../../../staff-list/services/staff.service';
 import { AccountType } from '../../../../core/enums/account-type-enum';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { SnackbarService } from '../../../../core/services/snackbar/snackbar.service';
+import { addDays, format } from 'date-fns';
 export interface sessionOption {
   key: string;
   value: string;
@@ -81,18 +82,20 @@ export class ScheduleSingleSessionComponent {
   ]);
   endDate = signal<Date>(new Date());
   sessionDays = signal<string[]>([]);
+  sessionDaysMap = signal(new Map());
+  sessionDaysKeys = signal<string[]>([]);
 
   sessions = signal<Sessions[]>([]);
   sessionOptions = signal<sessionOption[]>([]);
   coachOptions = signal<sessionOption[]>([]);
   daysOptions = signal<sessionOption[]>([
-    { key: 'Saturday', value: 'Saturday' },
-    { key: 'Sunday', value: 'Sunday' },
-    { key: 'Monday', value: 'Monday' },
-    { key: 'Tuesday', value: 'Tuesday' },
-    { key: 'Wednesday', value: 'Wednesday' },
-    { key: 'Thursday', value: 'Thursday' },
-    { key: 'Friday', value: 'Friday' },
+    { key: 'Saturday', value: 'saturday' },
+    { key: 'Sunday', value: 'sunday' },
+    { key: 'Monday', value: 'monday' },
+    { key: 'Tuesday', value: 'tuesday' },
+    { key: 'Wednesday', value: 'wednesday' },
+    { key: 'Thursday', value: 'thursday' },
+    { key: 'Friday', value: 'friday' },
   ]);
   isRepeated = signal(false);
   loading = signal(false);
@@ -130,7 +133,7 @@ export class ScheduleSingleSessionComponent {
   singleScheduleSession() {
     this.loading.set(true);
 
-    console.log(this.coachesId());
+    // console.log(this.coachesId());
     const insertedSession: ScheduledSessionInsert = {
       sessionId: this.sessionId(),
       createdAt: new Date(
@@ -150,14 +153,14 @@ export class ScheduleSingleSessionComponent {
       branchId: this.branchService.currentBranch?.id,
       createdBy: this.userService.currentUser?.id,
     };
-    console.log(this.scheduledSessions());
+    // console.log(this.scheduledSessions());
 
     this.scheduledSessionService
       .addSingleScheduledSession(insertedSession, this.coachesId())
       .pipe(finalize(() => this.loading.set(false)))
       .subscribe({
         next: (res) => {
-          console.log(res);
+          // console.log(res);
           this.snackBar.success('Session Scheduled Successfully');
           this.dialogRef.close(true);
         },
@@ -166,7 +169,53 @@ export class ScheduleSingleSessionComponent {
         },
       });
   }
-  multipleScheduleSessions() {}
+  multipleScheduleSessions() {
+    const insertedSessions: {
+      session: ScheduledSessionInsert;
+      coachIds: string[];
+    }[] = [];
+    this.getMatchingDates();
+    this.scheduledSessions().forEach((session, i) => {
+      this.sessionDaysMap()
+        .get(this.sessionDaysKeys()[i])[0]
+        .forEach((day: Date) => {
+          insertedSessions.push({
+            session: {
+              sessionId: this.sessionId(),
+              createdAt: new Date(
+                this.date.getFullYear(),
+                this.date.getMonth(),
+                this.date.getDate(),
+                0,
+                0,
+                0,
+                0
+              ).toISOString(),
+              startTime: this.scheduledSessions()[i].startTime,
+              endTime: this.scheduledSessions()[i].endTime,
+              scheduledDate: new Date(day).toISOString(),
+              branchId: this.branchService.currentBranch?.id,
+              createdBy: this.userService.currentUser?.id,
+            },
+            coachIds: [...this.coachesId()],
+          });
+        });
+    });
+    // console.log(insertedSessions);
+    this.scheduledSessionService
+      .addMultipleScheduledSessions(insertedSessions)
+      .pipe(finalize(() => this.loading.set(false)))
+      .subscribe({
+        next: (res) => {
+          // console.log(res);
+          this.snackBar.success('Sessions Scheduled Successfully');
+          this.dialogRef.close(true);
+        },
+        error: (err) => {
+          this.snackBar.error(err.message || 'Something went wrong');
+        },
+      });
+  }
 
   getAllSessions() {
     this.loading.set(true);
@@ -179,7 +228,7 @@ export class ScheduleSingleSessionComponent {
         this.sessions().forEach((session) => {
           this.sessionOptions().push({ key: session.name, value: session.id });
         });
-        console.log(this.sessions());
+        // console.log(this.sessions());
       });
   }
 
@@ -196,7 +245,7 @@ export class ScheduleSingleSessionComponent {
         sessionList.map((session) => (session.sessionId = selectedSession.id));
         return [...sessionList];
       });
-      console.log(this.scheduledSessions());
+      // console.log(this.scheduledSessions());
     }
 
     // this.sessions.update(list=>{
@@ -215,11 +264,11 @@ export class ScheduleSingleSessionComponent {
     // })
   }
   updateTime(event: any, session: ScheduledSessionInsert) {
-    console.log(event);
+    // console.log(event);
     // session.startTime = `${session.startTime}:00`
     session.endTime = this.addOneHour(event);
-    console.log(session);
-    console.log(this.scheduledSessions());
+    // console.log(session);
+    // console.log(this.scheduledSessions());
   }
 
   addOneHour(time: string) {
@@ -236,9 +285,14 @@ export class ScheduleSingleSessionComponent {
       sessions.splice(index, 1);
       return [...sessions];
     });
+    this.sessionDays.update((sessions) => {
+      sessions.splice(index, 1);
+      return [...sessions];
+    });
+    this.getMatchingDates();
   }
   // setMember(member: StaffAccount) {
-  //   console.log(member)
+  // console.log(member)
   //   if (member) {
   //     this.selectedCoaches().push(member);
   //     this.coachesId().push(member.id);
@@ -247,7 +301,7 @@ export class ScheduleSingleSessionComponent {
   //   this.coaches.set([]);
   // }
   getAllCoaches() {
-    // if (this.filterCoach.name.length > 2) {
+    if (this.filterCoach.name.length > 2) {
     this.loading.set(true);
     this.staffService
       .getAllStaff(this.filterCoach)
@@ -265,9 +319,38 @@ export class ScheduleSingleSessionComponent {
             });
           });
 
-          console.log(this.coaches());
+          // console.log(this.coaches());
         }
       });
-    // }
+    }
+  }
+  getMatchingDates() {
+    const start = new Date(this.scheduledSessions()[0].scheduledDate || '');
+    this.sessionDaysKeys.set([]);
+    this.sessionDaysMap.set(new Map());
+    let current = start;
+    let counter = 0;
+    let daysArray: Date[] = [];
+
+    this.sessionDays().forEach((sessionDay) => {
+      while (current <= this.endDate()) {
+        const dayName = format(current, 'EEEE').toLowerCase();
+        if (sessionDay == dayName) {
+          daysArray.push(current);
+          this.sessionDaysMap.update((map) => {
+            map.set(sessionDay + counter, [daysArray]);
+            return map;
+          });
+        }
+        current = addDays(current, 1); // Move to the next day
+      }
+      this.sessionDaysKeys.set([...this.sessionDaysMap().keys()]);
+      daysArray = [];
+      counter++;
+
+      current = start;
+    });
+    // console.log(this.sessionDaysKeys());
+    // console.log(this.sessionDaysMap());
   }
 }
