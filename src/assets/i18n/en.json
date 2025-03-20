@@ -136,6 +136,10 @@
     "REMOVE": "Remove",
     "SEARCH_MEMBER": "Search for member",
     "SEARCH_LABEL": "Search member name, ID, Phone or email",
-    "SELECT_COACH":"Select Coach"
+    "SELECT_COACH": "Select Coach",
+    "SESSION_DETAILS": "Session Details",
+    "BOOKED_MEMBERS": "Booked Members",
+    "DOES_IT_REPEAT": "Does it repeat?",
+    "TODAY": "Today"
   }
 }

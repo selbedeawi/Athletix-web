@@ -301,7 +301,6 @@ export class ScheduleSingleSessionComponent {
   //   this.coaches.set([]);
   // }
   getAllCoaches() {
-    if (this.filterCoach.name.length > 2) {
     this.loading.set(true);
     this.staffService
       .getAllStaff(this.filterCoach)
@@ -310,6 +309,7 @@ export class ScheduleSingleSessionComponent {
         debounceTime(250)
       )
       .subscribe((res) => {
+        console.log(res)
         if (res.data) {
           this.coaches.set(res.data);
           this.coaches().forEach((coach) => {
@@ -318,11 +318,9 @@ export class ScheduleSingleSessionComponent {
               value: coach.id,
             });
           });
-
           // console.log(this.coaches());
         }
       });
-    }
   }
   getMatchingDates() {
     const start = new Date(this.scheduledSessions()[0].scheduledDate || '');
