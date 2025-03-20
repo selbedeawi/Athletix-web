@@ -1,8 +1,11 @@
 <button [matMenuTriggerFor]="languageMenu" mat-button color="accent">
   <div class="d-flex cursor-pointer">
-    <span class="mat-label-large-prominent">{{
+    <span class="mat-label-large-prominent on-primary-color">{{
       (branchesService.currentBranch$ | async)?.name
     }}</span>
+      <i
+        class="icon-navigate_down f-20 on-primary-color"
+      ></i>
   </div>
 </button>
 

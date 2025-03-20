@@ -4,7 +4,6 @@ import {
   inject,
   signal,
 } from "@angular/core";
-import { FooterComponent } from "../../components/footer/footer.component";
 import { BrdgsSidenavComponent } from "../../components/sidebar/sidebar.component";
 import { HeaderComponent } from "../../components/header/header.component";
 import { BreakpointObserver, BreakpointState } from "@angular/cdk/layout";
@@ -17,20 +16,15 @@ import {
 } from "@angular/animations";
 import { MatSidenavModule } from "@angular/material/sidenav";
 import { MatIcon, MatIconModule } from "@angular/material/icon";
-import { NgClass } from "@angular/common";
-import { MatIconButton } from "@angular/material/button";
 
 @Component({
   selector: "app-main-layout",
   imports: [
     BrdgsSidenavComponent,
-    NgClass,
     MatIcon,
     MatIconModule,
     MatSidenavModule,
-
     HeaderComponent,
-    MatIconButton,
   ],
   templateUrl: "./main-layout.component.html",
   styleUrl: "./main-layout.component.scss",

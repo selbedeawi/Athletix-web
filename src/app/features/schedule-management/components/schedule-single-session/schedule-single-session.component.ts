@@ -173,7 +173,7 @@ export class ScheduleSingleSessionComponent {
     const insertedSessions: {
       session: ScheduledSessionInsert;
       coachIds: string[];
-    }[] = [];
+    }[] = [];-
     this.getMatchingDates();
     this.scheduledSessions().forEach((session, i) => {
       this.sessionDaysMap()
@@ -309,7 +309,6 @@ export class ScheduleSingleSessionComponent {
         debounceTime(250)
       )
       .subscribe((res) => {
-        console.log(res)
         if (res.data) {
           this.coaches.set(res.data);
           this.coaches().forEach((coach) => {

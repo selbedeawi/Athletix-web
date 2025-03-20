@@ -7,7 +7,8 @@
     "NAV_SCHEDULE_MANAGEMENT": "Schedule Management",
     "NAV_BOOKED_SESSIONS": "Booked Sessions",
     "NAV_PT_SESSIONS": "Pt Sessions",
-    "NAV_MEMBERSHIP_LIST": "Memberships"
+    "NAV_MEMBERSHIP_LIST": "Memberships",
+    "BRANCH":"Branch"
   },
   "Auth": {
     "LOGIN": "Login",

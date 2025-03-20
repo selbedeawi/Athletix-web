@@ -3,12 +3,25 @@
   class="d-flex justify-content-end p-1 toggle-btn-container"
   [@sideBtnAnimation]="isCollapsed() ? 'collapsed' : 'expanded'"
 >
-  <button mat-icon-button class="mt-2" (click)="toggleSidebar()">
+  @if (isCollapsed()) {
+  <div class="mt-3"
+  style="margin: -10px;"
+  >
+    <div
+      class="d-flex align-items-center bg-secondary-container border-surface-dim-1 justify-content-center mt-4 rounded-circle cursor-pointer"
+      (click)="toggleSidebar()"
+      aria-label="close side nav"
+    >
+      <mat-icon class="icon-navigate_next primary-container-color f-24"></mat-icon>
+    </div>
+  </div>
+  }
+  <!-- <button mat-icon-button class="mt-2" (click)="toggleSidebar()">
     <mat-icon
-      class="primary-color bg-surface-container-lowest rounded-circle"
+      class="bg-surface-container-lowest rounded-circle primary-color"
       [ngClass]="isCollapsed() ? 'icon-arrow_forward' : 'icon-arrow_back'"
     ></mat-icon>
-  </button>
+  </button> -->
 </div>
 }
 <mat-drawer-container class="d-flex vh-100">
@@ -19,7 +32,7 @@
     [opened]="isSidenavOpen()"
     [disableClose]="true"
     [@sidebarAnimation]="isCollapsed() ? 'collapsed' : 'expanded'"
-    class="p-3 pe-0 border-0 bg-"
+    class="bg- border-0 p-3 pe-0"
     ><brdgs-sidenav
       [(isCollapsed)]="isCollapsed"
       [(isSidenavOpen)]="isSidenavOpen"
@@ -43,7 +56,7 @@
       [currentView]="currentView()"
       [(isSidenavOpen)]="isSidenavOpen"
     ></app-header>
-    <div class="scroll-container">
+    <div class="ps-3 scroll-container">
       <div class="container d-flex flex-column pt-3">
         <ng-content></ng-content>
       </div>
