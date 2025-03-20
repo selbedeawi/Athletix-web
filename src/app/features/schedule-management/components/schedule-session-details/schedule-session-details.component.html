@@ -1,48 +1,51 @@
 <ng-container *transloco="let t; read: translationTemplate">
   <!-- header -->
-  <div class="mx-3 my-4 py-1 d-flex justify-content-between align-items-center">
-    <p class="m-0 mat-title-large">Session Details</p>
+  <div class="d-flex align-items-center justify-content-between mx-3 my-4 py-1">
+    <p class="m-0 mat-title-large">
+      {{ t("SESSION_DETAILS") }}
+    </p>
     <i
-      class="icon-close f-24 on-secondary-container-color cursor-pointer"
+      class="cursor-pointer f-24 icon-close on-secondary-container-color"
       (click)="closeOverlay()"
     ></i>
   </div>
   <mat-divider></mat-divider>
   <!-- details -->
   <div class="m-3">
-    <p class="m-0 mb-2 mat-title-large primary-color">
+    <p class="m-0 mat-title-large mb-2 primary-color">
       {{ selectedSession.meta.Sessions.name }}
     </p>
     <p
-      class="m-0 mb-2 mat-body-medium on-secondary-fixed-variant-color d-flex align-items-center"
+      class="d-flex align-items-center m-0 mat-body-medium mb-2 on-secondary-fixed-variant-color"
     >
       <i
         style="margin: 2px"
-        class="icon-today f-24 on-secondary-container-color"
+        class="f-24 icon-today on-secondary-container-color"
       ></i>
       <span>{{ selectedSession.start | date : "EEEE, LLL dd, yyyy" }}</span>
       <mat-icon
         style="margin: 2px"
-        class="icon-schedule ms-4 f-24 on-secondary-container-color"
+        class="f-24 icon-schedule ms-4 on-secondary-container-color"
       ></mat-icon>
       <span class="">{{ selectedSession.start | date : "h:mm a" }}</span>
       <span style="margin: 2px">-</span>
       <span>{{ selectedSession.end | date : "h:mm a" }}</span>
     </p>
-    <p class="m-0 mb-2 mat-body-medium on-secondary-fixed-variant-color">
+    <p class="m-0 mat-body-medium mb-2 on-secondary-fixed-variant-color">
       {{ selectedSession.meta.Sessions.description }}
     </p>
   </div>
   <!-- members -->
-  <div class="m-3 d-flex justify-content-between align-items-center">
+  <div class="d-flex align-items-center justify-content-between m-3">
     <p class="mat-label-large-prominent">
-      Booked Members ({{ originalCount() }})
+      {{ t("BOOKED_MEMBERS") }}
+      ({{ originalCount() }})
     </p>
     <button
       mat-flat-button
       cdkFocusInitial
       color="primary"
-      class="mb-3 mt-1 mb-md-0"
+      class="mb-3 mb-md-0 mt-1"
       type="button"
       (click)="addMember()"
     >
@@ -62,15 +65,15 @@
   <!-- members -->
   @for ( session of bookedSessions(); track $index) {
   <div
-    class="mx-3 mb-2 rounded-8 border-surface-dim-1 bg-surface-bright py-1 px-2"
+    class="bg-surface-bright border-surface-dim-1 rounded-8 mb-2 mx-3 px-2 py-1"
   >
-    <div class="d-flex justify-content-between align-items-center">
+    <div class="d-flex align-items-center justify-content-between">
       <div>
-        <p class="m-0 primary-container-color mat-label-large">
+        <p class="m-0 mat-label-large primary-container-color">
           {{ session?.firstName }}
           {{ session?.lastName }}
         </p>
-        <p class="m-0 on-secondary-fixed-variant-color mat-label-large">
+        <p class="m-0 mat-label-large on-secondary-fixed-variant-color">
           {{ session?.phoneNumber }}
         </p>
       </div>
@@ -78,7 +81,7 @@
         mat-button
         cdkFocusInitial
         color="error"
-        class="mb-3 mt-1 mb-md-0"
+        class="mb-3 mb-md-0 mt-1"
         type="button"
         (click)="removeBooking(session.user_session_id || '')"
       >

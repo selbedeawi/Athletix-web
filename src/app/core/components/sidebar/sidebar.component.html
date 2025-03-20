@@ -3,7 +3,7 @@
   <div class="mb-3 pt-3 d-flex align-items-center justify-content-between">
     @if(!isCollapsed()){
     <img src="assets/images/full-logo.webp" alt="Full Logo" class="logo-full" />
-    <div>
+    <div class=" d-flex align-items-center justify-content-between">
       @if(currentView() ==='phone') {
 
       <button
@@ -14,6 +14,14 @@
         <mat-icon class="icon-close"></mat-icon>
       </button>
 
+      }@else {
+      <div
+      class="d-flex align-items-center justify-content-center bg-secondary-container border-surface-dim-1 rounded-circle cursor-pointer"
+        (click)="isCollapsed.set(true)"
+        aria-label="close side nav"
+      >
+        <span class="icon-navigate_before primary-container-color f-24"></span>
+      </div>
       }
     </div>
     } @else{
@@ -26,7 +34,18 @@
 
     }
   </div>
+  <!-- Branch Select -->
+  <div class="d-flex my-2 justify-content-between align-items-center">
+    <h6 class="mat-title-medium  on-primary-color m-0">{{ t("BRANCH") }}</h6>
 
+    @if(userService.currentUser$ | async; as user){ 
+      @if( !!user?.id){
+    <app-branch-select [staffId]="user.id"></app-branch-select>
+      }
+    }
+  </div>
+  <mat-divider class=""></mat-divider>
+  
   <!-- NAVIGATION LINKS -->
   <mat-nav-list class="nav-list p-0">
     @for(menuItem of sidenavMenuItems();track $index){
@@ -49,37 +68,31 @@
     </mat-list-item>
     }
   </mat-nav-list>
-
-  @if(currentView() ==='phone') {
-
-  <div class="d-flex my-2 mt-auto justify-content-between align-items-center">
-    <h6 class="mat-title-medium primary-color m-0">{{ t("BRANCH") }}</h6>
-
-    @if(userService.currentUser$ | async; as user){ @if( !!user?.id){
-    <app-branch-select [staffId]="user.id"></app-branch-select>
-    }}
-  </div>
-  <mat-divider class=""></mat-divider>
+  
   <!-- User Info -->
+  <mat-divider class=" mt-auto "></mat-divider>
   <div class="d-flex my-2 justify-content-between align-items-center">
+     <mat-icon
+        class="icon-account_circle f-24 on-primary-color"
+        
+      ></mat-icon>
     <div class="d-flex align-items-center">
       <div class="d-flex flex-column mat-body-medium">
         @if(userService.currentUser$ | async; as user){
-        <span class="mat-body-medium"
+        <span class="mat-label-large on-primary-color"
           >{{ user?.firstName }} {{ user?.lastName }}</span
         >
-        <span class="tertiary-color mat-label-medium-prominent">{{
+        <span class="primary-fixed-dim-color mat-body-small">{{
           user?.role
         }}</span>
         }
       </div>
     </div>
-    <button mat-icon-button class="bg-tertiary-container">
+    <button mat-icon-button class="on-primary-color">
       <mat-icon
-        class="icon-log-out f-20 tertiary-color"
+        class="icon-keyboard_return f-20 on-primary-color"
         (click)="logout()"
       ></mat-icon>
     </button>
   </div>
-  }
 </ng-container>

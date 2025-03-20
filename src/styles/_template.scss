@@ -23,7 +23,7 @@
   border: 1px solid var(--sys-on-secondary-container);
 }
 .border-surface-dim-1 {
-  border: 1px solid var(--sys-surface-dim);
+  border: 1px solid var(--sys-surface-dim) !important;
 }
 .border-top-1 {
   border: 1px solid var(--sys-outline-variant);
@@ -332,9 +332,9 @@
 //   background-color: var(--sys-on-primary-fixed);
 // }
 
-// .primary-fixed-dim-color {
-//   color: var(--sys-primary-fixed-dim);
-// }
+.primary-fixed-dim-color {
+  color: var(--sys-primary-fixed-dim);
+}
 // .bg-primary-fixed-dim {
 //   background-color: var(--sys-primary-fixed-dim);
 // }

@@ -1,17 +1,19 @@
-<div class="d-flex justify-content-between align-items-center gap-3">
-  <div class="rounded-8 d-flex gap-2 align-items-center">
+<div class="d-flex align-items-center justify-content-between gap-3"
+*transloco="let t; read: translationTemplate"
+>
+  <div class="d-flex align-items-center rounded-8 gap-2">
     <!-- date badge -->
     <div
-      class="rounded-8 overflow-hidden border-secondary-1"
+      class="border-secondary-1 rounded-8 overflow-hidden"
       style="width: 60px; max-height: fit-content"
     >
       <p
-        class="m-0 py-1 mat-label-large text-center surface-container-lowest-color bg-primary-container"
+        class="bg-primary-container m-0 text-center mat-label-large py-1 surface-container-lowest-color"
       >
         {{ viewDate() | date : "MMM" }}
       </p>
       <p
-        class="m-0 py-1 mat-title-medium text-center bg-surface-container-lowest"
+        class="bg-surface-container-lowest m-0 text-center mat-title-medium py-1"
       >
         {{ viewDate() | date : "dd" }}
       </p>
@@ -25,15 +27,15 @@
       </p>
     </div>
   </div>
-  <div class="d-flex justify-content-center align-items-center gap-3">
+  <div class="d-flex align-items-center justify-content-center gap-3">
     <div
-      class="d-flex justify-content-center align-items-center width-fit border-primary-container-1 rounded-circle cursor-pointer"
+      class="d-flex align-items-center border-primary-container-1 justify-content-center rounded-circle cursor-pointer width-fit"
       mwlCalendarPreviousView
       [view]="view()"
       [(viewDate)]="viewDate"
       (viewDateChange)="viewDateChange.emit(viewDate())"
     >
-      <i class="icon-navigate_before primary-container-color f-24"></i>
+      <i class="f-24 icon-navigate_before primary-container-color"></i>
     </div>
     <div
       class="m-0 mat-title-medium primary-container-color"
@@ -41,16 +43,16 @@
       [(viewDate)]="viewDate"
       (viewDateChange)="viewDateChange.emit(viewDate())"
     >
-      Today
+      {{t('TODAY')}}
     </div>
     <div
-      class="d-flex justify-content-center align-items-center width-fit border-primary-container-1 rounded-circle cursor-pointer"
+      class="d-flex align-items-center border-primary-container-1 justify-content-center rounded-circle cursor-pointer width-fit"
       mwlCalendarNextView
       [view]="view()"
       [(viewDate)]="viewDate"
       (viewDateChange)="viewDateChange.emit(viewDate())"
     >
-      <i class="icon-navigate_next primary-container-color f-24"></i>
+      <i class="f-24 icon-navigate_next primary-container-color"></i>
     </div>
   </div>
 

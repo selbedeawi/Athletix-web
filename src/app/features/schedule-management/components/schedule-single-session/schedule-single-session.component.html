@@ -5,7 +5,7 @@
     </p>
   </div>
   <div class="bg-on-primary mx-3">
-    <p class="m-0 my-3 mat-body-large">{{ t("ADD_DETAILS") }}</p>
+    <p class="m-0 mat-body-large my-3">{{ t("ADD_DETAILS") }}</p>
     <form #sessionForm="ngForm" (ngSubmit)="schedule(sessionForm)">
       <div class="row gx-3 gy-1">
         <!-- coaches list -->
@@ -37,16 +37,16 @@
           @for ( member of selectedCoaches() ; track member) {
           <div class="col-8 p-1">
             <div
-              class="rounded-8 border-surface-dim-1 bg-surface-bright py-1 px-2"
+              class="bg-surface-bright border-surface-dim-1 rounded-8 px-2 py-1"
             >
-              <div class="d-flex justify-content-between align-items-center">
+              <div class="d-flex align-items-center justify-content-between">
                 <div>
-                  <p class="m-0 primary-container-color mat-label-large">
+                  <p class="m-0 mat-label-large primary-container-color">
                     {{ member.firstName }}
                     {{ member.lastName }}
                   </p>
                   <p
-                    class="m-0 on-secondary-fixed-variant-color mat-label-large"
+                    class="m-0 mat-label-large on-secondary-fixed-variant-color"
                   >
                     {{ member.phoneNumber }}
                   </p>
@@ -65,7 +65,7 @@
           [(value)]="sessionId"
         ></brdgs-select>
         <div class="col-6">
-          <p class="m-0 mat-body-medium">Does it repeat?</p>
+          <p class="m-0 mat-body-medium">{{ t("DOES_IT_REPEAT") }}</p>
           <mat-radio-group
             aria-label="Select an option"
             class="d-flex"
@@ -114,14 +114,14 @@
         ></brdgs-time-picker>
         @if(!first){
         <div
-          class="col-2 d-flex justify-content-start align-items-center mb-20"
+          class="col-2 d-flex align-items-center justify-content-start mb-20"
         >
           <div
-            class="d-flex justify-content-center align-items-center border-primary-container-1 rounded-circle cursor-pointer p-2"
+            class="d-flex align-items-center border-primary-container-1 justify-content-center p-2 rounded-circle cursor-pointer"
             (click)="removeSession(i)"
           >
             <!-- style="max-width: 40px" -->
-            <i class="icon-delete primary-container-color f-24"></i>
+            <i class="f-24 icon-delete primary-container-color"></i>
           </div>
         </div>
         } }
@@ -137,7 +137,7 @@
           <button
             mat-button
             color="primary"
-            class="me-3 mb-3 mt-1 mb-md-0"
+            class="mb-3 mb-md-0 me-3 mt-1"
             type="button"
             (click)="addAnotherDay()"
           >
@@ -147,12 +147,12 @@
         }
 
         <mat-divider class="mt-3"></mat-divider>
-        <div class="col-auto ms-auto d-flex flex-wrap my-3">
+        <div class="col-auto d-flex flex-wrap ms-auto my-3">
           <div>
             <button
               mat-stroked-button
               color="primary"
-              class="me-3 mb-3 mt-1 mb-md-0"
+              class="mb-3 mb-md-0 me-3 mt-1"
               type="button"
               matDialogClose
             >
@@ -164,7 +164,7 @@
               mat-flat-button
               cdkFocusInitial
               color="primary"
-              class="mb-3 mt-1 mb-md-0"
+              class="mb-3 mb-md-0 mt-1"
               type="submit"
               [disabled]="sessionForm.invalid"
             >

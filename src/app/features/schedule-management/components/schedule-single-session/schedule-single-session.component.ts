@@ -173,7 +173,7 @@ export class ScheduleSingleSessionComponent {
     const insertedSessions: {
       session: ScheduledSessionInsert;
       coachIds: string[];
-    }[] = [];
+    }[] = [];-
     this.getMatchingDates();
     this.scheduledSessions().forEach((session, i) => {
       this.sessionDaysMap()
@@ -301,7 +301,6 @@ export class ScheduleSingleSessionComponent {
   //   this.coaches.set([]);
   // }
   getAllCoaches() {
-    if (this.filterCoach.name.length > 2) {
     this.loading.set(true);
     this.staffService
       .getAllStaff(this.filterCoach)
@@ -318,11 +317,9 @@ export class ScheduleSingleSessionComponent {
               value: coach.id,
             });
           });
-
           // console.log(this.coaches());
         }
       });
-    }
   }
   getMatchingDates() {
     const start = new Date(this.scheduledSessions()[0].scheduledDate || '');
