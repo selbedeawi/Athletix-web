@@ -17,12 +17,10 @@
         {{ membership.name }}
       </span>
       <div class="ms-auto">
-        <button class="me-2" mat-stroked-button (click)="cancel()">
+        <button class="me-2" mat-stroked-button (click)="cancel(membership)">
           {{ t("CANCEL") }}
         </button>
-        <button class="me-2" mat-stroked-button (click)="renew()">
-          {{ t("RENEW") }}
-        </button>
+
         @if(membership.isFreeze){
         <button mat-flat-button (click)="unFreeze(membership)">
           {{ t("UN_FREEZE") }}

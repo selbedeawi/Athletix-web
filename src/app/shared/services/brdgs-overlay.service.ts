@@ -46,7 +46,14 @@ export class BrdgsOverlayRef<T, D = any> {
   private afterClosedSubject = new Subject<any>();
   afterClosed$ = this.afterClosedSubject.asObservable();
 
-  constructor(private overlayRef: OverlayRef) {}
+  constructor(private overlayRef: OverlayRef) {
+    overlayRef
+      .backdropClick()
+      .pipe(take(1))
+      .subscribe(() => {
+        this.close(false);
+      });
+  }
 
   close(result?: any): void {
     const element = this.overlayRef.overlayElement;

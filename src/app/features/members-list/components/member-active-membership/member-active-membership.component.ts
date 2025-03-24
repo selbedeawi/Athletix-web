@@ -10,6 +10,7 @@ import { MatDialog } from "@angular/material/dialog";
 import { MembershipFreezeComponent } from "../membership-freeze/membership-freeze.component";
 import { SnackbarService } from "../../../../core/services/snackbar/snackbar.service";
 import { AddMembershipPopupComponent } from "../add-membership-popup/add-membership-popup.component";
+import { ConfirmDeleteComponent } from "../../../../shared/ui-components/templates/confirm-delete/confirm-delete.component";
 
 @Component({
   selector: "app-member-active-membership",
@@ -102,6 +103,31 @@ export class MemberActiveMembershipComponent implements OnInit {
         });
     }
   }
-  renew() {}
-  cancel() {}
+
+  cancel(m: UserMembership) {
+    this.dialog.open(ConfirmDeleteComponent, {
+      data: {
+        translationTemplate: this.translationTemplate,
+      },
+    }).afterClosed().subscribe((res) => {
+      if (res) {
+        const membership = structuredClone(m);
+
+        delete (membership as any)?.Members;
+        membership.isActive = false;
+        membership.isCanceled = true;
+        this.userMembershipService.updateUserMembership(
+          membership.id,
+          membership,
+        )
+          .subscribe((res) => {
+            if (res) {
+              this.snackbarService.success("UNFREEZE_MEMBERSHIP_SUCCESS");
+              this.getUserMembership();
+            }
+          });
+      }
+      console.log(res);
+    });
+  }
 }

@@ -1,0 +1,48 @@
+<ng-container *transloco="let t; prefix: translationTemplate">
+  <h1 matDialogTitle class="bg-secondary-container on-secondary-color">
+    <span class="mat-title-large">{{ t(headerText) }} </span>
+  </h1>
+
+  <mat-dialog-content class="d-flex row">
+    <div
+      class="mt-auto d-flex flex-column justify-content-center align-items-center"
+    >
+      @if(enableImg){
+      <img
+        src="assets/images/error.webp"
+        style="width: 90px; height: 90px; font-size: 50px"
+      />
+      }
+
+      <p class="my-4 px-3 text-center">
+        @for (text of content; track $index) {
+        {{ t(text) }}
+        }
+      </p>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions>
+    <div>
+      <button
+        (click)="overlayRef.close()"
+        mat-stroked-button
+        color="primary"
+        class="me-3 mt-1"
+      >
+        {{ t(cancelText) }}
+      </button>
+    </div>
+    <div>
+      <button
+        (click)="overlayRef.close(true)"
+        mat-flat-button
+        cdkFocusInitial
+        color="primary"
+        class="mt-1"
+      >
+        {{ t(okText) }}
+      </button>
+    </div>
+  </mat-dialog-actions>
+</ng-container>
