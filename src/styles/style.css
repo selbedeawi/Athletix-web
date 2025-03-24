@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'icomoon';
-  src:  url('fonts/icomoon.eot?kvmc20');
-  src:  url('fonts/icomoon.eot?kvmc20#iefix') format('embedded-opentype'),
-    url('fonts/icomoon.ttf?kvmc20') format('truetype'),
-    url('fonts/icomoon.woff?kvmc20') format('woff'),
-    url('fonts/icomoon.svg?kvmc20#icomoon') format('svg');
+  src:  url('fonts/icomoon.eot?r197fh');
+  src:  url('fonts/icomoon.eot?r197fh#iefix') format('embedded-opentype'),
+    url('fonts/icomoon.ttf?r197fh') format('truetype'),
+    url('fonts/icomoon.woff?r197fh') format('woff'),
+    url('fonts/icomoon.svg?r197fh#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -217,138 +217,144 @@
 .icon-location_on:before {
   content: "\e93e";
 }
-.icon-mail-1:before {
+.icon-logout:before {
   content: "\e93f";
 }
-.icon-mail:before {
+.icon-mail-1:before {
   content: "\e940";
 }
-.icon-menu:before {
+.icon-mail:before {
   content: "\e941";
 }
-.icon-mic:before {
+.icon-menu:before {
   content: "\e942";
 }
-.icon-mobile_friendly:before {
+.icon-mic:before {
   content: "\e943";
 }
-.icon-mood:before {
+.icon-mobile_friendly:before {
   content: "\e944";
 }
-.icon-more_horiz:before {
+.icon-mood:before {
   content: "\e945";
 }
-.icon-more_vert:before {
+.icon-more_horiz:before {
   content: "\e946";
 }
-.icon-music_note:before {
+.icon-more_vert:before {
   content: "\e947";
 }
-.icon-navigate_before:before {
+.icon-music_note:before {
   content: "\e948";
 }
-.icon-navigate_down:before {
+.icon-navigate_before:before {
   content: "\e949";
 }
-.icon-navigate_next:before {
+.icon-navigate_down:before {
   content: "\e94a";
 }
-.icon-navigate_up:before {
+.icon-navigate_next:before {
   content: "\e94b";
 }
-.icon-notifications:before {
+.icon-navigate_up:before {
   content: "\e94c";
 }
-.icon-outbox:before {
+.icon-notifications:before {
   content: "\e94d";
 }
-.icon-password:before {
+.icon-outbox:before {
   content: "\e94e";
 }
-.icon-pause:before {
+.icon-password:before {
   content: "\e94f";
 }
-.icon-person:before {
+.icon-patient_list:before {
   content: "\e950";
 }
-.icon-photo:before {
+.icon-pause:before {
   content: "\e951";
 }
-.icon-play_arrow_filled:before {
+.icon-person:before {
   content: "\e952";
 }
-.icon-play_arrow:before {
+.icon-photo:before {
   content: "\e953";
 }
-.icon-radio_button_checked:before {
+.icon-play_arrow_filled:before {
   content: "\e954";
 }
-.icon-radio_button_unchecked:before {
+.icon-play_arrow:before {
   content: "\e955";
 }
-.icon-schedule:before {
+.icon-radio_button_checked:before {
   content: "\e956";
 }
-.icon-search:before {
+.icon-radio_button_unchecked:before {
   content: "\e957";
 }
-.icon-send:before {
+.icon-schedule:before {
   content: "\e958";
 }
-.icon-settings-1:before {
+.icon-search:before {
   content: "\e959";
 }
-.icon-settings:before {
+.icon-send:before {
   content: "\e95a";
 }
-.icon-share:before {
+.icon-settings-1:before {
   content: "\e95b";
 }
-.icon-skip_next_filled:before {
+.icon-settings:before {
   content: "\e95c";
 }
-.icon-skip_next:before {
+.icon-share:before {
   content: "\e95d";
 }
-.icon-skip_previous_filled:before {
+.icon-skip_next_filled:before {
   content: "\e95e";
 }
-.icon-skip_previous:before {
+.icon-skip_next:before {
   content: "\e95f";
 }
-.icon-staff:before {
+.icon-skip_previous_filled:before {
   content: "\e960";
 }
-.icon-star_filled:before {
+.icon-skip_previous:before {
   content: "\e961";
 }
-.icon-star:before {
+.icon-staff:before {
   content: "\e962";
 }
-.icon-stars-1:before {
+.icon-star_filled:before {
   content: "\e963";
 }
-.icon-stars:before {
+.icon-star:before {
   content: "\e964";
 }
-.icon-sticker:before {
+.icon-stars-1:before {
   content: "\e965";
 }
-.icon-text_fields:before {
+.icon-stars:before {
   content: "\e966";
 }
-.icon-today:before {
+.icon-sticker:before {
   content: "\e967";
 }
-.icon-trainer:before {
+.icon-text_fields:before {
   content: "\e968";
 }
-.icon-upload:before {
+.icon-today:before {
   content: "\e969";
 }
-.icon-videocam:before {
+.icon-trainer:before {
   content: "\e96a";
 }
-.icon-visibility_off:before {
+.icon-upload:before {
   content: "\e96b";
+}
+.icon-videocam:before {
+  content: "\e96d";
+}
+.icon-visibility_off:before {
+  content: "\e96e";
 }

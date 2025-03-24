@@ -107,7 +107,7 @@ export class BrdgsSidenavComponent implements OnDestroy {
       ],
     },
     {
-      icon: "icon-bookedsessions",
+      icon: "icon-patient_list",
       label: "NAV_PT_SESSIONS",
       path: ["/", APP_ROUTES.PT_SESSIONS],
       permissions: [
