@@ -47,7 +47,13 @@ export class UserMembershipService {
     memberId: string,
     isActive?: boolean,
     isFreeze?: boolean,
+    isCanceled?: boolean,
+    page: number = 1,
+    pageSize: number = 10,
   ) {
+    const start = (page - 1) * pageSize;
+    const end = start + pageSize - 1;
+
     let query = this.supabaseService.sb
       .from("UserMembership")
       .select("*, Members(*)")
@@ -59,11 +65,12 @@ export class UserMembershipService {
     if (typeof isFreeze === "boolean") {
       query.eq("isFreeze", isFreeze);
     }
-
+    if (typeof isCanceled === "boolean") {
+      query.eq("isCanceled", isCanceled);
+    }
+    query = query.range(start, end);
     return from(
       query,
-    ).pipe(
-      map((res) => res.data),
     );
   }
 

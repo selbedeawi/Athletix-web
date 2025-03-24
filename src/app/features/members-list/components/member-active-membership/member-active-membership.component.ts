@@ -34,7 +34,7 @@ export class MemberActiveMembershipComponent implements OnInit {
     this.userMembershipService.getMembershipByUserId(this.id(), true)
       .subscribe((res) => {
         if (res) {
-          this.userMembership.set(res as any);
+          this.userMembership.set(res.data as any);
         }
       });
   }

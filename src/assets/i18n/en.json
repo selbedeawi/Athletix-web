@@ -8,7 +8,7 @@
     "NAV_BOOKED_SESSIONS": "Booked Sessions",
     "NAV_PT_SESSIONS": "Pt Sessions",
     "NAV_MEMBERSHIP_LIST": "Memberships",
-    "BRANCH":"Branch"
+    "BRANCH": "Branch"
   },
   "Auth": {
     "LOGIN": "Login",
@@ -69,7 +69,23 @@
     "MEMBER_NAME": "Member Name",
     "MEMBERSHIP_TYPE": "Membership Type",
     "REMAINING_FREEZE_PERIOD": "Remaining Freeze Period",
-    "DETAILS_TITLE": "Edit Member"
+    "DETAILS_TITLE": "Edit Member",
+    "ADD_NEW_MEMBERSHIP": "Add New Membership",
+    "CLOSE": "Close",
+    "ADD_NEW_MEMBERSHIP_BTN": "Add",
+    "memberships": "Select Membership",
+    "MEMBERSHIPS": "Select Membership",
+    "INBODY_COUNT": "Personal Sessions Count",
+    "PERSONAL_TRAINER_COUNT": "Personal Trainer Count",
+    "NO_RESULT_TITLE": "No History Available",
+    "TABLE_MEMBERSHIP_NAME": "Membership",
+    "TABLE_MEMBERSHIP_TYPE": "Type",
+    "TABLE_START_DATE": "Start Date",
+    "TABLE_END_DATE": "End Date",
+    "SessionBased": "Session Based",
+    "TABLE_ISACTIVE": "Inactivate",
+    "TD_IS_ISCANCELED": "Canceled",
+    "ADD_NEW": "New Membership"
   },
   "BookedSession": {
     "TITLE": "Booked Sessions List",
@@ -113,7 +129,7 @@
     "BOOK_SESSION": "Book Session",
     "ADD_MEMBER": "Add Member",
     "SELECT_SESSION": "Select Session",
-    "SEARCH_LABEL":"Search for member name, ID, phone or email"
+    "SEARCH_LABEL": "Search for member name, ID, phone or email"
   },
   "ScheduledSession": {
     "TITLE": "Schedule Management",
