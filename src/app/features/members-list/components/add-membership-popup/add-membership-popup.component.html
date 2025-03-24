@@ -1,0 +1,24 @@
+<form
+  #memberForm="ngForm"
+  (ngSubmit)="addMembership()"
+  *transloco="let t; prefix: translationTemplate"
+>
+  <h1 matDialogTitle class="bg-secondary-container on-secondary-color">
+    <span class="mat-title-large"> {{ t("ADD_NEW_MEMBERSHIP") }} </span>
+  </h1>
+
+  <mat-dialog-content class="d-flex row">
+    <app-member-membership-form
+      class="row gx-3 gy-1 pt-3"
+      [(membership)]="membership"
+      [translationTemplate]="translationTemplate"
+    ></app-member-membership-form>
+  </mat-dialog-content>
+
+  <mat-dialog-actions>
+    <button mat-button matDialogClose type="button">{{ t("CLOSE") }}</button>
+    <button mat-flat-button type="submit">
+      {{ t("ADD_NEW_MEMBERSHIP_BTN") }}
+    </button>
+  </mat-dialog-actions>
+</form>

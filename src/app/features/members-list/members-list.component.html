@@ -26,23 +26,20 @@
         <th class="col-lg-1">
           {{ t("TABLE_MEMBER_ID") }}
         </th>
-
         <th class="col-lg-2">
           {{ t("TABLE_NAME") }}
         </th>
-
         <th class="col-lg-2">
           {{ t("TABLE_TYPE") }}
         </th>
         <th class="col-lg-4">
-          {{ t("TABLE_BRANCHS") }}
+          {{ t("TABLE_END_DATE") }}
         </th>
-
         <th class="col-lg-2"></th>
       </tr>
     </thead>
     <tbody>
-      @for (member of membershipFilter.members(); track member.id) {
+      @for (member of membershipFilter.members(); track member.id+ $index) {
       <tr class="d-flex">
         <td class="col-12 col-sm-6 col-lg-1">
           <span class="d-none list-item-label-sm">

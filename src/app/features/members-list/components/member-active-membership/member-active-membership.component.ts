@@ -9,6 +9,7 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatDialog } from "@angular/material/dialog";
 import { MembershipFreezeComponent } from "../membership-freeze/membership-freeze.component";
 import { SnackbarService } from "../../../../core/services/snackbar/snackbar.service";
+import { AddMembershipPopupComponent } from "../add-membership-popup/add-membership-popup.component";
 
 @Component({
   selector: "app-member-active-membership",
@@ -51,7 +52,23 @@ export class MemberActiveMembershipComponent implements OnInit {
         },
       );
   }
-  addMembership() {
+  addMembership(membership?: UserMembership) {
+    this.dialog.open(AddMembershipPopupComponent, {
+      data: {
+        membership: membership ? membership : new UserMembership(),
+        memberId: this.id(),
+      },
+      width: "70vw",
+      minWidth: "650px",
+    })
+      .afterClosed()
+      .subscribe(
+        (res) => {
+          if (res) {
+            this.getUserMembership();
+          }
+        },
+      );
   }
   unFreeze(m: UserMembership) {
     const membership = structuredClone(m);

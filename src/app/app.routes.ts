@@ -55,7 +55,7 @@ export const routes: Routes = [
       RoleGuard(["SuperAdmin", "SessionManager"]),
     ],
   },
-  
+
   {
     path: APP_ROUTES.SCHEDULE_MANAGEMENT,
     loadComponent: () =>
@@ -106,7 +106,7 @@ export const routes: Routes = [
       import("./features/ui-playground/ui-playground.component").then(
         (m) => m.UiPlaygroundComponent,
       ),
-    data: { layout: "auth" },
+    data: { layout: "main" },
   },
   { path: "**", redirectTo: APP_ROUTES.AUTH, pathMatch: "full" },
 ];

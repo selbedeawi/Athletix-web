@@ -7,8 +7,8 @@
     overflow: hidden;
   }
   .scroll-container {
-    min-height: calc(100vh - 64px);
-    max-height: calc(100vh - 64px);
+    min-height: calc(100vh);
+    max-height: calc(100vh);
     overflow-y: auto;
   }
 }

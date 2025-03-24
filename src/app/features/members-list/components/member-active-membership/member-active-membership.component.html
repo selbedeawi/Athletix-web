@@ -5,13 +5,13 @@
     >
     <div class="ms-auto">
       <button mat-flat-button (click)="addMembership()">
-        {{ t("FREEZE") }}
+        {{ t("ADD_NEW") }}
       </button>
     </div>
   </h4>
 
   @for (membership of userMembership(); track $index) {
-  <mat-card class="mt-2 p-0 bg-on-tertiary-container">
+  <mat-card class="mt-2 p-0">
     <mat-card-header class="d-flex flex-wrap align-items-center mb-3">
       <span class="mat-title-medium primary-container-color">
         {{ membership.name }}
