@@ -16,8 +16,8 @@ import { provideAnimationsAsync } from "@angular/platform-browser/animations/asy
 import { provideHttpClient, withInterceptors } from "@angular/common/http";
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from "@angular/material/form-field";
 import { provideTransloco } from "@jsverse/transloco";
-import { CalendarModule, DateAdapter } from 'angular-calendar';
-import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+import { CalendarModule, DateAdapter } from "angular-calendar";
+import { adapterFactory } from "angular-calendar/date-adapters/date-fns";
 
 import { TranslocoHttpLoader } from "./transloco-loader";
 
@@ -39,7 +39,7 @@ export const appConfig: ApplicationConfig = {
         defaultLang: "en",
         // Remove this option if your application doesn't support changing language in runtime.
         reRenderOnLangChange: true,
-        prodMode: false, //  !isDevMode(),
+        prodMode: true, //  !isDevMode(),
         // missingHandler: {
         //   logMissingKey: false,
         // },
@@ -62,7 +62,7 @@ export const appConfig: ApplicationConfig = {
       CalendarModule.forRoot({
         provide: DateAdapter,
         useFactory: adapterFactory,
-      })
+      }),
     ),
   ],
 };

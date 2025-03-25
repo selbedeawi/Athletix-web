@@ -17,6 +17,7 @@ import { TimePickerComponent } from "../../../../shared/ui-components/atoms/time
 import { SelectComponent } from "../../../../shared/ui-components/atoms/select/select.component";
 import { sessionOption } from "../../../schedule-management/components/schedule-single-session/schedule-single-session.component";
 import { BranchesService } from "../../../../core/services/branches/branches.service";
+import { SessionService } from "../../../sessions-list/services/session.service";
 
 @Component({
   selector: "app-book-sessions-fillter",
@@ -38,6 +39,7 @@ export class BookSessionsFillterComponent {
 
   private bookedSessionsService = inject(BookedSessionsService);
   lookupService = inject(LookupService);
+  sessionService = inject(SessionService);
 
   filter: BookedSessionFilter = {
     searchKey: "",
@@ -66,6 +68,10 @@ export class BookSessionsFillterComponent {
       )
       .subscribe((branch) => {
         this.filter.branchId = branch.id;
+        this.sessionService.getAllSessions({ branchIds: [branch.id] })
+          .subscribe((res) => {
+            this.sessionOptions.set(res.data);
+          });
         this.getAll();
       });
   }
@@ -85,12 +91,12 @@ export class BookSessionsFillterComponent {
         .pipe(finalize(() => this.loading.set(false)))
         .subscribe((res) => {
           this.sessions.set(res);
-          this.sessions().forEach((session) => {
-            this.sessionOptions().push({
-              key: session.membership_name ?? "",
-              value: session.scheduledSessionId ?? "",
-            });
-          });
+          // this.sessions().forEach((session) => {
+          //   this.sessionOptions().push({
+          //     key: session.membership_name ?? "",
+          //     value: session.scheduledSessionId ?? "",
+          //   });
+          // });
           this.originalCount.set((res as any).count);
         });
     }

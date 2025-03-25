@@ -13,9 +13,7 @@
     </div>
 
     <h2 class="mat-headline-medium mb-1">
-      {{
-        session().id ? t("EDIT_SESSION_TITLE") : t("ADD_SESSION_TITLE")
-      }}
+      {{ session().id ? t("EDIT_SESSION_TITLE") : t("ADD_SESSION_TITLE") }}
     </h2>
   </div>
 
@@ -40,15 +38,6 @@
           [isRequired]="true"
           [type]="bridgesInputType.TEXT"
         ></brdgs-input>
-
-        <brdgs-input
-        class="col-12 col-md-6"
-        [isRequired]="true"
-        [label]="t('SESSION_DESCRIPTION')"
-        [(value)]="session().description"
-        [isRequired]="true"
-        [type]="bridgesInputType.TEXT"
-      ></brdgs-input>
         <brdgs-select
           class="col-12 col-md-6"
           [isRequired]="true"
@@ -58,6 +47,16 @@
           [options]="lookupService.getOptions('Branch') | async"
           [isMultiple]="true"
         ></brdgs-select>
+
+        <mat-form-field class="col-12 col-md-6">
+          <mat-label>{{ t("SESSION_DESCRIPTION") }}</mat-label>
+          <textarea
+            name="sessionDescription"
+            required="true"
+            matInput
+            [(ngModel)]="session().description"
+          ></textarea>
+        </mat-form-field>
       </mat-card-content>
     </mat-card>
 

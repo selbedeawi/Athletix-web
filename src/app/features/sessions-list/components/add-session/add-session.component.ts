@@ -17,6 +17,8 @@ import { InputComponent } from "../../../../shared/ui-components/atoms/input/inp
 import { SelectComponent } from "../../../../shared/ui-components/atoms/select/select.component";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { SessionService } from "../../services/session.service";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatInputModule } from "@angular/material/input";
 
 @Component({
   selector: "app-add-session",
@@ -31,7 +33,8 @@ import { SessionService } from "../../services/session.service";
     MatButtonModule,
     SelectComponent,
     AsyncPipe,
-    MatCheckboxModule,
+    MatFormFieldModule,
+    MatInputModule,
   ],
   templateUrl: "./add-session.component.html",
   styleUrl: "./add-session.component.scss",
@@ -53,7 +56,6 @@ export class AddSessionComponent {
     if (id) {
       this.sessionService.getSession(id).subscribe((res) => {
         this.session.set(res);
-        // this.cloneStaff = structuredClone(res);
       });
     }
   }
@@ -61,7 +63,7 @@ export class AddSessionComponent {
   updateSession() {
     const clone = structuredClone(this.session());
     delete (clone as any).branchIds;
-    delete (clone as any).SessionBranches;
+    delete (clone as any).SessionsBranches;
     this.sessionService
       .updateSession(
         this.session().id,
