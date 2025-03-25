@@ -48,6 +48,7 @@ export class BookSessionsFillterComponent {
     scheduledDateTo: null,
     scheduledTimeTo: null,
     scheduledSessionId: "",
+    sessionId: "",
   };
   bridgesInputType = BridgesInputType;
   branchesService = inject(BranchesService);
@@ -70,7 +71,11 @@ export class BookSessionsFillterComponent {
         this.filter.branchId = branch.id;
         this.sessionService.getAllSessions({ branchIds: [branch.id] })
           .subscribe((res) => {
-            this.sessionOptions.set(res.data);
+            this.sessionOptions.set(
+              res.data?.map((s) => {
+                return { key: s.name, value: s.id };
+              }),
+            );
           });
         this.getAll();
       });
@@ -91,12 +96,6 @@ export class BookSessionsFillterComponent {
         .pipe(finalize(() => this.loading.set(false)))
         .subscribe((res) => {
           this.sessions.set(res);
-          // this.sessions().forEach((session) => {
-          //   this.sessionOptions().push({
-          //     key: session.membership_name ?? "",
-          //     value: session.scheduledSessionId ?? "",
-          //   });
-          // });
           this.originalCount.set((res as any).count);
         });
     }
@@ -110,8 +109,8 @@ export class BookSessionsFillterComponent {
       scheduledTimeFrom: null,
       scheduledDateTo: null,
       scheduledTimeTo: null,
+      sessionId: null as any,
     };
-    console.log(this.filter);
     this.search();
   }
 

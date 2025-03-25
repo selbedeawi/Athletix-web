@@ -4,6 +4,7 @@ import { from, Observable, throwError } from "rxjs";
 import { map, switchMap } from "rxjs/operators";
 import { SupabaseService } from "../../../core/services/supabase/supabase.service";
 import { Sessions } from "../models/sessions";
+import { BEResponse } from "../../../shared/models/shared-models";
 
 @Injectable({
   providedIn: "root",
@@ -85,7 +86,7 @@ export class SessionService {
     },
     page: number = 1,
     pageSize: number = 10,
-  ): Observable<any> {
+  ): Observable<BEResponse<Sessions[]>> {
     const start = (page - 1) * pageSize;
     const end = start + pageSize - 1;
 
@@ -100,7 +101,7 @@ export class SessionService {
     if (filters.name) {
       query = query.ilike("name", `%${filters.name}%`);
     }
-    
+
     if (filters.branchIds && filters.branchIds.length > 0) {
       return from(
         this.supabaseService.sb
@@ -112,15 +113,17 @@ export class SessionService {
           if (error) {
             return throwError(() => error);
           }
-          const sessionIds = data?.map((item) => item.sessionId).filter((id): id is string => id !== null) || [];
+          const sessionIds = data?.map((item) =>
+            item.sessionId
+          ).filter((id): id is string => id !== null) || [];
           if (sessionIds.length === 0) {
             return from([{ data: [], error: null }]);
           }
           return from(query.in("id", sessionIds));
         }),
-      );
+      ) as any;
     }
-    return from(query);
+    return from(query) as any;
   }
 
   /**
@@ -158,7 +161,7 @@ export class SessionService {
             }));
             return from(
               this.supabaseService.sb.from("SessionsBranches").insert(
-              branchInserts,
+                branchInserts,
               ),
             );
           }),

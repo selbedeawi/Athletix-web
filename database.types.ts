@@ -853,6 +853,7 @@ export type Database = {
           scheduled_session_id: string | null
           scheduledDate: string | null
           scheduledSessionId: string | null
+          session_name: string | null
           sessionId: string | null
           shedule_coach_scheduledsessionid: string | null
           shedule_coachid: string | null
@@ -1015,6 +1016,19 @@ export type Database = {
       }
     }
     Functions: {
+      book_pt_session: {
+        Args: {
+          p_membership_id: string
+          p_branch_id: string
+          p_coach_id: string
+          p_booking_date: string
+          p_time: string
+        }
+        Returns: {
+          new_booking_id: string
+          remaining_pt_sessions: number
+        }[]
+      }
       book_session: {
         Args: {
           p_branch_id: string
@@ -1023,6 +1037,15 @@ export type Database = {
         }
         Returns: {
           new_user_session_id: string
+          new_remaining_group_sessions: number
+        }[]
+      }
+      cancel_book_session: {
+        Args: {
+          p_user_session_id: string
+        }
+        Returns: {
+          canceled_user_session_id: string
           new_remaining_group_sessions: number
         }[]
       }

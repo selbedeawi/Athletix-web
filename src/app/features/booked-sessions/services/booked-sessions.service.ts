@@ -12,6 +12,8 @@ export interface BookedSessionFilter {
   searchKey?: string;
   /** Filter by a specific scheduled session ID. */
   scheduledSessionId: string;
+
+  sessionId?: string;
   /** Filter by an array of coach IDs. */
   coachIds?: string[];
   /** Filter by branch ID (uses the session branch from the view). */
@@ -96,8 +98,8 @@ export class BookedSessionsService {
     }
 
     // Filter by scheduled session ID.
-    if (filters.scheduledSessionId) {
-      query = query.eq("scheduledSessionId", filters.scheduledSessionId);
+    if (filters.sessionId) {
+      query = query.eq("sessionId", filters.sessionId);
     }
 
     // Filter by branch ID (using the alias from UserSessions in the view).
@@ -121,7 +123,12 @@ export class BookedSessionsService {
         `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`,
       );
     }
-
+    if (filters.scheduledTimeFrom) {
+      query = query.gte("startTime", filters.scheduledTimeFrom);
+    }
+    if (filters.scheduledTimeTo) {
+      query = query.lte("startTime", filters.scheduledTimeTo);
+    }
     // Filter by coach IDs (using the flattened coach ID from SheduleCoaches).
     if (filters.coachIds && filters.coachIds.length > 0) {
       query = query.in("shedule_coachId", filters.coachIds);
@@ -137,32 +144,27 @@ export class BookedSessionsService {
     );
   }
   /**
-   * Deletes a session from the UserSessions table by its primary key (id).
+   * Cancels (reverts and deletes) a session from the UserSessions table
+   * by calling the cancel_book_session SQL function.
    *
-   * @param sessionId - The primary key (id) of the session to delete.
-   * @returns Observable emitting the deleted session record.
+   * @param sessionId - The primary key (id) of the session to cancel.
+   * @returns Observable emitting the canceled session record,
+   *          including the updated remaining group sessions (if applicable).
    */
   deleteSession(sessionId: string) {
     return from(
-      this.supabaseService.sb
-        .from("UserSessions")
-        .delete()
-        .eq("id", sessionId)
-        .select(),
+      this.supabaseService.sb.rpc("cancel_book_session", {
+        p_user_session_id: sessionId,
+      }),
     ).pipe(
-      map((res) => {
+      map((res: any) => {
         if (res.error) {
           throw res.error;
         }
-        // res.data will be an array of deleted records. Typically just one if the id is unique.
+        // res.data will be an array with the canceled session record,
+        // typically just one record.
         return res.data[0];
       }),
     );
   }
 }
-// {
-
-//    parameters p_booking_date, p_branch_id, p_membership_id, p_scheduled_session_id, p_user_membership_id or with a single unnamed json/jsonb parameter, but no matches were found in the schema cache.",
-//               p_booking_date, p_branch_id, p_created_at, p_membership_id, p_scheduled_session_id, p_user_membership_id)",
-
-// }

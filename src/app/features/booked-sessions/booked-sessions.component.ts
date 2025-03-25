@@ -10,6 +10,9 @@ import { TranslationTemplates } from "../../shared/enums/translation-templates-e
 import { APP_ROUTES } from "../../core/enums/pages-urls-enum";
 import { TimeFormatPipe } from "./time-format.pipe";
 import { BookedSessionsService } from "./services/booked-sessions.service";
+import { MatDialog } from "@angular/material/dialog";
+import { SnackbarService } from "../../core/services/snackbar/snackbar.service";
+import { ConfirmDeleteComponent } from "../../shared/ui-components/templates/confirm-delete/confirm-delete.component";
 
 @Component({
   selector: "app-booked-sessions",
@@ -33,11 +36,21 @@ export class BookedSessionsComponent {
   sessionsFilter = viewChild(BookSessionsFillterComponent);
   translationTemplate = TranslationTemplates.BOOKED_SESSION;
   APP_ROUTES = APP_ROUTES;
+  readonly dialog = inject(MatDialog);
+  private snackbarService = inject(SnackbarService);
 
   deleteSession(id: any) {
-    this.bookedSessionsService.deleteSession(id).subscribe((res) => {
-      console.log(res);
-      this.sessionsFilter()?.getAll();
+    this.dialog.open(ConfirmDeleteComponent, {
+      data: {
+        translationTemplate: this.translationTemplate,
+      },
+    }).afterClosed().subscribe((res) => {
+      if (res) {
+        this.snackbarService.success("DELETE_BOOKED_SESSION_SUCCESS");
+        this.bookedSessionsService.deleteSession(id).subscribe((res) => {
+          this.sessionsFilter()?.getAll();
+        });
+      }
     });
   }
 }
