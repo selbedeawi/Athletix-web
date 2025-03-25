@@ -11,8 +11,11 @@ import { BridgesInputType } from "../../../../shared/ui-components/atoms/input/e
 import { MatDivider } from "@angular/material/divider";
 import { MatButtonModule } from "@angular/material/button";
 import { MemberService } from "../../../members-list/services/member.service";
-import { MemberAccount } from "../../../members-list/models/member";
-import { debounceTime, finalize } from "rxjs";
+import {
+  MemberAccount,
+  UserMembership,
+} from "../../../members-list/models/member";
+import { debounceTime, filter, finalize, Subject, takeUntil } from "rxjs";
 import { TranslocoDirective } from "@jsverse/transloco";
 import { TranslationTemplates } from "../../../../shared/enums/translation-templates-enum";
 import { MatOptionModule } from "@angular/material/core";
@@ -50,19 +53,33 @@ export class ScheduleSessionPopupComponent {
   members = signal<MemberAccount[]>([]);
   selectedMember = signal<MemberAccount | null>(null);
   loading = signal(false);
-
+  branchesService = inject(BranchesService);
+  private destroyed$ = new Subject<void>();
   filters: {
     searchQuery: string;
     branchId: string;
+    types: ("Individual" | "PrivateCoach" | "SessionBased")[];
+    isActive: boolean;
   } = {
     searchQuery: "",
     branchId: "",
+    isActive: true,
+
+    types: ["Individual", "SessionBased"],
   };
   bridgesInputType = BridgesInputType;
   translationTemplate: TranslationTemplates =
     TranslationTemplates.SCHEDULEDSESSION;
   constructor() {
-    console.log(this.selectedSession);
+    this.branchesService.currentBranch$
+      .pipe(
+        filter((branch) => !!branch),
+        takeUntil(this.destroyed$),
+      )
+      .subscribe((branch) => {
+        this.filters.branchId = branch.id;
+        this.getAll();
+      });
   }
 
   getAll() {
@@ -84,23 +101,20 @@ export class ScheduleSessionPopupComponent {
   }
   scheduleSession() {
     // this.loading.set(true);
-
+    const userMembership = this.selectedMember()
+      ?.UserMembership as UserMembership;
     const scheduledSession: UserSessionInsert = {
-      branchId: this.branchService.currentBranch?.id,
+      branchId: this.branchService.currentBranch?.id || "",
       scheduledSessionId: this.selectedSession.id,
-      bookingDate: new Date(
-        this.selectedSession.scheduledDate || "",
-      ).toISOString(),
-      userMemberShipId: this.selectedMember()?.UserMembership.id || "",
+      userMemberShipId: userMembership.id || "",
     };
-    console.log(scheduledSession);
     this.bookedSessionsService
-      .bookSession(scheduledSession)
+      .bookSession(scheduledSession, userMembership.id)
       .pipe(finalize(() => this.loading.set(false)))
       .subscribe({
         next: (res) => {
           console.log(res);
-          this.snackBar.success('Session Scheduled Successfully');
+          this.snackBar.success("Session Scheduled Successfully");
           this.dialogRef.close(true);
         },
         error: (err) => {
@@ -112,5 +126,9 @@ export class ScheduleSessionPopupComponent {
     this.selectedMember.set(member);
     this.filters.searchQuery = "";
     this.members.set([]);
+  }
+  ngOnDestroy(): void {
+    this.destroyed$.next();
+    this.destroyed$.complete();
   }
 }

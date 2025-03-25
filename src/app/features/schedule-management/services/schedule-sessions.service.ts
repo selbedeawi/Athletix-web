@@ -160,14 +160,24 @@ export class ScheduledSessionService {
     // Start with the base query, including the related SheduleCoaches.
     let query = this.supabaseService.sb
       .from("ScheduledSession")
-      .select("*,Sessions(*), SheduleCoaches(*, Staff(firstName, lastName,phoneNumber))");
+      .select(
+        "*,Sessions(*), SheduleCoaches(*, Staff(firstName, lastName,phoneNumber))",
+      );
 
     // Apply scheduledDate range filters if provided.
     if (filters.scheduledDateFrom) {
-      query = query.gte("scheduledDate", filters.scheduledDateFrom);
+      const d = new Date(filters.scheduledDateFrom);
+      query = query.gte(
+        "scheduledDate",
+        `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`,
+      );
     }
     if (filters.scheduledDateTo) {
-      query = query.lte("scheduledDate", filters.scheduledDateTo);
+      const d = new Date(filters.scheduledDateTo);
+      query = query.lte(
+        "scheduledDate",
+        `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`,
+      );
     }
     // Filter by branchId if provided.
     if (filters.branchId) {

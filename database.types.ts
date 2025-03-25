@@ -666,24 +666,21 @@ export type Database = {
       }
       UserSessions: {
         Row: {
-          bookingDate: string
-          branchId: string | null
+          branchId: string
           createdAt: string
           id: string
           scheduledSessionId: string
           userMemberShipId: string
         }
         Insert: {
-          bookingDate: string
-          branchId?: string | null
+          branchId: string
           createdAt?: string
           id?: string
           scheduledSessionId: string
           userMemberShipId: string
         }
         Update: {
-          bookingDate?: string
-          branchId?: string | null
+          branchId?: string
           createdAt?: string
           id?: string
           scheduledSessionId?: string
@@ -801,7 +798,6 @@ export type Database = {
       }
       flattened_user_sessions_full: {
         Row: {
-          bookingDate: string | null
           coachId: string | null
           createdBy: string | null
           dateOfBirth: string | null
@@ -1019,6 +1015,17 @@ export type Database = {
       }
     }
     Functions: {
+      book_session: {
+        Args: {
+          p_branch_id: string
+          p_membership_id: string
+          p_scheduled_session_id: string
+        }
+        Returns: {
+          new_user_session_id: string
+          new_remaining_group_sessions: number
+        }[]
+      }
       update_staff_with_branches:
         | {
             Args: {

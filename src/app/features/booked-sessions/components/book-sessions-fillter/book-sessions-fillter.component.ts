@@ -1,5 +1,5 @@
 import { Component, inject, signal } from "@angular/core";
-import { finalize } from "rxjs";
+import { filter, finalize, Subject, takeUntil } from "rxjs";
 import { BridgesInputType } from "../../../../shared/ui-components/atoms/input/enum/bridges-input-type.enum";
 import { TranslationTemplates } from "../../../../shared/enums/translation-templates-enum";
 import { LookupService } from "../../../../core/services/lookup/lookup.service";
@@ -12,10 +12,12 @@ import {
   BookedSessionFilter,
   BookedSessionsService,
 } from "../../services/booked-sessions.service";
-import { Tables } from '../../../../../../database.types';
-import { TimePickerComponent } from '../../../../shared/ui-components/atoms/time-picker/time-picker.component';
-import { SelectComponent } from '../../../../shared/ui-components/atoms/select/select.component';
-import { sessionOption } from '../../../schedule-management/components/schedule-single-session/schedule-single-session.component';
+import { Tables } from "../../../../../../database.types";
+import { TimePickerComponent } from "../../../../shared/ui-components/atoms/time-picker/time-picker.component";
+import { SelectComponent } from "../../../../shared/ui-components/atoms/select/select.component";
+import { sessionOption } from "../../../schedule-management/components/schedule-single-session/schedule-single-session.component";
+import { BranchesService } from "../../../../core/services/branches/branches.service";
+
 @Component({
   selector: "app-book-sessions-fillter",
   imports: [
@@ -25,8 +27,8 @@ import { sessionOption } from '../../../schedule-management/components/schedule-
     MatButtonModule,
     DatePickerComponent,
     TimePickerComponent,
-    SelectComponent
-],
+    SelectComponent,
+  ],
   templateUrl: "./book-sessions-fillter.component.html",
   styleUrl: "./book-sessions-fillter.component.scss",
 })
@@ -46,29 +48,37 @@ export class BookSessionsFillterComponent {
     scheduledSessionId: "",
   };
   bridgesInputType = BridgesInputType;
-
+  branchesService = inject(BranchesService);
   loading = signal(false);
 
-  sessions = signal<Tables<'flattened_user_sessions_full'>[]>([]);
+  sessions = signal<Tables<"flattened_user_sessions_full">[]>([]);
   sessionOptions = signal<sessionOption[]>([]);
 
   pageSize = signal(10);
   pageNumber = signal(1);
   originalCount = signal(0);
+  private destroyed$ = new Subject<void>();
   constructor() {
-    this.getAll();
+    this.branchesService.currentBranch$
+      .pipe(
+        filter((branch) => !!branch),
+        takeUntil(this.destroyed$),
+      )
+      .subscribe((branch) => {
+        this.filter.branchId = branch.id;
+        this.getAll();
+      });
   }
 
-  
   getAll() {
     this.loading.set(true);
-    
+
     const filterPayload = {
       ...this.filter,
       scheduledDateFrom: this.convertDateToISO(this.filter.scheduledDateFrom),
       scheduledDateTo: this.convertDateToISO(this.filter.scheduledDateTo),
     };
-  
+
     if (filterPayload) {
       this.bookedSessionsService
         .filterBookedSessions(filterPayload)
@@ -77,15 +87,14 @@ export class BookSessionsFillterComponent {
           this.sessions.set(res);
           this.sessions().forEach((session) => {
             this.sessionOptions().push({
-              key: session.membership_name ?? '',
-              value: session.scheduledSessionId ?? '',
+              key: session.membership_name ?? "",
+              value: session.scheduledSessionId ?? "",
             });
           });
           this.originalCount.set((res as any).count);
         });
-    } 
+    }
   }
-  
 
   reset() {
     this.filter = {
@@ -105,8 +114,7 @@ export class BookSessionsFillterComponent {
     this.getAll();
   }
   get scheduledSessionId(): string {
-
-    return this.filter.scheduledSessionId ?? '';
+    return this.filter.scheduledSessionId ?? "";
   }
 
   set scheduledSessionId(value: string) {
@@ -115,19 +123,19 @@ export class BookSessionsFillterComponent {
 
   setSession(sessionId?: any) {
     const selectedSession = this.sessions().find(
-      (session) => session.scheduledSessionId === sessionId
+      (session) => session.scheduledSessionId === sessionId,
     );
     console.log(selectedSession);
     this.sessions.update((list) => {
       list.map((session) => {
         return {
-          sessionId: '',
+          sessionId: "",
           createdAt: new Date().toISOString(),
-          startTime: '14:00:00',
-          endTime: '15:00:00',
+          startTime: "14:00:00",
+          endTime: "15:00:00",
           scheduledDate: new Date().toISOString(),
-          branchId: '',
-          createdBy: '',
+          branchId: "",
+          createdBy: "",
         };
       });
       return list;
@@ -136,14 +144,16 @@ export class BookSessionsFillterComponent {
 
   convertDateToISO(date: string | Date | null | undefined): string | null {
     if (date instanceof Date && !isNaN(date.getTime())) {
-      return date.toISOString();  
-    } else if (typeof date === 'string' && date) {
+      return date.toISOString();
+    } else if (typeof date === "string" && date) {
       console.log(date);
 
-      return new Date(date).toISOString();  
+      return new Date(date).toISOString();
     }
-    return null; 
+    return null;
   }
-  
-  
+  ngOnDestroy(): void {
+    this.destroyed$.next();
+    this.destroyed$.complete();
+  }
 }

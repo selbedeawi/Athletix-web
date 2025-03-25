@@ -22,9 +22,9 @@ export interface PrivateSessionBookingFilter {
   coachId?: string;
   /** Filter by userMembershipId. */
   userMembershipId?: string;
-  bookingTimeTo?: string| null;
-  bookingTimeFrom?: string| null;
-  bookingSessionId?:string
+  bookingTimeTo?: string | null;
+  bookingTimeFrom?: string | null;
+  bookingSessionId?: string;
 }
 
 @Injectable({
@@ -37,13 +37,12 @@ export class PrivateSessionsBookingService {
     // Example test data for booking a private session:
     const testBooking: PrivateSessionsBookingInsert = {
       bookingDate: new Date().toISOString(),
-      createdAt: new Date().toISOString(),
       branchId: "78461fa1-90e2-4425-819e-0d384cec0b6d",
       coachId: "d8e032df-b32c-4152-9bcc-fc74f5641470",
       time: "10:00",
       userMembershipId: "14099190-a36f-4349-8ec3-2c5e3175ed25",
     };
-    this.createPrivateSessionBooking(testBooking).subscribe(console.log);
+    // this.createPrivateSessionBooking(testBooking).subscribe(console.log);
   }
 
   /**

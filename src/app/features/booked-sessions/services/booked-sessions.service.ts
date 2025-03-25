@@ -1,11 +1,11 @@
-import { inject, Injectable } from '@angular/core';
-import { from, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { TablesInsert } from '../../../../../database.types';
-import { SupabaseService } from '../../../core/services/supabase/supabase.service';
+import { inject, Injectable } from "@angular/core";
+import { from, Observable } from "rxjs";
+import { map } from "rxjs/operators";
+import { TablesInsert } from "../../../../../database.types";
+import { SupabaseService } from "../../../core/services/supabase/supabase.service";
 
 // Define the type for inserting into UserSessions
-export type UserSessionInsert = TablesInsert<'UserSessions'>;
+export type UserSessionInsert = TablesInsert<"UserSessions">;
 
 export interface BookedSessionFilter {
   /** A search key to match against member details. */
@@ -25,41 +25,38 @@ export interface BookedSessionFilter {
 }
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class BookedSessionsService {
   private supabaseService = inject(SupabaseService);
 
-  constructor() {
-    // Example test data for booking a session.
-    const bookingData: UserSessionInsert = {
-      bookingDate: new Date().toISOString(),
-      createdAt: new Date().toISOString(),
-      branchId: '78461fa1-90e2-4425-819e-0d384cec0b6d',
-      scheduledSessionId: 'addbe7a7-78f3-4fc9-9084-a1b6143bb50d',
-      userMemberShipId: 'a3b002cb-fe56-4c91-bad2-3ebe31098033',
-    };
-
-    // Uncomment to test booking a session:
-    // this.bookSession(bookingData).subscribe(result => console.log(result));
-  }
-
   /**
-   * Books a session by inserting a record into the UserSessions table.
+   * Books a "SessionBased" session by calling a PostgreSQL function that:
+   *   a. Checks for membership type "SessionBased".
+   *   b. Checks and deducts from remainingGroupSessions.
+   *   c. Inserts a new record into UserSessions.
    *
    * @param booking - The booking details.
-   * @returns Observable emitting the inserted booking record.
+   * @param membershipId - The UserMembership ID to update.
+   * @returns Observable emitting the result from the RPC.
    */
-  bookSession(booking: UserSessionInsert): Observable<any> {
+  bookSession(
+    booking: UserSessionInsert,
+    membershipId: string,
+  ): Observable<any> {
     return from(
-      this.supabaseService.sb.from('UserSessions').insert([booking]).select()
+      this.supabaseService.sb.rpc("book_session", {
+        p_branch_id: booking.branchId as any,
+        p_scheduled_session_id: booking.scheduledSessionId,
+        p_membership_id: membershipId,
+      }),
     ).pipe(
       map((res: any) => {
         if (res.error) {
           throw res.error;
         }
-        return res.data[0];
-      })
+        return res.data;
+      }),
     );
   }
 
@@ -82,8 +79,8 @@ export class BookedSessionsService {
   filterBookedSessions(filters: BookedSessionFilter) {
     // Query from the flattened view.
     let query = this.supabaseService.sb
-      .from('flattened_user_sessions_full')
-      .select('*');
+      .from("flattened_user_sessions_full")
+      .select("*");
 
     // Build the OR filter to search across member details.
     if (filters.searchKey) {
@@ -94,31 +91,40 @@ export class BookedSessionsService {
         `member_memberid.ilike.${pattern}`,
         `nationalId.ilike.${pattern}`,
         `phoneNumber.ilike.${pattern}`,
-      ].join(',');
+      ].join(",");
       query = query.or(searchFilter);
     }
 
     // Filter by scheduled session ID.
     if (filters.scheduledSessionId) {
-      query = query.eq('scheduledSessionId', filters.scheduledSessionId);
+      query = query.eq("scheduledSessionId", filters.scheduledSessionId);
     }
 
     // Filter by branch ID (using the alias from UserSessions in the view).
     if (filters.branchId) {
-      query = query.eq('user_session_branchId', filters.branchId);
+      query = query.eq("user_session_branchid", filters.branchId);
     }
 
     // Filter by scheduled date range (from the ScheduledSession join).
+    // Apply scheduledDate range filters if provided.
     if (filters.scheduledDateFrom) {
-      query = query.gte('scheduledDate', filters.scheduledDateFrom);
+      const d = new Date(filters.scheduledDateFrom);
+      query = query.gte(
+        "scheduledDate",
+        `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`,
+      );
     }
     if (filters.scheduledDateTo) {
-      query = query.lte('scheduledDate', filters.scheduledDateTo);
+      const d = new Date(filters.scheduledDateTo);
+      query = query.lte(
+        "scheduledDate",
+        `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`,
+      );
     }
 
     // Filter by coach IDs (using the flattened coach ID from SheduleCoaches).
     if (filters.coachIds && filters.coachIds.length > 0) {
-      query = query.in('shedule_coachId', filters.coachIds);
+      query = query.in("shedule_coachId", filters.coachIds);
     }
 
     return from(query).pipe(
@@ -127,7 +133,7 @@ export class BookedSessionsService {
           throw res.error;
         }
         return res.data;
-      })
+      }),
     );
   }
   /**
@@ -139,10 +145,10 @@ export class BookedSessionsService {
   deleteSession(sessionId: string) {
     return from(
       this.supabaseService.sb
-        .from('UserSessions')
+        .from("UserSessions")
         .delete()
-        .eq('id', sessionId)
-        .select()
+        .eq("id", sessionId)
+        .select(),
     ).pipe(
       map((res) => {
         if (res.error) {
@@ -150,7 +156,13 @@ export class BookedSessionsService {
         }
         // res.data will be an array of deleted records. Typically just one if the id is unique.
         return res.data[0];
-      })
+      }),
     );
   }
 }
+// {
+
+//    parameters p_booking_date, p_branch_id, p_membership_id, p_scheduled_session_id, p_user_membership_id or with a single unnamed json/jsonb parameter, but no matches were found in the schema cache.",
+//               p_booking_date, p_branch_id, p_created_at, p_membership_id, p_scheduled_session_id, p_user_membership_id)",
+
+// }

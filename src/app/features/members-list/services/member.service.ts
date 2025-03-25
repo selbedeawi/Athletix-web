@@ -54,6 +54,7 @@ export class MemberService {
       branchId?: string;
       membershipId?: string;
       type?: "Individual" | "PrivateCoach" | "SessionBased";
+      types?: ("Individual" | "PrivateCoach" | "SessionBased")[];
       endDateFrom?: string;
       endDateTo?: string;
       createdFrom?: string;
@@ -91,6 +92,9 @@ export class MemberService {
     // Filter by type if provided
     if (filters.type) {
       query = query.eq("UserMembership.type", filters.type);
+    }
+    if (filters.types) {
+      query = query.in("UserMembership.type", filters.types);
     }
 
     if (filters.endDateFrom) {
