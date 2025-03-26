@@ -138,16 +138,16 @@ export class PrivateSessionsBookingService {
    */
   deletePrivateSessionBooking(bookingId: string): Observable<any> {
     return from(
-      this.supabaseService.sb
-        .from("PrivateSessionsBooking")
-        .delete()
-        .eq("id", bookingId)
-        .select(),
+      this.supabaseService.sb.rpc("cancel_private_session", {
+        p_booking_id: bookingId,
+      }),
     ).pipe(
       map((res: any) => {
         if (res.error) {
           throw res.error;
         }
+        // res.data will be an array with the canceled session record,
+        // typically just one record.
         return res.data[0];
       }),
     );

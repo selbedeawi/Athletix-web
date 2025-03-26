@@ -76,11 +76,11 @@ export class ScheduleSessionDetailsComponent {
     this.dialog.open(ScheduleSessionPopupComponent, {
       data: this.selectedSession.meta,
       minWidth: 615,
-    }).afterClosed().subscribe((result)=>{
+    }).afterClosed().subscribe((result) => {
       if (result) {
-        this.getAllSessions()
+        this.getAllSessions();
       }
-    })
+    });
   }
   removeBooking(id: string) {}
 
@@ -89,12 +89,12 @@ export class ScheduleSessionDetailsComponent {
 
     if (this.filter) {
       this.bookedSessionsService
-        .filterBookedSessions(this.filter)
+        .filterBookedSessions(this.filter, 1, 1000)
         .pipe(finalize(() => this.loading.set(false)))
         .subscribe((res) => {
-            this.bookedSessions.set([...res]);
+          this.bookedSessions.set([...res.data as any]);
           // this.sessions.set(res);
-          this.originalCount.set(res.length);
+          this.originalCount.set(res.count || 0);
         });
     } else {
       this.loading.set(false);

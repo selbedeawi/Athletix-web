@@ -78,11 +78,18 @@ export class BookedSessionsService {
    * @param filters - Filter options to apply.
    * @returns Observable emitting an array of booked session responses.
    */
-  filterBookedSessions(filters: BookedSessionFilter) {
+  filterBookedSessions(
+    filters: BookedSessionFilter,
+    page: number = 1,
+    pageSize: number = 10,
+  ) {
+    const start = (page - 1) * pageSize;
+    const end = start + pageSize - 1;
+
     // Query from the flattened view.
     let query = this.supabaseService.sb
       .from("flattened_user_sessions_full")
-      .select("*");
+      .select("*", { count: "exact" });
 
     // Build the OR filter to search across member details.
     if (filters.searchKey) {
@@ -133,15 +140,8 @@ export class BookedSessionsService {
     if (filters.coachIds && filters.coachIds.length > 0) {
       query = query.in("shedule_coachId", filters.coachIds);
     }
-
-    return from(query).pipe(
-      map((res: any) => {
-        if (res.error) {
-          throw res.error;
-        }
-        return res.data;
-      }),
-    );
+    query = query.range(start, end);
+    return from(query);
   }
   /**
    * Cancels (reverts and deletes) a session from the UserSessions table

@@ -1050,6 +1050,15 @@ export type Database = {
           new_remaining_group_sessions: number
         }[]
       }
+      cancel_private_session: {
+        Args: {
+          p_booking_id: string
+        }
+        Returns: {
+          canceled_booking_id: string
+          new_remaining_pt_sessions: number
+        }[]
+      }
       update_staff_with_branches:
         | {
             Args: {

@@ -83,22 +83,13 @@ export class BookSessionsFillterComponent {
 
   getAll() {
     this.loading.set(true);
-
-    const filterPayload = {
-      ...this.filter,
-      scheduledDateFrom: this.convertDateToISO(this.filter.scheduledDateFrom),
-      scheduledDateTo: this.convertDateToISO(this.filter.scheduledDateTo),
-    };
-
-    if (filterPayload) {
-      this.bookedSessionsService
-        .filterBookedSessions(filterPayload)
-        .pipe(finalize(() => this.loading.set(false)))
-        .subscribe((res) => {
-          this.sessions.set(res);
-          this.originalCount.set((res as any).count);
-        });
-    }
+    this.bookedSessionsService
+      .filterBookedSessions(this.filter, this.pageNumber(), this.pageSize())
+      .pipe(finalize(() => this.loading.set(false)))
+      .subscribe((res) => {
+        this.sessions.set(res.data as any);
+        this.originalCount.set((res as any).count);
+      });
   }
 
   reset() {
@@ -118,44 +109,7 @@ export class BookSessionsFillterComponent {
     this.pageNumber.set(1);
     this.getAll();
   }
-  get scheduledSessionId(): string {
-    return this.filter.scheduledSessionId ?? "";
-  }
 
-  set scheduledSessionId(value: string) {
-    this.filter.scheduledSessionId = value;
-  }
-
-  setSession(sessionId?: any) {
-    const selectedSession = this.sessions().find(
-      (session) => session.scheduledSessionId === sessionId,
-    );
-    this.sessions.update((list) => {
-      list.map((session) => {
-        return {
-          sessionId: "",
-          createdAt: new Date().toISOString(),
-          startTime: "14:00:00",
-          endTime: "15:00:00",
-          scheduledDate: new Date().toISOString(),
-          branchId: "",
-          createdBy: "",
-        };
-      });
-      return list;
-    });
-  }
-
-  convertDateToISO(date: string | Date | null | undefined): string | null {
-    if (date instanceof Date && !isNaN(date.getTime())) {
-      return date.toISOString();
-    } else if (typeof date === "string" && date) {
-      console.log(date);
-
-      return new Date(date).toISOString();
-    }
-    return null;
-  }
   ngOnDestroy(): void {
     this.destroyed$.next();
     this.destroyed$.complete();

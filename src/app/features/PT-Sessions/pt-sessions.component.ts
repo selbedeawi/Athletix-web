@@ -13,6 +13,8 @@ import { MatDialog } from "@angular/material/dialog";
 import { PrivateSessionsBookingService } from "./services/pt-sessions.service";
 import { TimeFormatPipe } from "../booked-sessions/time-format.pipe";
 import { finalize } from "rxjs";
+import { SnackbarService } from "../../core/services/snackbar/snackbar.service";
+import { ConfirmDeleteComponent } from "../../shared/ui-components/templates/confirm-delete/confirm-delete.component";
 
 @Component({
   selector: "app-pt-sessions",
@@ -32,12 +34,14 @@ import { finalize } from "rxjs";
 })
 export class PtSessionsComponent {
   private dialog = inject(MatDialog);
-  private PrivateSessionsBookingService = inject(PrivateSessionsBookingService);
+  private snackbarService = inject(SnackbarService);
+  private privateSessionsService = inject(PrivateSessionsBookingService);
   translationTemplate = TranslationTemplates.PT_SESSION;
   APP_ROUTES = APP_ROUTES;
   ptSessionsFilter = viewChild(PtSessionsFillterComponent);
   BookedSessionData = "sss";
   loading = signal(false);
+
   constructor() {}
   openBookSessionDialog(): void {
     const dialogRef = this.dialog.open(BookSessionDialogComponent, {
@@ -50,18 +54,20 @@ export class PtSessionsComponent {
     });
   }
 
-  deleteSession(bookingId: string) {
-    this.loading.set(true);
-    this.PrivateSessionsBookingService.deletePrivateSessionBooking(bookingId)
-      .pipe(finalize(() => this.loading.set(false)))
-      .subscribe(
-        (res) => {
-          this.ptSessionsFilter()?.ptSessions().forEach((session, index) => {
-            if (session.private_booking_id === bookingId) {
-              this.ptSessionsFilter()?.getAll();
-            }
-          });
-        },
-      );
+  deleteSession(id: any) {
+    this.dialog.open(ConfirmDeleteComponent, {
+      data: {
+        translationTemplate: this.translationTemplate,
+      },
+    }).afterClosed().subscribe((res) => {
+      if (res) {
+        this.snackbarService.success("DELETE_BOOKED_SESSION_SUCCESS");
+        this.privateSessionsService.deletePrivateSessionBooking(id).subscribe(
+          (res) => {
+            this.ptSessionsFilter()?.getAll();
+          },
+        );
+      }
+    });
   }
 }
