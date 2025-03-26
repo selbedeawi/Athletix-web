@@ -37,7 +37,7 @@
       @for (session of ptSessionsFilter.ptSessions(); track $index) {
       <tr class="d-flex">
         <td class="col-12 col-sm-12 col-lg-2 order-2 order-lg-1 text-truncate">
-          {{ session.private_booking_id }}
+          {{ session.member_memberid }}
         </td>
         <td
           class="col-12 col-sm-6 col-lg-3 order-1 order-lg-2 table-card-title table-primary"
@@ -49,7 +49,7 @@
         </td>
         <td class="col-12 col-sm-6 col-lg-2 order-4">
           {{ session.bookingDate }} <br />
-          {{ session.time | timeFormat }}
+          {{ session.time || "" | timeFormat }}
         </td>
         <td class="col-12 col-lg-2 order-5 table_action">
           <div class="d-flex flex-wrap justify-content-end align-items-center">
@@ -59,7 +59,7 @@
                 color="primary"
                 class="me-3 mb-3 mt-1 mb-md-0 px-5"
                 type="button"
-                (click)="deleteSession(session.private_booking_id)"
+                (click)="deleteSession(session.private_booking_id || '')"
               >
                 {{ t("CANCEL") }}
               </button>

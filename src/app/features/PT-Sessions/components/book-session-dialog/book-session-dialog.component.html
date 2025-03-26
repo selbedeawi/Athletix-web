@@ -5,62 +5,61 @@
     </h2>
   </div>
   <div class="p-3">
-    <div>
-      <h2 class="mat-headline-medium mb-1">
-        {{ t("SEARCH_FOR_MEMBER") }}
-      </h2>
-    </div>
     <form #sessionForm="ngForm">
       <div class="d-flex flex-column gy-1">
+        <app-select-coach
+          class="col-12"
+          [(coachId)]="privateSession.coachId"
+          [isRequired]="true"
+          [translationTemplate]="translationTemplate"
+        ></app-select-coach>
         <mat-form-field>
-          <mat-label>{{t("SEARCH_LABEL")}}</mat-label>
+          <mat-label>{{ t("SEARCH_LABEL") }}</mat-label>
           <input
             type="text"
             placeholder="Search by member name"
-            aria-label="Number"
+            aria-label="Member Name"
             matInput
-            [(ngModel)]="memberSearchValue"
+            [(ngModel)]="selectedMember"
+            [required]="true"
             name="memberSearchValue"
             [matAutocomplete]="auto"
+            (ngModelChange)="getAllMembers($event)"
           />
-          <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-            @for (option of filteredOptions | async; track option) {
-            <mat-option
-              [value]="option.UserMembership.memberId"
-            >
-              {{ option.firstName }} {{ option.lastName }}
-            </mat-option>
-            }
+          <mat-autocomplete
+            [displayWith]="displayFn"
+            (optionSelected)="
+              privateSession.userMembershipId =
+                $event.option.value.UserMembership?.id
+            "
+            #auto="matAutocomplete"
+          >
+            @for (option of memberOptions(); track $index) {
+            <mat-option [value]="option">
+              {{ option.firstName }} {{ option.lastName }} </mat-option
+            >}
           </mat-autocomplete>
         </mat-form-field>
-        <brdgs-select
-        class="col-12 "
-        [label]="t('SEARCH_BY_COACH_NAME')"
-        [(value)]="selectedCoach"
-        [isRequired]="false"
-        [options]="coachData()" 
-        displayWith="coachFullName"
-      ></brdgs-select>
 
         <div class="row">
           <brdgs-date-picker
             class="col-12 col-md-6"
             [label]="t('THIRD_LABEL')"
-            [(value)]="bookingDate"
-            [isRequired]="false"
+            [(value)]="privateSession.bookingDate"
+            [isRequired]="true"
           ></brdgs-date-picker>
           <brdgs-time-picker
             class="col-12 col-md-6"
             [label]="t('FOURTH_LABEL')"
-            [(value)]="time"
-            [isRequired]="false"
+            [(value)]="privateSession.time"
+            [isRequired]="true"
           ></brdgs-time-picker>
         </div>
       </div>
-      
+
       <div mat-dialog-actions class="d-flex justify-content-end py-3">
         <button
-          mat-flat-button
+          mat-stroked-button
           type="button"
           color="primary"
           mat-dialog-close

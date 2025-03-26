@@ -33,18 +33,6 @@ export interface PrivateSessionBookingFilter {
 export class PrivateSessionsBookingService {
   private supabaseService = inject(SupabaseService);
 
-  constructor() {
-    // Example test data for booking a private session:
-    const testBooking: PrivateSessionsBookingInsert = {
-      bookingDate: new Date().toISOString(),
-      branchId: "78461fa1-90e2-4425-819e-0d384cec0b6d",
-      coachId: "d8e032df-b32c-4152-9bcc-fc74f5641470",
-      time: "10:00",
-      userMembershipId: "14099190-a36f-4349-8ec3-2c5e3175ed25",
-    };
-    // this.createPrivateSessionBooking(testBooking).subscribe(console.log);
-  }
-
   /**
    * Creates a private session booking by inserting a record into the PrivateSessionsBooking table.
    *
@@ -53,19 +41,12 @@ export class PrivateSessionsBookingService {
    */
   createPrivateSessionBooking(
     booking: PrivateSessionsBookingInsert,
-  ): Observable<any> {
+  ) {
     return from(
       this.supabaseService.sb
         .from("PrivateSessionsBooking")
-        .insert([booking])
+        .insert(booking)
         .select(),
-    ).pipe(
-      map((res: any) => {
-        if (res.error) {
-          throw res.error;
-        }
-        return res.data[0];
-      }),
     );
   }
 
@@ -83,10 +64,15 @@ export class PrivateSessionsBookingService {
    */
   filterPrivateSessionsBooking(
     filters: PrivateSessionBookingFilter,
-  ): Observable<any[]> {
+    page: number = 1,
+    pageSize: number = 10,
+  ) {
+    const start = (page - 1) * pageSize;
+    const end = start + pageSize - 1;
+
     let query = this.supabaseService.sb
       .from("flattened_private_sessions_booking")
-      .select("*");
+      .select("*", { count: "exact" });
 
     // Build the OR filter for searching across member and coach details.
     if (filters.searchKey) {
@@ -94,6 +80,10 @@ export class PrivateSessionsBookingService {
       const searchFilter = [
         `member_firstname.ilike.${pattern}`,
         `member_lastname.ilike.${pattern}`,
+        `member_email.ilike.${pattern}`,
+        `member_memberid.ilike.${pattern}`,
+        `member_nationalid.ilike.${pattern}`,
+        `member_phonenumber.ilike.${pattern}`,
         `coach_firstname.ilike.${pattern}`,
         `coach_lastname.ilike.${pattern}`,
       ].join(",");
@@ -102,29 +92,42 @@ export class PrivateSessionsBookingService {
 
     // Apply additional filters.
     if (filters.bookingDateFrom) {
-      query = query.gte("bookingdate", filters.bookingDateFrom);
+      query = query.gte(
+        "bookingDate",
+        this.formatDate(filters.bookingDateFrom as any),
+      );
     }
     if (filters.bookingDateTo) {
-      query = query.lte("bookingdate", filters.bookingDateTo);
+      query = query.lte(
+        "bookingDate",
+        this.formatDate(filters.bookingDateTo as any),
+      );
     }
+
+    if (filters.bookingTimeFrom) {
+      query = query.gte(
+        "time",
+        filters.bookingTimeFrom,
+      );
+    }
+    if (filters.bookingTimeTo) {
+      query = query.lte(
+        "time",
+        filters.bookingTimeTo,
+      );
+    }
+
     if (filters.branchId) {
       query = query.eq("booking_branchid", filters.branchId);
     }
     if (filters.coachId) {
-      query = query.eq("coachid", filters.coachId);
+      query = query.eq("coachId", filters.coachId);
     }
     if (filters.userMembershipId) {
       query = query.eq("usermembershipid", filters.userMembershipId);
     }
-
-    return from(query).pipe(
-      map((res: any) => {
-        if (res.error) {
-          throw res.error;
-        }
-        return res.data;
-      }),
-    );
+    query = query.range(start, end);
+    return from(query);
   }
 
   /**
@@ -133,7 +136,7 @@ export class PrivateSessionsBookingService {
    * @param bookingId - The id of the booking to delete.
    * @returns Observable emitting the deleted booking record.
    */
-  deletePrivateSessionBooking(bookingId: number): Observable<any> {
+  deletePrivateSessionBooking(bookingId: string): Observable<any> {
     return from(
       this.supabaseService.sb
         .from("PrivateSessionsBooking")
@@ -148,5 +151,12 @@ export class PrivateSessionsBookingService {
         return res.data[0];
       }),
     );
+  }
+  private formatDate(date: Date): string {
+    const year = date.getFullYear();
+    // Months are 0-based so we add 1
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    return `${year}-${month}-${day}`;
   }
 }

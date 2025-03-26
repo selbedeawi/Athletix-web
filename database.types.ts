@@ -194,7 +194,7 @@ export type Database = {
           branchId: string | null
           coachId: string | null
           createdAt: string
-          id: number
+          id: string
           time: string | null
           userMembershipId: string | null
         }
@@ -203,7 +203,7 @@ export type Database = {
           branchId?: string | null
           coachId?: string | null
           createdAt?: string
-          id?: number
+          id?: string
           time?: string | null
           userMembershipId?: string | null
         }
@@ -212,7 +212,7 @@ export type Database = {
           branchId?: string | null
           coachId?: string | null
           createdAt?: string
-          id?: number
+          id?: string
           time?: string | null
           userMembershipId?: string | null
         }
@@ -747,6 +747,7 @@ export type Database = {
           member_email: string | null
           member_firstname: string | null
           member_lastname: string | null
+          member_memberid: string | null
           member_nationalid: string | null
           member_phonenumber: string | null
           membership_createdat: string | null
@@ -754,7 +755,7 @@ export type Database = {
           membership_name: string | null
           membership_startdate: string | null
           pricePaid: number | null
-          private_booking_id: number | null
+          private_booking_id: string | null
           time: string | null
           userMembershipId: string | null
         }

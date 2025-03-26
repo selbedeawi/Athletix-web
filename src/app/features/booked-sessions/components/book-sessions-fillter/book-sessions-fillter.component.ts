@@ -130,7 +130,6 @@ export class BookSessionsFillterComponent {
     const selectedSession = this.sessions().find(
       (session) => session.scheduledSessionId === sessionId,
     );
-    console.log(selectedSession);
     this.sessions.update((list) => {
       list.map((session) => {
         return {
