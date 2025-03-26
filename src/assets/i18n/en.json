@@ -224,7 +224,6 @@
     "PASSWORD_MUST_NOT_CONTAIN_SPACE": "Password must not contain spaces",
     "CONFIRM_PASSWORD": "Confirm Password",
     "PASSWORD_STRENGTH": "Password Strength",
-    "PASSWORD_WK": "Weak Password",
-    
+    "PASSWORD_WK": "Weak Password"
   }
 }
