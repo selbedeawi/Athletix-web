@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component, Inject } from "@angular/core";
 import { TranslocoDirective } from "@jsverse/transloco";
 import { TranslationTemplates } from "../../../enums/translation-templates-enum";
 import { MatButton } from "@angular/material/button";
-import { MatDivider } from "@angular/material/divider";
 import {
   MAT_DIALOG_DATA,
   MatDialogModule,
@@ -20,12 +19,12 @@ export class ConfirmDeleteComponent {
   translationTemplate: TranslationTemplates = TranslationTemplates.GLOB;
   headerText = "DELETE_CONFIRMATION";
   content = ["DELETE_ARE_YOU_SURE_?"];
-  cancelText = "CONf_CANCEL";
+  cancelText = "CANCEL";
   acceptText = "DELETE";
   buttonColor = "bg-danger";
   enableBtns = true;
-  enableImg = true;
-  okText = "YES";
+  enableImg = false;
+  okText = "REMOVE";
 
   constructor(
     public overlayRef: MatDialogRef<ConfirmDeleteComponent>,

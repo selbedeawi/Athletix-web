@@ -5,14 +5,9 @@ import { SelectComponent } from "../../../../shared/ui-components/atoms/select/s
 import { finalize } from "rxjs";
 import { TranslationTemplates } from "../../../../shared/enums/translation-templates-enum";
 import { BridgesInputType } from "../../../../shared/ui-components/atoms/input/enum/bridges-input-type.enum";
-import {
-  Memberships,
-  MembershipType,
-} from "../../../membership-list/models/membership";
 import { FormsModule } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
 import { TranslocoDirective } from "@jsverse/transloco";
-import { Tables } from "../../../../../../database.types";
 import { SelectMembershipComponent } from "../../../../shared/ui-components/molecules/select-membership/select-membership.component";
 import { DatePickerComponent } from "../../../../shared/ui-components/atoms/date-picker/date-picker.component";
 import { MemberAccount } from "../../models/member";
