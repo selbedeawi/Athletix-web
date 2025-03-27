@@ -29,7 +29,7 @@ import { SessionsFilterComponent } from "./components/sessions-filters/sessions-
   styleUrl: './sessions-list.component.scss'
 })
 export class SessionsListComponent {
-translationTemplate: TranslationTemplates.SESSIONS | undefined;
+  translationTemplate: TranslationTemplates = TranslationTemplates.SESSIONS;
 APP_ROUTES = APP_ROUTES;
 
   

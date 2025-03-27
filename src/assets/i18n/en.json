@@ -139,6 +139,7 @@
     "BOOK_SESSION": "Book Session",
     "ADD_MEMBER": "Add Member",
     "SELECT_SESSION": "Select Session",
+    "SELECT_COACH": "Select Coach",
     "SEARCH_LABEL": "Search for member name, ID, phone or email"
   },
   "ScheduledSession": {
@@ -189,11 +190,11 @@
     "PRICE": "MemberShip Price",
     "AMOUNT_AFTER_DISCOUNT": "Amount After Discount",
     "BRANCHES": "All Branches",
-    "MEMBERSHIP_FEATURES":"MemberShip Features",
-    "DURATION_IN_DAYS":"Duration In Days",
-    "FREEZE_PERIOD":"Freeze Period",
-    "NUMBER_OF_SESSIONS":"Number of Sessions",
-    "UPDATE_MEMBERSHIP":"Update",
+    "MEMBERSHIP_FEATURES": "MemberShip Features",
+    "DURATION_IN_DAYS": "Duration In Days",
+    "FREEZE_PERIOD": "Freeze Period",
+    "NUMBER_OF_SESSIONS": "Number of Sessions",
+    "UPDATE_MEMBERSHIP": "Update",
     "INDIVIDUAL": "Individual",
     "PRIVATE_COACH": "Private Coach",
     "SESSION_BASED": "Session Based",
@@ -244,5 +245,23 @@
     "CONFIRM_PASSWORD": "Confirm Password",
     "PASSWORD_STRENGTH": "Password Strength",
     "PASSWORD_WK": "Weak Password"
+  },
+  "Sessions": {
+    "TITLE": "Sessions List",
+    "ADD": "Add Session",
+    "TABLE_NAME": "Name",
+    "TABLE_BRANCHS": " All Branches",
+    "EDIT": "Edit",
+    "NAME": "Search by session name",
+    "BRANCHS": "Search by Branch",
+    "RESET": "Reset",
+    "SEARCH": "Apply",
+    "ADD_SESSION_TITLE": "Add Session",
+    "BACK": "Back",
+    "SESSIONS_DETAILS": "Session Details",
+    "SESSION_NAME": "Session Name",
+    "BRANCHES": "All Branches",
+    "SESSION_DESCRIPTION": "Session Description",
+    "ADD_SESSION": "Add"
   }
 }
