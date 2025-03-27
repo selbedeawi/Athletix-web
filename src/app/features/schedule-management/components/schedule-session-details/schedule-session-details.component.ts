@@ -27,7 +27,9 @@ import {
   BookedSessionsService,
 } from "../../../booked-sessions/services/booked-sessions.service";
 import { finalize } from "rxjs";
+import { MemberAccount } from "../../../members-list/models/member";
 
+import { Tables } from "../../../../../../database.types";
 
 @Component({
   selector: "app-schedule-session-details",
