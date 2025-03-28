@@ -2,7 +2,7 @@ import { inject, Injectable } from "@angular/core";
 import { from, map, Observable } from "rxjs";
 import { SupabaseService } from "../../../core/services/supabase/supabase.service";
 import { BEResponse } from "../../../shared/models/shared-models";
-import { MemberAccount } from "../models/member";
+import { AllMembersFilter, MemberAccount } from "../models/member";
 
 @Injectable({
   providedIn: "root",
@@ -49,18 +49,7 @@ export class MemberService {
    * @returns Observable emitting a paginated response of Members.
    */
   getAllMembers(
-    filters: {
-      searchQuery?: string;
-      branchId?: string;
-      membershipId?: string;
-      type?: "Individual" | "PrivateCoach" | "SessionBased";
-      types?: ("Individual" | "PrivateCoach" | "SessionBased")[];
-      endDateFrom?: string;
-      endDateTo?: string;
-      createdFrom?: string;
-      createdTo?: string;
-      isActive?: boolean;
-    },
+    filters: AllMembersFilter,
     page: number = 1,
     pageSize: number = 10,
   ): Observable<BEResponse<MemberAccount[]>> {
@@ -71,8 +60,6 @@ export class MemberService {
       .from("Members")
       .select("*, UserMembership(*)", { count: "exact" });
 
-    // .select("*, UserMembership!inner(*)", { count: "exact" });
-    // Apply search filter across multiple fields
     if (filters.searchQuery) {
       query = query.or(
         `firstName.ilike.%${filters.searchQuery}%,lastName.ilike.%${filters.searchQuery}%,memberId.ilike.%${filters.searchQuery}%,nationalId.ilike.%${filters.searchQuery}%,phoneNumber.ilike.%${filters.searchQuery}%`,
@@ -85,7 +72,7 @@ export class MemberService {
     }
 
     // Filter by membershipId if provided
-    if (filters.membershipId) {
+    if (filters.membershipId && filters.membershipId !== "All") {
       query = query.eq("UserMembership.membershipId", filters.membershipId);
     }
 
@@ -98,22 +85,41 @@ export class MemberService {
     }
 
     if (filters.endDateFrom) {
-      query = query.gte("UserMembership.endDate", filters.endDateFrom);
+      query = query.gte(
+        "UserMembership.endDate",
+        this.formatDate(filters.endDateFrom as any),
+      );
     }
     if (filters.endDateTo) {
-      query = query.lte("UserMembership.endDate", filters.endDateTo);
-    }
-    if (filters.endDateFrom) {
-      query = query.gte("UserMembership.endDate", filters.endDateFrom);
-    }
-    if (filters.endDateTo) {
-      query = query.lte("UserMembership.endDate", filters.endDateTo);
+      query = query.lte(
+        "UserMembership.endDate",
+        this.formatDate(filters.endDateTo as any),
+      );
     }
     if (filters.createdFrom) {
-      query = query.gte("UserMembership.createdAt", filters.createdFrom);
+      query = query.gte(
+        "UserMembership.createdAt",
+        this.formatDate(filters.createdFrom as any),
+      );
     }
     if (filters.createdTo) {
-      query = query.lte("UserMembership.createdAt", filters.createdTo);
+      query = query.lte(
+        "UserMembership.createdAt",
+        this.formatDate(filters.createdTo as any),
+      );
+    }
+    if (typeof filters.isActive === "boolean") {
+      query.eq("UserMembership.isActive", filters.isActive);
+    }
+    if (typeof filters.isActiveUser === "boolean") {
+      query.eq("isActive", filters.isActiveUser);
+    }
+
+    if (typeof filters.isFreeze === "boolean") {
+      query.eq("UserMembership.isFreeze", filters.isFreeze);
+    }
+    if (typeof filters.isCanceled === "boolean") {
+      query.eq("UserMembership.isCanceled", filters.isCanceled);
     }
 
     query = query.range(start, end);
@@ -167,5 +173,13 @@ export class MemberService {
     return from(
       this.supabaseService.sb.from("Members").delete().eq("id", id),
     );
+  }
+
+  private formatDate(date: Date): string {
+    const year = date.getFullYear();
+    // Months are 0-based so we add 1
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    return `${year}-${month}-${day}`;
   }
 }

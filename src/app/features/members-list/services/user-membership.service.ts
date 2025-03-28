@@ -56,7 +56,9 @@ export class UserMembershipService {
 
     let query = this.supabaseService.sb
       .from("UserMembership")
-      .select("*, Members(*)")
+      .select(
+        "*, Members(*), coach:Staff!UserMembership_coachId_fkey(*), salesStaff:Staff!UserMembership_salesId_fkey(*)",
+      )
       .eq("memberId", memberId);
 
     if (typeof isActive === "boolean") {

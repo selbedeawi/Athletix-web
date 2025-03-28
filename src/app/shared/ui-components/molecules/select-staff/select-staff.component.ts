@@ -1,30 +1,34 @@
-import { Component, inject, input, model, signal } from "@angular/core";
+import { Component, inject, input, model, OnInit, signal } from "@angular/core";
 import { filter, Subject, takeUntil } from "rxjs";
 import { StaffService } from "../../../../features/staff-list/services/staff.service";
 import { SelectComponent } from "../../atoms/select/select.component";
 import { BranchesService } from "../../../../core/services/branches/branches.service";
 
 import { TranslationTemplates } from "../../../enums/translation-templates-enum";
+import { AccountType } from "../../../../core/enums/account-type-enum";
 
 @Component({
-  selector: "app-select-coach",
+  selector: "app-select-staff",
   imports: [SelectComponent],
-  templateUrl: "./select-coach.component.html",
-  styleUrl: "./select-coach.component.scss",
+  templateUrl: "./select-staff.component.html",
+  styleUrl: "./select-staff.component.scss",
 })
-export class SelectCoachComponent {
+export class SelectStaffComponent implements OnInit {
   private staffService = inject(StaffService);
   private destroyed$ = new Subject<void>();
   branchesService = inject(BranchesService);
   branchId!: string;
-  coachId = model.required();
+  staffId = model.required();
   translationTemplate = input.required<TranslationTemplates>();
   isRequired = input(false);
   isMultiple = input(false);
-  label = input("SELECT_COACH");
+  role = input.required<AccountType>();
+  label = input("SELECT_staff");
 
-  coachOptions = signal<{ key: string; value: string }[]>([]);
+  staffOptions = signal<{ key: string; value: string }[]>([]);
   constructor() {
+  }
+  ngOnInit(): void {
     this.branchesService.currentBranch$
       .pipe(
         filter((branch) => !!branch),
@@ -33,14 +37,14 @@ export class SelectCoachComponent {
       .subscribe((branch) => {
         this.branchId = branch.id;
 
-        this.getAllCoaches();
+        this.getAllstaffes();
       });
   }
 
-  getAllCoaches(): void {
+  getAllstaffes(): void {
     this.staffService.getAllStaff(
       {
-        role: "Coach",
+        role: this.role(),
         isActive: true,
         branchIds: [this.branchId],
       },
@@ -49,14 +53,14 @@ export class SelectCoachComponent {
     )
       .subscribe((res) => {
         if (res.data && Array.isArray(res.data)) {
-          this.coachOptions.set(
+          this.staffOptions.set(
             res.data.map((c) => ({
               key: `${c.firstName} ${c.lastName}`,
               value: c.id,
             })),
           );
         } else {
-          this.coachOptions.set([]);
+          this.staffOptions.set([]);
         }
       });
   }

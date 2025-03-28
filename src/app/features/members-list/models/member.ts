@@ -1,4 +1,5 @@
 import { Tables } from "../../../../../database.types";
+import { StaffAccount } from "../../staff-list/models/staff";
 
 export class MemberAccount implements Tables<"Members"> {
   id!: string;
@@ -17,10 +18,13 @@ export class MemberAccount implements Tables<"Members"> {
   password!: string;
   email!: string;
 
+  gender!: "male" | "female";
+  receiptNumber!: string | null;
   isActive!: boolean;
   createdBy!: string;
   //FE
   UserMembership!: UserMembership;
+
   constructor() {
   }
 }
@@ -73,4 +77,22 @@ export class UserMembership implements Tables<"UserMembership"> {
 
   // FE only
   Members!: MemberAccount;
+  coach!: StaffAccount;
+  salesStaff!: StaffAccount;
+}
+
+export class AllMembersFilter {
+  searchQuery?: string;
+  branchId?: string;
+  membershipId?: string;
+  type?: "Individual" | "PrivateCoach" | "SessionBased";
+  types?: ("Individual" | "PrivateCoach" | "SessionBased")[];
+  endDateFrom?: string;
+  endDateTo?: string;
+  createdFrom?: string;
+  createdTo?: string;
+  isActive?: boolean | string;
+  isActiveUser?: boolean | string;
+  isCanceled?: boolean | string;
+  isFreeze?: boolean | string;
 }

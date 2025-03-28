@@ -4,7 +4,7 @@ import { UserMembership } from "../../models/member";
 import { TranslocoDirective } from "@jsverse/transloco";
 import { MatCardModule } from "@angular/material/card";
 import { TranslationTemplates } from "../../../../shared/enums/translation-templates-enum";
-import { CurrencyPipe } from "@angular/common";
+import { CurrencyPipe, DatePipe } from "@angular/common";
 import { MatButtonModule } from "@angular/material/button";
 import { MatDialog } from "@angular/material/dialog";
 import { MembershipFreezeComponent } from "../membership-freeze/membership-freeze.component";
@@ -14,7 +14,13 @@ import { ConfirmDeleteComponent } from "../../../../shared/ui-components/templat
 
 @Component({
   selector: "app-member-active-membership",
-  imports: [TranslocoDirective, MatCardModule, CurrencyPipe, MatButtonModule],
+  imports: [
+    TranslocoDirective,
+    MatCardModule,
+    CurrencyPipe,
+    MatButtonModule,
+    DatePipe,
+  ],
   templateUrl: "./member-active-membership.component.html",
   styleUrl: "./member-active-membership.component.scss",
 })

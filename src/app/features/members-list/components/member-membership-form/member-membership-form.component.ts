@@ -8,10 +8,18 @@ import { Memberships } from "../../../membership-list/models/membership";
 import { BranchesService } from "../../../../core/services/branches/branches.service";
 import { UserService } from "../../../../core/services/user/user.service";
 import { TranslocoDirective } from "@jsverse/transloco";
+import { SelectStaffComponent } from "../../../../shared/ui-components/molecules/select-staff/select-staff.component";
+import { DatePickerComponent } from "../../../../shared/ui-components/atoms/date-picker/date-picker.component";
 
 @Component({
   selector: "app-member-membership-form",
-  imports: [SelectMembershipComponent, InputComponent, TranslocoDirective],
+  imports: [
+    SelectMembershipComponent,
+    InputComponent,
+    TranslocoDirective,
+    SelectStaffComponent,
+    DatePickerComponent,
+  ],
   templateUrl: "./member-membership-form.component.html",
   styleUrl: "./member-membership-form.component.scss",
 })
@@ -21,7 +29,9 @@ export class MemberMembershipFormComponent {
   bridgesInputType = BridgesInputType;
   branchesService = inject(BranchesService);
   userService = inject(UserService);
-
+  now: any = new Date();
+  startDate: any = new Date();
+  endDate: any = new Date();
   setMembership(e: Memberships) {
     const membership = this.createUserMembershipFromMembership(e, {
       branchId: this.branchesService.currentBranch?.id as any,
@@ -44,17 +54,11 @@ export class MemberMembershipFormComponent {
       salesId?: string | null;
     },
   ): Partial<UserMembership> {
-    const start = new Date();
-    const endDate = new Date(
-      start.getTime() + membership.durationInDays * 24 * 60 * 60 * 1000,
-    ).toISOString();
-    const now = new Date().toISOString();
+    const { start, endDate } = this.setDates(membership.durationInDays);
 
     return {
       branchId: extra.branchId,
       coachId: extra.coachId ?? null,
-      createdAt: now,
-      modifiedAt: now,
 
       endDate: endDate,
       freezePeriod: membership.freezePeriod,
@@ -89,8 +93,28 @@ export class MemberMembershipFormComponent {
       remainingPTSessions: membership.numberOfSessions ?? null,
       remainingVisits: membership.numberOfVisits ?? 0,
       salesId: extra.salesId ?? null,
-      startDate: now,
+      startDate: start,
       type: membership.type,
     };
+  }
+
+  setDates(durationInDays: number) {
+    const start = this.formatDate(this.startDate);
+    this.endDate = new Date(
+      this.startDate.getTime() + durationInDays * 24 * 60 * 60 * 1000,
+    );
+    const endDate = this.formatDate(
+      this.endDate,
+    );
+    this.membership().startDate = start;
+    this.membership().endDate = endDate;
+    return { start, endDate };
+  }
+  private formatDate(date: Date): string {
+    const year = date.getFullYear();
+    // Months are 0-based so we add 1
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    return `${year}-${month}-${day}`;
   }
 }

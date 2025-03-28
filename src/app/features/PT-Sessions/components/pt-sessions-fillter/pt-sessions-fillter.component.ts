@@ -15,7 +15,7 @@ import {
 import { TimePickerComponent } from "../../../../shared/ui-components/atoms/time-picker/time-picker.component";
 import { sessionOption } from "../../../schedule-management/components/schedule-single-session/schedule-single-session.component";
 import { SelectComponent } from "../../../../shared/ui-components/atoms/select/select.component";
-import { SelectCoachComponent } from "../../../../shared/ui-components/molecules/select-coach/select-coach.component";
+import { SelectStaffComponent } from "../../../../shared/ui-components/molecules/select-staff/select-staff.component";
 import { Tables } from "../../../../../../database.types";
 
 @Component({
@@ -27,7 +27,7 @@ import { Tables } from "../../../../../../database.types";
     MatButtonModule,
     DatePickerComponent,
     TimePickerComponent,
-    SelectCoachComponent,
+    SelectStaffComponent,
   ],
   templateUrl: "./pt-sessions-fillter.component.html",
   styleUrl: "./pt-sessions-fillter.component.scss",

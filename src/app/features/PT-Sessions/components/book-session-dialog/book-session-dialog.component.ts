@@ -24,7 +24,7 @@ import { SelectComponent } from "../../../../shared/ui-components/atoms/select/s
 import { StaffService } from "../../../staff-list/services/staff.service";
 import { BranchesService } from "../../../../core/services/branches/branches.service";
 import { SnackbarService } from "../../../../core/services/snackbar/snackbar.service";
-import { SelectCoachComponent } from "../../../../shared/ui-components/molecules/select-coach/select-coach.component";
+import { SelectStaffComponent } from "../../../../shared/ui-components/molecules/select-staff/select-staff.component";
 
 @Component({
   selector: "app-book-session-dialog",
@@ -39,7 +39,7 @@ import { SelectCoachComponent } from "../../../../shared/ui-components/molecules
     MatInputModule,
     MatAutocompleteModule,
 
-    SelectCoachComponent,
+    SelectStaffComponent,
   ],
   templateUrl: "./book-session-dialog.component.html",
   styleUrls: ["./book-session-dialog.component.scss"],

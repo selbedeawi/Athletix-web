@@ -48,6 +48,7 @@ export type Database = {
           dateOfBirth: string | null
           email: string
           firstName: string
+          gender: Database["public"]["Enums"]["user-gender"]
           id: string
           isActive: boolean
           isFirstTime: boolean
@@ -55,6 +56,7 @@ export type Database = {
           memberId: string | null
           nationalId: string | null
           phoneNumber: string | null
+          receiptNumber: string | null
           role: Database["public"]["Enums"]["user_role"]
         }
         Insert: {
@@ -62,6 +64,7 @@ export type Database = {
           dateOfBirth?: string | null
           email: string
           firstName: string
+          gender: Database["public"]["Enums"]["user-gender"]
           id: string
           isActive?: boolean
           isFirstTime?: boolean
@@ -69,6 +72,7 @@ export type Database = {
           memberId?: string | null
           nationalId?: string | null
           phoneNumber?: string | null
+          receiptNumber?: string | null
           role?: Database["public"]["Enums"]["user_role"]
         }
         Update: {
@@ -76,6 +80,7 @@ export type Database = {
           dateOfBirth?: string | null
           email?: string
           firstName?: string
+          gender?: Database["public"]["Enums"]["user-gender"]
           id?: string
           isActive?: boolean
           isFirstTime?: boolean
@@ -83,6 +88,7 @@ export type Database = {
           memberId?: string | null
           nationalId?: string | null
           phoneNumber?: string | null
+          receiptNumber?: string | null
           role?: Database["public"]["Enums"]["user_role"]
         }
         Relationships: [
@@ -195,6 +201,7 @@ export type Database = {
           coachId: string | null
           createdAt: string
           id: string
+          sessionId: string | null
           time: string | null
           userMembershipId: string | null
         }
@@ -204,6 +211,7 @@ export type Database = {
           coachId?: string | null
           createdAt?: string
           id?: string
+          sessionId?: string | null
           time?: string | null
           userMembershipId?: string | null
         }
@@ -213,6 +221,7 @@ export type Database = {
           coachId?: string | null
           createdAt?: string
           id?: string
+          sessionId?: string | null
           time?: string | null
           userMembershipId?: string | null
         }
@@ -229,6 +238,13 @@ export type Database = {
             columns: ["coachId"]
             isOneToOne: false
             referencedRelation: "Staff"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "PrivateSessionsBooking_sessionId_fkey"
+            columns: ["sessionId"]
+            isOneToOne: false
+            referencedRelation: "Sessions"
             referencedColumns: ["id"]
           },
           {
@@ -1123,6 +1139,7 @@ export type Database = {
         | "SalesManager"
         | "SessionManager"
         | "Member"
+      "user-gender": "male" | "female"
     }
     CompositeTypes: {
       [_ in never]: never

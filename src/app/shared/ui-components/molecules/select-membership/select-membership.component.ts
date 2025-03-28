@@ -15,7 +15,7 @@ import { TranslocoDirective } from "@jsverse/transloco";
 })
 export class SelectMembershipComponent {
   translationTemplate = input.required<TranslationTemplates>();
-  id = model.required<string>();
+  id = model.required<string | undefined>();
   isRequired = input(true);
   addAllOption = input(false);
   membershipService = inject(MembershipService);
@@ -27,6 +27,7 @@ export class SelectMembershipComponent {
   memberships: Memberships[] = [];
 
   membershipChanged = output<Memberships>();
+  selectedMembership: Memberships | null = null;
   constructor() {
     this.branchesService.currentBranch$
       .pipe(
@@ -56,7 +57,8 @@ export class SelectMembershipComponent {
     const mem = this.memberships.find((m) => m.id === e);
 
     if (mem) {
-      this.membershipChanged.emit(structuredClone(mem));
+      this.selectedMembership = structuredClone(mem);
+      this.membershipChanged.emit(this.selectedMembership);
     }
   }
   ngOnDestroy(): void {

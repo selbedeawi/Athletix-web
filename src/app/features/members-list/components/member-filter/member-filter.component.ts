@@ -10,7 +10,7 @@ import { MatButtonModule } from "@angular/material/button";
 import { TranslocoDirective } from "@jsverse/transloco";
 import { SelectMembershipComponent } from "../../../../shared/ui-components/molecules/select-membership/select-membership.component";
 import { DatePickerComponent } from "../../../../shared/ui-components/atoms/date-picker/date-picker.component";
-import { MemberAccount } from "../../models/member";
+import { AllMembersFilter, MemberAccount } from "../../models/member";
 
 @Component({
   selector: "app-member-filter",
@@ -29,15 +29,10 @@ import { MemberAccount } from "../../models/member";
 export class MemberFilterComponent {
   translationTemplate: TranslationTemplates = TranslationTemplates.MEMBERSHIP;
   memberService = inject(MemberService);
-  filters: {
-    searchQuery?: string;
-    branchId?: string;
-    membershipId: string;
-    type?: "Individual" | "PrivateCoach" | "SessionBased";
-    endDateFrom?: string;
-    endDateTo?: string;
-  } = {
+  filters: AllMembersFilter = {
     membershipId: "",
+    isActive: true,
+    isCanceled: false,
   };
 
   bridgesInputType = BridgesInputType;

@@ -36,6 +36,21 @@
     <mat-card-content class="d-flex row gx-3 gy-1">
       <div class="col-12 col-md-6 d-flex flex-column mb-2">
         <span class="mat-title-medium primary-color">{{
+          t("ACTIVE_START_DATE")
+        }}</span>
+
+        <span class="mat-body-large">{{ membership.startDate | date }}</span>
+      </div>
+      <div class="col-12 col-md-6 d-flex flex-column mb-2">
+        <span class="mat-title-medium primary-color">{{
+          t("ACTIVE_END_DATE")
+        }}</span>
+
+        <span class="mat-body-large">{{ membership.endDate | date }}</span>
+      </div>
+
+      <div class="col-12 col-md-6 d-flex flex-column mb-2">
+        <span class="mat-title-medium primary-color">{{
           t("PRICE_PAID")
         }}</span>
 
@@ -48,17 +63,13 @@
           t("FREEZE_PERIOD")
         }}</span>
 
-        <span class="mat-body-large"> {{ membership.freezePeriod }} Day </span>
+        <span class="mat-body-large"
+          >{{ membership.remainingFreezePeriod }} out of
+          {{ membership.freezePeriod }} Day
+        </span>
       </div>
-      <div class="col-12 col-md-6 d-flex flex-column mb-2">
-        <span class="mat-title-medium primary-color">{{
-          t("FREEZE_PERIOD")
-        }}</span>
 
-        <span class="mat-body-large"> {{ membership.freezePeriod }} Day </span>
-      </div>
-      @if(membership.type === 'SessionBased' ||membership.type ===
-      'PrivateCoach'){
+      @if(membership.type === 'SessionBased' ){
       <div class="col-12 col-md-6 d-flex flex-column mb-2">
         <span class="mat-title-medium primary-color">{{
           t("NUMBER_OF_SESSIONS")
@@ -68,6 +79,48 @@
           {{ membership.numberOfSessions }}
         </span>
       </div>
+      <div class="col-12 col-md-6 d-flex flex-column mb-2">
+        <span class="mat-title-medium primary-color">{{
+          t("A_REMAINING_SESSIONS")
+        }}</span>
+
+        <span class="mat-body-large">
+          {{ membership.remainingGroupSessions }}
+        </span>
+      </div>
+
+      } @else if(membership.type === 'PrivateCoach'){
+
+      <div class="col-12 col-md-6 d-flex flex-column mb-2">
+        <span class="mat-title-medium primary-color">{{
+          t("COACH_NAME")
+        }}</span>
+
+        <span class="mat-body-large">
+          {{ membership.coach.firstName }} {{ membership.coach.lastName }}
+        </span>
+      </div>
+
+      <div class="col-12 col-md-6 d-flex flex-column mb-2">
+        <span class="mat-title-medium primary-color">{{
+          t("A_NUMBER_OF_PTSESSIONS")
+        }}</span>
+
+        <span class="mat-body-large">
+          {{ membership.numberOfPersonalTrainer }}
+        </span>
+      </div>
+
+      <div class="col-12 col-md-6 d-flex flex-column mb-2">
+        <span class="mat-title-medium primary-color">{{
+          t("A_REMAINING_PT_SESSIONS")
+        }}</span>
+
+        <span class="mat-body-large">
+          {{ membership.remainingPTSessions }}
+        </span>
+      </div>
+
       }@else if(membership.type === 'Individual'){
       <div class="col-12 col-md-6 d-flex flex-column mb-2">
         <span class="mat-title-medium primary-color">{{

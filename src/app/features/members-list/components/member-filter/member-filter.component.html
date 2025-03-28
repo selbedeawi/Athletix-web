@@ -24,20 +24,6 @@
         { key: t('SESSION_BASED'), value: 'SessionBased' }
       ]"
     ></brdgs-select>
-
-    <brdgs-date-picker
-      class="col-12 col-md-4"
-      [label]="t('RENEWAL_DATE')"
-      [(value)]="filters.endDateFrom"
-      [isRequired]="false"
-    ></brdgs-date-picker>
-    <brdgs-date-picker
-      class="col-12 col-md-4"
-      [label]="t('RENEWAL_DATE')"
-      [(value)]="filters.endDateTo"
-      [isRequired]="false"
-    ></brdgs-date-picker>
-
     <app-select-membership
       class="col-12 col-md-4"
       [(id)]="filters.membershipId"
@@ -46,7 +32,80 @@
       [addAllOption]="true"
     >
     </app-select-membership>
+    <brdgs-date-picker
+      class="col-12 col-md-4"
+      [label]="t('RENEWAL_DATE_FROM')"
+      [(value)]="filters.endDateFrom"
+      [isRequired]="false"
+      [datePickerMax]="filters.endDateTo || ''"
+    ></brdgs-date-picker>
+    <brdgs-date-picker
+      class="col-12 col-md-4"
+      [label]="t('RENEWAL_DATE_TO')"
+      [(value)]="filters.endDateTo"
+      [isRequired]="false"
+      [datePickerMin]="filters.endDateFrom || ''"
+    ></brdgs-date-picker>
 
+    <brdgs-date-picker
+      class="col-12 col-md-4"
+      [label]="t('CREATED_DATE_FROM')"
+      [(value)]="filters.createdFrom"
+      [isRequired]="false"
+      [datePickerMax]="filters.createdTo || ''"
+    ></brdgs-date-picker>
+    <brdgs-date-picker
+      class="col-12 col-md-4"
+      [label]="t('CREATED_DATE_TO')"
+      [(value)]="filters.createdTo"
+      [isRequired]="false"
+      [datePickerMin]="filters.createdFrom || ''"
+    ></brdgs-date-picker>
+
+    <brdgs-select
+      class="col-12 col-md-4"
+      [label]="t('FILTER_IS_ACTIVE')"
+      [(value)]="filters.isActive"
+      [isRequired]="false"
+      [options]="[
+        { key: t('ALL'), value: 'All' },
+        { key: t('ACTIVE'), value: true },
+        { key: t('IN_ACTIVE'), value: false }
+      ]"
+    ></brdgs-select>
+    <brdgs-select
+      class="col-12 col-md-4"
+      [label]="t('FILTER_IS_ACTIVE_USER')"
+      [(value)]="filters.isActiveUser"
+      [isRequired]="false"
+      [options]="[
+        { key: t('ALL'), value: 'All' },
+        { key: t('ACTIVE'), value: true },
+        { key: t('IN_ACTIVE'), value: false }
+      ]"
+    ></brdgs-select>
+    <brdgs-select
+      class="col-12 col-md-4"
+      [label]="t('FILTER_IS_CANCELED')"
+      [(value)]="filters.isCanceled"
+      [isRequired]="false"
+      [options]="[
+        { key: t('ALL'), value: 'All' },
+        { key: t('YES_CANCELED'), value: true },
+        { key: t('NO_CANCELED'), value: false }
+      ]"
+    ></brdgs-select>
+    <brdgs-select
+      class="col-12 col-md-4"
+      [label]="t('FILTER_IS_FREEZE')"
+      [(value)]="filters.isFreeze"
+      [isRequired]="false"
+      [options]="[
+        { key: t('ALL'), value: 'All' },
+        { key: t('YES_FREEZE'), value: true },
+        { key: t('NO_FREEZE'), value: false }
+      ]"
+    ></brdgs-select>
     <div class="col-auto ms-auto d-flex flex-wrap">
       <div>
         <button

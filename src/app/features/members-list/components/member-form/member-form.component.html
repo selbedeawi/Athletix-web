@@ -7,6 +7,18 @@
     </mat-card-header>
 
     <mat-card-content class="d-flex row gx-3 gy-1">
+      @if(member().id){
+      <brdgs-input
+        class="col-12 col-md-6"
+        [label]="t('MEMBER_ID')"
+        [(value)]="member().memberId"
+        [isRequired]="true"
+        [type]="bridgesInputType.TEXT"
+        [isDisabled]="true"
+      ></brdgs-input>
+      <div class="col-12 col-md-6"></div>
+      }
+
       <brdgs-input
         class="col-12 col-md-6"
         [label]="t('FIRST_NAME')"
@@ -21,7 +33,16 @@
         [isRequired]="true"
         [type]="bridgesInputType.TEXT"
       ></brdgs-input>
-
+      <brdgs-select
+        class="col-12 col-md-6"
+        [label]="t('GENDER')"
+        [(value)]="member().gender"
+        [isRequired]="false"
+        [options]="[
+          { key: t('MALE'), value: 'male' },
+          { key: t('FEMALE'), value: 'female' }
+        ]"
+      ></brdgs-select>
       <brdgs-input
         class="col-12 col-md-6"
         [label]="t('NATIONAL_ID')"
@@ -36,14 +57,13 @@
         [(value)]="member().dateOfBirth"
         [isRequired]="true"
       ></brdgs-date-picker>
-
-      <!-- <brdgs-input
+      <brdgs-input
         class="col-12 col-md-6"
-        [label]="t('MEMBER_ID')"
-        [(value)]="member().memberId"
-        [isRequired]="true"
+        [label]="t('RECEIPT_NUMBER')"
+        [(value)]="member().receiptNumber"
+        [isRequired]="false"
         [type]="bridgesInputType.TEXT"
-      ></brdgs-input> -->
+      ></brdgs-input>
     </mat-card-content>
   </mat-card>
 
