@@ -134,6 +134,8 @@ export class MemberActiveMembershipComponent implements OnInit {
         const membership = structuredClone(m);
 
         delete (membership as any)?.Members;
+        delete (membership as any)?.coach;
+        delete (membership as any)?.salesStaff;
         membership.isActive = false;
         membership.isCanceled = true;
         this.userMembershipService.updateUserMembership(

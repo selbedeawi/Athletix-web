@@ -86,11 +86,15 @@ export class MemberMembershipFormComponent {
       pricePaid: membership.amountAfterDiscount,
 
       remainingFreezePeriod: membership.freezePeriod,
-      remainingGroupSessions: membership.numberOfSessions ?? null,
+      remainingGroupSessions: membership.type === "SessionBased"
+        ? membership.numberOfSessions
+        : null,
       remainingInBody: membership.inBodyCount ?? 0,
       remainingInvitations: membership.numberOfInvitations ?? 0,
       remainingPersonalTrainer: membership.personalTrainerCount ?? 0,
-      remainingPTSessions: membership.numberOfSessions ?? null,
+      remainingPTSessions: membership.type === "PrivateCoach"
+        ? membership.numberOfSessions
+        : null,
       remainingVisits: membership.numberOfVisits ?? 0,
       salesId: extra.salesId ?? null,
       startDate: start,
