@@ -108,6 +108,9 @@ export class BookedSessionsService {
     if (filters.sessionId) {
       query = query.eq("sessionId", filters.sessionId);
     }
+    if (filters.scheduledSessionId) {
+      query = query.eq("scheduledSessionId", filters.scheduledSessionId);
+    }
 
     // Filter by branch ID (using the alias from UserSessions in the view).
     if (filters.branchId) {

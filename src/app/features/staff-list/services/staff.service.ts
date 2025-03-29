@@ -101,8 +101,9 @@ export class StaffService {
           );
 
           if (filters.name) {
-            query = query.ilike("firstName", `%${filters.name}%`);
-            query = query.ilike("lastName", `%${filters.name}%`);
+            query.or(
+              `firstName.ilike.%${filters.name}%,lastName.ilike.%${filters.name}%`,
+            );
           }
           if (filters.isActive !== undefined && filters.isActive !== "All") {
             query = query.eq("isActive", filters.isActive);
@@ -129,8 +130,9 @@ export class StaffService {
     );
 
     if (filters.name) {
-      query = query.ilike("firstName", `%${filters.name}%`);
-      query = query.ilike("lastName", `%${filters.name}%`);
+      query = query.or(
+        `firstName.ilike.%${filters.name}%,lastName.ilike.%${filters.name}%`,
+      );
     }
     if (filters.isActive !== undefined && filters.isActive !== "All") {
       query = query.eq("isActive", filters.isActive);

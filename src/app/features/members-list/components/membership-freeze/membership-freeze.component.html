@@ -14,9 +14,9 @@
           {{ t("MEMBERSHIP_DETAILS") }}
         </h5>
         <div class="col-12 col-md-4 d-flex flex-column mb-2">
-          <span class="mat-label-large primary-color">{{
-            t("MEMBER_NAME")
-          }}</span>
+          <span class="mat-label-large primary-color">
+            {{ t("MEMBER_NAME") }}
+          </span>
 
           <span class="mat-body-large">
             {{ membership().Members.firstName }}
@@ -24,18 +24,18 @@
           </span>
         </div>
         <div class="col-12 col-md-4 d-flex flex-column mb-2">
-          <span class="mat-label-large primary-color">{{
-            t("MEMBERSHIP_TYPE")
-          }}</span>
+          <span class="mat-label-large primary-color">
+            {{ t("MEMBERSHIP_TYPE") }}
+          </span>
 
           <span class="mat-body-large">
             {{ membership().name }}
           </span>
         </div>
         <div class="col-12 col-md-4 d-flex flex-column mb-2">
-          <span class="mat-label-large primary-color">{{
-            t("REMAINING_FREEZE_PERIOD")
-          }}</span>
+          <span class="mat-label-large primary-color">
+            {{ t("REMAINING_FREEZE_PERIOD") }}
+          </span>
 
           <span class="mat-body-large">
             {{ membership().remainingFreezePeriod }} Days
