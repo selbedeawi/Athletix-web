@@ -42,7 +42,9 @@ export class InputComponent {
   // Input properties
   public isRequired = input.required<boolean>();
   public label = input.required<string>();
-  public type = input.required<BridgesInputType>();
+  public type = input.required<
+    "text" | "number" | "email" | "tel" | "password" | "postalCode"
+  >();
   public isDisabled = input<boolean>(false);
   public placeholder = input<string>();
   public prefix = input<string>();
@@ -51,7 +53,8 @@ export class InputComponent {
   public value = model<string | number | null>();
 
   public allowValidation = input(true);
-
+  min = input<number | null>(null);
+  max = input<number | null>(null);
   private patterns: Record<BridgesInputType, RegExp | string> = {
     [BridgesInputType.TEXT]: null as any,
     [BridgesInputType.NUMBER]: /^[0-9]*$/,
@@ -68,6 +71,14 @@ export class InputComponent {
       const validationArray = [Validators.pattern(this.patterns[currentType])];
       if (this.isRequired()) {
         validationArray.push(Validators.required);
+      }
+      const max = this.max();
+      if (max) {
+        validationArray.push(Validators.max(max));
+      }
+      const min = this.min();
+      if (min) {
+        validationArray.push(Validators.min(min));
       }
       this.ngModel()?.control.setValidators(validationArray);
     }

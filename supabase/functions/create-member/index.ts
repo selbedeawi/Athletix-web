@@ -91,11 +91,12 @@ serve(async (req) => {
       phoneNumber,
       dateOfBirth,
       nationalId,
+      gender,
     } = await req.json();
 
-    if (!firstName || !lastName || !email || !password) {
+    if (!firstName || !lastName || !email || !password || !gender) {
       throw new Error(
-        "Missing required fields (firstName, lastName, email, password)",
+        "Missing required fields (firstName, lastName, email, password, gender)",
       );
     }
 
@@ -119,6 +120,7 @@ serve(async (req) => {
       lastName,
       phoneNumber,
       dateOfBirth,
+      gender,
       nationalId,
       createdBy: requestingUser.id,
       isActive: true,

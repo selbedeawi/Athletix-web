@@ -19,7 +19,7 @@ export class MemberAccount implements Tables<"Members"> {
   email!: string;
 
   gender!: "male" | "female";
-  receiptNumber!: string | null;
+
   isActive!: boolean;
   createdBy!: string;
   //FE
@@ -74,10 +74,11 @@ export class UserMembership implements Tables<"UserMembership"> {
   freezeStart!: string | null;
   isCanceled!: boolean;
   isFreeze!: boolean;
+  receiptNumber!: string | null;
 
   // FE only
   Members!: MemberAccount;
-  coach!: StaffAccount;
+  coach?: StaffAccount;
   salesStaff!: StaffAccount;
 }
 

@@ -51,25 +51,33 @@
       <brdgs-date-picker
         class="col-12 col-md-6"
         [label]="t('FREEZE_START')"
-        [(value)]="membership().freezeStart"
+        [(value)]="freezeData.freezeStart"
         [isRequired]="true"
         [datePickerMin]="membership().startDate"
         [datePickerMax]="membership().freezeEnd"
       ></brdgs-date-picker>
 
-      <brdgs-date-picker
+      <brdgs-input
         class="col-12 col-md-6"
-        [label]="t('FREEZE_END')"
-        [(value)]="membership().freezeEnd"
+        [label]="t('freezeDaysCount')"
+        [(value)]="freezeData.freezeDaysCount"
         [isRequired]="true"
-        [datePickerMin]="membership().freezeStart"
-        [datePickerMax]="membership().endDate"
-      ></brdgs-date-picker>
+        [type]="'number'"
+        [max]="maxFreezeDaysCount"
+        [min]="1"
+      ></brdgs-input>
     </div>
   </mat-dialog-content>
 
   <mat-dialog-actions>
     <button mat-button matDialogClose type="button">{{ t("CLOSE") }}</button>
-    <button mat-flat-button type="submit">{{ t("FREEZE_MEMBERSHIP") }}</button>
+    <button
+      cdkFocusInitial
+      mat-flat-button
+      type="submit"
+      [disabled]="memberForm.invalid"
+    >
+      {{ t("FREEZE_MEMBERSHIP") }}
+    </button>
   </mat-dialog-actions>
 </form>

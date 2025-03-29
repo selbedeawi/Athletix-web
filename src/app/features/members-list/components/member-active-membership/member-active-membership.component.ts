@@ -78,42 +78,56 @@ export class MemberActiveMembershipComponent implements OnInit {
       );
   }
   unFreeze(m: UserMembership) {
-    const membership = structuredClone(m);
-    const now = new Date();
-    delete (membership as any)?.Members;
+    this.dialog.open(ConfirmDeleteComponent, {
+      data: {
+        translationTemplate: this.translationTemplate,
+        content: `CONFIRM_UNFREEZE_MEMBERSHIP_OVERLAY_CONTENT`,
+        headerText: `CONFIRM_UNFREEZE_MEMBERSHIP_OVERLAY_HEDER`,
+      },
+    }).afterClosed().subscribe((res) => {
+      const membership = structuredClone(m);
+      const now = new Date();
+      delete (membership as any)?.Members;
+      delete (membership as any)?.salesStaff;
+      delete (membership as any)?.coach;
+      if (membership.freezeStart && membership.remainingFreezePeriod) {
+        const freezeStartDate = new Date(membership.freezeStart);
+        // Calculate elapsed freeze time in whole days
+        const elapsedDays = freezeStartDate > now ? 0 : Math.floor(
+          (now.getTime() - freezeStartDate.getTime()) / (24 * 60 * 60 * 1000),
+        );
 
-    if (membership.freezeStart && membership.remainingFreezePeriod) {
-      const freezeStartDate = new Date(membership.freezeStart);
-      // Calculate elapsed freeze time in whole days
-      const elapsedDays = freezeStartDate > now ? 0 : Math.floor(
-        (now.getTime() - freezeStartDate.getTime()) / (24 * 60 * 60 * 1000),
-      );
+        // Use the current remainingFreezePeriod if already partially used,
+        // otherwise use the full freezePeriod.
+        const currentRemaining = membership.remainingFreezePeriod;
+        const newRemaining = currentRemaining - elapsedDays;
+        membership.remainingFreezePeriod = newRemaining > 0 ? newRemaining : 0;
 
-      // Use the current remainingFreezePeriod if already partially used,
-      // otherwise use the full freezePeriod.
-      const currentRemaining = membership.remainingFreezePeriod;
-      const newRemaining = currentRemaining - elapsedDays;
-      membership.remainingFreezePeriod = newRemaining > 0 ? newRemaining : 0;
+        // Clear freeze fields
+        membership.isFreeze = false;
+        membership.freezeStart = null;
+        membership.freezeEnd = null;
 
-      // Clear freeze fields
-      membership.isFreeze = false;
-      membership.freezeStart = null;
-      membership.freezeEnd = null;
-
-      this.userMembershipService.updateUserMembership(membership.id, membership)
-        .subscribe((res) => {
-          if (res) {
-            this.snackbarService.success("UNFREEZE_MEMBERSHIP_SUCCESS");
-            this.getUserMembership();
-          }
-        });
-    }
+        this.userMembershipService.updateUserMembership(
+          membership.id,
+          membership,
+        )
+          .subscribe((res) => {
+            if (res) {
+              this.snackbarService.success("UNFREEZE_MEMBERSHIP_SUCCESS");
+              this.getUserMembership();
+            }
+          });
+      }
+    });
   }
 
   cancel(m: UserMembership) {
     this.dialog.open(ConfirmDeleteComponent, {
       data: {
         translationTemplate: this.translationTemplate,
+        content: `CONFIRM_CANCEL_MEMBERSHIP_OVERLAY_CONTENT`,
+        headerText: `CONFIRM_CANCEL_MEMBERSHIP_OVERLAY_HEDER`,
       },
     }).afterClosed().subscribe((res) => {
       if (res) {
@@ -128,12 +142,11 @@ export class MemberActiveMembershipComponent implements OnInit {
         )
           .subscribe((res) => {
             if (res) {
-              this.snackbarService.success("UNFREEZE_MEMBERSHIP_SUCCESS");
+              this.snackbarService.success("CANCEL_MEMBERSHIP_SUCCESS");
               this.getUserMembership();
             }
           });
       }
-      console.log(res);
     });
   }
 }

@@ -56,7 +56,6 @@ export type Database = {
           memberId: string | null
           nationalId: string | null
           phoneNumber: string | null
-          receiptNumber: string | null
           role: Database["public"]["Enums"]["user_role"]
         }
         Insert: {
@@ -72,7 +71,6 @@ export type Database = {
           memberId?: string | null
           nationalId?: string | null
           phoneNumber?: string | null
-          receiptNumber?: string | null
           role?: Database["public"]["Enums"]["user_role"]
         }
         Update: {
@@ -88,7 +86,6 @@ export type Database = {
           memberId?: string | null
           nationalId?: string | null
           phoneNumber?: string | null
-          receiptNumber?: string | null
           role?: Database["public"]["Enums"]["user_role"]
         }
         Relationships: [
@@ -532,6 +529,7 @@ export type Database = {
           numberOfSessions: number | null
           numberOfVisits: number
           pricePaid: number
+          receiptNumber: string | null
           remainingFreezePeriod: number | null
           remainingGroupSessions: number | null
           remainingInBody: number
@@ -571,6 +569,7 @@ export type Database = {
           numberOfSessions?: number | null
           numberOfVisits?: number
           pricePaid: number
+          receiptNumber?: string | null
           remainingFreezePeriod?: number | null
           remainingGroupSessions?: number | null
           remainingInBody?: number
@@ -610,6 +609,7 @@ export type Database = {
           numberOfSessions?: number | null
           numberOfVisits?: number
           pricePaid?: number
+          receiptNumber?: string | null
           remainingFreezePeriod?: number | null
           remainingGroupSessions?: number | null
           remainingInBody?: number

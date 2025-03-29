@@ -1,4 +1,5 @@
 import { Tables } from "../../../../../database.types";
+import { AccountType } from "../../../core/enums/account-type-enum";
 
 export class StaffAccount implements Tables<"Staff"> {
   firstName: string;
@@ -6,7 +7,7 @@ export class StaffAccount implements Tables<"Staff"> {
   isActive: boolean;
   lastName: string;
   phoneNumber: string | null;
-  role: "Sales" | "Receptionist" | "Coach" | "SalesManager" | "SessionManager";
+  role: AccountType;
 
   email: string;
   password!: string;
@@ -20,19 +21,13 @@ export class StaffAccount implements Tables<"Staff"> {
   }[];
 
   constructor(
-    role:
-      | "Sales"
-      | "Receptionist"
-      | "Coach"
-      | "SalesManager"
-      | "SessionManager",
+    role: AccountType,
   ) {
     this.firstName = "";
     this.lastName = "";
     this.email = "";
     this.phoneNumber = "";
     this.role = role;
-
     this.isActive = true;
     this.branchIds = [];
   }

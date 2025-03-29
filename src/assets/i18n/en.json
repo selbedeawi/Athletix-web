@@ -19,7 +19,7 @@
   },
   "Global": {
     "FIELD_INVALID_text_FORMAT": "Invalid text format",
-    "FIELD_INVALID_number_FORMAT": "Invalid number format",
+    "FIELD_INVALID_number_FORMAT": "Invalid number",
     "FIELD_INVALID_email_FORMAT": "Invalid email format",
     "FIELD_IS_REQUIRED": "This field is required"
   },
