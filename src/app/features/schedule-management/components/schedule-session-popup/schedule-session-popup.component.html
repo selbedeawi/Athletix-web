@@ -58,6 +58,7 @@
             color="primary"
             class="mb-3 mt-1 mb-md-0"
             type="button"
+            [disabled]="!selectedMember()"
             (click)="scheduleSession()"
           >
             {{ t("SCHEDULE_A_SESSION") }}

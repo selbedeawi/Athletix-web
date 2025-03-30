@@ -43,7 +43,7 @@ export class BookSessionsFillterComponent {
 
   filter: BookedSessionFilter = {
     searchKey: "",
-    scheduledDateFrom: null,
+    scheduledDateFrom: new Date() as any,
     scheduledTimeFrom: null,
     scheduledDateTo: null,
     scheduledTimeTo: null,

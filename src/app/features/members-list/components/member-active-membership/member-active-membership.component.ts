@@ -96,7 +96,10 @@ export class MemberActiveMembershipComponent implements OnInit {
         const elapsedDays = freezeStartDate > now ? 0 : Math.floor(
           (now.getTime() - freezeStartDate.getTime()) / (24 * 60 * 60 * 1000),
         );
-
+        // Update membership endDate by extending it with the elapsed freeze days
+        const currentEndDate = new Date(membership.endDate);
+        currentEndDate.setDate(currentEndDate.getDate() + elapsedDays);
+        membership.endDate = this.formatDate(currentEndDate);
         // Use the current remainingFreezePeriod if already partially used,
         // otherwise use the full freezePeriod.
         const currentRemaining = membership.remainingFreezePeriod;
@@ -150,5 +153,12 @@ export class MemberActiveMembershipComponent implements OnInit {
           });
       }
     });
+  }
+  private formatDate(date: Date): string {
+    const year = date.getFullYear();
+    // Months are 0-based so we add 1
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    return `${year}-${month}-${day}`;
   }
 }

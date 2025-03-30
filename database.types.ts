@@ -198,7 +198,6 @@ export type Database = {
           coachId: string | null
           createdAt: string
           id: string
-          sessionId: string | null
           time: string | null
           userMembershipId: string | null
         }
@@ -208,7 +207,6 @@ export type Database = {
           coachId?: string | null
           createdAt?: string
           id?: string
-          sessionId?: string | null
           time?: string | null
           userMembershipId?: string | null
         }
@@ -218,7 +216,6 @@ export type Database = {
           coachId?: string | null
           createdAt?: string
           id?: string
-          sessionId?: string | null
           time?: string | null
           userMembershipId?: string | null
         }
@@ -235,13 +232,6 @@ export type Database = {
             columns: ["coachId"]
             isOneToOne: false
             referencedRelation: "Staff"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "PrivateSessionsBooking_sessionId_fkey"
-            columns: ["sessionId"]
-            isOneToOne: false
-            referencedRelation: "Sessions"
             referencedColumns: ["id"]
           },
           {
@@ -525,7 +515,7 @@ export type Database = {
           name: string
           numberOfInBody: number
           numberOfInvitations: number
-          numberOfPersonalTrainer: number
+          numberOfPersonalTrainer: number | null
           numberOfSessions: number | null
           numberOfVisits: number
           pricePaid: number
@@ -535,7 +525,6 @@ export type Database = {
           remainingInBody: number
           remainingInvitations: number
           remainingPersonalTrainer: number
-          remainingPTSessions: number | null
           remainingVisits: number
           salesId: string | null
           startDate: string
@@ -565,7 +554,7 @@ export type Database = {
           name: string
           numberOfInBody?: number
           numberOfInvitations?: number
-          numberOfPersonalTrainer?: number
+          numberOfPersonalTrainer?: number | null
           numberOfSessions?: number | null
           numberOfVisits?: number
           pricePaid: number
@@ -575,7 +564,6 @@ export type Database = {
           remainingInBody?: number
           remainingInvitations?: number
           remainingPersonalTrainer?: number
-          remainingPTSessions?: number | null
           remainingVisits?: number
           salesId?: string | null
           startDate: string
@@ -605,7 +593,7 @@ export type Database = {
           name?: string
           numberOfInBody?: number
           numberOfInvitations?: number
-          numberOfPersonalTrainer?: number
+          numberOfPersonalTrainer?: number | null
           numberOfSessions?: number | null
           numberOfVisits?: number
           pricePaid?: number
@@ -615,7 +603,6 @@ export type Database = {
           remainingInBody?: number
           remainingInvitations?: number
           remainingPersonalTrainer?: number
-          remainingPTSessions?: number | null
           remainingVisits?: number
           salesId?: string | null
           startDate?: string
@@ -861,7 +848,6 @@ export type Database = {
           remainingInBody: number | null
           remainingInvitations: number | null
           remainingPersonalTrainer: number | null
-          remainingPTSessions: number | null
           remainingVisits: number | null
           salesId: string | null
           scheduled_session_branchid: string | null
