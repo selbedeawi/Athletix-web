@@ -6,7 +6,6 @@ import { MatCheckboxModule } from "@angular/material/checkbox";
 import { TranslationTemplates } from "../../../../shared/enums/translation-templates-enum";
 import { APP_ROUTES } from "../../../../core/enums/pages-urls-enum";
 import { BridgesInputType } from "../../../../shared/ui-components/atoms/input/enum/bridges-input-type.enum";
-import { LookupService } from "../../../../core/services/lookup/lookup.service";
 import { DatePickerComponent } from "../../../../shared/ui-components/atoms/date-picker/date-picker.component";
 import { MatDialogRef } from "@angular/material/dialog";
 import { TimePickerComponent } from "../../../../shared/ui-components/atoms/time-picker/time-picker.component";
@@ -14,17 +13,11 @@ import {
   PrivateSessionsBookingInsert,
   PrivateSessionsBookingService,
 } from "../../services/pt-sessions.service";
-import { MatFormFieldModule } from "@angular/material/form-field";
-import { MatInputModule } from "@angular/material/input";
-import { MatAutocompleteModule } from "@angular/material/autocomplete";
-import { debounceTime, filter, finalize, Subject, takeUntil } from "rxjs";
-import { MemberAccount } from "../../../members-list/models/member";
-import { MemberService } from "../../../members-list/services/member.service";
-import { SelectComponent } from "../../../../shared/ui-components/atoms/select/select.component";
-import { StaffService } from "../../../staff-list/services/staff.service";
+import { filter, Subject, takeUntil } from "rxjs";
 import { BranchesService } from "../../../../core/services/branches/branches.service";
 import { SnackbarService } from "../../../../core/services/snackbar/snackbar.service";
 import { SelectStaffComponent } from "../../../../shared/ui-components/molecules/select-staff/select-staff.component";
+import { SelectMemberComponent } from "../../../../shared/ui-components/molecules/select-member/select-member.component";
 
 @Component({
   selector: "app-book-session-dialog",
@@ -35,11 +28,9 @@ import { SelectStaffComponent } from "../../../../shared/ui-components/molecules
     MatCheckboxModule,
     DatePickerComponent,
     TimePickerComponent,
-    MatFormFieldModule,
-    MatInputModule,
-    MatAutocompleteModule,
 
     SelectStaffComponent,
+    SelectMemberComponent,
   ],
   templateUrl: "./book-session-dialog.component.html",
   styleUrls: ["./book-session-dialog.component.scss"],
@@ -49,7 +40,7 @@ export class BookSessionDialogComponent implements OnInit, OnDestroy {
   private privateBookingService = inject(PrivateSessionsBookingService);
 
   private dialogRef = inject(MatDialogRef<BookSessionDialogComponent>);
-  memberService = inject(MemberService);
+
   branchesService = inject(BranchesService);
   snackbarService = inject(SnackbarService);
 
@@ -58,9 +49,7 @@ export class BookSessionDialogComponent implements OnInit, OnDestroy {
   bridgesInputType = BridgesInputType;
 
   privateSession: PrivateSessionsBookingInsert = {};
-  selectedMember: MemberAccount | undefined;
 
-  memberOptions = signal<MemberAccount[]>([]);
   branchId!: string;
 
   loading = signal(false);
@@ -78,17 +67,11 @@ export class BookSessionDialogComponent implements OnInit, OnDestroy {
       .subscribe((branch) => {
         this.branchId = branch.id;
         this.privateSession.branchId = branch.id;
-
-        this.getAllMembers("");
       });
   }
 
   ngOnInit(): void {
     // Initialization logic if needed.
-  }
-
-  displayFn(user: MemberAccount): string {
-    return user ? `${user.firstName} ${user.lastName}` : "";
   }
 
   createPrivateSessionBooking(): void {
@@ -110,27 +93,6 @@ export class BookSessionDialogComponent implements OnInit, OnDestroy {
     const month = date.getMonth() + 1;
     const day = date.getDate();
     return `${year}-${month}-${day}`;
-  }
-
-  getAllMembers(searchQuery: string): void {
-    this.loading.set(true);
-    this.memberService.getAllMembers({
-      searchQuery,
-      branchId: this.branchId,
-      isActive: true,
-      type: "PrivateCoach",
-    })
-      .pipe(
-        debounceTime(250),
-        finalize(() => this.loading.set(false)),
-      )
-      .subscribe((res) => {
-        if (res.data) {
-          console.log(res.data);
-
-          this.memberOptions.set(res.data);
-        }
-      });
   }
 
   closeDialog(): void {

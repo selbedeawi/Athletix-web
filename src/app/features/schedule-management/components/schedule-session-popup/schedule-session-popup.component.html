@@ -8,22 +8,13 @@
         {{ t("SEARCH_MEMBER") }}
       </p>
       <form>
-        <brdgs-input
-          [label]="t('SEARCH_LABEL')"
-          [prefix]="'icon-search'"
-          [type]="bridgesInputType.TEXT"
-          [isRequired]="false"
-          [(value)]="filters.searchQuery"
-          (valueChange)="getAll()"
-        ></brdgs-input>
-        @for (member of members() ; track member) {
-        <mat-option
-          class="bg-surface-bright"
-          [value]="member"
-          (click)="setMember(member)"
-          >{{ member.firstName }} {{ member.lastName }}</mat-option
+        <app-select-member
+          class="col-12"
+          (selectedMemberChange)="setMember($event)"
+          [types]="['Individual', 'SessionBased']"
         >
-        }
+        </app-select-member>
+
         <div class="mt-2 row">
           @if ( selectedMember()) {
           <div class="col-8 p-1">

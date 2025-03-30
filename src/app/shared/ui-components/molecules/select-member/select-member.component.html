@@ -1,0 +1,37 @@
+<mat-form-field class="w-100">
+  <mat-label>{{ label() }}</mat-label>
+  <input
+    type="text"
+    placeholder="Search by member name"
+    aria-label="Member Name"
+    matInput
+    [(ngModel)]="selectedMember"
+    [required]="true"
+    name="memberSearchValue"
+    [matAutocomplete]="auto"
+    (ngModelChange)="searchTerm$.next($event)"
+  />
+  <mat-autocomplete
+    [displayWith]="displayFn"
+    (optionSelected)="selectedMemberChange.emit($event.option.value)"
+    #auto="matAutocomplete"
+  >
+    @for (option of memberOptions$|async; track $index) {
+    <mat-option [value]="option">
+      <div class="d-flex flex-column">
+        <span
+          >{{ option.firstName }} {{ option.lastName }}
+          <span class="mat-body-medium on-secondary-fixed-variant-color">
+            @if(option.UserMembership.type === "PrivateCoach" ){(Remaining
+            {{ option.UserMembership.remainingPTSessions }} )}@else if(
+            option.UserMembership.type === 'SessionBased' ){(Remaining
+            {{ option.UserMembership.remainingGroupSessions }}) }</span
+          >
+        </span>
+        <span class="mat-body-medium on-secondary-fixed-variant-color">{{
+          option.UserMembership.name
+        }}</span>
+      </div> </mat-option
+    >}
+  </mat-autocomplete>
+</mat-form-field>
