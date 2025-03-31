@@ -43,6 +43,10 @@ export class BookedSessionsComponent {
     this.dialog.open(ConfirmDeleteComponent, {
       data: {
         translationTemplate: this.translationTemplate,
+        headerText: "CANCEL_BOOKING_HEADER",
+        content:"CANCEL_BOOKING_CONTENT",
+        cancelText:"NO",
+        okText : "YES"
       },
     }).afterClosed().subscribe((res) => {
       if (res) {

@@ -21,9 +21,17 @@
     "FIELD_INVALID_text_FORMAT": "Invalid text format",
     "FIELD_INVALID_number_FORMAT": "Invalid number",
     "FIELD_INVALID_email_FORMAT": "Invalid email format",
-    "FIELD_IS_REQUIRED": "This field is required"
+    "FIELD_IS_REQUIRED": "This field is required",
+    "FREEZE_MEMBERSHIP_SUCCESS": "Membership Freezed Successfully",
+    "UNFREEZE_MEMBERSHIP_SUCCESS": "Membership Unfreezed Successfully",
+    "CANCEL_MEMBERSHIP_SUCCESS": "Membership Canceled Successfully",
+    "EDIT_STAFF_SUCCESS": "Staff Updated Successfully",
+    "EDIT_MEMBERSHIP_SUCCESS": "Membership Updated Successfully",
+    "EDIT_SESSION_SUCCESS": "Session Updated Successfully",
+    "DELETE_BOOKED_SESSION_SUCCESS" : "Canceled Booking Successfully"
   },
   "Member": {
+    "ADD": "Add Member",
     "PASSWORD": "Password",
     "CONFIRM_PASSWORD": "Confirm Password",
     "PASSWORD_STRENGTH": "Password Strength",
@@ -48,12 +56,13 @@
     "ADD_MEMBER": "Add Member",
     "MEMBER_INFO": "Member Info",
     "STP_ACCOUNT_DETAILS": "Account Details",
-
+    "TITLE" : "Memberships",
     "MEMBER_PROFILE": "Member Profile",
     "MEMBER_MEMBERSHIPS": "Memberships",
     "MEMBER_HISTORY": "History",
     "TITLE_MEMBERSHIP_COUNT": "Membership Count",
-    "CANCEL": "Cancel",
+    "CANCEL": "NO",
+    "CANCEL_MEMBERSHIP":"Cancel",
     "RENEW": "Renew",
     "EDIT": "Edit",
     "PRICE_PAID": "Price Paid",
@@ -64,10 +73,18 @@
     "NUMBER_OF_INBODY": "Number of InBody Analyses",
     "NUMBER_OF_PT": "Number of Personal Training Sessions",
     "NUMBER_OF_SESSIONS": "Number of Sessions",
-
-    "FREEZE_MEMBERSHIP": "Freeze Membership",
+    "MEMBERSHIP_END_DATE": "End Date",
+    "MEMBERSHIP_START": "Start Date",
+    "SELECT_SALES_NAME" : "Sales",
+    "RECEIPT_NUMBER": "Receipt Number",
+    "FREEZE_MEMBERSHIP": "Freeze",
+    "CONFIRM_CANCEL_MEMBERSHIP_OVERLAY_HEDER": "Cancel Membership",
+    "CONFIRM_UNFREEZE_MEMBERSHIP_OVERLAY_HEDER": "Unfreeze Membership",
+    "CONFIRM_UNFREEZE_MEMBERSHIP_OVERLAY_CONTENT" : "Are you sure you want to unfreeze this membership?",
+    "CONFIRM_CANCEL_MEMBERSHIP_OVERLAY_CONTENT" : "Are you sure you want to cancel this membership?",
     "MEMBERSHIP_DETAILS": "Membership Details",
     "MEMBER_NAME": "Member Name",
+    "REMOVE":"Yes",
     "MEMBERSHIP_TYPE": "Membership Type",
     "REMAINING_FREEZE_PERIOD": "Remaining Freeze Period",
     "DETAILS_TITLE": "Edit Member",
@@ -89,7 +106,20 @@
     "SessionBased": "Session Based",
     "TABLE_ISACTIVE": "Inactivate",
     "TD_IS_ISCANCELED": "Canceled",
-    "ADD_NEW": "New Membership"
+    "ADD_NEW": "New Membership",
+    "MALE":"Male",
+    "FEMALE":"Female",
+    "UPDATE_MEMBER": "Update",
+    "ACTIVE_START_DATE": "Start Date",
+    "ACTIVE_END_DATE": "End Date",
+    "ACTIVE_RECEIPT_NUMBER": "Receipt Number",
+    "COACH_NAME": "Coach Name",
+    "A_NUMBER_OF_PTSESSIONS": "Number of sessions",
+    "PrivateCoach": "Personal Trainer",
+    "FREEZE_START" : "Start Date",
+    "freezeDaysCount": "Number of days",
+    "FREEZE_DETAILS": "Freeze details",
+    "UN_FREEZE":"Unfreeze"
   },
   "BookedSession": {
     "TITLE": "Booked Sessions List",
@@ -110,10 +140,16 @@
     "MEMBER_NAME": "Member Name",
     "TABLE_SESSION_NAME": "Session Name",
     "TABLE_START_DATE": "Start Date",
-    "SELECT_SESSION": "Select Session"
+    "SELECT_SESSION": "Select Session",
+    "NO_RESULT_TITLE": "No Result",
+    "CANCEL_BOOKING_HEADER": "Cancel Booking",
+    "CANCEL_BOOKING_CONTENT":"Are you sure you want to cancel booking?",
+    "YES":"Yes",
+    "NO":"No"
+
   },
   "PtSession": {
-    "TITLE": "Private Trainer Sessions List",
+    "TITLE": "Personal Trainer Sessions List",
     "APPLY": "Apply",
     "CANCEL": "Cancel",
     "ALL_SESSIONS": "Select Sessions",
@@ -137,10 +173,15 @@
     "COACH_NAME": "Coach Name",
     "START_DATE": "Start Date",
     "BOOK_SESSION": "Book Session",
-    "ADD_MEMBER": "Add Member",
+    "UPDATE_MEMBER": "UPDATE",
     "SELECT_SESSION": "Select Session",
     "SELECT_COACH": "Select Coach",
-    "SEARCH_LABEL": "Search for member name, ID, phone or email"
+    "SEARCH_LABEL": "Search for member name, ID, phone or email",
+    "CANCEL_BOOKING_HEADER": "Cancel Booking",
+    "CANCEL_BOOKING_CONTENT":"Are you sure you want to cancel booking?",
+    "YES":"Yes",
+    "NO":"No",
+    "NO_RESULT_TITLE":"No Result"
   },
   "ScheduledSession": {
     "TITLE": "Schedule Management",
@@ -171,10 +212,13 @@
     "SESSION_DETAILS": "Session Details",
     "BOOKED_MEMBERS": "Booked Members",
     "DOES_IT_REPEAT": "Does it repeat?",
-    "TODAY": "Today"
+    "TODAY": "Today",
+    "BOOK_A_SESSION":"Book Session",
+    "POPUP_TITLE":"Book Session For Member",
+    "BOOK_MEMBER": "Book"
   },
   "Memberships": {
-    "SEARCH": "Search by member name",
+    "SEARCH": "Search",
     "MEMBERSHIP_TYPE": "Search by MemberShip Type",
     "BRANCHS": "Search by Branch",
     "NAME": "Search by member name",
@@ -182,7 +226,7 @@
     "TABLE_TYPE": "Membership Type",
     "TABLE_BRANCHS": "Branch",
     "EDIT": "Edit",
-    "ADD": "Add Member",
+    "ADD": "Add Membership",
     "BACK": "Back",
     "EDIT_MEMBERSHIP_TITLE": "Edit MemberShip",
     "MEMBERSHIP_DETAILS": "Membership Details",
@@ -199,9 +243,25 @@
     "PRIVATE_COACH": "Private Coach",
     "SESSION_BASED": "Session Based",
     "RENEWAL_DATE": "Renewal Date",
+    "RENEWAL_DATE_FROM" : "Renewal Date From",
+    "RENEWAL_DATE_TO" : "Renewal Date To",
+    "CREATED_DATE_FROM": "Created Date From",
+    "CREATED_DATE_TO" : "Created Date To",
+    "FILTER_IS_ACTIVE": "Membership Status",
+    "FILTER_IS_CANCELED" : "Is Canceled?",
+    "FILTER_IS_FREEZE": "Is Freezed?",
     "MEMBERSHIPS": "Search by MemberShip",
     "RESET": "Reset",
-    "APPLY": "Apply"
+    "APPLY": "Apply",
+    "ALL": "All",
+    "YES_CANCELED": "Yes",
+    "NO_CANCELED": "No",
+    "YES_FREEZE": "Yes",
+    "NO_FREEZE": "No",
+    "ACTIVE" :"Active",
+    "INACTIVE" :"InActive",
+    "TITLE":"Memberships",
+    "NO_RESULT_TITLE":"No Result"
   },
   "Staff": {
     "TITLE": "Staff List",
@@ -228,8 +288,8 @@
     "TD_NOT_ACTIVE": "Inactive",
     "EDIT": "Edit",
     "BACK": "Back",
-    "EDIT_TITLE": "Edit Staff Member",
-    "ADD_TITLE": "Add Staff Member",
+    "EDIT_TITLE": "Edit Staff",
+    "ADD_TITLE": "Add Staff",
     "PERSONAL_DETAILS": "Personal Details",
     "FIRST_NAME": "First Name",
     "LAST_NAME": "Last Name",
@@ -244,7 +304,11 @@
     "PASSWORD_MUST_NOT_CONTAIN_SPACE": "Password must not contain spaces",
     "CONFIRM_PASSWORD": "Confirm Password",
     "PASSWORD_STRENGTH": "Password Strength",
-    "PASSWORD_WK": "Weak Password"
+    "PASSWORD_WK": "Weak Password",
+    "UPDATE":"Update",
+    "DE_ACTIVATE_BTN": "Deactivate",
+    "ACTIVATE_BTN" :"Activate",
+    "NO_RESULT_TITLE":"No Result"
   },
   "Sessions": {
     "TITLE": "Sessions List",
@@ -262,6 +326,9 @@
     "SESSION_NAME": "Session Name",
     "BRANCHES": "All Branches",
     "SESSION_DESCRIPTION": "Session Description",
-    "ADD_SESSION": "Add"
+    "ADD_SESSION": "Add",
+    "UPDATE_SESSION":"Update",
+    "EDIT_SESSION_TITLE":"Edit Session",
+    "NO_RESULT_TITLE":"No Result"
   }
 }
