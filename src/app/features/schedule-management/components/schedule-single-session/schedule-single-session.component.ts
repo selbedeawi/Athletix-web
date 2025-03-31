@@ -15,7 +15,7 @@ import { MatDivider } from "@angular/material/divider";
 import { MatRadioModule } from "@angular/material/radio";
 import { TimePickerComponent } from "../../../../shared/ui-components/atoms/time-picker/time-picker.component";
 import { SessionService } from "../../../sessions-list/services/session.service";
-import { debounceTime, finalize } from "rxjs";
+import { debounceTime, filter, finalize, Subject, takeUntil } from "rxjs";
 import { Sessions } from "../../../sessions-list/models/sessions";
 import {
   ScheduledSessionInsert,
@@ -30,6 +30,7 @@ import { AccountType } from "../../../../core/enums/account-type-enum";
 import { MatDialogModule, MatDialogRef } from "@angular/material/dialog";
 import { SnackbarService } from "../../../../core/services/snackbar/snackbar.service";
 import { addDays, format } from "date-fns";
+import { SelectStaffComponent } from "../../../../shared/ui-components/molecules/select-staff/select-staff.component";
 export interface sessionOption {
   key: string;
   value: string;
@@ -48,6 +49,7 @@ export interface sessionOption {
     MatRadioModule,
     MatOptionModule,
     MatDialogModule,
+    SelectStaffComponent,
   ],
   templateUrl: "./schedule-single-session.component.html",
   styleUrl: "./schedule-single-session.component.scss",
@@ -57,15 +59,14 @@ export class ScheduleSingleSessionComponent {
   private sessionService = inject(SessionService);
   branchService = inject(BranchesService);
   userService = inject(UserService);
-  staffService = inject(StaffService);
+
   dialogRef = inject(MatDialogRef);
   snackBar = inject(SnackbarService);
   private scheduledSessionService = inject(ScheduledSessionService);
 
   translationTemplate: TranslationTemplates =
     TranslationTemplates.SCHEDULEDSESSION;
-  coaches = signal<StaffAccount[]>([]);
-  selectedCoaches = signal<StaffAccount[]>([]);
+
   coachesId = signal<string[]>([]);
   sessionId = signal<string>("");
   date = new Date();
@@ -81,14 +82,11 @@ export class ScheduleSingleSessionComponent {
   scheduledSessions = signal<ScheduledSessionInsert[]>([
     this.insertedSession(),
   ]);
-  endDate = signal<Date>(new Date());
+  endDate = signal<Date | null>(null);
   sessionDays = signal<string[]>([]);
   sessionDaysMap = signal(new Map());
   sessionDaysKeys = signal<string[]>([]);
-
-  sessions = signal<Sessions[]>([]);
   sessionOptions = signal<sessionOption[]>([]);
-  coachOptions = signal<sessionOption[]>([]);
   daysOptions = signal<sessionOption[]>([
     { key: "Saturday", value: "saturday" },
     { key: "Sunday", value: "sunday" },
@@ -120,9 +118,23 @@ export class ScheduleSingleSessionComponent {
     name: "",
     branchIds: [],
   };
+  private destroyed$ = new Subject<void>();
   constructor() {
-    this.getAllSessions();
-    this.getAllCoaches();
+    this.branchService.currentBranch$
+      .pipe(
+        filter((branch) => !!branch),
+        takeUntil(this.destroyed$),
+      )
+      .subscribe((branch) => {
+        this.sessionService.getAllSessions({ branchIds: [branch.id] })
+          .subscribe((res) => {
+            this.sessionOptions.set(
+              res.data?.map((s) => {
+                return { key: s.name, value: s.id };
+              }),
+            );
+          });
+      });
   }
   schedule(sessionForm: NgForm) {
     if (!this.isRepeated()) {
@@ -136,18 +148,9 @@ export class ScheduleSingleSessionComponent {
     const scheduledDate = new Date(
       this.scheduledSessions()[0].scheduledDate || "",
     );
-    // console.log(this.coachesId());
+
     const insertedSession: ScheduledSessionInsert = {
       sessionId: this.sessionId(),
-      createdAt: new Date(
-        this.date.getFullYear(),
-        this.date.getMonth(),
-        this.date.getDate(),
-        0,
-        0,
-        0,
-        0,
-      ).toISOString(),
       startTime: this.scheduledSessions()[0].startTime,
       endTime: this.scheduledSessions()[0].endTime,
       scheduledDate: `${scheduledDate.getFullYear()}-${
@@ -156,14 +159,11 @@ export class ScheduleSingleSessionComponent {
       branchId: this.branchService.currentBranch?.id,
       createdBy: this.userService.currentUser?.id,
     };
-    // console.log(this.scheduledSessions());
-
     this.scheduledSessionService
       .addSingleScheduledSession(insertedSession, this.coachesId())
       .pipe(finalize(() => this.loading.set(false)))
       .subscribe({
         next: (res) => {
-          // console.log(res);
           this.snackBar.success("Session Scheduled Successfully");
           this.dialogRef.close(true);
         },
@@ -177,7 +177,7 @@ export class ScheduleSingleSessionComponent {
       session: ScheduledSessionInsert;
       coachIds: string[];
     }[] = [];
-    -this.getMatchingDates();
+    this.getMatchingDates();
     this.scheduledSessions().forEach((session, i) => {
       this.sessionDaysMap()
         .get(this.sessionDaysKeys()[i])[0]
@@ -185,18 +185,11 @@ export class ScheduleSingleSessionComponent {
           insertedSessions.push({
             session: {
               sessionId: this.sessionId(),
-              createdAt: new Date(
-                this.date.getFullYear(),
-                this.date.getMonth(),
-                this.date.getDate(),
-                0,
-                0,
-                0,
-                0,
-              ).toISOString(),
               startTime: this.scheduledSessions()[i].startTime,
               endTime: this.scheduledSessions()[i].endTime,
-              scheduledDate: new Date(day).toISOString(),
+              scheduledDate: `${day.getFullYear()}-${
+                day.getMonth() + 1
+              }-${day.getDate()}`,
               branchId: this.branchService.currentBranch?.id,
               createdBy: this.userService.currentUser?.id,
             },
@@ -204,13 +197,11 @@ export class ScheduleSingleSessionComponent {
           });
         });
     });
-    // console.log(insertedSessions);
     this.scheduledSessionService
       .addMultipleScheduledSessions(insertedSessions)
       .pipe(finalize(() => this.loading.set(false)))
       .subscribe({
         next: (res) => {
-          // console.log(res);
           this.snackBar.success("Sessions Scheduled Successfully");
           this.dialogRef.close(true);
         },
@@ -220,67 +211,24 @@ export class ScheduleSingleSessionComponent {
       });
   }
 
-  getAllSessions() {
-    this.loading.set(true);
-
-    this.sessionService
-      .getAllSessions(this.filter)
-      .pipe(finalize(() => this.loading.set(false)))
-      .subscribe((res) => {
-        this.sessions.set(res.data);
-        this.sessions().forEach((session) => {
-          this.sessionOptions().push({ key: session.name, value: session.id });
-        });
-        // console.log(this.sessions());
-      });
-  }
-
   addAnotherDay() {
     this.scheduledSessions().push(structuredClone(this.insertedSession()));
   }
 
-  setSession(sessionId?: string) {
-    const selectedSession = this.sessions().find(
-      (session) => session.id === sessionId,
-    );
-    if (selectedSession) {
-      this.scheduledSessions.update((sessionList) => {
-        sessionList.map((session) => (session.sessionId = selectedSession.id));
-        return [...sessionList];
-      });
-      // console.log(this.scheduledSessions());
-    }
-
-    // this.sessions.update(list=>{
-    //   list.map(session=>{
-    //     return {
-    //        sessionId: '',
-    // createdAt: new Date().toISOString(),
-    // startTime: '14:00:00',
-    // endTime: '15:00:00',
-    // scheduledDate: new Date().toISOString(),
-    // branchId: '',
-    // createdBy: '',
-    //     }
-    //   })
-    //   return list
-    // })
-  }
   updateTime(event: any, session: ScheduledSessionInsert) {
-    // console.log(event);
-    // session.startTime = `${session.startTime}:00`
     session.endTime = this.addOneHour(event);
-    // console.log(session);
-    // console.log(this.scheduledSessions());
+    console.log(this.addOneHour(event));
   }
 
   addOneHour(time: string) {
     const numArray = time.split(":");
     let hour;
+    let min = numArray[1];
     if (numArray[0] == "23") {
-      hour = "00";
+      hour = "23";
+      min = "59";
     } else hour = Number(numArray[0]) + 1;
-    return `${hour}:${numArray[1]}`;
+    return `${hour}:${min}`;
   }
 
   removeSession(index: number) {
@@ -294,36 +242,7 @@ export class ScheduleSingleSessionComponent {
     });
     this.getMatchingDates();
   }
-  // setMember(member: StaffAccount) {
-  // console.log(member)
-  //   if (member) {
-  //     this.selectedCoaches().push(member);
-  //     this.coachesId().push(member.id);
-  //   }
-  //   this.filterCoach.name = '';
-  //   this.coaches.set([]);
-  // }
-  getAllCoaches() {
-    this.loading.set(true);
-    this.staffService
-      .getAllStaff(this.filterCoach)
-      .pipe(
-        finalize(() => this.loading.set(false)),
-        debounceTime(250),
-      )
-      .subscribe((res) => {
-        if (res.data) {
-          this.coaches.set(res.data);
-          this.coaches().forEach((coach) => {
-            this.coachOptions().push({
-              key: coach.firstName + coach.lastName,
-              value: coach.id,
-            });
-          });
-          // console.log(this.coaches());
-        }
-      });
-  }
+
   getMatchingDates() {
     const start = new Date(this.scheduledSessions()[0].scheduledDate || "");
     this.sessionDaysKeys.set([]);
@@ -331,9 +250,9 @@ export class ScheduleSingleSessionComponent {
     let current = start;
     let counter = 0;
     let daysArray: Date[] = [];
-
+    const endDate = this.endDate() || new Date();
     this.sessionDays().forEach((sessionDay) => {
-      while (current <= this.endDate()) {
+      while (current <= endDate) {
         const dayName = format(current, "EEEE").toLowerCase();
         if (sessionDay == dayName) {
           daysArray.push(current);
@@ -350,7 +269,5 @@ export class ScheduleSingleSessionComponent {
 
       current = start;
     });
-    // console.log(this.sessionDaysKeys());
-    // console.log(this.sessionDaysMap());
   }
 }

@@ -23,25 +23,6 @@ export class ScheduledSessionService {
   private supabaseService = inject(SupabaseService);
 
   constructor() {
-    // Single ScheduledSession insert test data
-    const testSingleSession: ScheduledSessionInsert = {
-      sessionId: "2c112f80-0025-459d-a076-bdafed5d7eb2",
-      createdAt: new Date().toISOString(),
-      startTime: "14:00:00",
-      endTime: "15:00:00",
-      scheduledDate: new Date().toISOString(),
-      branchId: "78461fa1-90e2-4425-819e-0d384cec0b6d",
-      createdBy: "e6df3674-078b-4f75-80c9-5c4609ac20ac",
-    };
-
-    const testSingleCoachIds = ["d8e032df-b32c-4152-9bcc-fc74f5641470"];
-
-    // Uncomment to test single insert
-    // this.addSingleScheduledSession(testSingleSession, testSingleCoachIds)
-    //   .subscribe((res) => console.log(res));
-
-    //   this.filterScheduledSessions({})
-    //     .subscribe((res) => console.log(res));
   }
 
   /**
@@ -119,6 +100,8 @@ export class ScheduledSessionService {
         if (res.error) {
           throw res.error;
         }
+        console.log(res, sessions);
+
         const insertedSessions = res.data;
         let sheduleCoachesInserts: SheduleCoachesInsert[] = [];
         sessions.forEach((item, index) => {
@@ -161,7 +144,7 @@ export class ScheduledSessionService {
     let query = this.supabaseService.sb
       .from("ScheduledSession")
       .select(
-        "*,Sessions(*), SheduleCoaches(*, Staff(firstName, lastName,phoneNumber))",
+        "*,Sessions(*), SheduleCoaches(*)",
       );
 
     // Apply scheduledDate range filters if provided.
@@ -194,6 +177,31 @@ export class ScheduledSessionService {
     }
 
     return from(query).pipe(
+      map((res: any) => {
+        if (res.error) {
+          throw res.error;
+        }
+        return res.data;
+      }),
+    );
+  }
+
+  /**
+   * Cancels all bookings for a ScheduledSession and deletes the ScheduledSession.
+   *
+   * This function calls the `cancel_scheduled_session` RPC on the database,
+   * which reverts any session deductions for associated bookings and then deletes both
+   * the bookings and the ScheduledSession record.
+   *
+   * @param scheduledSessionId - The ID of the ScheduledSession to cancel.
+   * @returns Observable emitting the result of the cancellation.
+   */
+  cancelScheduledSession(scheduledSessionId: string): Observable<any> {
+    return from(
+      this.supabaseService.sb.rpc("cancel_scheduled_session", {
+        p_scheduled_session_id: scheduledSessionId,
+      }),
+    ).pipe(
       map((res: any) => {
         if (res.error) {
           throw res.error;

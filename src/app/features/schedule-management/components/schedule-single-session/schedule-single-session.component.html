@@ -9,54 +9,16 @@
     <form #sessionForm="ngForm" (ngSubmit)="schedule(sessionForm)">
       <div class="row gx-3 gy-1">
         <!-- coaches list -->
-        <brdgs-select
+        <app-select-staff
           class="col-12"
-          [label]="t('SELECT_COACH')"
+          [(staffId)]="coachesId"
           [isRequired]="true"
-          [options]="coachOptions()"
+          [label]="t('SELECT_COACH')"
+          [role]="'Coach'"
           [isMultiple]="true"
-          (valueChange)="coachesId()"
-        ></brdgs-select>
-        <!-- <brdgs-input
-          [label]="t('SEARCH_LABEL')"
-          [prefix]="'icon-search'"
-          [type]="bridgesInputType.TEXT"
-          [isRequired]="false"
-          [(value)]="filterCoach.name"
-          (valueChange)="getAllCoaches()"
-        ></brdgs-input>
-        @for (member of coaches() ; track member) {
-        <mat-option
-          class="bg-surface-bright"
-          [value]="member"
-          (click)="setMember(member)"
-          >{{ member.firstName }} {{ member.lastName }}</mat-option
-        >
-        }
-        <div class="row">
-          @for ( member of selectedCoaches() ; track member) {
-          <div class="col-8 p-1">
-            <div
-              class="bg-surface-bright border-surface-dim-1 rounded-8 px-2 py-1"
-            >
-              <div class="d-flex align-items-center justify-content-between">
-                <div>
-                  <p class="m-0 mat-label-large primary-container-color">
-                    {{ member.firstName }}
-                    {{ member.lastName }}
-                  </p>
-                  <p
-                    class="m-0 mat-label-large on-secondary-fixed-variant-color"
-                  >
-                    {{ member.phoneNumber }}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-          }
-        </div> -->
-        <!--  -->
+          [translationTemplate]="translationTemplate"
+        ></app-select-staff>
+
         <brdgs-select
           class="col-6"
           [label]="t('SELECT_SESSION')"
@@ -90,11 +52,11 @@
         <brdgs-date-picker
           class="col-6"
           [label]="t('END_DATE')"
-          [datePickerMin]="date.toISOString()"
+          [datePickerMin]="scheduledSessions()[0].scheduledDate || ''"
           [(value)]="endDate"
           [isRequired]="true"
         ></brdgs-date-picker
-        >} @for (session of scheduledSessions(); track $index;let i=$index;let
+        >} @for (session of scheduledSessions(); track $index;let i=$index; let
         first =$first) { @if(isRepeated()){
 
         <brdgs-select
@@ -110,6 +72,7 @@
           [label]="t('START_TIME')"
           [(value)]="scheduledSessions()[i].startTime"
           [isRequired]="true"
+          [timepickerMax]="'23:00'"
           (valueChange)="updateTime($event, session)"
         ></brdgs-time-picker>
         @if(!first){
@@ -124,15 +87,7 @@
             <i class="f-24 icon-delete primary-container-color"></i>
           </div>
         </div>
-        } }
-        <!--  <brdgs-date-picker
-      class="col-12 col-md-4"
-      [label]="t('RENEWAL_DATE')"
-      [(value)]="filters.endDateTo"
-      [isRequired]="false"
-    ></brdgs-date-picker> -->
-
-        @if(isRepeated()){
+        } } @if(isRepeated()){
         <div>
           <button
             mat-button

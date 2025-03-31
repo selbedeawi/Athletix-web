@@ -15,7 +15,7 @@ export interface BookedSessionFilter {
 
   sessionId?: string;
   /** Filter by an array of coach IDs. */
-  coachIds?: string[];
+  coachId?: string[];
   /** Filter by branch ID (uses the session branch from the view). */
   branchId?: string;
   /** Filter sessions with a scheduled date on or after this value (ISO string). */
@@ -139,10 +139,12 @@ export class BookedSessionsService {
     if (filters.scheduledTimeTo) {
       query = query.lte("startTime", filters.scheduledTimeTo);
     }
-    // Filter by coach IDs (using the flattened coach ID from SheduleCoaches).
-    if (filters.coachIds && filters.coachIds.length > 0) {
-      query = query.in("shedule_coachId", filters.coachIds);
+
+    if (filters.coachId) {
+      // Use ilike to check if the coach_ids string contains the desired coachId.
+      query = query.ilike("coach_ids", `%${filters.coachId}%`);
     }
+
     query = query.range(start, end);
     return from(query);
   }

@@ -417,14 +417,14 @@ export type Database = {
           {
             foreignKeyName: "SheduleCoaches_scheduledSessionId_fkey"
             columns: ["scheduledSessionId"]
-            isOneToOne: true
+            isOneToOne: false
             referencedRelation: "flattened_user_sessions_full"
             referencedColumns: ["scheduled_session_id"]
           },
           {
             foreignKeyName: "SheduleCoaches_scheduledSessionId_fkey"
             columns: ["scheduledSessionId"]
-            isOneToOne: true
+            isOneToOne: false
             referencedRelation: "ScheduledSession"
             referencedColumns: ["id"]
           },
@@ -802,6 +802,7 @@ export type Database = {
       }
       flattened_user_sessions_full: {
         Row: {
+          coach_ids: string | null
           coachId: string | null
           createdBy: string | null
           dateOfBirth: string | null
@@ -858,8 +859,7 @@ export type Database = {
           scheduledSessionId: string | null
           session_name: string | null
           sessionId: string | null
-          shedule_coach_scheduledsessionid: string | null
-          shedule_coachid: string | null
+          shedule_coaches: Json | null
           startTime: string | null
           user_membership_id: string | null
           user_session_branchid: string | null
@@ -894,27 +894,6 @@ export type Database = {
             columns: ["sessionId"]
             isOneToOne: false
             referencedRelation: "Sessions"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "SheduleCoaches_coachId_fkey"
-            columns: ["shedule_coachid"]
-            isOneToOne: false
-            referencedRelation: "Staff"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "SheduleCoaches_scheduledSessionId_fkey"
-            columns: ["shedule_coach_scheduledsessionid"]
-            isOneToOne: true
-            referencedRelation: "flattened_user_sessions_full"
-            referencedColumns: ["scheduled_session_id"]
-          },
-          {
-            foreignKeyName: "SheduleCoaches_scheduledSessionId_fkey"
-            columns: ["shedule_coach_scheduledsessionid"]
-            isOneToOne: true
-            referencedRelation: "ScheduledSession"
             referencedColumns: ["id"]
           },
           {
@@ -1060,6 +1039,12 @@ export type Database = {
           canceled_booking_id: string
           new_remaining_pt_sessions: number
         }[]
+      }
+      cancel_scheduled_session: {
+        Args: {
+          p_scheduled_session_id: string
+        }
+        Returns: undefined
       }
       update_staff_with_branches:
         | {
