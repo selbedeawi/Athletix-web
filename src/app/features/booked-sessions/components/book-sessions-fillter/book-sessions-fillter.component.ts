@@ -18,6 +18,7 @@ import { SelectComponent } from "../../../../shared/ui-components/atoms/select/s
 import { sessionOption } from "../../../schedule-management/components/schedule-single-session/schedule-single-session.component";
 import { BranchesService } from "../../../../core/services/branches/branches.service";
 import { SessionService } from "../../../sessions-list/services/session.service";
+import { SelectStaffComponent } from "../../../../shared/ui-components/molecules/select-staff/select-staff.component";
 
 @Component({
   selector: "app-book-sessions-fillter",
@@ -29,6 +30,7 @@ import { SessionService } from "../../../sessions-list/services/session.service"
     DatePickerComponent,
     TimePickerComponent,
     SelectComponent,
+    SelectStaffComponent,
   ],
   templateUrl: "./book-sessions-fillter.component.html",
   styleUrl: "./book-sessions-fillter.component.scss",
@@ -43,7 +45,7 @@ export class BookSessionsFillterComponent {
 
   filter: BookedSessionFilter = {
     searchKey: "",
-    scheduledDateFrom: null,
+    scheduledDateFrom: new Date() as any,
     scheduledTimeFrom: null,
     scheduledDateTo: null,
     scheduledTimeTo: null,

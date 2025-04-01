@@ -16,8 +16,10 @@
   </mat-dialog-content>
 
   <mat-dialog-actions>
-    <button mat-button matDialogClose type="button">{{ t("CLOSE") }}</button>
-    <button mat-flat-button type="submit">
+    <button mat-button matDialogClose type="button">
+      {{ t("CLOSE") }}
+    </button>
+    <button mat-flat-button [disabled]="memberForm.invalid" type="submit">
       {{ t("ADD_NEW_MEMBERSHIP_BTN") }}
     </button>
   </mat-dialog-actions>

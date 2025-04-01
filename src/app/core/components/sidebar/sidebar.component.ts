@@ -22,6 +22,7 @@ import { TranslocoDirective } from "@jsverse/transloco";
 import { TranslationTemplates } from "../../../shared/enums/translation-templates-enum";
 
 import { BranchSelectComponent } from "../branch-select/branch-select.component";
+import { HasRoleDirective } from "../../directives/has-role.directive";
 
 @Component({
   selector: "brdgs-sidenav",
@@ -35,7 +36,7 @@ import { BranchSelectComponent } from "../branch-select/branch-select.component"
     TranslocoDirective,
     AsyncPipe,
     RouterLinkActive,
-
+    HasRoleDirective,
     BranchSelectComponent,
   ],
 

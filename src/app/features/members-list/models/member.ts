@@ -29,6 +29,7 @@ export class MemberAccount implements Tables<"Members"> {
   }
 }
 export class UserMembership implements Tables<"UserMembership"> {
+  // remainingPTSessions: number | null;
   id!: string;
 
   createdAt!: string;
@@ -56,7 +57,7 @@ export class UserMembership implements Tables<"UserMembership"> {
 
   coachId!: string | null;
   remainingGroupSessions!: number | null;
-  remainingPTSessions!: number | null;
+  // remainingPTSessions!: number | null;
   hasGroupFitness!: boolean;
   hasJacuzzi!: boolean;
   hasSteam!: boolean;

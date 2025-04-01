@@ -21,6 +21,17 @@
       [options]="sessionOptions()"
     ></brdgs-select>
 
+    <!-- coaches list -->
+    <app-select-staff
+      class="col-12 col-md-4"
+      [(staffId)]="filter.coachId"
+      [isRequired]="false"
+      [label]="t('SELECT_COACH')"
+      [role]="'Coach'"
+      [isMultiple]="false"
+      [translationTemplate]="translationTemplate"
+    ></app-select-staff>
+
     <brdgs-date-picker
       class="col-12 col-md-4"
       [label]="t('DATE_FROM')"

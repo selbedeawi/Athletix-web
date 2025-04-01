@@ -106,7 +106,12 @@ export class ScheduleManagementComponent {
   }
 
   openSingleSession(event: CalendarEvent<ScheduleSession>) {
-    this.brdgsOverlayService.open(ScheduleSessionDetailsComponent, event);
+    this.brdgsOverlayService.open(ScheduleSessionDetailsComponent, event)
+      .afterClosed$.subscribe((result) => {
+        if (result) {
+          this.getFilteredSessions();
+        }
+      });
   }
   scheduleSingleSession() {
     this.dialog

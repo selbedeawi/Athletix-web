@@ -23,7 +23,7 @@
           >{{ option.firstName }} {{ option.lastName }}
           <span class="mat-body-medium on-secondary-fixed-variant-color">
             @if(option.UserMembership.type === "PrivateCoach" ){(Remaining
-            {{ option.UserMembership.remainingPTSessions }} )}@else if(
+            {{ option.UserMembership.remainingPersonalTrainer }} )}@else if(
             option.UserMembership.type === 'SessionBased' ){(Remaining
             {{ option.UserMembership.remainingGroupSessions }}) }</span
           >

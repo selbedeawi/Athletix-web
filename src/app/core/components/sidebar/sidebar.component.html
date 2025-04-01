@@ -54,6 +54,7 @@
       [routerLinkActive]="'active'"
       #rla="routerLinkActive"
       [activated]="rla.isActive"
+      *appHasRole="menuItem.permissions"
     >
       <!-- Icon -->
       <mat-icon matListItemIcon class="mx-2 {{ menuItem.icon }}"></mat-icon>

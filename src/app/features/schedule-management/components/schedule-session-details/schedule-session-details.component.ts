@@ -27,6 +27,9 @@ import {
   BookedSessionsService,
 } from "../../../booked-sessions/services/booked-sessions.service";
 import { finalize } from "rxjs";
+import { ConfirmDeleteComponent } from "../../../../shared/ui-components/templates/confirm-delete/confirm-delete.component";
+import { SnackbarService } from "../../../../core/services/snackbar/snackbar.service";
+import { ScheduledSessionService } from "../../services/schedule-sessions.service";
 
 @Component({
   selector: "app-schedule-session-details",
@@ -47,6 +50,9 @@ import { finalize } from "rxjs";
 export class ScheduleSessionDetailsComponent {
   bookedSessionsService = inject(BookedSessionsService);
   overlayRef = inject(BrdgsOverlayRef);
+  snackbarService = inject(SnackbarService);
+  scheduledSessionService = inject(ScheduledSessionService);
+
   dialog = inject(MatDialog);
   public selectedSession: CalendarEvent<ScheduleSession> = inject(
     BRDGS_OVERLAY_DATA,
@@ -79,8 +85,36 @@ export class ScheduleSessionDetailsComponent {
       }
     });
   }
-  removeBooking(id: string) {}
 
+  removeBooking(id: any) {
+    this.dialog.open(ConfirmDeleteComponent, {
+      data: {
+        translationTemplate: this.translationTemplate,
+      },
+    }).afterClosed().subscribe((res) => {
+      if (res) {
+        this.snackbarService.success("DELETE_BOOKED_SESSION_SUCCESS");
+        this.bookedSessionsService.deleteSession(id).subscribe((res) => {
+          this.getAllSessions();
+        });
+      }
+    });
+  }
+  cancelScheduledSession(id: string) {
+    this.dialog.open(ConfirmDeleteComponent, {
+      data: {
+        translationTemplate: this.translationTemplate,
+      },
+    }).afterClosed().subscribe((res) => {
+      if (res) {
+        this.scheduledSessionService.cancelScheduledSession(id).subscribe(
+          (res) => {
+            this.overlayRef.close(true);
+          },
+        );
+      }
+    });
+  }
   getAllSessions() {
     this.loading.set(true);
 
