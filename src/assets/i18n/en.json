@@ -55,7 +55,8 @@
     "EMAIL": "Email",
     "ADD_MEMBER": "Add Member",
     "MEMBER_INFO": "Member Info",
-    "STP_ACCOUNT_DETAILS": "Account Details",
+    "STP_ACCOUNT_DETAILS" : "Account Details",
+    "STP_ACCOUNT_DETAILS_2" : "Memership Details",
     "TITLE" : "Memberships",
     "MEMBER_PROFILE": "Member Profile",
     "MEMBER_MEMBERSHIPS": "Memberships",
@@ -119,7 +120,14 @@
     "FREEZE_START" : "Start Date",
     "freezeDaysCount": "Number of days",
     "FREEZE_DETAILS": "Freeze details",
-    "UN_FREEZE":"Unfreeze"
+    "UN_FREEZE":"Unfreeze",
+    "GENDER": "Gender",
+    "PASSWORD_DOES_NOT_MATCH": "Password does not match.",
+    "PASSWORD_MD": "Medium Password",
+    "PASSWORD_STG" : "Strong Password",
+    "ADD_MEMBERSHIP_BTN" : "Add Another Membership",
+    "DELETE_BTN" : "Remove",
+    "ADD_MEMBER_SHIP" : "Add"
   },
   "BookedSession": {
     "TITLE": "Booked Sessions List",
@@ -262,6 +270,7 @@
     "INACTIVE" :"InActive",
     "TITLE":"Memberships",
     "NO_RESULT_TITLE":"No Result"
+
   },
   "Staff": {
     "TITLE": "Staff List",
