@@ -129,7 +129,8 @@
     "PASSWORD_STG" : "Strong Password",
     "ADD_MEMBERSHIP_BTN" : "Add Another Membership",
     "DELETE_BTN" : "Remove",
-    "ADD_MEMBER_SHIP" : "Add"
+    "ADD_MEMBER_SHIP" : "Add",
+    "ADD_MEMBER_FIST" : "Next"
   },
   "BookedSession": {
     "TITLE": "Booked Sessions List",
