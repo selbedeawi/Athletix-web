@@ -16,16 +16,19 @@
       class="m-0 mat-title-large mb-2 primary-color d-flex justify-content-between align-items-center"
     >
       <span>{{ selectedSession.meta?.Sessions?.name }}</span>
-      <button
-        mat-stroked-button
-        cdkFocusInitial
-        color="primary"
-        class="mb-3 mb-md-0 mt-1"
-        type="button"
-        (click)="cancelScheduledSession(selectedSession.meta?.id || '')"
-      >
-        {{ t("CL_SCH_SES") }}
-      </button>
+      <span>
+        <button
+          *appHasRole="['SuperAdmin', 'SessionManager']"
+          mat-stroked-button
+          cdkFocusInitial
+          color="primary"
+          class="mb-3 mb-md-0 mt-1"
+          type="button"
+          (click)="cancelScheduledSession(selectedSession.meta?.id || '')"
+        >
+          {{ t("CL_SCH_SES") }}
+        </button>
+      </span>
     </p>
     <p
       class="d-flex align-items-center m-0 mat-body-medium mb-2 on-secondary-fixed-variant-color"

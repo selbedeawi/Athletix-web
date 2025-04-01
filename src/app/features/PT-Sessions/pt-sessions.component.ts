@@ -15,6 +15,7 @@ import { TimeFormatPipe } from "../booked-sessions/time-format.pipe";
 import { finalize } from "rxjs";
 import { SnackbarService } from "../../core/services/snackbar/snackbar.service";
 import { ConfirmDeleteComponent } from "../../shared/ui-components/templates/confirm-delete/confirm-delete.component";
+import { HasRoleDirective } from "../../core/directives/has-role.directive";
 
 @Component({
   selector: "app-pt-sessions",
@@ -28,6 +29,7 @@ import { ConfirmDeleteComponent } from "../../shared/ui-components/templates/con
     EmptyResultComponent,
     PtSessionsFillterComponent,
     TimeFormatPipe,
+    HasRoleDirective,
   ],
   templateUrl: "./pt-sessions.component.html",
   styleUrl: "./pt-sessions.component.scss",
@@ -59,9 +61,9 @@ export class PtSessionsComponent {
       data: {
         translationTemplate: this.translationTemplate,
         headerText: "CANCEL_BOOKING_HEADER",
-        content:"CANCEL_BOOKING_CONTENT",
-        cancelText:"NO",
-        okText : "YES"
+        content: "CANCEL_BOOKING_CONTENT",
+        cancelText: "NO",
+        okText: "YES",
       },
     }).afterClosed().subscribe((res) => {
       if (res) {

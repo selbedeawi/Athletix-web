@@ -25,6 +25,8 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatDialog } from "@angular/material/dialog";
 import { ScheduleSingleSessionComponent } from "./components/schedule-single-session/schedule-single-session.component";
 import { BranchesService } from "../../core/services/branches/branches.service";
+import { UserService } from "../../core/services/user/user.service";
+import { HasRoleDirective } from "../../core/directives/has-role.directive";
 
 @Component({
   selector: "app-schedule-management",
@@ -35,6 +37,7 @@ import { BranchesService } from "../../core/services/branches/branches.service";
     TranslocoDirective,
     MatButtonModule,
     DatePipe,
+    HasRoleDirective,
   ],
   templateUrl: "./schedule-management.component.html",
   styleUrl: "./schedule-management.component.scss",
@@ -43,6 +46,7 @@ export class ScheduleManagementComponent {
   private scheduleSessionService = inject(ScheduledSessionService);
   private brdgsOverlayService = inject(BrdgsOverlayService);
   dialog = inject(MatDialog);
+  userService = inject(UserService);
 
   viewDate = signal(new Date());
   selectedSession = signal<CalendarEvent<ScheduleSession> | null>(null);
@@ -62,6 +66,7 @@ export class ScheduleManagementComponent {
   translationTemplate = TranslationTemplates.SCHEDULEDSESSION;
   branchId!: string;
   branchesService = inject(BranchesService);
+  coachIds: string[] = [];
   private destroyed$ = new Subject<void>();
   constructor() {
     this.branchesService.currentBranch$
@@ -71,6 +76,10 @@ export class ScheduleManagementComponent {
       )
       .subscribe((branch) => {
         this.branchId = branch.id;
+        if (this.userService.currentUser?.role === "Coach") {
+          this.coachIds = [this.userService.currentUser.id];
+        }
+
         this.getFilteredSessions();
       });
   }
@@ -80,6 +89,7 @@ export class ScheduleManagementComponent {
       scheduledDateFrom: this.monthStart(),
       scheduledDateTo: this.monthEnd(),
       branchId: this.branchId,
+      coachIds: this.coachIds,
     };
     this.scheduleSessionService
       .filterScheduledSessions(filter)
@@ -106,12 +116,18 @@ export class ScheduleManagementComponent {
   }
 
   openSingleSession(event: CalendarEvent<ScheduleSession>) {
-    this.brdgsOverlayService.open(ScheduleSessionDetailsComponent, event)
-      .afterClosed$.subscribe((result) => {
-        if (result) {
-          this.getFilteredSessions();
-        }
-      });
+    if (
+      ["SuperAdmin", "SessionManager", "Receptionist"].includes(
+        this.userService.currentUser?.role || "",
+      )
+    ) {
+      this.brdgsOverlayService.open(ScheduleSessionDetailsComponent, event)
+        .afterClosed$.subscribe((result) => {
+          if (result) {
+            this.getFilteredSessions();
+          }
+        });
+    }
   }
   scheduleSingleSession() {
     this.dialog

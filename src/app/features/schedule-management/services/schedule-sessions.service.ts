@@ -131,6 +131,66 @@ export class ScheduledSessionService {
     );
   }
 
+  // filterScheduledSessions(
+  //   filters: ScheduledSessionFilter,
+  //   page: number = 1,
+  //   pageSize: number = 10,
+  // ): Observable<ScheduleSession[]> {
+  //   const start = (page - 1) * pageSize;
+  //   const end = start + pageSize - 1;
+
+  //   // Query from the flattened view.
+  //   let query = this.supabaseService.sb
+  //     .from("ScheduledSession")
+  //     .select("*,SheduleCoaches!inner(*)", { count: "exact" })
+  //     .range(start, end);
+
+  //   // Apply scheduledDate range filters if provided.
+  //   if (filters.scheduledDateFrom) {
+  //     const d = new Date(filters.scheduledDateFrom);
+  //     query = query.gte(
+  //       "scheduledDate",
+  //       `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`,
+  //     );
+  //   }
+  //   if (filters.scheduledDateTo) {
+  //     const d = new Date(filters.scheduledDateTo);
+  //     query = query.lte(
+  //       "scheduledDate",
+  //       `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`,
+  //     );
+  //   }
+  //   // Filter by branchId if provided.
+  //   if (filters.branchId) {
+  //     query = query.eq("branchId", filters.branchId);
+  //   }
+  //   // Filter by sessionId if provided.
+  //   if (filters.sessionId) {
+  //     query = query.eq("sessionId", filters.sessionId);
+  //   }
+  //   // // Filter by scheduled time range.
+  //   // if (filters.scheduledTimeFrom) {
+  //   //   query = query.gte("startTime", filters.scheduledTimeFrom);
+  //   // }
+  //   // if (filters.scheduledTimeTo) {
+  //   //   query = query.lte("startTime", filters.scheduledTimeTo);
+  //   // }
+
+  //   // Filter by coachIds using the inner join on SheduleCoaches.
+  //   if (filters.coachIds && filters.coachIds.length > 0) {
+  //     query = query.in("SheduleCoaches.coachId", filters.coachIds);
+  //   }
+
+  //   return from(query).pipe(
+  //     map((res: any) => {
+  //       if (res.error) {
+  //         throw res.error;
+  //       }
+  //       return res.data;
+  //     }),
+  //   );
+  // }
+
   /**
    * Filter ScheduledSessions based on scheduledDate range, branchId, sessionId, and coachIds.
    *
@@ -144,7 +204,7 @@ export class ScheduledSessionService {
     let query = this.supabaseService.sb
       .from("ScheduledSession")
       .select(
-        "*,Sessions(*), SheduleCoaches(*)",
+        "*,Sessions(*), SheduleCoaches!inner(*)",
       );
 
     // Apply scheduledDate range filters if provided.
@@ -172,7 +232,6 @@ export class ScheduledSessionService {
     }
     // Filter by coachIds if provided.
     if (filters.coachIds && filters.coachIds.length > 0) {
-      // Use the .in operator on the joined SheduleCoaches table.
       query = query.in("SheduleCoaches.coachId", filters.coachIds);
     }
 

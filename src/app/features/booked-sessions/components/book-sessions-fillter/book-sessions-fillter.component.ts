@@ -19,6 +19,8 @@ import { sessionOption } from "../../../schedule-management/components/schedule-
 import { BranchesService } from "../../../../core/services/branches/branches.service";
 import { SessionService } from "../../../sessions-list/services/session.service";
 import { SelectStaffComponent } from "../../../../shared/ui-components/molecules/select-staff/select-staff.component";
+import { HasRoleDirective } from "../../../../core/directives/has-role.directive";
+import { UserService } from "../../../../core/services/user/user.service";
 
 @Component({
   selector: "app-book-sessions-fillter",
@@ -31,6 +33,7 @@ import { SelectStaffComponent } from "../../../../shared/ui-components/molecules
     TimePickerComponent,
     SelectComponent,
     SelectStaffComponent,
+    HasRoleDirective,
   ],
   templateUrl: "./book-sessions-fillter.component.html",
   styleUrl: "./book-sessions-fillter.component.scss",
@@ -42,7 +45,7 @@ export class BookSessionsFillterComponent {
   private bookedSessionsService = inject(BookedSessionsService);
   lookupService = inject(LookupService);
   sessionService = inject(SessionService);
-
+  userService = inject(UserService);
   filter: BookedSessionFilter = {
     searchKey: "",
     scheduledDateFrom: new Date() as any,
@@ -71,6 +74,10 @@ export class BookSessionsFillterComponent {
       )
       .subscribe((branch) => {
         this.filter.branchId = branch.id;
+        if (this.userService.currentUser?.role === "Coach") {
+          this.filter.coachId = this.userService.currentUser.id;
+        }
+
         this.sessionService.getAllSessions({ branchIds: [branch.id] })
           .subscribe((res) => {
             this.sessionOptions.set(
@@ -104,6 +111,9 @@ export class BookSessionsFillterComponent {
       scheduledTimeTo: null,
       sessionId: null as any,
     };
+    if (this.userService.currentUser?.role === "Coach") {
+      this.filter.coachId = this.userService.currentUser.id;
+    }
     this.search();
   }
 

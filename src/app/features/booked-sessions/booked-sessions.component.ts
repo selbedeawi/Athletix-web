@@ -13,6 +13,7 @@ import { BookedSessionsService } from "./services/booked-sessions.service";
 import { MatDialog } from "@angular/material/dialog";
 import { SnackbarService } from "../../core/services/snackbar/snackbar.service";
 import { ConfirmDeleteComponent } from "../../shared/ui-components/templates/confirm-delete/confirm-delete.component";
+import { HasRoleDirective } from "../../core/directives/has-role.directive";
 
 @Component({
   selector: "app-booked-sessions",
@@ -27,6 +28,7 @@ import { ConfirmDeleteComponent } from "../../shared/ui-components/templates/con
     MatPaginator,
     EmptyResultComponent,
     TimeFormatPipe,
+    HasRoleDirective,
   ],
   templateUrl: "./booked-sessions.component.html",
   styleUrl: "./booked-sessions.component.scss",
@@ -44,9 +46,9 @@ export class BookedSessionsComponent {
       data: {
         translationTemplate: this.translationTemplate,
         headerText: "CANCEL_BOOKING_HEADER",
-        content:"CANCEL_BOOKING_CONTENT",
-        cancelText:"NO",
-        okText : "YES"
+        content: "CANCEL_BOOKING_CONTENT",
+        cancelText: "NO",
+        okText: "YES",
       },
     }).afterClosed().subscribe((res) => {
       if (res) {

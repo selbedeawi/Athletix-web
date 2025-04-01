@@ -13,6 +13,7 @@
       [prefix]="'icon-search'"
     ></brdgs-input>
     <app-select-staff
+      *appHasRole="['SuperAdmin', 'SessionManager', 'Receptionist']"
       class="col-12 col-md-4"
       [(staffId)]="filter.coachId"
       [isRequired]="false"

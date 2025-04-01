@@ -7,7 +7,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 // import { corsHeaders } from "../_shared/cors.ts";
-import { SmtpClient } from "https://deno.land/x/smtp@v0.7.0/mod.ts";
 export const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
@@ -28,33 +27,30 @@ const supabase = createClient(
   Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
 );
 
-async function sendCredentialsEmail(email: string, password: string) {
-  const client = new SmtpClient();
-  // Connect to the SMTP server using TLS.
-  await client.connectTLS({
-    hostname: Deno.env.get("SMTP_HOST")!,
-    port: Number(Deno.env.get("SMTP_PORT")!),
-
-    password: Deno.env.get("SMTP_PASS")!,
+async function sendCredentialsEmail(
+  email: string,
+  password: string,
+  firstName: string,
+) {
+  await fetch("https://api.brevo.com/v3/smtp/email", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "api-key": Deno.env.get("BREVO_API_KEY")!, // stored as Supabase secret
+    },
+    body: JSON.stringify({
+      to: [{ email }],
+      templateId: 1, // Replace with your Brevo template ID
+      params: {
+        name: `${firstName}`,
+        password: password,
+      },
+      sender: {
+        name: "Athletix",
+        email: "selbedeawi@gmail.com",
+      },
+    }),
   });
-
-  // Compose and send the email.
-  await client.send({
-    from: Deno.env.get("SMTP_FROM")!,
-    to: email,
-    subject: "Your New Account Credentials",
-    content: `Hello,
-
-Your account has been created successfully.
-Email: ${email}
-Password: ${password}
-
-Please keep this information safe. We strongly recommend that you change your password after logging in.
-
-Best regards,
-The Team`,
-  });
-  await client.close();
 }
 
 serve(async (req) => {
@@ -134,7 +130,7 @@ serve(async (req) => {
     }
 
     // 9. Send an email with the credentials to the new user.
-    // await sendCredentialsEmail(email, password);
+    await sendCredentialsEmail(email, password, firstName);
 
     // 10. Return a successful response.
     return new Response(

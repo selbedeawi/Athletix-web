@@ -1,9 +1,12 @@
 <section *transloco="let t; prefix: translationTemplate">
   <div class="d-flex justify-content-between my-3">
     <h2 class="mat-headline-small primary-color mb-1">{{ t("TITLE") }}</h2>
-    <button mat-flat-button (click)="openBookSessionDialog()">
-      {{ t("BOOK_SESSION") }}
-    </button>
+
+    <div *appHasRole="['SuperAdmin', 'SessionManager', 'Receptionist']">
+      <button mat-flat-button (click)="openBookSessionDialog()">
+        {{ t("BOOK_SESSION") }}
+      </button>
+    </div>
   </div>
   <mat-divider></mat-divider>
   <mat-card class="mt-2">

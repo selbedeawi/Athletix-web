@@ -15,7 +15,7 @@ export interface BookedSessionFilter {
 
   sessionId?: string;
   /** Filter by an array of coach IDs. */
-  coachId?: string[];
+  coachId?: string;
   /** Filter by branch ID (uses the session branch from the view). */
   branchId?: string;
   /** Filter sessions with a scheduled date on or after this value (ISO string). */

@@ -68,7 +68,7 @@ export class ScheduleSessionPopupComponent {
       .subscribe({
         next: (res) => {
           console.log(res);
-          this.snackBar.success("Session Scheduled Successfully");
+          this.snackBar.success("SESSION_BOOK_SUCCESSFULLY");
           this.dialogRef.close(true);
         },
         error: (err) => {

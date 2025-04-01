@@ -23,12 +23,13 @@ export const RoleGuard = (allowedRoles: AccountType[]): CanActivateFn => {
             });
             return false;
           }
+          console.log("mo");
 
           const userRole = user.role;
           if (allowedRoles.includes(userRole)) {
             return true;
           } else {
-            router.navigate(["/not-authorized"]);
+            // router.navigate(["/"]);
             return false;
           }
         }),

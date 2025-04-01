@@ -30,6 +30,7 @@ import { finalize } from "rxjs";
 import { ConfirmDeleteComponent } from "../../../../shared/ui-components/templates/confirm-delete/confirm-delete.component";
 import { SnackbarService } from "../../../../core/services/snackbar/snackbar.service";
 import { ScheduledSessionService } from "../../services/schedule-sessions.service";
+import { HasRoleDirective } from "../../../../core/directives/has-role.directive";
 
 @Component({
   selector: "app-schedule-session-details",
@@ -42,6 +43,7 @@ import { ScheduledSessionService } from "../../services/schedule-sessions.servic
     MatIconModule,
     InputComponent,
     TranslocoDirective,
+    HasRoleDirective,
   ],
   templateUrl: "./schedule-session-details.component.html",
   styleUrl: "./schedule-session-details.component.scss",

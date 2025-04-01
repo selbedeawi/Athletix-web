@@ -164,7 +164,7 @@ export class ScheduleSingleSessionComponent {
       .pipe(finalize(() => this.loading.set(false)))
       .subscribe({
         next: (res) => {
-          this.snackBar.success("Session Scheduled Successfully");
+          this.snackBar.success("SESSION_SCHEDULED_SUCCESSFULLY");
           this.dialogRef.close(true);
         },
         error: (err) => {
@@ -202,7 +202,7 @@ export class ScheduleSingleSessionComponent {
       .pipe(finalize(() => this.loading.set(false)))
       .subscribe({
         next: (res) => {
-          this.snackBar.success("Sessions Scheduled Successfully");
+          this.snackBar.success("SESSIONS_SCHEDULED_SUCCESSFULLY");
           this.dialogRef.close(true);
         },
         error: (err) => {
