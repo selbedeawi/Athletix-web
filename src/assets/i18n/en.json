@@ -28,7 +28,9 @@
     "EDIT_STAFF_SUCCESS": "Staff Updated Successfully",
     "EDIT_MEMBERSHIP_SUCCESS": "Membership Updated Successfully",
     "EDIT_SESSION_SUCCESS": "Session Updated Successfully",
-    "DELETE_BOOKED_SESSION_SUCCESS" : "Canceled Booking Successfully"
+    "DELETE_BOOKED_SESSION_SUCCESS" : "Canceled Booking Successfully",
+    "A user with this email address has already been registered": "A user with this email address has already been registered",
+    "Session Scheduled Successfully" :"Session Scheduled Successfully"
   },
   "Member": {
     "ADD": "Add Member",
