@@ -81,11 +81,15 @@
           <span class="d-none list-item-label-sm">
             {{ t("TABLE_ISACTIVE") }}
           </span>
-          <div class="d-flex align-items-center table-active">
-            <span class="me-2 active-{{ staff.isActive }}"></span>
-            <strong class="text-truncate">
-              {{ t(staff.isActive ? "TD_IS_ACTIVE" : "TD_NOT_ACTIVE") }}</strong
-            >
+          <div class="d-flex justify-content-start">
+            <div class="d-flex align-items-center table-active">
+              <span class="me-2 active-{{ staff.isActive }}"></span>
+              <strong class="text-truncate">
+                {{
+                  t(staff.isActive ? "TD_IS_ACTIVE" : "TD_NOT_ACTIVE")
+                }}</strong
+              >
+            </div>
           </div>
         </td>
 
