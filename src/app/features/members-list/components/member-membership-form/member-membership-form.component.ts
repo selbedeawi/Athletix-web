@@ -11,6 +11,9 @@ import { TranslocoDirective } from "@jsverse/transloco";
 import { SelectStaffComponent } from "../../../../shared/ui-components/molecules/select-staff/select-staff.component";
 import { DatePickerComponent } from "../../../../shared/ui-components/atoms/date-picker/date-picker.component";
 import { HasRoleDirective } from "../../../../core/directives/has-role.directive";
+import { SelectComponent } from "../../../../shared/ui-components/atoms/select/select.component";
+import { LookupService } from "../../../../core/services/lookup/lookup.service";
+import { AsyncPipe } from "@angular/common";
 
 @Component({
   selector: "app-member-membership-form",
@@ -21,6 +24,8 @@ import { HasRoleDirective } from "../../../../core/directives/has-role.directive
     SelectStaffComponent,
     DatePickerComponent,
     HasRoleDirective,
+    SelectComponent,
+    AsyncPipe,
   ],
   templateUrl: "./member-membership-form.component.html",
   styleUrl: "./member-membership-form.component.scss",
@@ -30,13 +35,16 @@ export class MemberMembershipFormComponent {
   translationTemplate = input.required<TranslationTemplates>();
   bridgesInputType = BridgesInputType;
   branchesService = inject(BranchesService);
+  lookupService = inject(LookupService);
   userService = inject(UserService);
   now: any = new Date();
   startDate: any = new Date();
   endDate: any = new Date();
   setMembership(e: Memberships) {
     const membership = this.createUserMembershipFromMembership(e, {
-      branchId: this.branchesService.currentBranch?.id as any,
+      branchId: this.userService.currentUser?.role === "SuperAdmin"
+        ? null
+        : this.branchesService.currentBranch?.id as any,
       staffId: this.userService.currentUser?.id as any,
       salesId: this.userService.currentUser?.role === "Sales"
         ? this.userService.currentUser?.id

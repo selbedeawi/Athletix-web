@@ -107,6 +107,16 @@
     [role]="'Sales'"
     [translationTemplate]="translationTemplate()"
   ></app-select-staff>
+  <brdgs-select
+    *appHasRole="['SuperAdmin']"
+    class="col-12 col-md-6"
+    [label]="t('SELECT_BRANCH')"
+    [(value)]="membership().branchId"
+    [isRequired]="true"
+    [options]="lookupService.getOptions('Branch') | async"
+    [isDisabled]="false"
+    [isMultiple]="false"
+  ></brdgs-select>
   <brdgs-input
     class="col-12 col-md-6"
     [label]="t('RECEIPT_NUMBER')"
