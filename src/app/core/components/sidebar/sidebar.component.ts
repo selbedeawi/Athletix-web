@@ -59,7 +59,7 @@ export class BrdgsSidenavComponent implements OnDestroy {
       icon: "icon-dashboard_2",
       label: "NAV_ADMIN_DASHBOARD",
       path: ["/", APP_ROUTES.ADMIN_DASHBOARD],
-      permissions: ["SuperAdmin"],
+      permissions: [],
     },
     {
       icon: "icon-gmail_groups",

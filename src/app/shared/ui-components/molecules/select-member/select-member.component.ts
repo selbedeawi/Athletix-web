@@ -38,7 +38,7 @@ export class SelectMemberComponent {
   types = input.required<("Individual" | "PrivateCoach" | "SessionBased")[]>();
 
   branchId!: string;
-
+  showPT = input(false);
   private destroyed$ = new Subject<void>();
 
   selectedMemberChange = output<MemberAccount>();

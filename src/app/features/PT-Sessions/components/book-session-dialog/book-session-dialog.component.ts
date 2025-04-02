@@ -18,6 +18,7 @@ import { BranchesService } from "../../../../core/services/branches/branches.ser
 import { SnackbarService } from "../../../../core/services/snackbar/snackbar.service";
 import { SelectStaffComponent } from "../../../../shared/ui-components/molecules/select-staff/select-staff.component";
 import { SelectMemberComponent } from "../../../../shared/ui-components/molecules/select-member/select-member.component";
+import { MemberAccount } from "../../../members-list/models/member";
 
 @Component({
   selector: "app-book-session-dialog",
@@ -72,6 +73,14 @@ export class BookSessionDialogComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     // Initialization logic if needed.
+  }
+  setPtForMember(memberAccount: MemberAccount) {
+    this.privateSession.userMembershipId = memberAccount.UserMembership.id;
+    if (memberAccount.UserMembership.type === "PrivateCoach") {
+      this.privateSession.coachId = memberAccount.UserMembership.coachId;
+    } else {
+      this.privateSession.coachId = null;
+    }
   }
 
   createPrivateSessionBooking(): void {

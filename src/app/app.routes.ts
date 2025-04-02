@@ -19,7 +19,7 @@ export const routes: Routes = [
         (c) => c.DashboardComponent,
       ),
     data: { layout: "main" },
-    canActivate: [RoleGuard(["SuperAdmin"])],
+    canActivate: [RoleGuard([])],
   },
   {
     path: APP_ROUTES.MEMBERSHIP_LIST,

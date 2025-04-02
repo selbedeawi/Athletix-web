@@ -59,7 +59,7 @@ export class MemberService {
     let query = this.supabaseService.sb
       .from("Members")
       .select(
-        "*, UserMembership(*,  salesStaff:Staff!UserMembership_salesId_fkey(firstName, lastName))",
+        "*, UserMembership!inner(*,  salesStaff:Staff!UserMembership_salesId_fkey(firstName, lastName))",
         { count: "exact" },
       );
 

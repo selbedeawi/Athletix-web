@@ -17,7 +17,12 @@
     #auto="matAutocomplete"
   >
     @for (option of memberOptions$|async; track $index) {
-    <mat-option [value]="option">
+    <mat-option
+      [value]="option"
+      [disabled]="
+        showPT() && option.UserMembership.remainingPersonalTrainer === 0
+      "
+    >
       <div class="d-flex flex-column">
         <span
           >{{ option.firstName }} {{ option.lastName }}
@@ -25,7 +30,9 @@
             @if(option.UserMembership.type === "PrivateCoach" ){(Remaining
             {{ option.UserMembership.remainingPersonalTrainer }} )}@else if(
             option.UserMembership.type === 'SessionBased' ){(Remaining
-            {{ option.UserMembership.remainingGroupSessions }}) }</span
+            {{ option.UserMembership.remainingGroupSessions }}) } @else if(
+            showPT()&& option.UserMembership.type === 'Individual' ){(Remaining
+            {{ option.UserMembership.remainingPersonalTrainer }}) }</span
           >
         </span>
         <span class="mat-body-medium on-secondary-fixed-variant-color">{{

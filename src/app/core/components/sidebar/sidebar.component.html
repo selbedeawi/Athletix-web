@@ -73,17 +73,21 @@
   <div [hidden]="isCollapsed()" class="mt-auto">
     <mat-divider></mat-divider>
     <div class="d-flex my-2 justify-content-between align-items-center">
-      <mat-icon class="icon-account_circle f-24 on-primary-color"></mat-icon>
       <div class="d-flex align-items-center">
-        <div class="d-flex flex-column mat-body-medium">
-          @if(userService.currentUser$ | async; as user){
-          <span class="mat-label-large on-primary-color"
-            >{{ user?.firstName }} {{ user?.lastName }}</span
-          >
-          <span class="primary-fixed-dim-color mat-body-small">{{
-            user?.role
-          }}</span>
-          }
+        <mat-icon
+          class="icon-account_circle f-24 on-primary-color me-2"
+        ></mat-icon>
+        <div class="d-flex align-items-center">
+          <div class="d-flex flex-column mat-body-medium">
+            @if(userService.currentUser$ | async; as user){
+            <span class="mat-label-large on-primary-color"
+              >{{ user?.firstName }} {{ user?.lastName }}</span
+            >
+            <span class="primary-fixed-dim-color mat-body-small">{{
+              user?.role
+            }}</span>
+            }
+          </div>
         </div>
       </div>
       <button mat-icon-button class="on-primary-color">
