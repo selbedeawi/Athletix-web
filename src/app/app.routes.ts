@@ -65,7 +65,7 @@ export const routes: Routes = [
         ),
     data: { layout: "main" },
     canActivate: [
-      RoleGuard(["SuperAdmin", "SessionManager", "Coach"]),
+      RoleGuard(["SuperAdmin", "SessionManager", "Receptionist", "Coach"]),
     ],
   },
   {

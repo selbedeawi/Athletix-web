@@ -58,7 +58,10 @@ export class MemberService {
 
     let query = this.supabaseService.sb
       .from("Members")
-      .select("*, UserMembership(*)", { count: "exact" });
+      .select(
+        "*, UserMembership(*,  salesStaff:Staff!UserMembership_salesId_fkey(firstName, lastName))",
+        { count: "exact" },
+      );
 
     if (filters.searchQuery) {
       query = query.or(
@@ -113,6 +116,9 @@ export class MemberService {
     }
     if (typeof filters.isActiveUser === "boolean") {
       query.eq("isActive", filters.isActiveUser);
+    }
+    if (filters.salesId) {
+      query.eq("UserMembership.salesId", filters.salesId);
     }
 
     if (typeof filters.isFreeze === "boolean") {

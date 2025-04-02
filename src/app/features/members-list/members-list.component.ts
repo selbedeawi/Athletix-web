@@ -10,6 +10,8 @@ import { RouterLink } from "@angular/router";
 import { TranslocoDirective } from "@jsverse/transloco";
 import { TranslationTemplates } from "../../shared/enums/translation-templates-enum";
 import { APP_ROUTES } from "../../core/enums/pages-urls-enum";
+import { NgxMaskPipe, provideNgxMask } from "ngx-mask";
+import { HasRoleDirective } from "../../core/directives/has-role.directive";
 
 @Component({
   selector: "app-members-list",
@@ -24,7 +26,10 @@ import { APP_ROUTES } from "../../core/enums/pages-urls-enum";
     EmptyResultComponent,
     RouterLink,
     MatIcon,
+    NgxMaskPipe,
+    HasRoleDirective,
   ],
+  providers: [provideNgxMask()],
   templateUrl: "./members-list.component.html",
   styleUrl: "./members-list.component.scss",
 })

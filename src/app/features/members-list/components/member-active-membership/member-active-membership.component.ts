@@ -11,6 +11,7 @@ import { MembershipFreezeComponent } from "../membership-freeze/membership-freez
 import { SnackbarService } from "../../../../core/services/snackbar/snackbar.service";
 import { AddMembershipPopupComponent } from "../add-membership-popup/add-membership-popup.component";
 import { ConfirmDeleteComponent } from "../../../../shared/ui-components/templates/confirm-delete/confirm-delete.component";
+import { HasRoleDirective } from "../../../../core/directives/has-role.directive";
 
 @Component({
   selector: "app-member-active-membership",
@@ -20,6 +21,7 @@ import { ConfirmDeleteComponent } from "../../../../shared/ui-components/templat
     CurrencyPipe,
     MatButtonModule,
     DatePipe,
+    HasRoleDirective,
   ],
   templateUrl: "./member-active-membership.component.html",
   styleUrl: "./member-active-membership.component.scss",

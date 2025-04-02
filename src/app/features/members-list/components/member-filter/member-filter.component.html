@@ -84,6 +84,7 @@
         { key: t('IN_ACTIVE'), value: false }
       ]"
     ></brdgs-select> -->
+
     <brdgs-select
       class="col-12 col-md-4"
       [label]="t('FILTER_IS_CANCELED')"
@@ -106,6 +107,17 @@
         { key: t('NO_FREEZE'), value: false }
       ]"
     ></brdgs-select>
+    <app-select-staff
+      *appHasRole="['SuperAdmin', 'SalesManager']"
+      class="col-12 col-md-4"
+      [(staffId)]="filters.salesId"
+      [isRequired]="false"
+      [label]="t('SELECT_SALES')"
+      [role]="'Sales'"
+      [isMultiple]="false"
+      [translationTemplate]="translationTemplate"
+    ></app-select-staff>
+
     <div class="col-auto ms-auto d-flex flex-wrap">
       <div>
         <button

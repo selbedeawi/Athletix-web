@@ -87,6 +87,7 @@ export class AllMembersFilter {
   searchQuery?: string;
   branchId?: string;
   membershipId?: string;
+  salesId?: string;
   type?: "Individual" | "PrivateCoach" | "SessionBased";
   types?: ("Individual" | "PrivateCoach" | "SessionBased")[];
   endDateFrom?: string;

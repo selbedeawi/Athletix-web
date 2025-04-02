@@ -10,6 +10,7 @@ import { UserService } from "../../../../core/services/user/user.service";
 import { TranslocoDirective } from "@jsverse/transloco";
 import { SelectStaffComponent } from "../../../../shared/ui-components/molecules/select-staff/select-staff.component";
 import { DatePickerComponent } from "../../../../shared/ui-components/atoms/date-picker/date-picker.component";
+import { HasRoleDirective } from "../../../../core/directives/has-role.directive";
 
 @Component({
   selector: "app-member-membership-form",
@@ -19,6 +20,7 @@ import { DatePickerComponent } from "../../../../shared/ui-components/atoms/date
     TranslocoDirective,
     SelectStaffComponent,
     DatePickerComponent,
+    HasRoleDirective,
   ],
   templateUrl: "./member-membership-form.component.html",
   styleUrl: "./member-membership-form.component.scss",
@@ -36,6 +38,9 @@ export class MemberMembershipFormComponent {
     const membership = this.createUserMembershipFromMembership(e, {
       branchId: this.branchesService.currentBranch?.id as any,
       staffId: this.userService.currentUser?.id as any,
+      salesId: this.userService.currentUser?.role === "Sales"
+        ? this.userService.currentUser?.id
+        : null,
     }) as any;
 
     this.membership.update((m) => {
@@ -91,9 +96,12 @@ export class MemberMembershipFormComponent {
         : null,
       remainingInBody: membership.inBodyCount ?? 0,
       remainingInvitations: membership.numberOfInvitations ?? 0,
-      remainingPersonalTrainer: membership.type === "PrivateCoach"
-        ? membership.numberOfSessions || 0
-        : membership.personalTrainerCount,
+
+      remainingPersonalTrainer:
+        ["PrivateCoach", "SessionBased"].includes(membership.type)
+          ? membership.numberOfSessions || 0
+          : membership.personalTrainerCount,
+
       remainingVisits: membership.numberOfVisits ?? 0,
       salesId: extra.salesId ?? null,
       startDate: start,

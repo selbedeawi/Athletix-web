@@ -99,6 +99,7 @@
 
   }
   <app-select-staff
+    *appHasRole="['SuperAdmin', 'Receptionist', 'SalesManager']"
     class="col-12 col-md-6"
     [(staffId)]="membership().salesId"
     [isRequired]="true"
