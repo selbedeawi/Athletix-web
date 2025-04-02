@@ -70,7 +70,9 @@ export class SupabaseService {
   ) {
     return this.sb.auth.onAuthStateChange(callback);
   }
-
+  forgetPassword(email: string) {
+    return from(this.sb.auth.resetPasswordForEmail(email));
+  }
   signIn(email: string, password: string): Observable<any> {
     return from(
       this.sb.auth.signInWithPassword({ email, password }),

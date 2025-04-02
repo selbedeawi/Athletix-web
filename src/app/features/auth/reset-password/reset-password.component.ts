@@ -11,6 +11,7 @@ import { APP_ROUTES } from "../../../core/enums/pages-urls-enum";
 import { RouterLink } from "@angular/router";
 import { TranslocoDirective } from "@jsverse/transloco";
 import { TranslationTemplates } from "../../../shared/enums/translation-templates-enum";
+import { SupabaseService } from "../../../core/services/supabase/supabase.service";
 
 @Component({
   selector: "app-reset-password",
@@ -36,15 +37,15 @@ export class ResetPasswordComponent {
   snackBarService = inject(SnackbarService);
   APP_ROUTES = APP_ROUTES;
   translationTemplate = TranslationTemplates.AUTH;
-
+  supabaseService = inject(SupabaseService);
   resetPassword() {
-    // this.authService.forgetPassword(this.email).subscribe({
-    //   next: () => {
-    //     this.snackBarService.success('RESET_PASSWORD_EMAIL_SENT');
-    //   },
-    //   error: () => {
-    //     this.snackBarService.error('RESET_PASSWORD_EMAIL_ERROR');
-    //   },
-    // });
+    this.supabaseService.forgetPassword(this.email).subscribe({
+      next: () => {
+        this.snackBarService.success("RESET_PASSWORD_EMAIL_SENT");
+      },
+      error: () => {
+        this.snackBarService.error("RESET_PASSWORD_EMAIL_ERROR");
+      },
+    });
   }
 }
