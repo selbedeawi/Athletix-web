@@ -1,4 +1,4 @@
-import { Component, inject, signal } from "@angular/core";
+import { Component, inject, OnDestroy, signal } from "@angular/core";
 import { filter, finalize, Subject, takeUntil } from "rxjs";
 import { BridgesInputType } from "../../../../shared/ui-components/atoms/input/enum/bridges-input-type.enum";
 import { TranslationTemplates } from "../../../../shared/enums/translation-templates-enum";
@@ -35,7 +35,7 @@ import { UserService } from "../../../../core/services/user/user.service";
   templateUrl: "./pt-sessions-fillter.component.html",
   styleUrl: "./pt-sessions-fillter.component.scss",
 })
-export class PtSessionsFillterComponent {
+export class PtSessionsFillterComponent implements OnDestroy {
   private privateSessionsService = inject(PrivateSessionsBookingService);
   lookupService = inject(LookupService);
   branchesService = inject(BranchesService);
@@ -117,5 +117,9 @@ export class PtSessionsFillterComponent {
   search() {
     this.pageNumber.set(1);
     this.getAll();
+  }
+  ngOnDestroy(): void {
+    this.destroyed$.next();
+    this.destroyed$.complete();
   }
 }

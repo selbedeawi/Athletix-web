@@ -7,8 +7,7 @@ import { MatCardModule } from "@angular/material/card";
 import { InputComponent } from "../../../shared/ui-components/atoms/input/input.component";
 import { BridgesInputType } from "../../../shared/ui-components/atoms/input/enum/bridges-input-type.enum";
 
-import { take } from "rxjs";
-import { BEResponse } from "../../../shared/models/shared-models";
+import { filter, take } from "rxjs";
 import { roleRouteMapping } from "../../../shared/models/auth.model";
 import { APP_ROUTES } from "../../../core/enums/pages-urls-enum";
 import { TranslationTemplates } from "../../../shared/enums/translation-templates-enum";
@@ -16,6 +15,7 @@ import { TranslocoDirective } from "@jsverse/transloco";
 import { SnackbarService } from "../../../core/services/snackbar/snackbar.service";
 import { SupabaseService } from "../../../core/services/supabase/supabase.service";
 import { AccountType } from "../../../core/enums/account-type-enum";
+import { UserService } from "../../../core/services/user/user.service";
 
 export class LoginCredentials {
   email!: string;
@@ -47,6 +47,8 @@ export class LoginComponent {
   };
 
   router = inject(Router);
+
+  userService = inject(UserService);
   route = inject(ActivatedRoute);
   snackbarService = inject(SnackbarService);
   supabaseService = inject(SupabaseService);
@@ -54,7 +56,6 @@ export class LoginComponent {
   translationTemplate = TranslationTemplates.AUTH;
   verifyEmailToken: string = "";
   userId: string = "";
-
   ngOnInit(): void {
     // this.verifyEmailToken = this.route.snapshot.paramMap.get("token") || "";
     // this.userId = decodeURIComponent(
@@ -79,19 +80,26 @@ export class LoginComponent {
     this.supabaseService.signIn(this.form.email, this.form.password)
       .pipe(take(1))
       .subscribe({
-        next: (user) => {
-          const userRole = user.role;
-          if (userRole as AccountType) {
-            const route = roleRouteMapping[userRole as AccountType];
-            if (route) {
-              this.router.navigate(["/", route]);
-            } else {
-              console.error("No route defined for this role:", userRole);
-            }
+        next: (res) => {
+          if (res.data) {
+            this.userService.currentUser$.pipe(
+              filter((user) => !!user),
+              take(1),
+            ).subscribe((res) => {
+              if (res) {
+                const route = roleRouteMapping[res.role];
+                if (route) {
+                  this.router.navigate(["/", route]);
+                } else {
+                  console.error("No route defined for this role:", res.role);
+                }
+              }
+            });
+          } else {
+            this.snackbarService.error(res.error?.message || "Login failed");
           }
         },
         error: (error: any) => {
-          this.snackbarService.error(error.message || "Login failed");
           // if (
           //   error.error?.errors?.[0]?.errorCode === "USER_EMAIL_NOT_CONFIRMED"
           // ) {

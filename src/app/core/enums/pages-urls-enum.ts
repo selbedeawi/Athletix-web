@@ -2,8 +2,8 @@ export enum APP_ROUTES {
   AUTH = "auth",
   LOGIN = "login",
   RESET_PASSWORD = "reset-password",
-  CONFIRM_PASSWORD = "reset/:passwordToken",
-  RESEND_CONFIRM = "resend-confirm",
+  CONFIRM_PASSWORD = "reset",
+  RESEND_CONFIRM = "password-confirm",
 
   ADMIN = "admin",
   ADMIN_DASHBOARD = "admin-dashboard",
@@ -34,5 +34,6 @@ export enum APP_ROUTES {
   RECEPTIONIST = "RECEPTIONIST",
   COACH = "COACH",
   MEMBER = "MEMBER",
+  MEMBER_VIEW = "member_view",
   ADD_SESSION = "ADD_SESSION",
 }

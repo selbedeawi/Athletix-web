@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ResendConfirmComponent } from './resend-confirm.component';
+import { MemberViewComponent } from './member-view.component';
 
-describe('ResendConfirmComponent', () => {
-  let component: ResendConfirmComponent;
-  let fixture: ComponentFixture<ResendConfirmComponent>;
+describe('MemberViewComponent', () => {
+  let component: MemberViewComponent;
+  let fixture: ComponentFixture<MemberViewComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ResendConfirmComponent]
+      imports: [MemberViewComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ResendConfirmComponent);
+    fixture = TestBed.createComponent(MemberViewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

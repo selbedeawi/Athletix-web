@@ -12,13 +12,13 @@ import { TranslationTemplates } from "../../../shared/enums/translation-template
 import { SnackbarService } from "../../../core/services/snackbar/snackbar.service";
 
 @Component({
-  selector: "app-resend-confirm",
+  selector: "app-member-pass-confirm",
   imports: [MatButtonModule, MatCardModule, TranslocoDirective],
-  templateUrl: "./resend-confirm.component.html",
-  styleUrl: "./resend-confirm.component.scss",
+  templateUrl: "./member-pass-confirm.component.html",
+  styleUrl: "./member-pass-confirm.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ResendConfirmComponent {
+export class MemberPassConfirmComponent {
   translationTemplate = TranslationTemplates.AUTH;
 
   snackBarService = inject(SnackbarService);

@@ -71,56 +71,18 @@ export class SupabaseService {
     return this.sb.auth.onAuthStateChange(callback);
   }
   forgetPassword(email: string) {
-    return from(this.sb.auth.resetPasswordForEmail(email));
+    const redirectTo = window.location.origin + "/auth/reset";
+    return from(this.sb.auth.resetPasswordForEmail(email, { redirectTo }));
   }
-  signIn(email: string, password: string): Observable<any> {
+  confirmChangePassword(
+    newPassword: string,
+  ): Observable<any> {
+    return from(this.sb.auth.updateUser({ password: newPassword }));
+  }
+
+  signIn(email: string, password: string) {
     return from(
       this.sb.auth.signInWithPassword({ email, password }),
-    ).pipe(
-      switchMap(({ data, error }) => {
-        if (error || !data.user) {
-          return throwError(() => new Error("Invalid email or password"));
-        }
-
-        const userId = data.user.id;
-
-        // Fetch the staff record to check if user is active
-        return from(
-          this.sb
-            .from("Staff")
-            .select()
-            .eq("id", userId)
-            .single(),
-        ).pipe(
-          switchMap(({ data: staff, error: staffError }) => {
-            if (staffError || !staff) {
-              return from(this.sb.auth.signOut()).pipe(
-                switchMap(() =>
-                  throwError(() =>
-                    new Error("Unauthorized: Not a staff member")
-                  )
-                ),
-              );
-            }
-
-            if (!staff.isActive) {
-              return from(this.sb.auth.signOut()).pipe(
-                switchMap(() =>
-                  throwError(() =>
-                    new Error("Your account is inactive. Contact admin.")
-                  )
-                ),
-              );
-            }
-
-            // Return session if user is valid
-            return of(staff as any);
-          }),
-        );
-      }),
-      catchError((error) => {
-        return throwError(() => error);
-      }),
     );
   }
 

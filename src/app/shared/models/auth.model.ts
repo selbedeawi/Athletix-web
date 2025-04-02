@@ -8,5 +8,5 @@ export const roleRouteMapping: { [key in AccountType]: APP_ROUTES } = {
   ["Sales"]: APP_ROUTES.MEMBERS_LIST,
   ["Receptionist"]: APP_ROUTES.MEMBERS_LIST,
   ["Coach"]: APP_ROUTES.BOOKED_SESSIONS,
-  ["Member"]: APP_ROUTES.MEMBER,
+  ["Member"]: APP_ROUTES.MEMBER_VIEW,
 };
