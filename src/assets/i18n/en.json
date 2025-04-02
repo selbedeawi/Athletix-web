@@ -30,7 +30,8 @@
     "EDIT_SESSION_SUCCESS": "Session Updated Successfully",
     "DELETE_BOOKED_SESSION_SUCCESS" : "Canceled Booking Successfully",
     "A user with this email address has already been registered": "A user with this email address has already been registered",
-    "Session Scheduled Successfully" :"Session Scheduled Successfully"
+    "Session Scheduled Successfully" :"Session Scheduled Successfully",
+    "Your account is inactive. Contact admin." : "Your account is inactive. Contact admin."
   },
   "Member": {
     "ADD": "Add Member",
