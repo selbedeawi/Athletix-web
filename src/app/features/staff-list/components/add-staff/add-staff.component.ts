@@ -14,10 +14,8 @@ import { TranslationTemplates } from "../../../../shared/enums/translation-templ
 import { TranslocoDirective } from "@jsverse/transloco";
 import { MatButtonModule } from "@angular/material/button";
 import { SelectComponent } from "../../../../shared/ui-components/atoms/select/select.component";
-import { DatePickerComponent } from "../../../../shared/ui-components/atoms/date-picker/date-picker.component";
 import { LookupService } from "../../../../core/services/lookup/lookup.service";
 import { AsyncPipe } from "@angular/common";
-import { ConfirmPasswordComponent } from "../../../../shared/ui-components/organisms/confirm-password/confirm-password.component";
 
 @Component({
   selector: "app-add-staff",
@@ -32,7 +30,6 @@ import { ConfirmPasswordComponent } from "../../../../shared/ui-components/organ
     MatButtonModule,
     SelectComponent,
     AsyncPipe,
-    ConfirmPasswordComponent,
   ],
   templateUrl: "./add-staff.component.html",
   styleUrl: "./add-staff.component.scss",
@@ -50,8 +47,14 @@ export class AddStaffComponent {
   ngOnInit(): void {}
 
   addStaff() {
+    const clone = structuredClone(this.staffAccount());
+    clone.password = this.generateRandomPassword(
+      clone.firstName,
+      clone.lastName,
+    );
+
     this.staffService
-      .createStaffAccount(this.staffAccount())
+      .createStaffAccount(clone)
       .subscribe((res) => {
         if (!res.error) {
           this.snackbarService.success("ADD_STAFF_SUCCESS");
@@ -61,5 +64,31 @@ export class AddStaffComponent {
           ]);
         }
       });
+  }
+  generateRandomPassword(
+    first: string,
+    last: string,
+    length: number = 6,
+  ): string {
+    // Ensure length is within bounds.
+    length = Math.max(8, Math.min(36, length));
+
+    const digits = "0123456789";
+
+    // Combine allowed characters (exclude space).
+    const all = digits;
+
+    // Guarantee at least one lower and one upper.
+    let password = "";
+    password += first.trim()[0].toUpperCase();
+    password += last.trim()[0].toLowerCase();
+
+    // Fill remaining characters.
+    for (let i = 2; i < length; i++) {
+      password += all[Math.floor(Math.random() * all.length)];
+    }
+
+    // Shuffle the characters to randomize positions.
+    return password.split("").sort(() => 0.5 - Math.random()).join("");
   }
 }
