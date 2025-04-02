@@ -17,16 +17,29 @@
         {{ membership.name }}
       </span>
       <div class="ms-auto">
-        <button class="me-2" mat-stroked-button (click)="cancel(membership)">
+        <button
+          *appHasRole="['SuperAdmin', 'SalesManager', 'Receptionist']"
+          class="me-2"
+          mat-stroked-button
+          (click)="cancel(membership)"
+        >
           {{ t("CANCEL_MEMBERSHIP") }}
         </button>
 
         @if(membership.isFreeze){
-        <button mat-flat-button (click)="unFreeze(membership)">
+        <button
+          *appHasRole="['SuperAdmin', 'SalesManager', 'Receptionist']"
+          mat-flat-button
+          (click)="unFreeze(membership)"
+        >
           {{ t("UN_FREEZE") }}
         </button>
         }@else {
-        <button mat-flat-button (click)="freeze(membership)">
+        <button
+          *appHasRole="['SuperAdmin', 'SalesManager', 'Receptionist']"
+          mat-flat-button
+          (click)="freeze(membership)"
+        >
           {{ t("FREEZE") }}
         </button>
         }

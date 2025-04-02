@@ -5,7 +5,7 @@ import { MatCardModule } from "@angular/material/card";
 import { TranslocoDirective } from "@jsverse/transloco";
 import { DatePickerComponent } from "../../../../shared/ui-components/atoms/date-picker/date-picker.component";
 import { InputComponent } from "../../../../shared/ui-components/atoms/input/input.component";
-import { ConfirmPasswordComponent } from "../../../../shared/ui-components/organisms/confirm-password/confirm-password.component";
+
 import { MemberAccount } from "../../models/member";
 import { TranslationTemplates } from "../../../../shared/enums/translation-templates-enum";
 import { BridgesInputType } from "../../../../shared/ui-components/atoms/input/enum/bridges-input-type.enum";
@@ -19,7 +19,7 @@ import { SelectComponent } from "../../../../shared/ui-components/atoms/select/s
     InputComponent,
     TranslocoDirective,
     MatButtonModule,
-    ConfirmPasswordComponent,
+
     DatePickerComponent,
     SelectComponent,
   ],

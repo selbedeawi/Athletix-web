@@ -62,8 +62,14 @@ export class AddMemberComponent {
   ngOnInit(): void {}
 
   finalizeRegistration() {
+    const clone = structuredClone(this.member());
+    clone.password = this.generateRandomPassword(
+      clone.firstName,
+      clone.lastName,
+    );
+
     this.memberService
-      .createMember(this.member())
+      .createMember(clone)
       .pipe(
         switchMap((memberRes) => {
           if (memberRes.error) {
@@ -102,5 +108,32 @@ export class AddMemberComponent {
   }
   removeMemberships(i: number) {
     this.userMemberships()?.splice(i, 1);
+  }
+
+  generateRandomPassword(
+    first: string,
+    last: string,
+    length: number = 6,
+  ): string {
+    // Ensure length is within bounds.
+    length = Math.max(8, Math.min(36, length));
+
+    const digits = "0123456789";
+
+    // Combine allowed characters (exclude space).
+    const all = digits;
+
+    // Guarantee at least one lower and one upper.
+    let password = "";
+    password += first.trim()[0].toUpperCase();
+    password += last.trim()[0].toLowerCase();
+
+    // Fill remaining characters.
+    for (let i = 2; i < length; i++) {
+      password += all[Math.floor(Math.random() * all.length)];
+    }
+
+    // Shuffle the characters to randomize positions.
+    return password.split("").sort(() => 0.5 - Math.random()).join("");
   }
 }
