@@ -31,7 +31,9 @@
     "DELETE_BOOKED_SESSION_SUCCESS" : "Canceled Booking Successfully",
     "A user with this email address has already been registered": "A user with this email address has already been registered",
     "Session Scheduled Successfully" :"Session Scheduled Successfully",
-    "Your account is inactive. Contact admin." : "Your account is inactive. Contact admin."
+    "Your account is inactive. Contact admin." : "Your account is inactive. Contact admin.",
+    "ADD_MEMBER_SUCCESS" : "Member Added Successfully",
+    "MEMBERSHIP_ADDED_SUCCESS" : "Memberships Added Successfully"
   },
   "Member": {
     "ADD": "Add Member",
@@ -131,7 +133,10 @@
     "ADD_MEMBERSHIP_BTN" : "Add Another Membership",
     "DELETE_BTN" : "Remove",
     "ADD_MEMBER_SHIP" : "Add",
-    "ADD_MEMBER_FIST" : "Next"
+    "ADD_MEMBER_FIST" : "Next",
+    "TABLE_PHONE_NUMBER" : "Mobile Number",
+    "TABLE_SALES": "Sales",
+    "EXPORT" : "Export"
   },
   "BookedSession": {
     "TITLE": "Booked Sessions List",
@@ -273,7 +278,8 @@
     "ACTIVE" :"Active",
     "INACTIVE" :"InActive",
     "TITLE":"Memberships",
-    "NO_RESULT_TITLE":"No Result"
+    "NO_RESULT_TITLE":"No Result",
+    "SELECT_SALES" : "Sales"
 
   },
   "Staff": {
