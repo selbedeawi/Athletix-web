@@ -279,7 +279,9 @@
     "INACTIVE" :"InActive",
     "TITLE":"Memberships",
     "NO_RESULT_TITLE":"No Result",
-    "SELECT_SALES" : "Sales"
+    "SELECT_SALES" : "Sales",
+    "ADD_MEMBERSHIP_TITLE" : "Membership",
+    "ADD_MEMBERSHIP" : "Add"
 
   },
   "Staff": {
