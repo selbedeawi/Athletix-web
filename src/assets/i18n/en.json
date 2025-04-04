@@ -33,7 +33,10 @@
     "Session Scheduled Successfully" :"Session Scheduled Successfully",
     "Your account is inactive. Contact admin." : "Your account is inactive. Contact admin.",
     "ADD_MEMBER_SUCCESS" : "Member Added Successfully",
-    "MEMBERSHIP_ADDED_SUCCESS" : "Memberships Added Successfully"
+    "MEMBERSHIP_ADDED_SUCCESS" : "Membership Added Successfully",
+    "SESSIONS_SCHEDULED_SUCCESSFULLY" : "Session Scheduled Successfully",
+    "SESSION_BOOK_SUCCESSFULLY" : "Session Booked Successfully",
+    "NEW_MEMBERSHIP_ADDED_SUCCESS" : "New Membership Added Successfully"
   },
   "Member": {
     "ADD": "Add Member",
@@ -162,8 +165,8 @@
     "CANCEL_BOOKING_HEADER": "Cancel Booking",
     "CANCEL_BOOKING_CONTENT":"Are you sure you want to cancel booking?",
     "YES":"Yes",
-    "NO":"No"
-
+    "NO":"No",
+    "SELECT_COACH" : "Coach"
   },
   "PtSession": {
     "TITLE": "Personal Trainer Sessions List",
@@ -232,7 +235,10 @@
     "TODAY": "Today",
     "BOOK_A_SESSION":"Book Session",
     "POPUP_TITLE":"Book Session For Member",
-    "BOOK_MEMBER": "Book"
+    "BOOK_MEMBER": "Book",
+    "CL_SCH_SES": "Cancel",
+    "DELETE_CONFIRMATION": "Cancel Session",
+    "DELETE_ARE_YOU_SURE_": "Are you sure you want to cancel the session?"
   },
   "Memberships": {
     "SEARCH": "Search",
