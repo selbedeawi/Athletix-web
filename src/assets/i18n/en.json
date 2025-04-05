@@ -339,7 +339,9 @@
     "HAS_JACUZZI": "Jacuzzi",
     "HAS_SUNNA": "Sauna",
     "HAS_STEAM": "Steam",
-    "IN_ACTIVE": "Inactive"
+    "IN_ACTIVE": "Inactive",
+    "SessionBased": "Session Based",
+    "PrivateCoach": "Private Coach"
   },
   "Staff": {
     "TITLE": "Staff List",
@@ -388,7 +390,12 @@
     "ACTIVATE_BTN" :"Activate",
     "NO_RESULT_TITLE":"No Result",
     "ACCOUNT_CONTACT": "Contact Details",
-    "DR_SuperAdmin": "Super Admin"
+    "DR_SuperAdmin": "Super Admin",
+    "SalesManger": "Sales Manager",
+    "Receptionist": "Receptionist",
+    "SessionManager": "Session Manager",
+    "Coach": "Coach",
+    "Sales": "Sales"
   },
   "Sessions": {
     "TITLE": "Sessions List",
