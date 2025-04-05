@@ -1,4 +1,12 @@
-import { Component, inject, input, model, OnInit, signal } from "@angular/core";
+import {
+  Component,
+  inject,
+  input,
+  model,
+  OnInit,
+  signal,
+  SimpleChanges,
+} from "@angular/core";
 import { filter, Subject, takeUntil } from "rxjs";
 import { StaffService } from "../../../../features/staff-list/services/staff.service";
 import { SelectComponent } from "../../atoms/select/select.component";
@@ -24,7 +32,7 @@ export class SelectStaffComponent implements OnInit {
   isMultiple = input(false);
   role = input.required<AccountType>();
   label = input("SELECT_staff");
-
+  overrideBranchId = input<string | undefined>();
   staffOptions = signal<{ key: string; value: string }[]>([]);
   constructor() {
   }
@@ -46,7 +54,9 @@ export class SelectStaffComponent implements OnInit {
       {
         role: this.role(),
         isActive: true,
-        branchIds: [this.branchId],
+        branchIds: this.overrideBranchId()
+          ? [this.overrideBranchId() as any]
+          : [this.branchId],
       },
       1,
       100,
@@ -63,5 +73,10 @@ export class SelectStaffComponent implements OnInit {
           this.staffOptions.set([]);
         }
       });
+  }
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes?.["overrideBranchId"]?.currentValue) {
+      this.getAllstaffes();
+    }
   }
 }

@@ -1,8 +1,21 @@
 <ng-container *transloco="let t; prefix: translationTemplate()">
+  <brdgs-select
+    *appHasRole="['SuperAdmin']"
+    class="col-12 6"
+    [label]="t('SELECT_BRANCH')"
+    [(value)]="membership().branchId"
+    [isRequired]="true"
+    [options]="lookupService.getOptions('Branch') | async"
+    [isDisabled]="false"
+    [isMultiple]="false"
+    (valueChange)="resetMembership()"
+  ></brdgs-select>
+  @if(userService.currentUser?.role !== "SuperAdmin" ||membership().branchId){
   <app-select-membership
     [(id)]="membership().membershipId"
     [translationTemplate]="translationTemplate()"
     (membershipChanged)="setMembership($event)"
+    [overrideBranchId]="membership().branchId"
     #selectMembership
   >
   </app-select-membership>
@@ -64,6 +77,7 @@
     [label]="t('SELECT_COACH')"
     [role]="'Coach'"
     [translationTemplate]="translationTemplate()"
+    [overrideBranchId]="membership().branchId"
   ></app-select-staff>
   }@else if(membership().type === 'Individual'){
 
@@ -106,22 +120,15 @@
     [label]="t('SELECT_SALES_NAME')"
     [role]="'Sales'"
     [translationTemplate]="translationTemplate()"
+    [overrideBranchId]="membership().branchId"
   ></app-select-staff>
-  <brdgs-select
-    *appHasRole="['SuperAdmin']"
-    class="col-12 col-md-6"
-    [label]="t('SELECT_BRANCH')"
-    [(value)]="membership().branchId"
-    [isRequired]="true"
-    [options]="lookupService.getOptions('Branch') | async"
-    [isDisabled]="false"
-    [isMultiple]="false"
-  ></brdgs-select>
+
   <brdgs-input
     class="col-12 col-md-6"
     [label]="t('RECEIPT_NUMBER')"
     [(value)]="membership().receiptNumber"
     [isRequired]="false"
     [type]="bridgesInputType.TEXT"
-  ></brdgs-input>
+  ></brdgs-input
+  >}
 </ng-container>

@@ -1,4 +1,12 @@
-import { Component, inject, input, model, output, signal } from "@angular/core";
+import {
+  Component,
+  inject,
+  input,
+  model,
+  output,
+  signal,
+  SimpleChanges,
+} from "@angular/core";
 import { TranslationTemplates } from "../../../enums/translation-templates-enum";
 import { MembershipService } from "../../../../features/membership-list/services/membership.service";
 import { BranchesService } from "../../../../core/services/branches/branches.service";
@@ -25,7 +33,7 @@ export class SelectMembershipComponent {
     { key: string; value: string; option: Memberships }[]
   >([]);
   memberships: Memberships[] = [];
-
+  overrideBranchId = input<string | undefined>();
   membershipChanged = output<Memberships>();
   selectedMembership: Memberships | null = null;
   constructor() {
@@ -35,24 +43,33 @@ export class SelectMembershipComponent {
         takeUntil(this.destroyed$),
       )
       .subscribe((branch) => {
-        this.membershipService.getAllMemberships({
-          branchIds: [branch.id],
-        }).subscribe((res) => {
-          if (res.data) {
-            this.memberships = [...res.data] as any;
-
-            const mShips = res.data.map((m) => {
-              return { key: m.name, value: m.id, option: m as Memberships };
-            });
-            if (this.addAllOption()) {
-              mShips.unshift({ key: "ALL", value: "All" } as any);
-            }
-            this.membershipsOptions.set(mShips);
-          }
-        });
+        this.getMembership(branch.id);
       });
   }
+  getMembership(branchId: string) {
+    this.membershipService.getAllMemberships({
+      branchIds: this.overrideBranchId()
+        ? [this.overrideBranchId() as any]
+        : [branchId],
+    }).subscribe((res) => {
+      if (res.data) {
+        this.memberships = [...res.data] as any;
 
+        const mShips = res.data.map((m) => {
+          return { key: m.name, value: m.id, option: m as Memberships };
+        });
+        if (this.addAllOption()) {
+          mShips.unshift({ key: "ALL", value: "All" } as any);
+        }
+        this.membershipsOptions.set(mShips);
+      }
+    });
+  }
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes?.["overrideBranchId"]?.currentValue) {
+      this.getMembership(changes?.["overrideBranchId"].currentValue);
+    }
+  }
   membershipChange(e: any) {
     const mem = this.memberships.find((m) => m.id === e);
 

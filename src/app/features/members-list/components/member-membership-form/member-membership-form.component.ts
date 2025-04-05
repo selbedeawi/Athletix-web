@@ -43,7 +43,7 @@ export class MemberMembershipFormComponent {
   setMembership(e: Memberships) {
     const membership = this.createUserMembershipFromMembership(e, {
       branchId: this.userService.currentUser?.role === "SuperAdmin"
-        ? null
+        ? this.membership().branchId || null
         : this.branchesService.currentBranch?.id as any,
       staffId: this.userService.currentUser?.id as any,
       salesId: this.userService.currentUser?.role === "Sales"
@@ -56,7 +56,14 @@ export class MemberMembershipFormComponent {
       return m;
     });
   }
-
+  resetMembership() {
+    this.membership.update((m) => {
+      m.membershipId = null as any;
+      m.salesId = null as any;
+      m.coachId = null as any;
+      return m;
+    });
+  }
   createUserMembershipFromMembership(
     membership: Memberships,
     extra: {
