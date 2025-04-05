@@ -1,5 +1,5 @@
 import { Component, inject, input, output, signal } from "@angular/core";
-import { FormsModule } from "@angular/forms";
+import { ControlContainer, FormsModule, NgForm } from "@angular/forms";
 import { MatAutocompleteModule } from "@angular/material/autocomplete";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
@@ -29,6 +29,7 @@ import { AsyncPipe } from "@angular/common";
   ],
   templateUrl: "./select-member.component.html",
   styleUrl: "./select-member.component.scss",
+  viewProviders: [{ provide: ControlContainer, useExisting: NgForm }],
 })
 export class SelectMemberComponent {
   memberService = inject(MemberService);

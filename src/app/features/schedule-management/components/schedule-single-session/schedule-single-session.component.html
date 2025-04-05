@@ -1,133 +1,135 @@
 <section *transloco="let t; read: translationTemplate">
-  <div class="bg-secondary">
-    <p class="m-0 p-3 mat-title-large on-primary-color">
+  <form #sessionForm="ngForm" (ngSubmit)="schedule(sessionForm)">
+    <h1 matDialogTitle class="bg-secondary-container on-secondary-color">
       {{ t("SCHEDULE_A_SESSION") }}
-    </p>
-  </div>
-  <div class="bg-on-primary mx-3">
-    <p class="m-0 mat-body-large my-3">{{ t("ADD_DETAILS") }}</p>
-    <form #sessionForm="ngForm" (ngSubmit)="schedule(sessionForm)">
-      <div class="row gx-3 gy-1">
-        <!-- coaches list -->
-        <app-select-staff
-          class="col-12"
-          [(staffId)]="coachesId"
-          [isRequired]="true"
-          [label]="t('SELECT_COACH')"
-          [role]="'Coach'"
-          [isMultiple]="true"
-          [translationTemplate]="translationTemplate"
-        ></app-select-staff>
+    </h1>
+    <mat-dialog-content class="d-flex row">
+      <div class="bg-on-primary">
+        <p class="m-0 mat-body-large my-3">{{ t("ADD_DETAILS") }}</p>
 
-        <brdgs-select
-          class="col-6"
-          [label]="t('SELECT_SESSION')"
-          [isRequired]="true"
-          [options]="sessionOptions()"
-          [(value)]="sessionId"
-        ></brdgs-select>
-        <div class="col-6">
-          <p class="m-0 mat-body-medium">{{ t("DOES_IT_REPEAT") }}</p>
-          <mat-radio-group
-            aria-label="Select an option"
-            class="d-flex"
-            [value]="isRepeated()"
-            (change)="isRepeated.set($event.value)"
-          >
-            <mat-radio-button [value]="true">{{ t("YES") }}</mat-radio-button>
-            <mat-radio-button [value]="false">{{ t("NO") }}</mat-radio-button>
-          </mat-radio-group>
-        </div>
+        <div class="row gx-3 gy-1">
+          <!-- coaches list -->
+          <app-select-staff
+            class="col-12"
+            [(staffId)]="coachesId"
+            [isRequired]="true"
+            [label]="t('SELECT_COACH')"
+            [role]="'Coach'"
+            [isMultiple]="true"
+            [translationTemplate]="translationTemplate"
+          ></app-select-staff>
 
-        <brdgs-date-picker
-          class="col-6"
-          [label]="t('START_DATE')"
-          [datePickerMin]="date.toISOString()"
-          [(value)]="scheduledSessions()[0].scheduledDate"
-          [isRequired]="true"
-        ></brdgs-date-picker>
-
-        @if(isRepeated()){
-
-        <brdgs-date-picker
-          class="col-6"
-          [label]="t('END_DATE')"
-          [datePickerMin]="scheduledSessions()[0].scheduledDate || ''"
-          [(value)]="endDate"
-          [isRequired]="true"
-        ></brdgs-date-picker
-        >} @for (session of scheduledSessions(); track $index;let i=$index; let
-        first =$first) { @if(isRepeated()){
-
-        <brdgs-select
-          [class]="first ? 'col-6' : 'col-5'"
-          [label]="t('WEEK_DAY')"
-          [isRequired]="true"
-          [options]="daysOptions()"
-          [(value)]="sessionDays()[i]"
-        ></brdgs-select>
-        }
-        <brdgs-time-picker
-          [class]="first ? 'col-6' : 'col-5'"
-          [label]="t('START_TIME')"
-          [(value)]="scheduledSessions()[i].startTime"
-          [isRequired]="true"
-          [timepickerMax]="'23:00'"
-          (valueChange)="updateTime($event, session)"
-        ></brdgs-time-picker>
-        @if(!first){
-        <div
-          class="col-2 d-flex align-items-center justify-content-start mb-20"
-        >
-          <div
-            class="d-flex align-items-center border-primary-container-1 justify-content-center p-2 rounded-circle cursor-pointer"
-            (click)="removeSession(i)"
-          >
-            <!-- style="max-width: 40px" -->
-            <i class="f-24 icon-delete primary-container-color"></i>
+          <brdgs-select
+            class="col-6"
+            [label]="t('SELECT_SESSION')"
+            [isRequired]="true"
+            [options]="sessionOptions()"
+            [(value)]="sessionId"
+          ></brdgs-select>
+          <div class="col-6">
+            <p class="m-0 mat-body-medium">{{ t("DOES_IT_REPEAT") }}</p>
+            <mat-radio-group
+              aria-label="Select an option"
+              class="d-flex"
+              [value]="isRepeated()"
+              (change)="isRepeated.set($event.value)"
+            >
+              <mat-radio-button [value]="true">{{ t("YES") }}</mat-radio-button>
+              <mat-radio-button [value]="false">{{ t("NO") }}</mat-radio-button>
+            </mat-radio-group>
           </div>
-        </div>
-        } } @if(isRepeated()){
-        <div>
-          <button
-            mat-button
-            color="primary"
-            class="mb-3 mb-md-0 me-3 mt-1"
-            type="button"
-            (click)="addAnotherDay()"
-          >
-            {{ t("ADD_DAY") }}
-          </button>
-        </div>
-        }
 
-        <mat-divider class="mt-3"></mat-divider>
-        <div class="col-auto d-flex flex-wrap ms-auto my-3">
+          <brdgs-date-picker
+            class="col-6"
+            [label]="t('START_DATE')"
+            [datePickerMin]="date.toISOString()"
+            [(value)]="scheduledSessions()[0].scheduledDate"
+            [isRequired]="true"
+          ></brdgs-date-picker>
+
+          @if(isRepeated()){
+
+          <brdgs-date-picker
+            class="col-6"
+            [label]="t('END_DATE')"
+            [datePickerMin]="scheduledSessions()[0].scheduledDate || ''"
+            [(value)]="endDate"
+            [isRequired]="true"
+          ></brdgs-date-picker
+          >} @for (session of scheduledSessions(); track $index;let i=$index;
+          let first =$first) { @if(isRepeated()){
+
+          <brdgs-select
+            [class]="first ? 'col-6' : 'col-5'"
+            [label]="t('WEEK_DAY')"
+            [isRequired]="true"
+            [options]="daysOptions()"
+            [(value)]="sessionDays()[i]"
+          ></brdgs-select>
+          }
+          <brdgs-time-picker
+            [class]="first ? 'col-6' : 'col-5'"
+            [label]="t('START_TIME')"
+            [(value)]="scheduledSessions()[i].startTime"
+            [isRequired]="true"
+            [timepickerMax]="'23:00'"
+            (valueChange)="updateTime($event, session)"
+          ></brdgs-time-picker>
+          @if(!first){
+          <div
+            class="col-2 d-flex align-items-center justify-content-start mb-20"
+          >
+            <div
+              class="d-flex align-items-center border-primary-container-1 justify-content-center p-2 rounded-circle cursor-pointer"
+              (click)="removeSession(i)"
+            >
+              <!-- style="max-width: 40px" -->
+              <i class="f-24 icon-delete primary-container-color"></i>
+            </div>
+          </div>
+          } } @if(isRepeated()){
           <div>
             <button
-              mat-stroked-button
+              mat-button
               color="primary"
               class="mb-3 mb-md-0 me-3 mt-1"
               type="button"
-              matDialogClose
+              (click)="addAnotherDay()"
             >
-              {{ t("CANCEL") }}
+              {{ t("ADD_DAY") }}
             </button>
           </div>
-          <div>
-            <button
-              mat-flat-button
-              cdkFocusInitial
-              color="primary"
-              class="mb-3 mb-md-0 mt-1"
-              type="submit"
-              [disabled]="sessionForm.invalid"
-            >
-              {{ t("SCHEDULE") }}
-            </button>
-          </div>
+          }
         </div>
       </div>
-    </form>
-  </div>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+      <mat-divider class="mt-3"></mat-divider>
+      <div class="col-auto d-flex flex-wrap ms-auto my-3">
+        <div>
+          <button
+            mat-stroked-button
+            color="primary"
+            class="mb-3 mb-md-0 me-3 mt-1"
+            type="button"
+            matDialogClose
+          >
+            {{ t("CANCEL") }}
+          </button>
+        </div>
+        <div>
+          <button
+            mat-flat-button
+            cdkFocusInitial
+            color="primary"
+            class="mb-3 mb-md-0 mt-1"
+            type="submit"
+            [disabled]="sessionForm.invalid"
+          >
+            {{ t("SCHEDULE") }}
+          </button>
+        </div>
+      </div>
+    </mat-dialog-actions>
+  </form>
 </section>
