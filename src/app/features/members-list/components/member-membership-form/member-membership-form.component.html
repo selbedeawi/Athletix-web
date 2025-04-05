@@ -37,7 +37,7 @@
     class="col-12 col-md-6"
     [label]="t('MEMBERSHIP_START')"
     [(value)]="startDate"
-    [isRequired]="false"
+    [isRequired]="true"
     [datePickerMin]="now"
     (valueChange)="
       setDates(selectMembership.selectedMembership?.durationInDays || 0)
@@ -47,7 +47,7 @@
     class="col-12 col-md-6"
     [label]="t('MEMBERSHIP_END_DATE')"
     [(value)]="endDate"
-    [isRequired]="false"
+    [isRequired]="true"
     [isDisabled]="true"
   ></brdgs-date-picker>
 

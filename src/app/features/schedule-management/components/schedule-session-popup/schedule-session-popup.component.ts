@@ -71,9 +71,6 @@ export class ScheduleSessionPopupComponent {
           this.snackBar.success("SESSION_BOOK_SUCCESSFULLY");
           this.dialogRef.close(true);
         },
-        error: (err) => {
-          this.snackBar.error(err.message || "Something went wrong");
-        },
       });
   }
   setMember(member: MemberAccount) {
