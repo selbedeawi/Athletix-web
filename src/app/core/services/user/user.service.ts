@@ -62,7 +62,7 @@ export class UserService {
         this.userSubject.next(account as any);
       }
       this.initializedSubject.next(true);
-    } else if (session?.user) {
+    } else if (session?.user?.id) {
       const { data: account, error } = await this.supabaseService.sb
         .from("Staff")
         .select()
