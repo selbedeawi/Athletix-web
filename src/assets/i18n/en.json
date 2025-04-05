@@ -67,7 +67,10 @@
     "PASSWORD_MUST_NOT_CONTAIN_SPACE": "Password must not contain spaces",
     "CONFIRM_PASSWORD": "Confirm Password",
     "PASSWORD_STRENGTH": "Password Strength",
-    "PASSWORD_WK": "Weak Password"
+    "PASSWORD_WK": "Weak Password",
+    "PASSWORD_RESET_SUCCESSFUL": "Password reset successfully",
+    "Membership is frozen": "Membership is Freezed",
+    "MAT_DATEPICKER_PARSE_ERROR": "Invalid date format"
   },
   "Member": {
     "ADD": "Add Member",
@@ -173,7 +176,8 @@
     "EXPORT" : "Export",
     "SELECT_BRANCH" : "Branch",
     "SELECT_COACH" : "Coach",
-    "IN_ACTIVE": "Inactive"
+    "IN_ACTIVE": "Inactive",
+    "TD_NOT_ACTIVE": "Expired"
   },
   "BookedSession": {
     "TITLE": "Booked Sessions List",
@@ -236,7 +240,8 @@
     "YES":"Yes",
     "NO":"No",
     "NO_RESULT_TITLE":"No Result",
-    "ADD_MEMBER": "Book"
+    "ADD_MEMBER": "Book",
+    "SELECT_MEMBER": "Select Member"
   },
   "ScheduledSession": {
     "TITLE": "Schedule Management",
@@ -333,7 +338,8 @@
     "HAS_GROUP_FITNESS": "Group Fitness",
     "HAS_JACUZZI": "Jacuzzi",
     "HAS_SUNNA": "Sauna",
-    "HAS_STEAM": "Steam"
+    "HAS_STEAM": "Steam",
+    "IN_ACTIVE": "Inactive"
   },
   "Staff": {
     "TITLE": "Staff List",
