@@ -52,7 +52,9 @@ export class PtSessionsComponent {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      console.log("Dialog was closed", result);
+      if (result) {
+        this.ptSessionsFilter()?.getAll();
+      }
     });
   }
 

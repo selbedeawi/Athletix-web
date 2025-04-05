@@ -193,31 +193,34 @@ export type Database = {
       }
       PrivateSessionsBooking: {
         Row: {
-          bookingDate: string | null
-          branchId: string | null
-          coachId: string | null
+          bookingDate: string
+          branchId: string
+          coachId: string
           createdAt: string
           id: string
-          time: string | null
-          userMembershipId: string | null
+          memberId: string
+          time: string
+          userMembershipId: string
         }
         Insert: {
-          bookingDate?: string | null
-          branchId?: string | null
-          coachId?: string | null
+          bookingDate: string
+          branchId: string
+          coachId: string
           createdAt?: string
           id?: string
-          time?: string | null
-          userMembershipId?: string | null
+          memberId: string
+          time: string
+          userMembershipId: string
         }
         Update: {
-          bookingDate?: string | null
-          branchId?: string | null
-          coachId?: string | null
+          bookingDate?: string
+          branchId?: string
+          coachId?: string
           createdAt?: string
           id?: string
-          time?: string | null
-          userMembershipId?: string | null
+          memberId?: string
+          time?: string
+          userMembershipId?: string
         }
         Relationships: [
           {
@@ -232,6 +235,20 @@ export type Database = {
             columns: ["coachId"]
             isOneToOne: false
             referencedRelation: "Staff"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "PrivateSessionsBooking_memberId_fkey"
+            columns: ["memberId"]
+            isOneToOne: false
+            referencedRelation: "flattened_user_sessions_full"
+            referencedColumns: ["member_id"]
+          },
+          {
+            foreignKeyName: "PrivateSessionsBooking_memberId_fkey"
+            columns: ["memberId"]
+            isOneToOne: false
+            referencedRelation: "Members"
             referencedColumns: ["id"]
           },
           {
@@ -672,6 +689,7 @@ export type Database = {
           branchId: string
           createdAt: string
           id: string
+          memberId: string | null
           scheduledSessionId: string
           userMemberShipId: string
         }
@@ -679,6 +697,7 @@ export type Database = {
           branchId: string
           createdAt?: string
           id?: string
+          memberId?: string | null
           scheduledSessionId: string
           userMemberShipId: string
         }
@@ -686,6 +705,7 @@ export type Database = {
           branchId?: string
           createdAt?: string
           id?: string
+          memberId?: string | null
           scheduledSessionId?: string
           userMemberShipId?: string
         }
@@ -695,6 +715,20 @@ export type Database = {
             columns: ["branchId"]
             isOneToOne: false
             referencedRelation: "Branch"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "UserSessions_memberId_fkey"
+            columns: ["memberId"]
+            isOneToOne: false
+            referencedRelation: "flattened_user_sessions_full"
+            referencedColumns: ["member_id"]
+          },
+          {
+            foreignKeyName: "UserSessions_memberId_fkey"
+            columns: ["memberId"]
+            isOneToOne: false
+            referencedRelation: "Members"
             referencedColumns: ["id"]
           },
           {
@@ -1044,6 +1078,10 @@ export type Database = {
         Args: {
           p_scheduled_session_id: string
         }
+        Returns: undefined
+      }
+      daily_update_membership_status: {
+        Args: Record<PropertyKey, never>
         Returns: undefined
       }
       update_staff_with_branches:

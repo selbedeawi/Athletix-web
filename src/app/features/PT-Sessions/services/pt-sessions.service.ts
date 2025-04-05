@@ -43,10 +43,15 @@ export class PrivateSessionsBookingService {
     booking: PrivateSessionsBookingInsert,
   ) {
     return from(
-      this.supabaseService.sb
-        .from("PrivateSessionsBooking")
-        .insert(booking)
-        .select(),
+      this.supabaseService.sb.rpc("book_pt_session", {
+        p_booking_date: booking.bookingDate,
+        p_coach_id: booking.coachId,
+        p_membership_id: booking.userMembershipId,
+        p_branch_id: booking.branchId,
+        p_time: booking.time,
+      }),
+      // .insert(booking)
+      // .select(),
     );
   }
 

@@ -49,7 +49,7 @@ export class BookSessionDialogComponent implements OnInit, OnDestroy {
   translationTemplate = TranslationTemplates.PT_SESSION;
   bridgesInputType = BridgesInputType;
 
-  privateSession: PrivateSessionsBookingInsert = {};
+  privateSession: PrivateSessionsBookingInsert = {} as any;
 
   branchId!: string;
 
@@ -77,9 +77,9 @@ export class BookSessionDialogComponent implements OnInit, OnDestroy {
   setPtForMember(memberAccount: MemberAccount) {
     this.privateSession.userMembershipId = memberAccount.UserMembership.id;
     if (memberAccount.UserMembership.type === "PrivateCoach") {
-      this.privateSession.coachId = memberAccount.UserMembership.coachId;
+      this.privateSession.coachId = memberAccount.UserMembership.coachId as any;
     } else {
-      this.privateSession.coachId = null;
+      this.privateSession.coachId = null as any;
     }
   }
 
