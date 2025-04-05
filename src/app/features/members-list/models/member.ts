@@ -98,4 +98,5 @@ export class AllMembersFilter {
   isActiveUser?: boolean | string;
   isCanceled?: boolean | string;
   isFreeze?: boolean | string;
+  coachId?: string;
 }

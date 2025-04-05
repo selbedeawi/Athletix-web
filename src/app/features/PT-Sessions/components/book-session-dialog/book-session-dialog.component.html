@@ -12,6 +12,8 @@
           (selectedMemberChange)="setPtForMember($event)"
           [types]="['PrivateCoach', 'Individual']"
           [showPT]="true"
+          [label]="t('SELECT_MEMBER')"
+          [coachId]="coachId()"
           #selectMember
         >
         </app-select-member>

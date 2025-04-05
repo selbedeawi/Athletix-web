@@ -80,11 +80,23 @@ export class MemberService {
     }
 
     // Filter by type if provided
-    if (filters.type) {
-      query = query.eq("UserMembership.type", filters.type);
-    }
-    if (filters.types) {
+    // Apply membership type filtering based on filters.types and coachId
+    if (
+      filters.types && filters.types.includes("PrivateCoach") && filters.coachId
+    ) {
       query = query.in("UserMembership.type", filters.types);
+      query = query.or(
+        `coachId.eq.${filters.coachId},coachId.is.null`,
+        { referencedTable: "UserMembership" },
+      );
+    } else {
+      // When no special coachId condition is needed, apply type filtering as usual.
+      if (filters.type) {
+        query = query.eq("UserMembership.type", filters.type);
+      }
+      if (filters.types) {
+        query = query.in("UserMembership.type", filters.types);
+      }
     }
 
     if (filters.endDateFrom) {

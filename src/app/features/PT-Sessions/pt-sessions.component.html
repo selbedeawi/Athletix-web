@@ -2,7 +2,9 @@
   <div class="d-flex justify-content-between my-3">
     <h2 class="mat-headline-small primary-color mb-1">{{ t("TITLE") }}</h2>
 
-    <div *appHasRole="['SuperAdmin', 'SessionManager', 'Receptionist']">
+    <div
+      *appHasRole="['SuperAdmin', 'SessionManager', 'Receptionist', 'Coach']"
+    >
       <button mat-flat-button (click)="openBookSessionDialog()">
         {{ t("BOOK_SESSION") }}
       </button>

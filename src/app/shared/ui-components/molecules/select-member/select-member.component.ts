@@ -34,9 +34,9 @@ export class SelectMemberComponent {
   memberService = inject(MemberService);
   branchesService = inject(BranchesService);
   selectedMember: MemberAccount | undefined;
-  label = input("SELECT_MEMBER");
+  label = input.required();
   types = input.required<("Individual" | "PrivateCoach" | "SessionBased")[]>();
-
+  coachId = input<string | undefined>();
   branchId!: string;
   showPT = input(false);
   private destroyed$ = new Subject<void>();
@@ -57,6 +57,7 @@ export class SelectMemberComponent {
           branchId: this.branchId,
           isActive: true,
           types: this.types(),
+          coachId: this.coachId(),
         })
     ),
     // Map the response to an array of MemberAccount.

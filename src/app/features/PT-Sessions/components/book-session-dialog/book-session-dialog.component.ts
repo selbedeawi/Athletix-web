@@ -19,6 +19,7 @@ import { SnackbarService } from "../../../../core/services/snackbar/snackbar.ser
 import { SelectStaffComponent } from "../../../../shared/ui-components/molecules/select-staff/select-staff.component";
 import { SelectMemberComponent } from "../../../../shared/ui-components/molecules/select-member/select-member.component";
 import { MemberAccount } from "../../../members-list/models/member";
+import { UserService } from "../../../../core/services/user/user.service";
 
 @Component({
   selector: "app-book-session-dialog",
@@ -41,7 +42,7 @@ export class BookSessionDialogComponent implements OnInit, OnDestroy {
   private privateBookingService = inject(PrivateSessionsBookingService);
 
   private dialogRef = inject(MatDialogRef<BookSessionDialogComponent>);
-
+  userService = inject(UserService);
   branchesService = inject(BranchesService);
   snackbarService = inject(SnackbarService);
 
@@ -52,6 +53,7 @@ export class BookSessionDialogComponent implements OnInit, OnDestroy {
   privateSession: PrivateSessionsBookingInsert = {} as any;
 
   branchId!: string;
+  coachId = signal<string | undefined>(undefined);
 
   loading = signal(false);
   pageSize = signal(10);
@@ -68,6 +70,9 @@ export class BookSessionDialogComponent implements OnInit, OnDestroy {
       .subscribe((branch) => {
         this.branchId = branch.id;
         this.privateSession.branchId = branch.id;
+        if (this.userService.currentUser?.role === "Coach") {
+          this.coachId.set(this.userService.currentUser.id);
+        }
       });
   }
 

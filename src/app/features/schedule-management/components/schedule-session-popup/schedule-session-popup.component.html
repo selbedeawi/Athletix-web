@@ -1,6 +1,6 @@
 <ng-container *transloco="let t; read: translationTemplate">
   <div class="bg-secondary">
-    <p class="ms-3 mat-title-large on-primary-color"> {{ t("POPUP_TITLE")}}</p>
+    <p class="ms-3 mat-title-large on-primary-color">{{ t("POPUP_TITLE") }}</p>
   </div>
   <div class="bg-on-primary">
     <div class="m-3">
@@ -9,7 +9,7 @@
       </p>
       <form>
         <app-select-member
-      [label] = " t('SEARCH_MEMBER')"
+          [label]="t('SEARCH_MEMBER')"
           class="col-12"
           (selectedMemberChange)="setMember($event)"
           [types]="['Individual', 'SessionBased']"
