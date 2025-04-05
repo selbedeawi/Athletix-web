@@ -96,21 +96,20 @@ export class ScheduleManagementComponent {
       .pipe(finalize(() => this.loading.set(true)))
       .subscribe({
         next: (res) => {
-          this.events.set([]);
+          const newEvents: CalendarEvent<ScheduleSession>[] = [];
           res.forEach((session) => {
-            this.events.update((eventList) => {
-              eventList.push({
-                id: session.sessionId,
-                start: new Date(
-                  session.scheduledDate! + "T" + session.startTime,
-                ),
-                end: new Date(session.scheduledDate! + "T" + session.endTime),
-                title: session.Sessions.name,
-                meta: { ...session },
-              });
-              return [...eventList];
+            newEvents.push({
+              id: session.sessionId,
+              start: new Date(
+                session.scheduledDate! + "T" + session.startTime,
+              ),
+              end: new Date(session.scheduledDate! + "T" + session.endTime),
+              title: session.Sessions.name,
+              meta: { ...session },
             });
           });
+          newEvents.sort((a, b) => a.start > b.start ? 1 : -1);
+          this.events.set(newEvents);
         },
       });
   }
