@@ -62,10 +62,7 @@
         <span class="mat-body-large">{{ membership.endDate | date }}</span>
       </div>
 
-      <div
-        *appHasRole="['SuperAdmin', 'SalesManager']"
-        class="col-12 col-md-6 d-flex flex-column mb-2"
-      >
+      <div class="col-12 col-md-6 d-flex flex-column mb-2">
         <span class="mat-title-medium primary-color">{{
           t("PRICE_PAID")
         }}</span>
