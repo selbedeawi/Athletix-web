@@ -71,7 +71,9 @@ export class ConfirmResetPasswordComponent implements OnInit, OnDestroy {
             this.userService.currentUser.email,
           ]);
         } else {
-          this.userService.logout();
+          setTimeout(() => {
+            this.userService.logout();
+          }, 1000);
         }
       },
       error: (error) => {

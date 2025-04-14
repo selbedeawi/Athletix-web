@@ -31,12 +31,12 @@ export class SupabaseInterceptorService {
 
       if (!response.ok) {
         const errorText = await response.text();
-        try {
-          const err = JSON.parse(errorText);
-          this.snackbarService.error(err.error || err.message || errorText);
-        } catch {
-          this.snackbarService.error(errorText);
-        }
+        // try {
+        //   const err = JSON.parse(errorText);
+        //   this.snackbarService.error(err.error || err.message || errorText);
+        // } catch {
+        //   this.snackbarService.error(errorText);
+        // }
         throw new Error(errorText);
       }
 
@@ -46,7 +46,8 @@ export class SupabaseInterceptorService {
       try {
         const parsedError = JSON.parse(errorMessage);
         this.snackbarService.error(
-          parsedError.error || parsedError.message || "Fetch error",
+          parsedError.error || parsedError.message || parsedError.msg ||
+            "Fetch error",
         );
       } catch {
         this.snackbarService.error(errorMessage || "Fetch error");

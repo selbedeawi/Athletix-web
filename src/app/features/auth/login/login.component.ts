@@ -95,8 +95,6 @@ export class LoginComponent {
                 }
               }
             });
-          } else {
-            this.snackbarService.error(res.error?.message || "Login failed");
           }
         },
         error: (error: any) => {

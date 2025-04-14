@@ -1,4 +1,4 @@
-import { inject, Injectable } from "@angular/core";
+import { Injectable } from "@angular/core";
 import {
   AuthChangeEvent,
   AuthSession,
@@ -10,16 +10,7 @@ import { environment } from "../../../../environments/environment";
 import { Database } from "../../../../../database.types";
 
 import { SupabaseInterceptorService } from "../supabase-interceptor/supabase-interceptor.service";
-import {
-  BehaviorSubject,
-  catchError,
-  from,
-  Observable,
-  of,
-  switchMap,
-  throwError,
-} from "rxjs";
-import { DOCUMENT } from "@angular/common";
+import { BehaviorSubject, from, Observable } from "rxjs";
 
 @Injectable({
   providedIn: "root",
