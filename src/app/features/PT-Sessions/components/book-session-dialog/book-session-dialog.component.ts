@@ -20,6 +20,7 @@ import { SelectStaffComponent } from "../../../../shared/ui-components/molecules
 import { SelectMemberComponent } from "../../../../shared/ui-components/molecules/select-member/select-member.component";
 import { MemberAccount } from "../../../members-list/models/member";
 import { UserService } from "../../../../core/services/user/user.service";
+import { HasRoleDirective } from "../../../../core/directives/has-role.directive";
 
 @Component({
   selector: "app-book-session-dialog",
@@ -30,7 +31,7 @@ import { UserService } from "../../../../core/services/user/user.service";
     MatCheckboxModule,
     DatePickerComponent,
     TimePickerComponent,
-
+    HasRoleDirective,
     SelectStaffComponent,
     SelectMemberComponent,
   ],
@@ -72,6 +73,7 @@ export class BookSessionDialogComponent implements OnInit, OnDestroy {
         this.privateSession.branchId = branch.id;
         if (this.userService.currentUser?.role === "Coach") {
           this.coachId.set(this.userService.currentUser.id);
+          this.privateSession.coachId = this.userService.currentUser.id;
         }
       });
   }
@@ -84,7 +86,11 @@ export class BookSessionDialogComponent implements OnInit, OnDestroy {
     if (memberAccount.UserMembership.type === "PrivateCoach") {
       this.privateSession.coachId = memberAccount.UserMembership.coachId as any;
     } else {
-      this.privateSession.coachId = null as any;
+      if (this.userService.currentUser?.role === "Coach") {
+        this.privateSession.coachId = this.userService.currentUser.id;
+      } else {
+        this.privateSession.coachId = null as any;
+      }
     }
   }
 

@@ -19,6 +19,7 @@
         </app-select-member>
         @if(selectMember.selectedMember?.UserMembership?.type==='Individual'){
         <app-select-staff
+          *appHasRole="['SuperAdmin', 'Receptionist', 'SessionManager']"
           class="col-12"
           [(staffId)]="privateSession.coachId"
           [isRequired]="true"
