@@ -70,7 +70,9 @@
     "PASSWORD_WK": "Weak Password",
     "PASSWORD_RESET_SUCCESSFUL": "Password reset successfully",
     "Membership is frozen": "Membership is Freezed",
-    "MAT_DATEPICKER_PARSE_ERROR": "Invalid date format"
+    "MAT_DATEPICKER_PARSE_ERROR": "Invalid date format",
+    "You have already booked this session": "You have already booked this session",
+    "No remaining group sessions available": "No remaining group sessions available"
   },
   "Member": {
     "ADD": "Add Member",
@@ -119,7 +121,7 @@
     "MEMBERSHIP_END_DATE": "End Date",
     "MEMBERSHIP_START": "Start Date",
     "SELECT_SALES_NAME" : "Sales",
-    "RECEIPT_NUMBER": "Receipt Number",
+    "RECEIPT_NUMBER": "Contract Number",
     "FREEZE_MEMBERSHIP": "Freeze",
     "CONFIRM_CANCEL_MEMBERSHIP_OVERLAY_HEDER": "Cancel Membership",
     "CONFIRM_UNFREEZE_MEMBERSHIP_OVERLAY_HEDER": "Unfreeze Membership",
@@ -341,7 +343,8 @@
     "HAS_STEAM": "Steam",
     "IN_ACTIVE": "Inactive",
     "SessionBased": "Session Based",
-    "PrivateCoach": "Private Coach"
+    "PrivateCoach": "Private Coach",
+    "Individual": "Individual"
   },
   "Staff": {
     "TITLE": "Staff List",
@@ -391,11 +394,12 @@
     "NO_RESULT_TITLE":"No Result",
     "ACCOUNT_CONTACT": "Contact Details",
     "DR_SuperAdmin": "Super Admin",
-    "SalesManger": "Sales Manager",
+    "SalesManager": "Sales Manager",
     "Receptionist": "Receptionist",
     "SessionManager": "Session Manager",
     "Coach": "Coach",
-    "Sales": "Sales"
+    "Sales": "Sales",
+    "SuperAdmin": "Super Admin"
   },
   "Sessions": {
     "TITLE": "Sessions List",
