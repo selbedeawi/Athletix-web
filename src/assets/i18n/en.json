@@ -72,7 +72,8 @@
     "Membership is frozen": "Membership is Freezed",
     "MAT_DATEPICKER_PARSE_ERROR": "Invalid date format",
     "You have already booked this session": "You have already booked this session",
-    "No remaining group sessions available": "No remaining group sessions available"
+    "No remaining group sessions available": "No remaining group sessions available",
+    "Invalid login credentials" : "Invalid login credentials"
   },
   "Member": {
     "ADD": "Add Member",
