@@ -27,6 +27,9 @@ export class BranchesService {
   get currentBranch(): Tables<"Branch"> | null {
     return this.currentBranchSubject.value;
   }
+  get branchesList(): { key: string; value: Tables<"Branch"> }[] | null {
+    return this.branchesSubject.value;
+  }
 
   value = signal({} as Tables<"Branch">);
   setSelectedBranch(Branch: Tables<"Branch"> | undefined) {
@@ -39,7 +42,7 @@ export class BranchesService {
     from(
       this.supabase.sb
         .from("StaffBranch")
-        .select("*, Branch(id, name)")
+        .select("*, Branch(id, name,allowScan)")
         .eq("staffId", staffId),
     ).subscribe((res) => {
       if (res.data) {
@@ -58,4 +61,5 @@ export class BranchesService {
     this.branchesSubject.next(null);
     this.currentBranchSubject.next(null);
   }
+  
 }

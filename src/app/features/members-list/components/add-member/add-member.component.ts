@@ -14,10 +14,12 @@ import { MemberAccount, UserMembership } from "../../models/member";
 import { MemberService } from "../../services/member.service";
 import { MatStepper, MatStepperModule } from "@angular/material/stepper";
 import { BreakpointObserver } from "@angular/cdk/layout";
-import { forkJoin, map, switchMap, throwError } from "rxjs";
+import { forkJoin, map, of, switchMap, throwError } from "rxjs";
 import { UserMembershipService } from "../../services/user-membership.service";
 import { MemberFormComponent } from "../member-form/member-form.component";
 import { MemberMembershipFormComponent } from "../member-membership-form/member-membership-form.component";
+import { HttpClient } from "@angular/common/http";
+import { BranchesService } from "../../../../core/services/branches/branches.service";
 
 @Component({
   selector: "app-add-member",
@@ -45,8 +47,9 @@ export class AddMemberComponent {
   private snackbarService = inject(SnackbarService);
   private breakpointObserver = inject(BreakpointObserver);
   private userMembershipService = inject(UserMembershipService);
+  private branchesService = inject(BranchesService);
   private router = inject(Router);
-
+  private http = inject(HttpClient);
   stepper = viewChild(MatStepper);
 
   member = signal(new MemberAccount());
@@ -71,15 +74,35 @@ export class AddMemberComponent {
     this.memberService
       .createMember(clone)
       .pipe(
-        switchMap((memberRes) => {
-          if (memberRes.error) {
+        switchMap((res) => {
+          if (res.error) {
             return throwError(() => new Error("Error creating member"));
           }
+          console.log(res);
+          this.snackbarService.success("ADD_MEMBER_SUCCESS");
+          return this.memberService.getMember(res.data.user_id);
+        }),
+        switchMap((memberRes) => {
+      
+          console.log(memberRes);
 
+          const member = memberRes as MemberAccount;
+          
           this.snackbarService.success("ADD_MEMBER_SUCCESS");
 
-          const memberId = memberRes.data.user_id;
-
+          const memberId = memberRes.id;
+          const formData = new FormData();
+          if (member.memberId) {
+          formData.append("userId", member.memberId.toString());
+          formData.append("name", member.firstName + " " + member.lastName);
+          }
+          // Check if allowScan is true and send the addPerson API request
+          let addPerson = of({});
+          this.branchesService.branchesList?.forEach((branch) => {
+            if (branch.value.id === this.userMemberships()[0].branchId && branch.value.allowScan) {
+                addPerson = this.http.post("http://localhost:5241/api/addPerson", formData);
+            }
+          });      
           this.userMemberships.update((memberships) =>
             memberships.map((m) => ({ ...m, memberId }))
           );
@@ -87,7 +110,14 @@ export class AddMemberComponent {
           const membershipCalls = this.userMemberships().map((m) =>
             this.userMembershipService.createUserMembership(m)
           );
-          return forkJoin(membershipCalls);
+          console.log([
+            ...membershipCalls,
+            addPerson,
+          ]);
+          return forkJoin([
+            ...membershipCalls,
+            addPerson,
+          ]);
         }),
       )
       .subscribe({
