@@ -52,7 +52,7 @@ async function sendCredentialsEmail(
       },
       sender: {
         name: "Athletix",
-        email: "selbedeawi@gmail.com",
+        email: "athletixegy@gmail.com",
       },
     }),
   });
