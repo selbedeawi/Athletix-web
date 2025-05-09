@@ -80,6 +80,24 @@ export class MemberActiveMembershipComponent implements OnInit {
         },
       );
   }
+  deductVisit(membership: UserMembership) {
+    this.dialog.open(ConfirmDeleteComponent, {
+      data: {
+        translationTemplate: this.translationTemplate,
+        content: `CONFIRM_DEDUCT_VISIT_MEMBERSHIP_OVERLAY_CONTENT`,
+        headerText: `CONFIRM_DEDUCT_VISIT_MEMBERSHIP_OVERLAY_HEDER`,
+      },
+    }).afterClosed()
+      .subscribe(
+        (res) => {
+          if (res) {
+            this.userMembershipService.deductVisits(
+              membership.id,
+            );
+          }
+        },
+      );
+  }
   addMembership(membership?: UserMembership) {
     this.dialog.open(AddMembershipPopupComponent, {
       data: {

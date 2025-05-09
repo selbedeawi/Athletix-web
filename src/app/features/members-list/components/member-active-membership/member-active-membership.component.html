@@ -30,7 +30,15 @@
           {{ t("CANCEL_MEMBERSHIP") }}
         </button>
 
-        @if(membership.isFreeze){
+        @if(membership.remainingVisits>0){
+        <button
+          *appHasRole="['SuperAdmin', 'SalesManager', 'Receptionist']"
+          mat-flat-button
+          (click)="deductVisit(membership)"
+        >
+          {{ t("DEDUCT_VISIT") }}
+        </button>
+        } @if(membership.isFreeze){
         <button
           *appHasRole="['SuperAdmin', 'SalesManager', 'Receptionist']"
           mat-flat-button

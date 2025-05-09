@@ -153,4 +153,19 @@ export class UserMembershipService {
       },
     );
   }
+
+  /**
+   * Delete a user membership record by ID.
+   * @param id The user mu ID.
+   * @returns Observable with the deletion result.
+   */
+  deductVisits(id: string): Observable<any> {
+    return from(
+      this.supabaseService.sb.functions.invoke("deduct_membership_visit", {
+        body: {
+          id,
+        },
+      }),
+    );
+  }
 }
