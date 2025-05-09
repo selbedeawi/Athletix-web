@@ -2,12 +2,14 @@ import { inject, Injectable } from "@angular/core";
 import { from, map, Observable } from "rxjs";
 import { SupabaseService } from "../../../core/services/supabase/supabase.service";
 import { BEResponse } from "../../../shared/models/shared-models";
+import { HttpClient } from "@angular/common/http";
 
 @Injectable({
   providedIn: "root",
 })
 export class UserMembershipService {
   private supabaseService = inject(SupabaseService);
+  private http = inject(HttpClient);
   constructor() {}
 
   /**
@@ -135,6 +137,20 @@ export class UserMembershipService {
   deleteUserMembership(id: string): Observable<any> {
     return from(
       this.supabaseService.sb.from("UserMembership").delete().eq("id", id),
+    );
+  }
+
+  /**
+   * Delete a user membership record by ID.
+   * @param id The user mu ID.
+   * @returns Observable with the deletion result.
+   */
+  addPersonToGate(id: string): Observable<any> {
+    return this.http.post<any>(
+      `http://localhost:5241/api/addPerson`,
+      {
+        id,
+      },
     );
   }
 }

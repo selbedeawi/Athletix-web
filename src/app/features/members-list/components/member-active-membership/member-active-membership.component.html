@@ -4,6 +4,10 @@
       >{{ t("TITLE_MEMBERSHIP_COUNT") }} ({{ userMembership().length }})</span
     >
     <div class="ms-auto">
+      @if(allowScan()){
+      <button class="me-2" mat-button (click)="addToGate(id())">
+        {{ t("ADD_TO_GATE") }}</button
+      >}
       <button mat-flat-button (click)="addMembership()">
         {{ t("ADD_NEW") }}
       </button>
