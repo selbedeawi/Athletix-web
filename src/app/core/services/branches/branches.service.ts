@@ -18,6 +18,9 @@ export class BranchesService {
   get currentBranch$(): Observable<Tables<"Branch"> | null> {
     return this.currentBranchSubject.asObservable();
   }
+  get branches(): { key: string; value: Tables<"Branch"> }[] | null {
+    return this.branchesSubject.value;
+  }
   get branches$(): Observable<
     { key: string; value: Tables<"Branch"> }[] | null
   > {
@@ -39,7 +42,7 @@ export class BranchesService {
     from(
       this.supabase.sb
         .from("StaffBranch")
-        .select("*, Branch(id, name)")
+        .select("*, Branch(id, name, allowScan, machineSerialNumber)")
         .eq("staffId", staffId),
     ).subscribe((res) => {
       if (res.data) {

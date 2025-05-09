@@ -1,4 +1,11 @@
-import { Component, inject, input, OnInit, signal } from "@angular/core";
+import {
+  Component,
+  computed,
+  inject,
+  input,
+  OnInit,
+  signal,
+} from "@angular/core";
 import { UserMembershipService } from "../../services/user-membership.service";
 import { UserMembership } from "../../models/member";
 import { TranslocoDirective } from "@jsverse/transloco";
@@ -12,6 +19,7 @@ import { SnackbarService } from "../../../../core/services/snackbar/snackbar.ser
 import { AddMembershipPopupComponent } from "../add-membership-popup/add-membership-popup.component";
 import { ConfirmDeleteComponent } from "../../../../shared/ui-components/templates/confirm-delete/confirm-delete.component";
 import { HasRoleDirective } from "../../../../core/directives/has-role.directive";
+import { BranchesService } from "../../../../core/services/branches/branches.service";
 
 @Component({
   selector: "app-member-active-membership",
@@ -31,9 +39,20 @@ export class MemberActiveMembershipComponent implements OnInit {
   readonly dialog = inject(MatDialog);
   private userMembershipService = inject(UserMembershipService);
   private snackbarService = inject(SnackbarService);
-
+  private branchesService = inject(BranchesService);
   id = input.required<string>();
   userMembership = signal<UserMembership[]>([]);
+  allowScan = computed<boolean>(() => {
+    const membership = this.userMembership();
+    let branches = this.branchesService.branches;
+    let allowScan = false;
+    membership.forEach((m) => {
+      if (branches?.find((b) => b.value.id === m.branchId)?.value.allowScan) {
+        allowScan = true;
+      }
+    });
+    return allowScan;
+  });
 
   ngOnInit(): void {
     this.getUserMembership();
@@ -57,6 +76,24 @@ export class MemberActiveMembershipComponent implements OnInit {
         (res) => {
           if (res) {
             this.getUserMembership();
+          }
+        },
+      );
+  }
+  deductVisit(membership: UserMembership) {
+    this.dialog.open(ConfirmDeleteComponent, {
+      data: {
+        translationTemplate: this.translationTemplate,
+        content: `CONFIRM_DEDUCT_VISIT_MEMBERSHIP_OVERLAY_CONTENT`,
+        headerText: `CONFIRM_DEDUCT_VISIT_MEMBERSHIP_OVERLAY_HEDER`,
+      },
+    }).afterClosed()
+      .subscribe(
+        (res) => {
+          if (res) {
+            this.userMembershipService.deductVisits(
+              membership.id,
+            );
           }
         },
       );
@@ -166,5 +203,15 @@ export class MemberActiveMembershipComponent implements OnInit {
     const month = date.getMonth() + 1;
     const day = date.getDate();
     return `${year}-${month}-${day}`;
+  }
+
+  addToGate(id: string) {
+    this.userMembershipService.addPersonToGate(id).subscribe((res) => {
+      if (res) {
+        this.snackbarService.success("ADDED_TO_GATE_SUCCESS");
+      } else {
+        this.snackbarService.error("ADDED_TO_GATE_ERROR");
+      }
+    });
   }
 }
