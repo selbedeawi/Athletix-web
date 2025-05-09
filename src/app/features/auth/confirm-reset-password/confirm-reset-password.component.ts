@@ -48,23 +48,11 @@ export class ConfirmResetPasswordComponent implements OnInit, OnDestroy {
   snackBarService = inject(SnackbarService);
   userService = inject(UserService);
   router = inject(Router);
-  code: string | null = null;
+
   ngOnInit(): void {
-    this.userService.currentUser$.subscribe(async (res) => {
+    this.userService.currentUser$.subscribe((res) => {
       if (res?.email) {
         this.account.email = res?.email;
-      } else {
-        let code = this.route.snapshot.queryParams["code"];
-        console.log(code);
-
-        if (code) {
-          const s = await this.supabaseService.sb.auth.exchangeCodeForSession(
-            code,
-          );
-          console.log(s);
-
-          this.route.snapshot.queryParams["code"] = null;
-        }
       }
     });
   }
