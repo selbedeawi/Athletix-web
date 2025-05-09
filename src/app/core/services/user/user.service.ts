@@ -49,6 +49,8 @@ export class UserService {
   //   await this.setSession(session);
   // }
   async setSession(session: Session | null) {
+    console.log(session);
+
     if (session?.user && session?.user.user_metadata?.["role"] === "Member") {
       const { data: account, error } = await this.supabaseService.sb
         .from("Members")
@@ -56,7 +58,7 @@ export class UserService {
         .eq("id", session.user.id)
         .single();
       if (error) {
-        this.snackbarService.error("ERROR_FETCHING_ACCOUNT_DATA");
+        this.snackbarService.error("ERROR_MEMBER_FETCHING_ACCOUNT_DATA");
         this.userSubject.next(null);
       } else {
         this.userSubject.next(account as any);

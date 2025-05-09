@@ -161,10 +161,8 @@ export class UserMembershipService {
    */
   deductVisits(id: string): Observable<any> {
     return from(
-      this.supabaseService.sb.functions.invoke("deduct_membership_visit", {
-        body: {
-          id,
-        },
+      this.supabaseService.sb.rpc("deduct_membership_visit", {
+        membership_id: id,
       }),
     );
   }

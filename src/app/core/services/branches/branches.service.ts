@@ -9,6 +9,10 @@ import { SupabaseService } from "../supabase/supabase.service";
 export class BranchesService {
   private supabase = inject(SupabaseService);
 
+  branchesSignal = signal<{ key: string; value: Tables<"Branch"> }[] | null>(
+    null,
+  );
+
   private branchesSubject = new BehaviorSubject<
     { key: string; value: Tables<"Branch"> }[] | null
   >(null);
@@ -53,6 +57,7 @@ export class BranchesService {
           };
         });
         this.branchesSubject.next(branches);
+        this.branchesSignal.set(branches);
         this.setSelectedBranch(branches[0].value);
       }
     });

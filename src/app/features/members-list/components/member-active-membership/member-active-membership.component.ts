@@ -44,7 +44,7 @@ export class MemberActiveMembershipComponent implements OnInit {
   userMembership = signal<UserMembership[]>([]);
   allowScan = computed<boolean>(() => {
     const membership = this.userMembership();
-    let branches = this.branchesService.branches;
+    let branches = this.branchesService.branchesSignal();
     let allowScan = false;
     membership.forEach((m) => {
       if (branches?.find((b) => b.value.id === m.branchId)?.value.allowScan) {
@@ -93,7 +93,11 @@ export class MemberActiveMembershipComponent implements OnInit {
           if (res) {
             this.userMembershipService.deductVisits(
               membership.id,
-            );
+            ).subscribe((res) => {
+              if (res) {
+                this.getUserMembership();
+              }
+            });
           }
         },
       );
