@@ -23,6 +23,7 @@ import { SnackbarService } from "../../../core/services/snackbar/snackbar.servic
 import { UserService } from "../../../core/services/user/user.service";
 import { APP_ROUTES } from "../../../core/enums/pages-urls-enum";
 import { AsyncPipe } from "@angular/common";
+import { EmailOtpType } from "@supabase/supabase-js";
 
 @Component({
   selector: "app-confirm-reset-password",
@@ -50,9 +51,22 @@ export class ConfirmResetPasswordComponent implements OnInit, OnDestroy {
   router = inject(Router);
 
   ngOnInit(): void {
-    this.userService.currentUser$.subscribe((res) => {
+    this.userService.currentUser$.subscribe(async (res) => {
       if (res?.email) {
         this.account.email = res?.email;
+      } else {
+        let token_hash = this.route.snapshot.queryParams["token_hash"];
+        console.log(token_hash);
+        const type = this.route.snapshot.queryParams["type"] as
+          | EmailOtpType
+          | null;
+        const next = this.route.snapshot.queryParams["next"] ?? "/";
+        if (token_hash && type) {
+          const s = await this.supabaseService.sb.auth.verifyOtp(
+            { type, token_hash },
+          );
+          console.log(s);
+        }
       }
     });
   }
