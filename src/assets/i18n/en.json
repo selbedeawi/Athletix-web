@@ -180,7 +180,12 @@
     "SELECT_BRANCH" : "Branch",
     "SELECT_COACH" : "Coach",
     "IN_ACTIVE": "Inactive",
-    "TD_NOT_ACTIVE": "Expired"
+    "TD_NOT_ACTIVE": "Expired",
+    "ADD_TO_GATE": "Sync to Gate",
+    "DEDUCT_VISIT": "Deduct Visit",
+    "CONFIRM_DEDUCT_VISIT_MEMBERSHIP_OVERLAY_HEDER": "Deduct Visit",
+    "CONFIRM_DEDUCT_VISIT_MEMBERSHIP_OVERLAY_CONTENT" : "Are sure you want to deduct visit from this membership?"
+
   },
   "BookedSession": {
     "TITLE": "Booked Sessions List",
