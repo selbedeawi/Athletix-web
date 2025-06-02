@@ -147,7 +147,7 @@ export class UserMembershipService {
    */
   addPersonToGate(id: string): Observable<any> {
     return this.http.post<any>(
-      `http://localhost:5241/api/addPerson`,
+      `https://api.athletix.macawshub.com/api/addPerson`,
       {
         id,
       },
