@@ -161,7 +161,7 @@ export class UserMembershipService {
    */
   batchSyncToGate(branchId: string): Observable<any> {
     return this.http.post<any>(
-      `https://api.athletix.macawshub.com/api/batch-synct-to-gate`,
+      `https://api.athletix.macawshub.com/api/batch-sync-to-gate`,
       {
         branchId,
       },
