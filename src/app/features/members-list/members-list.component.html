@@ -13,6 +13,18 @@
       >
         {{ t("EXPORT") }}
       </button>
+      @if(allowSync()){
+      <button
+        *appHasRole="['SuperAdmin', 'SalesManager']"
+        mat-stroked-button
+        class="mb-2 me-3"
+        color="primary"
+        type="button"
+        (click)="batchSyncToGate()"
+      >
+        {{ t("ADD_TO_GATE") }}
+      </button>
+      }
       <button
         mat-flat-button
         class="mb-2 me-3 me-sm-0"
