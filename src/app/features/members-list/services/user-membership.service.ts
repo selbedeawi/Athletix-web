@@ -155,6 +155,17 @@ export class UserMembershipService {
   }
 
   /**
+   * Sync all memberships of the current branch to the gate system.
+   * @param branchId Identifier of the branch whose memberships will be synced.
+   * @returns Observable with the sync result.
+   */
+  batchSyncToGate(branchId: string): Observable<any> {
+    return this.http.post<any>(`api/batch-synct-to-gate`, {
+      branchId,
+    });
+  }
+
+  /**
    * Delete a user membership record by ID.
    * @param id The user mu ID.
    * @returns Observable with the deletion result.
