@@ -84,19 +84,23 @@ export class MembershipFreezeComponent {
     // }
 
     // Expect membership.freezeStart and membership.freezeDaysCount to be provided.
-    if (this.freezeData.freezeStart && this.freezeData.freezeDaysCount) {
+    if (
+      this.freezeData.freezeStart &&
+      this.freezeData.freezeDaysCount &&
+      (!this.maxFreezeDaysCount ||
+        this.freezeData.freezeDaysCount <= this.maxFreezeDaysCount)
+    )  
+    
+    
+    {
       const now = new Date();
-      let freezeStartDate = this.freezeData.freezeStart;
+      const freezeStartDate = this.freezeData.freezeStart;
 
-      // If the provided freezeStart is in the future, adjust it to now.
-      if (freezeStartDate > now) {
-        freezeStartDate = now;
-      }
 
       // Calculate freezeEnd by adding freezeDaysCount days to freezeStartDate.
-      const freezeEndDate = new Date(freezeStartDate);
-      freezeEndDate.setDate(
-        freezeEndDate.getDate() + this.freezeData.freezeDaysCount,
+      const freezeEndDate = new Date(
+        freezeStartDate.getTime() +
+          this.freezeData.freezeDaysCount * 24 * 60 * 60 * 1000,
       );
 
       // Update membership object with computed values.
