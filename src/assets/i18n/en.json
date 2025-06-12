@@ -73,7 +73,10 @@
     "MAT_DATEPICKER_PARSE_ERROR": "Invalid date format",
     "You have already booked this session": "You have already booked this session",
     "No remaining group sessions available": "No remaining group sessions available",
-    "Invalid login credentials" : "Invalid login credentials"
+    "Invalid login credentials" : "Invalid login credentials",
+    "BATCH_SYNC_SUCCESS" :"Updated Members to Gate Successfully",
+    "ADDED_TO_GATE_SUCCESS" : "Member Added to Gate Successfully"
+
   },
   "Member": {
     "ADD": "Add Member",
