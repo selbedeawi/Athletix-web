@@ -33,12 +33,12 @@
     [(value)]="membership().freezePeriod"
     [type]="bridgesInputType.NUMBER"
   ></brdgs-input>
+  <!-- [datePickerMin]="now" -->
   <brdgs-date-picker
     class="col-12 col-md-6"
     [label]="t('MEMBERSHIP_START')"
     [(value)]="startDate"
     [isRequired]="true"
-    [datePickerMin]="now"
     (valueChange)="
       setDates(selectMembership.selectedMembership?.durationInDays || 0)
     "
