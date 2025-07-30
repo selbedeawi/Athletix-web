@@ -51,7 +51,7 @@ export class SelectMembershipComponent {
       branchIds: this.overrideBranchId()
         ? [this.overrideBranchId() as any]
         : [branchId],
-    }).subscribe((res) => {
+    },1, 1000).subscribe((res) => {
       if (res.data) {
         this.memberships = [...res.data] as any;
 
