@@ -153,21 +153,28 @@ export class StaffService {
    * @returns Observable with the update result.
    */
   updateStaffWithBranches(
-    staffId: string,
-    staffData: StaffAccount,
-    branchIds: string[],
-  ): Observable<any> {
-    return from(
-      this.supabaseService.sb.rpc("update_staff_with_branches", {
-        staff_id: staffId,
-        first_name: staffData.firstName,
-        last_name: staffData.lastName,
-        is_active: staffData.isActive,
-        phone_number: staffData.phoneNumber || "",
-        new_branch_ids: branchIds || [],
-      }),
-    );
-  }
+  staffId: string,
+  staffData: StaffAccount,
+  branchIds: string[],
+): Observable<any> {
+  return from(
+    this.supabaseService.sb.functions.invoke('update-staff-account', {
+      method: 'PATCH',
+      // PASS THE RAW OBJECT—supabase-js will stringify & add Content-Type
+      body: {
+        userId:     staffId,
+        newEmail:   staffData.email,
+        firstName:  staffData.firstName,
+        lastName:   staffData.lastName,
+        isActive:   staffData.isActive,
+        phoneNumber: staffData.phoneNumber || '',
+        branchIds:  branchIds || [],
+      },
+    })
+  );
+}
+
+
 
   /**
    * Delete a staff record by ID.
