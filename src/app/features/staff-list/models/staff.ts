@@ -1,7 +1,7 @@
-import { Tables } from "../../../../../database.types";
-import { AccountType } from "../../../core/enums/account-type-enum";
+import { Tables } from '../../../../../database.types';
+import { AccountType } from '../../../core/enums/account-type-enum';
 
-export class StaffAccount implements Tables<"Staff"> {
+export class StaffAccount implements Tables<'Staff'> {
   firstName: string;
   id!: string;
   isActive: boolean;
@@ -19,16 +19,15 @@ export class StaffAccount implements Tables<"Staff"> {
     };
     branchId: string;
   }[];
-
-  constructor(
-    role: AccountType,
-  ) {
-    this.firstName = "";
-    this.lastName = "";
-    this.email = "";
-    this.phoneNumber = "";
+  isDeleted: boolean;
+  constructor(role: AccountType) {
+    this.firstName = '';
+    this.lastName = '';
+    this.email = '';
+    this.phoneNumber = '';
     this.role = role;
     this.isActive = true;
+    this.isDeleted = false;
     this.branchIds = [];
   }
 }
