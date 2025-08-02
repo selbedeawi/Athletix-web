@@ -75,7 +75,8 @@
     "No remaining group sessions available": "No remaining group sessions available",
     "Invalid login credentials" : "Invalid login credentials",
     "BATCH_SYNC_SUCCESS" :"Updated Members to Gate Successfully",
-    "ADDED_TO_GATE_SUCCESS" : "Member Added to Gate Successfully"
+    "ADDED_TO_GATE_SUCCESS" : "Member Added to Gate Successfully",
+    "Error updating user":"Email already exists"
 
   },
   "Member": {
