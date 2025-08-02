@@ -410,7 +410,12 @@
     "SessionManager": "Session Manager",
     "Coach": "Coach",
     "Sales": "Sales",
-    "SuperAdmin": "Super Admin"
+    "SuperAdmin": "Super Admin",
+    "CHANGE_EMAIL": "Change Email",
+    "CHANGE_PASS": "Change Password",
+    "DELETE_BTN": "Delete",
+    "EMAIL" : "Email",
+    "CANCEL"  : "Cancel"
   },
   "Sessions": {
     "TITLE": "Sessions List",

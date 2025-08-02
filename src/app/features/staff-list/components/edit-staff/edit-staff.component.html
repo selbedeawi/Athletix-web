@@ -34,7 +34,7 @@
           {{ t("ACTIVATE_BTN") }}
         </button>
         }
-        <button mat-menu-item>
+        <button mat-menu-item (click)="openChangeEmailDialog()">
           <mat-icon class="icon-alternate_email f-24"></mat-icon>
           <span>{{ t("CHANGE_EMAIL") }}</span>
         </button>

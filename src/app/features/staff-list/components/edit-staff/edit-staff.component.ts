@@ -17,6 +17,8 @@ import { SelectComponent } from '../../../../shared/ui-components/atoms/select/s
 import { StaffAccount } from '../../models/staff';
 import { StaffService } from '../../services/staff.service';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatDialog } from "@angular/material/dialog";
+import { UpdateEmailDialogComponent } from '../change-email-dialog/change-email-dialog';
 
 @Component({
   selector: 'app-edit-staff',
@@ -32,11 +34,13 @@ import { MatMenuModule } from '@angular/material/menu';
     SelectComponent,
     AsyncPipe,
     MatMenuModule,
+            
   ],
   templateUrl: './edit-staff.component.html',
   styleUrl: './edit-staff.component.scss',
 })
 export class EditStaffComponent {
+  private dialog = inject(MatDialog);
   translationTemplate = TranslationTemplates.STAFF;
   APP_ROUTES = APP_ROUTES;
   private staffService = inject(StaffService);
@@ -93,4 +97,24 @@ export class EditStaffComponent {
       }
     });
   }
+  openChangeEmailDialog() {
+  const ref = this.dialog.open(UpdateEmailDialogComponent, {
+    data: {
+      userId: this.staffAccount().id,
+      email:  this.staffAccount().email
+    },
+    width: '400px',
+    minWidth: '300px'
+  });
+
+  ref.afterClosed().subscribe(result => {
+    if (result?.success) {
+      // Update your local signal so the template shows the new email
+      this.staffAccount.update(acc => ({ ...acc, email: result.email }));
+      this.snackbarService.success('CHANGE_EMAIL_SUCCESS');
+    }
+  });
+}
+
+
 }
