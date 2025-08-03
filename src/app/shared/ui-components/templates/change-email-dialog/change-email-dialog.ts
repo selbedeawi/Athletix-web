@@ -48,7 +48,11 @@ export class UpdateEmailDialogComponent {
   onUpdate(): void {
     const newEmail = this.email.trim();
     this.staffService.updateEmail(this.data.userId, newEmail).subscribe({
-      next: () => this.dialogRef.close({ success: true, email: newEmail }),
+      next: (res) => {
+        if (res.error) {
+          this.snackbar.error('CHANGE_EMAIL_ERROR');
+        } else this.dialogRef.close({ success: true, email: newEmail });
+      },
       error: (err) => this.snackbar.error(err.error?.message || err.message),
     });
   }

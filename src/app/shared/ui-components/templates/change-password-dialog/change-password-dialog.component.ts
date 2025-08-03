@@ -41,7 +41,11 @@ export class ChangePasswordDialogComponent {
   onUpdate(): void {
     const newPassword = this.account.password;
     this.staffService.updatePassword(this.data.userId, newPassword).subscribe({
-      next: () => this.dialogRef.close({ success: true }),
+      next: (res) => {
+        if (res.error) {
+          this.snackbar.error('CHANGE_EMAIL_ERROR');
+        } else this.dialogRef.close({ success: true });
+      },
       error: (err) => this.snackbar.error(err.error?.message || err.message),
     });
   }
