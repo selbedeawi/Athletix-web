@@ -183,4 +183,13 @@ export class StaffService {
         .eq('id', id)
     );
   }
+  updateEmail(userId: string, newEmail: string): Observable<any> {
+    return from(
+      this.supabaseService.sb.functions.invoke('update-user-email', {
+        method: 'PATCH',
+        body: { userId, newEmail }
+      })
+    );
+  }
+
 }

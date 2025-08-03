@@ -1,0 +1,31 @@
+<ng-container *transloco="let t; prefix: translationTemplate">
+  <h2 mat-dialog-title class="mat-title-large" style="margin: 0 0 16px 0;">{{ t('CHANGE_EMAIL') }}</h2>
+  <form [formGroup]="form" mat-dialog-content style="padding: 10px 24px 0 24px;">
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label style="white-space: nowrap; overflow: visible;">{{ t('EMAIL') }}</mat-label>
+      <input matInput formControlName="email" autocomplete="email" />
+      <mat-error *ngIf="form.controls['email'].hasError('required')">
+        {{ t('EMAIL_REQUIRED') }}
+      </mat-error>
+      <mat-error *ngIf="form.controls['email'].hasError('email')">
+        {{ t('EMAIL_INVALID') }}
+      </mat-error>
+      <mat-error *ngIf="form.hasError('server')">
+        {{ form.getError('server') }}
+      </mat-error>
+    </mat-form-field>
+  </form>
+  <mat-dialog-actions style="padding: 16px 24px;">
+    <button mat-stroked-button (click)="onCancel()" style="margin-right: 8px;">
+      {{ t('CANCEL') }}
+    </button>
+    <button
+      mat-flat-button
+      color="primary"
+      [disabled]="form.invalid || form.value['email'] === data.email"
+      (click)="onUpdate()"
+    >
+      {{ t('UPDATE') }}
+    </button>
+  </mat-dialog-actions>
+</ng-container>
