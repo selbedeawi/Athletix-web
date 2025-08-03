@@ -15,6 +15,7 @@ import { APP_ROUTES } from '../../../../core/enums/pages-urls-enum';
 import { ConfirmDeleteComponent } from '../../../../shared/ui-components/templates/confirm-delete/confirm-delete.component';
 import { ChangePasswordDialogComponent } from '../../../../shared/ui-components/templates/change-password-dialog/change-password-dialog.component';
 import { UpdateEmailDialogComponent } from '../../../../shared/ui-components/templates/change-email-dialog/change-email-dialog';
+import { HasRoleDirective } from '../../../../core/directives/has-role.directive';
 
 @Component({
   selector: 'app-member-profile',
@@ -25,6 +26,7 @@ import { UpdateEmailDialogComponent } from '../../../../shared/ui-components/tem
     MatMenuModule,
     MatIcon,
     MatButtonModule,
+    HasRoleDirective,
   ],
   templateUrl: './member-profile.component.html',
   styleUrl: './member-profile.component.scss',

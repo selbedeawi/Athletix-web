@@ -25,11 +25,19 @@
         <mat-icon class="icon-alternate_email f-24"></mat-icon>
         <span>{{ t("CHANGE_EMAIL") }}</span>
       </button>
-      <button mat-menu-item (click)="openChangePasswordDialog()">
+      <button
+        *appHasRole="['SuperAdmin']"
+        mat-menu-item
+        (click)="openChangePasswordDialog()"
+      >
         <mat-icon class="icon-lock-reset f-24"></mat-icon>
         <span>{{ t("CHANGE_PASS") }}</span>
       </button>
-      <button mat-menu-item (click)="deleteStaff()">
+      <button
+        *appHasRole="['SuperAdmin']"
+        mat-menu-item
+        (click)="deleteStaff()"
+      >
         <mat-icon class="icon-delete f-24"></mat-icon>
         {{ t("DELETE_MEMBER_BTN") }}
       </button>
