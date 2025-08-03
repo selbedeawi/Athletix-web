@@ -28,6 +28,9 @@
     "VERIFY_EMAIL_DESCRIPTION_1": "Password reset for"
   },
   "Global": {
+    "CHANGE_EMAIL_SUCCESS": "Email Changed Successfully",
+    "EDIT_MEMBER_SUCCESS": "Member Updated Successfully",
+    "CHANGE_PASSWORD_SUCCESS": "Password changed successfully",
     "FIELD_INVALID_text_FORMAT": "Invalid text format",
     "FIELD_INVALID_number_FORMAT": "Invalid number",
     "FIELD_INVALID_email_FORMAT": "Invalid email format",
@@ -75,9 +78,21 @@
     "No remaining group sessions available": "No remaining group sessions available",
     "Invalid login credentials": "Invalid login credentials",
     "BATCH_SYNC_SUCCESS": "Updated Members to Gate Successfully",
-    "ADDED_TO_GATE_SUCCESS": "Member Added to Gate Successfully"
+    "ADDED_TO_GATE_SUCCESS": "Member Added to Gate Successfully",
+    "DELETE_STAFF_SUCCESS": "Staff Deleted Successfully"
   },
   "Member": {
+    "EDIT_MEMBER_SUCCESS": "Member Updated Successfully",
+    "CHANGE_EMAIL_SUCCESS": "Email Changed Successfully",
+    "ACTIVATE_BTN"  : "Activate",
+    "YES" : "Yes",
+    "NO" : "No",
+    "DELETE_MEMBER_CONTENT": "Are you sure you want to delete this member?",
+    "CHANGE_EMAIL": "Change Email",
+    "CHANGE_PASS": "Change Password",
+    "DELETE_MEMBER_BTN": "Delete Member",
+    "DELETE_MEMBER_HEADER": "Delete Member",
+    "DE_ACTIVATE_BTN": "Deactivate",
     "ADD": "Add Member",
     "PASSWORD": "Password",
     "CONFIRM_PASSWORD": "Confirm Password",
@@ -355,6 +370,7 @@
     "Individual": "Individual"
   },
   "Staff": {
+    "CHANGE_PASSWORD" : "Change Password",
     "TITLE": "Staff List",
     "ADD": "Add Staff Member",
     "NAME": "Name",
