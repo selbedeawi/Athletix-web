@@ -134,7 +134,7 @@ export class MemberService {
     if (typeof filters.isCanceled === 'boolean') {
       query.eq('UserMembership.isCanceled', filters.isCanceled);
     }
-
+    query = query.eq('isDeleted', false);
     query = query.range(start, end);
     return from(query).pipe(
       map((response) => {

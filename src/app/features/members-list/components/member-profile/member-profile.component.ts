@@ -97,7 +97,7 @@ export class MemberProfileComponent implements OnInit {
             .subscribe((res) => {
               if (!res.error) {
                 this.snackbarService.success('DELETE_STAFF_SUCCESS');
-                this.router.navigate(['/', APP_ROUTES.STAFF_LIST]);
+                this.router.navigate(['/', APP_ROUTES.MEMBERS_LIST]);
               }
             });
         }
