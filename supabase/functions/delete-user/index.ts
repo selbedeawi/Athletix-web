@@ -51,7 +51,7 @@ serve(async (req) => {
     const jwt = authHeader.replace('Bearer ', '');
     const { data: requester, error: jwtErr } = await supabase.auth.getUser(jwt);
     if (jwtErr || !requester.user) throw new Error('Unauthorized');
-    if (requester.user.user_metadata?.role !== 'SuperAdmin') {
+    if (requester.user.app_metadata?.role !== 'SuperAdmin') {
       throw new Error('Insufficient permissions');
     }
 
@@ -62,7 +62,7 @@ serve(async (req) => {
     } = await supabase.auth.admin.getUserById(userId);
     if (fetchErr || !target) throw fetchErr || new Error('User not found');
 
-    const role = (target.user_metadata?.role as string) ?? '';
+    const role = (target.app_metadata?.role as string) ?? '';
 
     // … after you’ve fetched `target` from Auth …
     const oldEmail = target.email!;
@@ -94,7 +94,7 @@ serve(async (req) => {
       'SalesManager',
       'SessionManager',
     ]);
-    // const role = updatedAuthUser.user.user_metadata?.role as string;
+    // const role = updatedAuthUser.user.app_metadata?.role as string;
     const tableName = staffRoles.has(role) ? 'Staff' : 'Members';
 
     const { error: dbErr } = await supabase

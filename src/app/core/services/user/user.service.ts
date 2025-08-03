@@ -1,15 +1,15 @@
-import { inject, Injectable } from "@angular/core";
-import { BehaviorSubject, filter, Observable, take } from "rxjs";
+import { inject, Injectable } from '@angular/core';
+import { BehaviorSubject, filter, Observable, take } from 'rxjs';
 
-import { Router } from "@angular/router";
-import { SupabaseService } from "../supabase/supabase.service";
-import { StaffAccount } from "../../../features/staff-list/models/staff";
-import { APP_ROUTES } from "../../enums/pages-urls-enum";
-import { SnackbarService } from "../snackbar/snackbar.service";
-import { Session } from "@supabase/auth-js";
+import { Router } from '@angular/router';
+import { SupabaseService } from '../supabase/supabase.service';
+import { StaffAccount } from '../../../features/staff-list/models/staff';
+import { APP_ROUTES } from '../../enums/pages-urls-enum';
+import { SnackbarService } from '../snackbar/snackbar.service';
+import { Session } from '@supabase/auth-js';
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class UserService {
   private supabaseService = inject(SupabaseService);
@@ -25,18 +25,20 @@ export class UserService {
   private router = inject(Router);
 
   constructor() {
-    this.supabaseService.isSupabaseReady.pipe(
-      filter((res) => !!res),
-      take(1),
-    ).subscribe((res) => {
-      if (res) {
-        this.supabaseService.authChanges(async (_event, session) => {
-          setTimeout(async () => {
-            this.setSession(session);
-          }, 0);
-        });
-      }
-    });
+    this.supabaseService.isSupabaseReady
+      .pipe(
+        filter((res) => !!res),
+        take(1)
+      )
+      .subscribe((res) => {
+        if (res) {
+          this.supabaseService.authChanges(async (_event, session) => {
+            setTimeout(async () => {
+              this.setSession(session);
+            }, 0);
+          });
+        }
+      });
   }
 
   /**
@@ -49,16 +51,16 @@ export class UserService {
   //   await this.setSession(session);
   // }
   async setSession(session: Session | null) {
-    console.log(session);
+    console.log(session?.user.app_metadata);
 
-    if (session?.user && session?.user.user_metadata?.["role"] === "Member") {
+    if (session?.user && session?.user.app_metadata?.['role'] === 'Member') {
       const { data: account, error } = await this.supabaseService.sb
-        .from("Members")
+        .from('Members')
         .select()
-        .eq("id", session.user.id)
+        .eq('id', session.user.id)
         .single();
       if (error) {
-        this.snackbarService.error("ERROR_MEMBER_FETCHING_ACCOUNT_DATA");
+        this.snackbarService.error('ERROR_MEMBER_FETCHING_ACCOUNT_DATA');
         this.userSubject.next(null);
       } else {
         this.userSubject.next(account as any);
@@ -66,16 +68,16 @@ export class UserService {
       this.initializedSubject.next(true);
     } else if (session?.user?.id) {
       const { data: account, error } = await this.supabaseService.sb
-        .from("Staff")
+        .from('Staff')
         .select()
-        .eq("id", session.user.id)
+        .eq('id', session.user.id)
         .single();
 
       if (error) {
-        this.snackbarService.error("ERROR_FETCHING_ACCOUNT_DATA");
+        this.snackbarService.error('ERROR_FETCHING_ACCOUNT_DATA');
         this.userSubject.next(null);
       } else if (!account.isActive) {
-        this.snackbarService.error("YOUR_ACCOUNT_IS_INACTIVE");
+        this.snackbarService.error('YOUR_ACCOUNT_IS_INACTIVE');
         await this.logout();
       } else {
         this.userSubject.next(account as StaffAccount);
@@ -99,7 +101,7 @@ export class UserService {
    * and navigates to the login page.
    */
   async logout(
-    navigateTo: string[] | null = ["/", APP_ROUTES.AUTH, APP_ROUTES.LOGIN],
+    navigateTo: string[] | null = ['/', APP_ROUTES.AUTH, APP_ROUTES.LOGIN]
   ): Promise<void> {
     await this.supabaseService.signOut();
     this.userSubject.next(null);
