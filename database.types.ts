@@ -113,6 +113,7 @@ export type Database = {
           gender: Database["public"]["Enums"]["user-gender"]
           id: string
           isActive: boolean
+          isDeleted: boolean
           isFirstTime: boolean
           lastName: string
           memberId: string | null
@@ -128,6 +129,7 @@ export type Database = {
           gender: Database["public"]["Enums"]["user-gender"]
           id: string
           isActive?: boolean
+          isDeleted?: boolean
           isFirstTime?: boolean
           lastName: string
           memberId?: string | null
@@ -143,6 +145,7 @@ export type Database = {
           gender?: Database["public"]["Enums"]["user-gender"]
           id?: string
           isActive?: boolean
+          isDeleted?: boolean
           isFirstTime?: boolean
           lastName?: string
           memberId?: string | null

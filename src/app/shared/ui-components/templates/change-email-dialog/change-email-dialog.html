@@ -1,0 +1,29 @@
+<ng-container *transloco="let t; prefix: translationTemplate">
+  <h1 matDialogTitle class="bg-secondary-container on-secondary-color">
+    <span class="mat-title-large"> {{ t('CHANGE_EMAIL') }} </span>
+  </h1>
+  <form #emailForm="ngForm" (ngSubmit)="onUpdate()">
+    <mat-dialog-content class="d-flex">
+      <brdgs-input
+        class="w-100"
+        [label]="t('EMAIL')"
+        [(value)]="email"
+        [isRequired]="true"
+        [type]="bridgesInputType.EMAIL"
+      ></brdgs-input>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+      <button mat-stroked-button type="button" mat-dialog-close>
+        {{ t('CANCEL') }}
+      </button>
+      <button
+        mat-flat-button
+        color="primary"
+        type="submit"
+        [disabled]="emailForm.invalid || email === data.email"
+      >
+        {{ t('UPDATE') }}
+      </button>
+    </mat-dialog-actions>
+  </form>
+</ng-container>

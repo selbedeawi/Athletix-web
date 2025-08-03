@@ -175,21 +175,28 @@ export class StaffService {
    * @param id The staff member's ID.
    * @returns Observable with the deletion result.
    */
-  deleteStaff(id: string): Observable<any> {
+  deleteStaff(userId: string): Observable<any> {
     return from(
-      this.supabaseService.sb
-        .from('Staff')
-        .update({ isDeleted: true })
-        .eq('id', id)
+      this.supabaseService.sb.functions.invoke('delete-user', {
+        method: 'PATCH',
+        body: { userId },
+      })
     );
   }
   updateEmail(userId: string, newEmail: string): Observable<any> {
     return from(
       this.supabaseService.sb.functions.invoke('update-user-email', {
         method: 'PATCH',
-        body: { userId, newEmail }
+        body: { userId, newEmail },
       })
     );
   }
-
+  updatePassword(userId: string, newPassword: string): Observable<any> {
+    return from(
+      this.supabaseService.sb.functions.invoke('update-user-password', {
+        method: 'PATCH',
+        body: { userId, newPassword },
+      })
+    );
+  }
 }

@@ -5,28 +5,28 @@ import {
   model,
   OnDestroy,
   OnInit,
-} from "@angular/core";
-import { ActivatedRoute, Router } from "@angular/router";
+} from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 
-import { ConfirmPasswordComponent } from "../../../shared/ui-components/organisms/confirm-password/confirm-password.component";
-import { FormsModule } from "@angular/forms";
-import { MatCardModule } from "@angular/material/card";
-import { InputComponent } from "../../../shared/ui-components/atoms/input/input.component";
-import { BridgesInputType } from "../../../shared/ui-components/atoms/input/enum/bridges-input-type.enum";
-import { MatButtonModule } from "@angular/material/button";
+import { ConfirmPasswordComponent } from '../../../shared/ui-components/organisms/confirm-password/confirm-password.component';
+import { FormsModule } from '@angular/forms';
+import { MatCardModule } from '@angular/material/card';
+import { InputComponent } from '../../../shared/ui-components/atoms/input/input.component';
+import { BridgesInputType } from '../../../shared/ui-components/atoms/input/enum/bridges-input-type.enum';
+import { MatButtonModule } from '@angular/material/button';
 
-import { TranslationTemplates } from "../../../shared/enums/translation-templates-enum";
-import { TranslocoDirective } from "@jsverse/transloco";
-import { LoginCredentials } from "../login/login.component";
-import { SupabaseService } from "../../../core/services/supabase/supabase.service";
-import { SnackbarService } from "../../../core/services/snackbar/snackbar.service";
-import { UserService } from "../../../core/services/user/user.service";
-import { APP_ROUTES } from "../../../core/enums/pages-urls-enum";
-import { AsyncPipe } from "@angular/common";
-import { EmailOtpType } from "@supabase/supabase-js";
+import { TranslationTemplates } from '../../../shared/enums/translation-templates-enum';
+import { TranslocoDirective } from '@jsverse/transloco';
+import { LoginCredentials } from '../login/login.component';
+import { SupabaseService } from '../../../core/services/supabase/supabase.service';
+import { SnackbarService } from '../../../core/services/snackbar/snackbar.service';
+import { UserService } from '../../../core/services/user/user.service';
+import { APP_ROUTES } from '../../../core/enums/pages-urls-enum';
+import { AsyncPipe } from '@angular/common';
+import { EmailOtpType } from '@supabase/supabase-js';
 
 @Component({
-  selector: "app-confirm-reset-password",
+  selector: 'app-confirm-reset-password',
   imports: [
     ConfirmPasswordComponent,
     FormsModule,
@@ -36,8 +36,8 @@ import { EmailOtpType } from "@supabase/supabase-js";
     TranslocoDirective,
     AsyncPipe,
   ],
-  templateUrl: "./confirm-reset-password.component.html",
-  styleUrl: "./confirm-reset-password.component.scss",
+  templateUrl: './confirm-reset-password.component.html',
+  styleUrl: './confirm-reset-password.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ConfirmResetPasswordComponent implements OnInit, OnDestroy {
@@ -55,46 +55,48 @@ export class ConfirmResetPasswordComponent implements OnInit, OnDestroy {
       if (res?.email) {
         this.account.email = res?.email;
       } else {
-        let token_hash = this.route.snapshot.queryParams["token_hash"];
-        console.log(token_hash);
-        const type = this.route.snapshot.queryParams["type"] as
-          | EmailOtpType
-          | null;
-        const next = this.route.snapshot.queryParams["next"] ?? "/";
+        let token_hash = this.route.snapshot.queryParams['token_hash'];
+
+        const type = this.route.snapshot.queryParams[
+          'type'
+        ] as EmailOtpType | null;
+        const next = this.route.snapshot.queryParams['next'] ?? '/';
         if (token_hash && type) {
-          const s = await this.supabaseService.sb.auth.verifyOtp(
-            { type, token_hash },
-          );
-          console.log(s);
+          const s = await this.supabaseService.sb.auth.verifyOtp({
+            type,
+            token_hash,
+          });
         }
       }
     });
   }
 
   resetPassword() {
-    this.supabaseService.confirmChangePassword(
-      this.account.password,
-    ).subscribe({
-      next: () => {
-        this.snackBarService.success("PASSWORD_RESET_SUCCESSFUL");
-        if (this.userService.currentUser?.role === "Member") {
-          this.userService.logout([
-            "/",
-            APP_ROUTES.AUTH,
-            APP_ROUTES.RESEND_CONFIRM,
-            this.userService.currentUser.email,
-          ]);
-        } else {
-          setTimeout(() => {
-            this.userService.logout();
-          }, 1000);
-        }
-      },
-      error: (error) => {
-        console.error("Password reset failed", error);
-        this.snackBarService.error("Password reset failed. Please try again.");
-      },
-    });
+    this.supabaseService
+      .confirmChangePassword(this.account.password)
+      .subscribe({
+        next: () => {
+          this.snackBarService.success('PASSWORD_RESET_SUCCESSFUL');
+          if (this.userService.currentUser?.role === 'Member') {
+            this.userService.logout([
+              '/',
+              APP_ROUTES.AUTH,
+              APP_ROUTES.RESEND_CONFIRM,
+              this.userService.currentUser.email,
+            ]);
+          } else {
+            setTimeout(() => {
+              this.userService.logout();
+            }, 1000);
+          }
+        },
+        error: (error) => {
+          console.error('Password reset failed', error);
+          this.snackBarService.error(
+            'Password reset failed. Please try again.'
+          );
+        },
+      });
   }
   ngOnDestroy(): void {
     if (this.userService.currentUser?.id) {

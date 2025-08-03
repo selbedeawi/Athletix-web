@@ -44,13 +44,13 @@
     <div class="d-flex flex-row align-items-center my-2">
       @switch (({text: value()||'', action: textValidatorItem} |
       validateAction)) { @case (true) {
-      <i class="icon-check-circle success-color me-2 f-18"></i>
+      <i class="icon-check_circle_outline success-color me-2 f-18"></i>
       <p class="m-0 success-color mat-label-medium">
         {{t(textValidatorItem.text) }}
       </p>
 
       }@default {
-      <i class="f-18 icon-x-circle error-color me-2 mat-label-medium"> </i>
+      <i class="f-18 icon-cancel error-color me-2 mat-label-medium"> </i>
       <p class="m-0 error-color me-2 mat-label-medium">
         {{t(textValidatorItem.text) }}
       </p>

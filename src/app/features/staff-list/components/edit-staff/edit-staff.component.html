@@ -38,7 +38,7 @@
           <mat-icon class="icon-alternate_email f-24"></mat-icon>
           <span>{{ t("CHANGE_EMAIL") }}</span>
         </button>
-        <button mat-menu-item>
+        <button mat-menu-item (click)="openChangePasswordDialog()">
           <mat-icon class="icon-lock-reset f-24"></mat-icon>
           <span>{{ t("CHANGE_PASS") }}</span>
         </button>
@@ -93,6 +93,7 @@
           [(value)]="staffAccount().role"
           [isRequired]="false"
           [options]="[
+            { key: t('DR_SuperAdmin'), value: 'SuperAdmin' },
             { key: t('DR_Sales'), value: 'Sales' },
             { key: t('DR_RECEPTIONIST'), value: 'Receptionist' },
             { key: t('DR_COACH'), value: 'Coach' },

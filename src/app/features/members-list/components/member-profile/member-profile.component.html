@@ -1,22 +1,56 @@
-<form
-  *transloco="let t; prefix: translationTemplate"
-  #memberForm="ngForm"
-  (ngSubmit)="update()"
->
-  <app-member-form
-    [translationTemplate]="translationTemplate"
-    [(member)]="member"
-  ></app-member-form>
-  <div class="d-flex py-3">
+<ng-container *transloco="let t; prefix: translationTemplate">
+  <div class="d-flex">
     <button
-      mat-flat-button
-      type="submit"
+      mat-icon-button
       class="ms-auto"
-      color="primary"
-      matStepperNext
-      [disabled]="memberForm.invalid || memberForm.pristine"
+      [matMenuTriggerFor]="menu"
+      aria-label="Example icon-button with a menu"
     >
-      {{ t("UPDATE_MEMBER") }}
+      <mat-icon class="icon-more_vert"></mat-icon>
     </button>
+    <mat-menu #menu="matMenu">
+      @if(this.member().isActive){
+
+      <button mat-menu-item (click)="toggleActivate(false)">
+        <mat-icon class="icon-person-remove f-24"></mat-icon>
+        {{ t("DE_ACTIVATE_BTN") }}
+      </button>
+      }@else{
+      <button mat-menu-item (click)="toggleActivate(true)">
+        <mat-icon class="icon-person-check f-24"></mat-icon>
+        {{ t("ACTIVATE_BTN") }}
+      </button>
+      }
+      <button mat-menu-item (click)="openChangeEmailDialog()">
+        <mat-icon class="icon-alternate_email f-24"></mat-icon>
+        <span>{{ t("CHANGE_EMAIL") }}</span>
+      </button>
+      <button mat-menu-item (click)="openChangePasswordDialog()">
+        <mat-icon class="icon-lock-reset f-24"></mat-icon>
+        <span>{{ t("CHANGE_PASS") }}</span>
+      </button>
+      <button mat-menu-item (click)="deleteStaff()">
+        <mat-icon class="icon-delete f-24"></mat-icon>
+        {{ t("DELETE_MEMBER_BTN") }}
+      </button>
+    </mat-menu>
   </div>
-</form>
+  <form #memberForm="ngForm" (ngSubmit)="update()">
+    <app-member-form
+      [translationTemplate]="translationTemplate"
+      [(member)]="member"
+    ></app-member-form>
+    <div class="d-flex py-3">
+      <button
+        mat-flat-button
+        type="submit"
+        class="ms-auto"
+        color="primary"
+        matStepperNext
+        [disabled]="memberForm.invalid || memberForm.pristine"
+      >
+        {{ t("UPDATE_MEMBER") }}
+      </button>
+    </div>
+  </form>
+</ng-container>

@@ -1,13 +1,13 @@
-import { Tables } from "../../../../../database.types";
-import { StaffAccount } from "../../staff-list/models/staff";
+import { Tables } from '../../../../../database.types';
+import { StaffAccount } from '../../staff-list/models/staff';
 
-export class MemberAccount implements Tables<"Members"> {
+export class MemberAccount implements Tables<'Members'> {
   id!: string;
   firstName!: string;
   lastName!: string;
   memberId!: string | null;
 
-  role: "Member" = "Member";
+  role: 'Member' = 'Member';
 
   dateOfBirth!: string;
   nationalId!: string | null;
@@ -18,17 +18,17 @@ export class MemberAccount implements Tables<"Members"> {
   password!: string;
   email!: string;
 
-  gender!: "male" | "female";
+  gender!: 'male' | 'female';
 
   isActive!: boolean;
   createdBy!: string;
   //FE
   UserMembership!: UserMembership;
 
-  constructor() {
-  }
+  constructor() {}
+  isDeleted!: boolean;
 }
-export class UserMembership implements Tables<"UserMembership"> {
+export class UserMembership implements Tables<'UserMembership'> {
   // remainingPTSessions: number | null;
   id!: string;
 
@@ -70,7 +70,7 @@ export class UserMembership implements Tables<"UserMembership"> {
   remainingInvitations!: number;
   remainingPersonalTrainer!: number;
   remainingVisits!: number;
-  type!: "Individual" | "PrivateCoach" | "SessionBased";
+  type!: 'Individual' | 'PrivateCoach' | 'SessionBased';
   freezeEnd!: string | null;
   freezeStart!: string | null;
   isCanceled!: boolean;
@@ -88,8 +88,8 @@ export class AllMembersFilter {
   branchId?: string;
   membershipId?: string;
   salesId?: string;
-  type?: "Individual" | "PrivateCoach" | "SessionBased";
-  types?: ("Individual" | "PrivateCoach" | "SessionBased")[];
+  type?: 'Individual' | 'PrivateCoach' | 'SessionBased';
+  types?: ('Individual' | 'PrivateCoach' | 'SessionBased')[];
   endDateFrom?: string;
   endDateTo?: string;
   createdFrom?: string;
