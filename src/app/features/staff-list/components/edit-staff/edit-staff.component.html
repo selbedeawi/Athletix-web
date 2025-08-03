@@ -13,27 +13,40 @@
     </div>
     <div class="d-flex flex-wrap align-items-center mb-2">
       <h2 class="mat-headline-medium mb-1">{{ t("EDIT_TITLE") }}</h2>
-      @if(this.staffAccount().isActive){
       <button
-        mat-flat-button
+        mat-icon-button
         class="ms-auto"
-        color="warn"
-        type="button"
-        (click)="toggleActivate(false)"
+        [matMenuTriggerFor]="menu"
+        aria-label="Example icon-button with a menu"
       >
-        {{ t("DE_ACTIVATE_BTN") }}
+        <mat-icon class="icon-more_vert"></mat-icon>
       </button>
-      }@else{
-      <button
-        mat-flat-button
-        color="primary"
-        class="ms-auto"
-        type="button"
-        (click)="toggleActivate(true)"
-      >
-        {{ t("ACTIVATE_BTN") }}
-      </button>
-      }
+      <mat-menu #menu="matMenu">
+        @if(this.staffAccount().isActive){
+
+        <button mat-menu-item (click)="toggleActivate(false)">
+          <mat-icon class="icon-person-remove f-24"></mat-icon>
+          {{ t("DE_ACTIVATE_BTN") }}
+        </button>
+        }@else{
+        <button mat-menu-item (click)="toggleActivate(true)">
+          <mat-icon class="icon-person-check f-24"></mat-icon>
+          {{ t("ACTIVATE_BTN") }}
+        </button>
+        }
+        <button mat-menu-item (click)="openChangeEmailDialog()">
+          <mat-icon class="icon-alternate_email f-24"></mat-icon>
+          <span>{{ t("CHANGE_EMAIL") }}</span>
+        </button>
+        <button mat-menu-item (click)="openChangePasswordDialog()">
+          <mat-icon class="icon-lock-reset f-24"></mat-icon>
+          <span>{{ t("CHANGE_PASS") }}</span>
+        </button>
+        <button mat-menu-item (click)="deleteStaff()">
+          <mat-icon class="icon-delete f-24"></mat-icon>
+          {{ t("DELETE_BTN") }}
+        </button>
+      </mat-menu>
     </div>
   </div>
 
@@ -80,6 +93,7 @@
           [(value)]="staffAccount().role"
           [isRequired]="false"
           [options]="[
+            { key: t('DR_SuperAdmin'), value: 'SuperAdmin' },
             { key: t('DR_Sales'), value: 'Sales' },
             { key: t('DR_RECEPTIONIST'), value: 'Receptionist' },
             { key: t('DR_COACH'), value: 'Coach' },

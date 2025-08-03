@@ -4,43 +4,43 @@
 
 // Setup type definitions for built-in Supabase Runtime APIs
 
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 // import { corsHeaders } from "../_shared/cors.ts";
-import { SmtpClient } from "https://deno.land/x/smtp@v0.7.0/mod.ts";
+import { SmtpClient } from 'https://deno.land/x/smtp@v0.7.0/mod.ts';
 export const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-  "Access-Control-Allow-Headers":
-    "Authorization, Content-Type, x-client-info, apikey",
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+  'Access-Control-Allow-Headers':
+    'Authorization, Content-Type, x-client-info, apikey',
 };
 
 // Define the allowed account types for staff creation.
 export enum AccountType {
-  SuperAdmin = "SuperAdmin",
-  Sales = "Sales",
-  Receptionist = "Receptionist",
-  Coach = "Coach",
-  SalesManager = "SalesManager",
-  SessionManager = "SessionManager",
+  SuperAdmin = 'SuperAdmin',
+  Sales = 'Sales',
+  Receptionist = 'Receptionist',
+  Coach = 'Coach',
+  SalesManager = 'SalesManager',
+  SessionManager = 'SessionManager',
 }
 
 const supabase = createClient(
-  Deno.env.get("SUPABASE_URL")!,
-  Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
+  Deno.env.get('SUPABASE_URL')!,
+  Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
 );
 
 async function sendCredentialsEmail(
   email: string,
   password: string,
   firstName: string,
-  role: string,
+  role: string
 ) {
-  await fetch("https://api.brevo.com/v3/smtp/email", {
-    method: "POST",
+  await fetch('https://api.brevo.com/v3/smtp/email', {
+    method: 'POST',
     headers: {
-      "Content-Type": "application/json",
-      "api-key": Deno.env.get("BREVO_API_KEY")!, // stored as Supabase secret
+      'Content-Type': 'application/json',
+      'api-key': Deno.env.get('BREVO_API_KEY')!, // stored as Supabase secret
     },
     body: JSON.stringify({
       to: [{ email }],
@@ -51,36 +51,38 @@ async function sendCredentialsEmail(
         password: password,
       },
       sender: {
-        name: "Athletix",
-        email: "athletixegy@gmail.com",
+        name: 'Athletix',
+        email: 'athletixegy@gmail.com',
       },
     }),
   });
 }
 
 serve(async (req) => {
-  if (req.method === "OPTIONS") {
-    return new Response("ok", { headers: corsHeaders });
+  if (req.method === 'OPTIONS') {
+    return new Response('ok', { headers: corsHeaders });
   }
   try {
     // 1. Get JWT from header.
-    const authHeader = req.headers.get("Authorization");
-    if (!authHeader) throw new Error("Missing authorization header");
-    const jwt = authHeader.replace("Bearer ", "");
+    const authHeader = req.headers.get('Authorization');
+    if (!authHeader) throw new Error('Missing authorization header');
+    const jwt = authHeader.replace('Bearer ', '');
 
     // 2. Verify the requesting user using their JWT.
-    const { data: { user: requestingUser }, error: jwtError } = await supabase
-      .auth.getUser(jwt);
-    if (jwtError || !requestingUser) throw new Error("Unauthorized");
+    const {
+      data: { user: requestingUser },
+      error: jwtError,
+    } = await supabase.auth.getUser(jwt);
+    if (jwtError || !requestingUser) throw new Error('Unauthorized');
 
-    // 3. Get the requester's role from their token's user_metadata.
-    const requesterRole = requestingUser.user_metadata?.role;
+    // 3. Get the requester's role from their token's app_metadata.
+    const requesterRole = requestingUser.app_metadata?.role;
     if (!requesterRole) {
       throw new Error("Requesting user's role not found in token metadata");
     }
     // 4. Authorization check: only SuperAdmin can create staff accounts.
     if (requesterRole !== AccountType.SuperAdmin) {
-      throw new Error("You do not have permission to create staff accounts");
+      throw new Error('You do not have permission to create staff accounts');
     }
     // 5. Parse the incoming JSON data.
     const {
@@ -91,48 +93,51 @@ serve(async (req) => {
       phoneNumber,
       branchIds,
       role: newUserRole,
-    } = await req
-      .json();
+    } = await req.json();
     if (
-      !firstName || !lastName || !email || !password || !newUserRole ||
-      !branchIds || !branchIds.length
+      !firstName ||
+      !lastName ||
+      !email ||
+      !password ||
+      !newUserRole ||
+      !branchIds ||
+      !branchIds.length
     ) {
       throw new Error(
-        "Missing required fields (firstName, lastName, email, password, role, branchIds)",
+        'Missing required fields (firstName, lastName, email, password, role, branchIds)'
       );
     }
 
     // 6. Validate that the new role is one of the allowed AccountType values.
     const allowedRoles = Object.values(AccountType);
     if (!allowedRoles.includes(newUserRole)) {
-      throw new Error("Invalid role provided");
+      throw new Error('Invalid role provided');
     }
 
-    // 7. Create the authentication user and set their user_metadata with the role.
-    const { data: authUser, error: createError } = await supabase.auth.admin
-      .createUser({
+    // 7. Create the authentication user and set their app_metadata with the role.
+    const { data: authUser, error: createError } =
+      await supabase.auth.admin.createUser({
         email,
         password,
         email_confirm: true, // Auto-confirm email
-        // Set the new user's role in their user_metadata.
+        // Set the new user's role in their app_metadata.
         user_metadata: { role: newUserRole },
+        app_metadata: { role: newUserRole },
       });
     if (createError || !authUser.user) {
-      throw createError || new Error("Failed to create user");
+      throw createError || new Error('Failed to create user');
     }
 
     // 8. Insert a record into the "Staff" table.
     // Expected accountData properties: firstName, lastName, userName, phoneNumber, dateOfBirth, nationalId, etc.
-    const { error: dbError } = await supabase
-      .from("Staff")
-      .insert({
-        id: authUser.user.id,
-        email,
-        role: newUserRole,
-        firstName,
-        lastName,
-        phoneNumber,
-      });
+    const { error: dbError } = await supabase.from('Staff').insert({
+      id: authUser.user.id,
+      email,
+      role: newUserRole,
+      firstName,
+      lastName,
+      phoneNumber,
+    });
     if (dbError) {
       // Cleanup auth user if account creation fails.
       await supabase.auth.admin.deleteUser(authUser.user.id);
@@ -140,11 +145,11 @@ serve(async (req) => {
     }
 
     // Insert staff-branch relationships into StaffBranch table
-    const { error: errorST } = await supabase.from("StaffBranch").insert(
+    const { error: errorST } = await supabase.from('StaffBranch').insert(
       branchIds.map((branchId: number) => ({
         staffId: authUser.user.id,
         branchId: branchId,
-      })),
+      }))
     );
 
     if (errorST) {
@@ -152,7 +157,7 @@ serve(async (req) => {
       await supabase.auth.admin.deleteUser(authUser.user.id);
 
       // Cleanup the staff record to prevent orphaned data.
-      await supabase.from("Staff").delete().eq("id", authUser.user.id);
+      await supabase.from('Staff').delete().eq('id', authUser.user.id);
 
       // Throw the actual error from StaffBranch insertion.
       throw errorST;
@@ -163,15 +168,12 @@ serve(async (req) => {
     // 10. Return a successful response.
     return new Response(
       JSON.stringify({ success: true, user_id: authUser.user.id }),
-      { headers: { ...corsHeaders, "Content-Type": "application/json" } },
+      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   } catch (error: any) {
-    return new Response(
-      JSON.stringify({ error: error.message }),
-      {
-        status: 400,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      },
-    );
+    return new Response(JSON.stringify({ error: error.message }), {
+      status: 400,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    });
   }
 });
