@@ -1,12 +1,12 @@
-import { inject, Injectable } from "@angular/core";
-import { from, Observable } from "rxjs";
-import { map, switchMap } from "rxjs/operators";
-import { TablesInsert } from "../../../../../database.types";
-import { SupabaseService } from "../../../core/services/supabase/supabase.service";
-import { ScheduleSession } from "../models/schedule-session";
+import { inject, Injectable } from '@angular/core';
+import { from, Observable } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
+import { TablesInsert } from '../../../../../database.types';
+import { SupabaseService } from '../../../core/services/supabase/supabase.service';
+import { ScheduleSession } from '../models/schedule-session';
 
-export type ScheduledSessionInsert = TablesInsert<"ScheduledSession">;
-export type SheduleCoachesInsert = TablesInsert<"SheduleCoaches">;
+export type ScheduledSessionInsert = TablesInsert<'ScheduledSession'>;
+export type SheduleCoachesInsert = TablesInsert<'SheduleCoaches'>;
 
 export interface ScheduledSessionFilter {
   scheduledDateFrom?: string; // e.g., "2025-03-13"
@@ -17,13 +17,12 @@ export interface ScheduledSessionFilter {
 }
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class ScheduledSessionService {
   private supabaseService = inject(SupabaseService);
 
-  constructor() {
-  }
+  constructor() {}
 
   /**
    * Add a single ScheduledSession along with its associated SheduleCoaches.
@@ -34,16 +33,16 @@ export class ScheduledSessionService {
    */
   addSingleScheduledSession(
     session: ScheduledSessionInsert,
-    coachIds: string[],
+    coachIds: string[]
   ): Observable<{
     scheduledSession: any;
     sheduleCoaches: any;
   }> {
     return from(
       this.supabaseService.sb
-        .from("ScheduledSession")
+        .from('ScheduledSession')
         .insert([session])
-        .select(),
+        .select()
     ).pipe(
       switchMap((res: any) => {
         if (res.error) {
@@ -56,12 +55,12 @@ export class ScheduledSessionService {
           (coachId) => ({
             coachId,
             scheduledSessionId: sessionId,
-          }),
+          })
         );
         return from(
           this.supabaseService.sb
-            .from("SheduleCoaches")
-            .insert(sheduleCoachesInserts),
+            .from('SheduleCoaches')
+            .insert(sheduleCoachesInserts)
         ).pipe(
           map((coachRes: any) => {
             if (coachRes.error) {
@@ -71,9 +70,9 @@ export class ScheduledSessionService {
               scheduledSession: insertedSession,
               sheduleCoaches: coachRes.data,
             };
-          }),
+          })
         );
-      }),
+      })
     );
   }
 
@@ -84,7 +83,7 @@ export class ScheduledSessionService {
    * @returns Observable emitting the inserted sessions and their SheduleCoaches records.
    */
   addMultipleScheduledSessions(
-    sessions: { session: ScheduledSessionInsert; coachIds: string[] }[],
+    sessions: { session: ScheduledSessionInsert; coachIds: string[] }[]
   ): Observable<{
     scheduledSessions: any[];
     sheduleCoaches: any[];
@@ -92,15 +91,14 @@ export class ScheduledSessionService {
     const sessionData = sessions.map((item) => item.session);
     return from(
       this.supabaseService.sb
-        .from("ScheduledSession")
+        .from('ScheduledSession')
         .insert(sessionData)
-        .select(),
+        .select()
     ).pipe(
       switchMap((res: any) => {
         if (res.error) {
           throw res.error;
         }
-        console.log(res, sessions);
 
         const insertedSessions = res.data;
         let sheduleCoachesInserts: SheduleCoachesInsert[] = [];
@@ -114,8 +112,8 @@ export class ScheduledSessionService {
         });
         return from(
           this.supabaseService.sb
-            .from("SheduleCoaches")
-            .insert(sheduleCoachesInserts),
+            .from('SheduleCoaches')
+            .insert(sheduleCoachesInserts)
         ).pipe(
           map((coachRes: any) => {
             if (coachRes.error) {
@@ -125,9 +123,9 @@ export class ScheduledSessionService {
               scheduledSessions: insertedSessions,
               sheduleCoaches: coachRes.data,
             };
-          }),
+          })
         );
-      }),
+      })
     );
   }
 
@@ -198,41 +196,39 @@ export class ScheduledSessionService {
    * @returns Observable emitting the filtered sessions with their associated SheduleCoaches.
    */
   filterScheduledSessions(
-    filters: ScheduledSessionFilter,
+    filters: ScheduledSessionFilter
   ): Observable<ScheduleSession[]> {
     // Start with the base query, including the related SheduleCoaches.
     let query = this.supabaseService.sb
-      .from("ScheduledSession")
-      .select(
-        "*,Sessions(*), SheduleCoaches!inner(*)",
-      );
+      .from('ScheduledSession')
+      .select('*,Sessions(*), SheduleCoaches!inner(*)');
 
     // Apply scheduledDate range filters if provided.
     if (filters.scheduledDateFrom) {
       const d = new Date(filters.scheduledDateFrom);
       query = query.gte(
-        "scheduledDate",
-        `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`,
+        'scheduledDate',
+        `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`
       );
     }
     if (filters.scheduledDateTo) {
       const d = new Date(filters.scheduledDateTo);
       query = query.lte(
-        "scheduledDate",
-        `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`,
+        'scheduledDate',
+        `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`
       );
     }
     // Filter by branchId if provided.
     if (filters.branchId) {
-      query = query.eq("branchId", filters.branchId);
+      query = query.eq('branchId', filters.branchId);
     }
     // Filter by sessionId if provided.
     if (filters.sessionId) {
-      query = query.eq("sessionId", filters.sessionId);
+      query = query.eq('sessionId', filters.sessionId);
     }
     // Filter by coachIds if provided.
     if (filters.coachIds && filters.coachIds.length > 0) {
-      query = query.in("SheduleCoaches.coachId", filters.coachIds);
+      query = query.in('SheduleCoaches.coachId', filters.coachIds);
     }
 
     return from(query).pipe(
@@ -241,7 +237,7 @@ export class ScheduledSessionService {
           throw res.error;
         }
         return res.data;
-      }),
+      })
     );
   }
 
@@ -257,16 +253,16 @@ export class ScheduledSessionService {
    */
   cancelScheduledSession(scheduledSessionId: string): Observable<any> {
     return from(
-      this.supabaseService.sb.rpc("cancel_scheduled_session", {
+      this.supabaseService.sb.rpc('cancel_scheduled_session', {
         p_scheduled_session_id: scheduledSessionId,
-      }),
+      })
     ).pipe(
       map((res: any) => {
         if (res.error) {
           throw res.error;
         }
         return res.data;
-      }),
+      })
     );
   }
 }

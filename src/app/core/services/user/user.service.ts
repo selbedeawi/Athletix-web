@@ -47,12 +47,9 @@ export class UserService {
    */
   // async initializeUser(): Promise<void> {
   //   const session = await this.supabaseService.getSession();
-  //   console.log(session);
   //   await this.setSession(session);
   // }
   async setSession(session: Session | null) {
-    console.log(session?.user.app_metadata);
-
     if (session?.user && session?.user.app_metadata?.['role'] === 'Member') {
       const { data: account, error } = await this.supabaseService.sb
         .from('Members')

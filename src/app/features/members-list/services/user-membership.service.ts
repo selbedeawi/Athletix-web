@@ -1,11 +1,11 @@
-import { inject, Injectable } from "@angular/core";
-import { from, map, Observable } from "rxjs";
-import { SupabaseService } from "../../../core/services/supabase/supabase.service";
-import { BEResponse } from "../../../shared/models/shared-models";
-import { HttpClient } from "@angular/common/http";
+import { inject, Injectable } from '@angular/core';
+import { from, map, Observable } from 'rxjs';
+import { SupabaseService } from '../../../core/services/supabase/supabase.service';
+import { BEResponse } from '../../../shared/models/shared-models';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class UserMembershipService {
   private supabaseService = inject(SupabaseService);
@@ -19,7 +19,7 @@ export class UserMembershipService {
    */
   createUserMembership(membership: any) {
     return from(
-      this.supabaseService.sb.from("UserMembership").insert(membership),
+      this.supabaseService.sb.from('UserMembership').insert(membership)
     );
   }
 
@@ -31,13 +31,11 @@ export class UserMembershipService {
   getUserMembership(id: string): Observable<any> {
     return from(
       this.supabaseService.sb
-        .from("UserMembership")
-        .select("*")
-        .eq("id", id)
-        .single(),
-    ).pipe(
-      map((res: any) => res.data),
-    );
+        .from('UserMembership')
+        .select('*')
+        .eq('id', id)
+        .single()
+    ).pipe(map((res: any) => res.data));
   }
 
   /**
@@ -45,37 +43,39 @@ export class UserMembershipService {
    * @param id The user membership ID.
    * @returns Observable emitting the UserMembership details.
    */
-  getMembershipByUserId(
-    memberId: string,
-    isActive?: boolean,
-    isFreeze?: boolean,
-    isCanceled?: boolean,
-    page: number = 1,
-    pageSize: number = 10,
-  ) {
-    const start = (page - 1) * pageSize;
-    const end = start + pageSize - 1;
+  getMembershipByUserId(filter: {
+    memberId: string;
+    isActive?: boolean;
+    isFreeze?: boolean;
+    isCanceled?: boolean;
+    page: number;
+    pageSize: number;
+    branchId?: string;
+  }) {
+    const start = (filter.page - 1) * filter.pageSize;
+    const end = start + filter.pageSize - 1;
 
     let query = this.supabaseService.sb
-      .from("UserMembership")
+      .from('UserMembership')
       .select(
-        "*, Members(*), coach:Staff!UserMembership_coachId_fkey(*), salesStaff:Staff!UserMembership_salesId_fkey(*)",
+        '*, Members(*), coach:Staff!UserMembership_coachId_fkey(*), salesStaff:Staff!UserMembership_salesId_fkey(*)'
       )
-      .eq("memberId", memberId);
+      .eq('memberId', filter.memberId);
 
-    if (typeof isActive === "boolean") {
-      query.eq("isActive", isActive);
+    if (typeof filter.isActive === 'boolean') {
+      query.eq('isActive', filter.isActive);
     }
-    if (typeof isFreeze === "boolean") {
-      query.eq("isFreeze", isFreeze);
+    if (typeof filter.isFreeze === 'boolean') {
+      query.eq('isFreeze', filter.isFreeze);
     }
-    if (typeof isCanceled === "boolean") {
-      query.eq("isCanceled", isCanceled);
+    if (typeof filter.isCanceled === 'boolean') {
+      query.eq('isCanceled', filter.isCanceled);
+    }
+    if (filter.branchId) {
+      query.eq('branchId', filter.branchId);
     }
     query = query.range(start, end);
-    return from(
-      query,
-    );
+    return from(query);
   }
 
   /**
@@ -89,26 +89,26 @@ export class UserMembershipService {
     filters: {
       memberId?: string;
       membershipId?: string;
-      isActive?: boolean | "All";
+      isActive?: boolean | 'All';
     },
     page: number = 1,
-    pageSize: number = 10,
+    pageSize: number = 10
   ): Observable<BEResponse<any[]>> {
     const start = (page - 1) * pageSize;
     const end = start + pageSize - 1;
 
-    let query = this.supabaseService.sb.from("UserMembership").select("*", {
-      count: "exact",
+    let query = this.supabaseService.sb.from('UserMembership').select('*', {
+      count: 'exact',
     });
 
     if (filters.memberId) {
-      query = query.eq("memberId", filters.memberId);
+      query = query.eq('memberId', filters.memberId);
     }
     if (filters.membershipId) {
-      query = query.eq("membershipId", filters.membershipId);
+      query = query.eq('membershipId', filters.membershipId);
     }
-    if (filters.isActive !== undefined && filters.isActive !== "All") {
-      query = query.eq("isActive", filters.isActive);
+    if (filters.isActive !== undefined && filters.isActive !== 'All') {
+      query = query.eq('isActive', filters.isActive);
     }
     query = query.range(start, end);
     return from(query) as any;
@@ -122,10 +122,10 @@ export class UserMembershipService {
    */
   updateUserMembership(id: string, membership: any): Observable<any> {
     return from(
-      this.supabaseService.sb.from("UserMembership").update(membership).eq(
-        "id",
-        id,
-      ),
+      this.supabaseService.sb
+        .from('UserMembership')
+        .update(membership)
+        .eq('id', id)
     );
   }
 
@@ -136,7 +136,7 @@ export class UserMembershipService {
    */
   deleteUserMembership(id: string): Observable<any> {
     return from(
-      this.supabaseService.sb.from("UserMembership").delete().eq("id", id),
+      this.supabaseService.sb.from('UserMembership').delete().eq('id', id)
     );
   }
 
@@ -150,7 +150,7 @@ export class UserMembershipService {
       `https://api.athletix.macawshub.com/api/addPerson`,
       {
         id,
-      },
+      }
     );
   }
 
@@ -164,7 +164,7 @@ export class UserMembershipService {
       `https://api.athletix.macawshub.com/api/batch-sync-to-gate`,
       {
         branchId,
-      },
+      }
     );
   }
 
@@ -175,9 +175,9 @@ export class UserMembershipService {
    */
   deductVisits(id: string): Observable<any> {
     return from(
-      this.supabaseService.sb.rpc("deduct_membership_visit", {
+      this.supabaseService.sb.rpc('deduct_membership_visit', {
         membership_id: id,
-      }),
+      })
     );
   }
 }
