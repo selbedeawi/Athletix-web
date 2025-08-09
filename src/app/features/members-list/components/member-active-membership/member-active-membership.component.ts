@@ -5,24 +5,25 @@ import {
   input,
   OnInit,
   signal,
-} from "@angular/core";
-import { UserMembershipService } from "../../services/user-membership.service";
-import { UserMembership } from "../../models/member";
-import { TranslocoDirective } from "@jsverse/transloco";
-import { MatCardModule } from "@angular/material/card";
-import { TranslationTemplates } from "../../../../shared/enums/translation-templates-enum";
-import { CurrencyPipe, DatePipe } from "@angular/common";
-import { MatButtonModule } from "@angular/material/button";
-import { MatDialog } from "@angular/material/dialog";
-import { MembershipFreezeComponent } from "../membership-freeze/membership-freeze.component";
-import { SnackbarService } from "../../../../core/services/snackbar/snackbar.service";
-import { AddMembershipPopupComponent } from "../add-membership-popup/add-membership-popup.component";
-import { ConfirmDeleteComponent } from "../../../../shared/ui-components/templates/confirm-delete/confirm-delete.component";
-import { HasRoleDirective } from "../../../../core/directives/has-role.directive";
-import { BranchesService } from "../../../../core/services/branches/branches.service";
+} from '@angular/core';
+import { UserMembershipService } from '../../services/user-membership.service';
+import { UserMembership } from '../../models/member';
+import { TranslocoDirective } from '@jsverse/transloco';
+import { MatCardModule } from '@angular/material/card';
+import { TranslationTemplates } from '../../../../shared/enums/translation-templates-enum';
+import { CurrencyPipe, DatePipe } from '@angular/common';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialog } from '@angular/material/dialog';
+import { MembershipFreezeComponent } from '../membership-freeze/membership-freeze.component';
+import { SnackbarService } from '../../../../core/services/snackbar/snackbar.service';
+import { AddMembershipPopupComponent } from '../add-membership-popup/add-membership-popup.component';
+import { ConfirmDeleteComponent } from '../../../../shared/ui-components/templates/confirm-delete/confirm-delete.component';
+import { HasRoleDirective } from '../../../../core/directives/has-role.directive';
+import { BranchesService } from '../../../../core/services/branches/branches.service';
+import { Subject, filter, takeUntil } from 'rxjs';
 
 @Component({
-  selector: "app-member-active-membership",
+  selector: 'app-member-active-membership',
   imports: [
     TranslocoDirective,
     MatCardModule,
@@ -31,12 +32,13 @@ import { BranchesService } from "../../../../core/services/branches/branches.ser
     DatePipe,
     HasRoleDirective,
   ],
-  templateUrl: "./member-active-membership.component.html",
-  styleUrl: "./member-active-membership.component.scss",
+  templateUrl: './member-active-membership.component.html',
+  styleUrl: './member-active-membership.component.scss',
 })
 export class MemberActiveMembershipComponent implements OnInit {
   translationTemplate = TranslationTemplates.MEMBER;
   readonly dialog = inject(MatDialog);
+
   private userMembershipService = inject(UserMembershipService);
   private snackbarService = inject(SnackbarService);
   private branchesService = inject(BranchesService);
@@ -53,12 +55,26 @@ export class MemberActiveMembershipComponent implements OnInit {
     });
     return allowScan;
   });
-
+  private destroyed$ = new Subject<void>();
   ngOnInit(): void {
-    this.getUserMembership();
+    this.branchesService.currentBranch$
+      .pipe(
+        filter((branch) => !!branch),
+        takeUntil(this.destroyed$)
+      )
+      .subscribe((branch) => {
+        this.getUserMembership();
+      });
   }
   getUserMembership() {
-    this.userMembershipService.getMembershipByUserId(this.id(), true)
+    this.userMembershipService
+      .getMembershipByUserId({
+        memberId: this.id(),
+        isActive: true,
+        page: 1,
+        pageSize: 100,
+        branchId: this.branchesService.currentBranch?.id,
+      })
       .subscribe((res) => {
         if (res) {
           this.userMembership.set(res.data as any);
@@ -66,140 +82,143 @@ export class MemberActiveMembershipComponent implements OnInit {
       });
   }
   freeze(membership: UserMembership) {
-    this.dialog.open(MembershipFreezeComponent, {
-      data: { membership },
-      width: "70vw",
-      minWidth: "650px",
-    })
+    this.dialog
+      .open(MembershipFreezeComponent, {
+        data: { membership },
+        width: '70vw',
+        minWidth: '650px',
+      })
       .afterClosed()
-      .subscribe(
-        (res) => {
-          if (res) {
-            this.getUserMembership();
-          }
-        },
-      );
+      .subscribe((res) => {
+        if (res) {
+          this.getUserMembership();
+        }
+      });
   }
   deductVisit(membership: UserMembership) {
-    this.dialog.open(ConfirmDeleteComponent, {
-      data: {
-        translationTemplate: this.translationTemplate,
-        content: `CONFIRM_DEDUCT_VISIT_MEMBERSHIP_OVERLAY_CONTENT`,
-        headerText: `CONFIRM_DEDUCT_VISIT_MEMBERSHIP_OVERLAY_HEDER`,
-      },
-    }).afterClosed()
-      .subscribe(
-        (res) => {
-          if (res) {
-            this.userMembershipService.deductVisits(
-              membership.id,
-            ).subscribe((res) => {
-              if (res) {
-                this.getUserMembership();
-              }
-            });
-          }
+    this.dialog
+      .open(ConfirmDeleteComponent, {
+        data: {
+          translationTemplate: this.translationTemplate,
+          content: `CONFIRM_DEDUCT_VISIT_MEMBERSHIP_OVERLAY_CONTENT`,
+          headerText: `CONFIRM_DEDUCT_VISIT_MEMBERSHIP_OVERLAY_HEDER`,
         },
-      );
-  }
-  addMembership(membership?: UserMembership) {
-    this.dialog.open(AddMembershipPopupComponent, {
-      data: {
-        membership: membership ? membership : new UserMembership(),
-        memberId: this.id(),
-      },
-      width: "70vw",
-      minWidth: "650px",
-    })
+      })
       .afterClosed()
-      .subscribe(
-        (res) => {
-          if (res) {
-            this.getUserMembership();
-          }
-        },
-      );
-  }
-  unFreeze(m: UserMembership) {
-    this.dialog.open(ConfirmDeleteComponent, {
-      data: {
-        translationTemplate: this.translationTemplate,
-        content: `CONFIRM_UNFREEZE_MEMBERSHIP_OVERLAY_CONTENT`,
-        headerText: `CONFIRM_UNFREEZE_MEMBERSHIP_OVERLAY_HEDER`,
-      },
-    }).afterClosed().subscribe((res) => {
-      if (res) {
-        const membership = structuredClone(m);
-        const now = new Date();
-        delete (membership as any)?.Members;
-        delete (membership as any)?.salesStaff;
-        delete (membership as any)?.coach;
-        if (membership.freezeStart && membership.remainingFreezePeriod) {
-          const freezeStartDate = new Date(membership.freezeStart);
-          // Calculate elapsed freeze time in whole days
-          const elapsedDays = freezeStartDate > now ? 0 : Math.floor(
-            (now.getTime() - freezeStartDate.getTime()) / (24 * 60 * 60 * 1000),
-          );
-          // Update membership endDate by extending it with the elapsed freeze days
-          const currentEndDate = new Date(membership.endDate);
-          currentEndDate.setDate(currentEndDate.getDate() + elapsedDays);
-          membership.endDate = this.formatDate(currentEndDate);
-          // Use the current remainingFreezePeriod if already partially used,
-          // otherwise use the full freezePeriod.
-          const currentRemaining = membership.remainingFreezePeriod;
-          const newRemaining = currentRemaining - elapsedDays;
-          membership.remainingFreezePeriod = newRemaining > 0
-            ? newRemaining
-            : 0;
-
-          // Clear freeze fields
-          membership.isFreeze = false;
-          membership.freezeStart = null;
-          membership.freezeEnd = null;
-
-          this.userMembershipService.updateUserMembership(
-            membership.id,
-            membership,
-          )
+      .subscribe((res) => {
+        if (res) {
+          this.userMembershipService
+            .deductVisits(membership.id)
             .subscribe((res) => {
               if (res) {
-                this.snackbarService.success("UNFREEZE_MEMBERSHIP_SUCCESS");
                 this.getUserMembership();
               }
             });
         }
-      }
-    });
+      });
+  }
+  addMembership(membership?: UserMembership) {
+    this.dialog
+      .open(AddMembershipPopupComponent, {
+        data: {
+          membership: membership ? membership : new UserMembership(),
+          memberId: this.id(),
+        },
+        width: '70vw',
+        minWidth: '650px',
+      })
+      .afterClosed()
+      .subscribe((res) => {
+        if (res) {
+          this.getUserMembership();
+        }
+      });
+  }
+  unFreeze(m: UserMembership) {
+    this.dialog
+      .open(ConfirmDeleteComponent, {
+        data: {
+          translationTemplate: this.translationTemplate,
+          content: `CONFIRM_UNFREEZE_MEMBERSHIP_OVERLAY_CONTENT`,
+          headerText: `CONFIRM_UNFREEZE_MEMBERSHIP_OVERLAY_HEDER`,
+        },
+      })
+      .afterClosed()
+      .subscribe((res) => {
+        if (res) {
+          const membership = structuredClone(m);
+          const now = new Date();
+          delete (membership as any)?.Members;
+          delete (membership as any)?.salesStaff;
+          delete (membership as any)?.coach;
+          if (membership.freezeStart && membership.remainingFreezePeriod) {
+            const freezeStartDate = new Date(membership.freezeStart);
+            // Calculate elapsed freeze time in whole days
+            const elapsedDays =
+              freezeStartDate > now
+                ? 0
+                : Math.floor(
+                    (now.getTime() - freezeStartDate.getTime()) /
+                      (24 * 60 * 60 * 1000)
+                  );
+            // Update membership endDate by extending it with the elapsed freeze days
+            const currentEndDate = new Date(membership.endDate);
+            currentEndDate.setDate(currentEndDate.getDate() + elapsedDays);
+            membership.endDate = this.formatDate(currentEndDate);
+            // Use the current remainingFreezePeriod if already partially used,
+            // otherwise use the full freezePeriod.
+            const currentRemaining = membership.remainingFreezePeriod;
+            const newRemaining = currentRemaining - elapsedDays;
+            membership.remainingFreezePeriod =
+              newRemaining > 0 ? newRemaining : 0;
+
+            // Clear freeze fields
+            membership.isFreeze = false;
+            membership.freezeStart = null;
+            membership.freezeEnd = null;
+
+            this.userMembershipService
+              .updateUserMembership(membership.id, membership)
+              .subscribe((res) => {
+                if (res) {
+                  this.snackbarService.success('UNFREEZE_MEMBERSHIP_SUCCESS');
+                  this.getUserMembership();
+                }
+              });
+          }
+        }
+      });
   }
 
   cancel(m: UserMembership) {
-    this.dialog.open(ConfirmDeleteComponent, {
-      data: {
-        translationTemplate: this.translationTemplate,
-        content: `CONFIRM_CANCEL_MEMBERSHIP_OVERLAY_CONTENT`,
-        headerText: `CONFIRM_CANCEL_MEMBERSHIP_OVERLAY_HEDER`,
-      },
-    }).afterClosed().subscribe((res) => {
-      if (res) {
-        const membership = structuredClone(m);
+    this.dialog
+      .open(ConfirmDeleteComponent, {
+        data: {
+          translationTemplate: this.translationTemplate,
+          content: `CONFIRM_CANCEL_MEMBERSHIP_OVERLAY_CONTENT`,
+          headerText: `CONFIRM_CANCEL_MEMBERSHIP_OVERLAY_HEDER`,
+        },
+      })
+      .afterClosed()
+      .subscribe((res) => {
+        if (res) {
+          const membership = structuredClone(m);
 
-        delete (membership as any)?.Members;
-        delete (membership as any)?.coach;
-        delete (membership as any)?.salesStaff;
-        membership.isActive = false;
-        membership.isCanceled = true;
-        this.userMembershipService.updateUserMembership(
-          membership.id,
-          membership,
-        )
-          .subscribe((res) => {
-            if (res) {
-              this.snackbarService.success("CANCEL_MEMBERSHIP_SUCCESS");
-              this.getUserMembership();
-            }
-          });
-      }
-    });
+          delete (membership as any)?.Members;
+          delete (membership as any)?.coach;
+          delete (membership as any)?.salesStaff;
+          membership.isActive = false;
+          membership.isCanceled = true;
+          this.userMembershipService
+            .updateUserMembership(membership.id, membership)
+            .subscribe((res) => {
+              if (res) {
+                this.snackbarService.success('CANCEL_MEMBERSHIP_SUCCESS');
+                this.getUserMembership();
+              }
+            });
+        }
+      });
   }
   private formatDate(date: Date): string {
     const year = date.getFullYear();
@@ -212,10 +231,14 @@ export class MemberActiveMembershipComponent implements OnInit {
   addToGate(id: string) {
     this.userMembershipService.addPersonToGate(id).subscribe((res) => {
       if (res) {
-        this.snackbarService.success("ADDED_TO_GATE_SUCCESS");
+        this.snackbarService.success('ADDED_TO_GATE_SUCCESS');
       } else {
-        this.snackbarService.error("ADDED_TO_GATE_ERROR");
+        this.snackbarService.error('ADDED_TO_GATE_ERROR');
       }
     });
+  }
+  ngOnDestroy(): void {
+    this.destroyed$.next();
+    this.destroyed$.complete();
   }
 }
