@@ -22,7 +22,7 @@
       </span>
       <div class="ms-auto">
         <button
-          *appHasRole="['SuperAdmin', 'SalesManager', 'Receptionist']"
+          *appHasRole="['SuperAdmin', 'SalesManager', 'Receptionist','Sales']"
           class="me-2"
           mat-stroked-button
           (click)="cancel(membership)"
@@ -32,7 +32,7 @@
 
         @if(membership.remainingVisits > 0){
         <button
-          *appHasRole="['SuperAdmin', 'SalesManager', 'Receptionist']"
+          *appHasRole="['SuperAdmin', 'SalesManager', 'Receptionist','Sales']"
           mat-flat-button
           class="me-2"
           (click)="deductVisit(membership)"
@@ -41,7 +41,7 @@
         </button>
         } @if(membership.isFreeze){
         <button
-          *appHasRole="['SuperAdmin', 'SalesManager', 'Receptionist']"
+          *appHasRole="['SuperAdmin', 'SalesManager', 'Receptionist','Sales']"
           mat-flat-button
           (click)="unFreeze(membership)"
         >
@@ -49,7 +49,7 @@
         </button>
         }@else {
         <button
-          *appHasRole="['SuperAdmin', 'SalesManager', 'Receptionist']"
+          *appHasRole="['SuperAdmin', 'SalesManager', 'Receptionist','Sales']"
           mat-flat-button
           (click)="freeze(membership)"
         >
