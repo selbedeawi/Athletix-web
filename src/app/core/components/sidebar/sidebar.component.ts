@@ -88,7 +88,7 @@ export class BrdgsSidenavComponent implements OnDestroy {
       icon: "icon-list",
       label: "NAV_SESSIONS_LIST",
       path: ["/", APP_ROUTES.SESSIONS_LIST],
-      permissions: ["SuperAdmin"],
+      permissions: ["SuperAdmin","SessionManager"],
     },
     {
       icon: "icon-today",
