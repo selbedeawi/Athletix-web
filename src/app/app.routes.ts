@@ -57,7 +57,7 @@ export const routes: Routes = [
     loadChildren: () => import("./features/sessions-list/sessions.routes"),
     data: { layout: "main" },
     canActivate: [
-      RoleGuard(["SuperAdmin"]),
+      RoleGuard(["SuperAdmin","SessionManager"]),
     ],
   },
 
