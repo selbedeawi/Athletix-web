@@ -38,9 +38,12 @@ export class HasRoleDirective implements OnDestroy {
   }
 
   private updateView() {
-    if (
-      this.currentUserRole && this.allowedRoles.includes(this.currentUserRole)
-    ) {
+    const normalizedRole = this.currentUserRole?.toLowerCase();
+    const isAllowed = this.allowedRoles.some(
+      (role) => role?.toLowerCase() === normalizedRole,
+    );
+
+    if (this.currentUserRole && isAllowed) {
       // Only create the view if it hasn't been created already
       if (!this.hasView) {
         this.viewContainer.createEmbeddedView(this.templateRef);
