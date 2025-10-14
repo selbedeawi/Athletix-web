@@ -1,5 +1,5 @@
 import { MemberService } from "./../../services/member.service";
-import { Component, inject, signal } from "@angular/core";
+import { Component, inject, OnDestroy, signal } from "@angular/core";
 import { InputComponent } from "../../../../shared/ui-components/atoms/input/input.component";
 import { SelectComponent } from "../../../../shared/ui-components/atoms/select/select.component";
 import { filter, finalize, Subject, takeUntil } from "rxjs";
@@ -32,7 +32,7 @@ import { UserService } from "../../../../core/services/user/user.service";
   templateUrl: "./member-filter.component.html",
   styleUrl: "./member-filter.component.scss",
 })
-export class MemberFilterComponent {
+export class MemberFilterComponent implements OnDestroy {
   translationTemplate: TranslationTemplates = TranslationTemplates.MEMBERSHIP;
   memberService = inject(MemberService);
   branchesService = inject(BranchesService);
@@ -52,6 +52,15 @@ export class MemberFilterComponent {
   originalCount = signal(0);
   private destroyed$ = new Subject<void>();
   constructor() {
+    this.userService.currentUser$
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe(() => {
+        this.applyRoleBasedFilters();
+        if (this.filters.branchId) {
+          this.getAll();
+        }
+      });
+
     this.branchesService.currentBranch$
       .pipe(
         filter((branch) => !!branch),
@@ -59,11 +68,27 @@ export class MemberFilterComponent {
       )
       .subscribe((branch) => {
         this.filters.branchId = branch.id;
-        if (this.userService.currentUser?.role === "Sales") {
-          this.filters.salesId = this.userService.currentUser.id;
-        }
+        this.applyRoleBasedFilters();
         this.getAll();
       });
+  }
+
+  private applyRoleBasedFilters() {
+    const currentUser = this.userService.currentUser;
+
+    if (!currentUser) {
+      return;
+    }
+
+    if (currentUser.role === "Sales") {
+      this.filters.salesId = currentUser.id;
+    }
+
+    if (currentUser.role === "Coach") {
+      this.filters.type = "PrivateCoach";
+      this.filters.types = ["PrivateCoach"];
+      this.filters.coachId = currentUser.id;
+    }
   }
 
   getAll(isExport = false) {
@@ -91,9 +116,7 @@ export class MemberFilterComponent {
     this.filters = {
       membershipId: "",
     };
-    if (this.userService.currentUser?.role === "Sales") {
-      this.filters.salesId = this.userService.currentUser.id;
-    }
+    this.applyRoleBasedFilters();
     this.search();
   }
 
@@ -236,6 +259,7 @@ export class MemberFilterComponent {
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
   }
+
   ngOnDestroy(): void {
     this.destroyed$.next();
     this.destroyed$.complete();
