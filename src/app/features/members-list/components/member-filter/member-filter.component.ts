@@ -1,23 +1,23 @@
-import { MemberService } from "./../../services/member.service";
-import { Component, inject, signal } from "@angular/core";
-import { InputComponent } from "../../../../shared/ui-components/atoms/input/input.component";
-import { SelectComponent } from "../../../../shared/ui-components/atoms/select/select.component";
-import { filter, finalize, Subject, takeUntil } from "rxjs";
-import { TranslationTemplates } from "../../../../shared/enums/translation-templates-enum";
-import { BridgesInputType } from "../../../../shared/ui-components/atoms/input/enum/bridges-input-type.enum";
-import { FormsModule } from "@angular/forms";
-import { MatButtonModule } from "@angular/material/button";
-import { TranslocoDirective } from "@jsverse/transloco";
-import { SelectMembershipComponent } from "../../../../shared/ui-components/molecules/select-membership/select-membership.component";
-import { DatePickerComponent } from "../../../../shared/ui-components/atoms/date-picker/date-picker.component";
-import { AllMembersFilter, MemberAccount } from "../../models/member";
-import { SelectStaffComponent } from "../../../../shared/ui-components/molecules/select-staff/select-staff.component";
-import { BranchesService } from "../../../../core/services/branches/branches.service";
-import { HasRoleDirective } from "../../../../core/directives/has-role.directive";
-import { UserService } from "../../../../core/services/user/user.service";
+import { MemberService } from './../../services/member.service';
+import { Component, inject, signal } from '@angular/core';
+import { InputComponent } from '../../../../shared/ui-components/atoms/input/input.component';
+import { SelectComponent } from '../../../../shared/ui-components/atoms/select/select.component';
+import { filter, finalize, Subject, takeUntil } from 'rxjs';
+import { TranslationTemplates } from '../../../../shared/enums/translation-templates-enum';
+import { BridgesInputType } from '../../../../shared/ui-components/atoms/input/enum/bridges-input-type.enum';
+import { FormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { TranslocoDirective } from '@jsverse/transloco';
+import { SelectMembershipComponent } from '../../../../shared/ui-components/molecules/select-membership/select-membership.component';
+import { DatePickerComponent } from '../../../../shared/ui-components/atoms/date-picker/date-picker.component';
+import { AllMembersFilter, MemberAccount } from '../../models/member';
+import { SelectStaffComponent } from '../../../../shared/ui-components/molecules/select-staff/select-staff.component';
+import { BranchesService } from '../../../../core/services/branches/branches.service';
+import { HasRoleDirective } from '../../../../core/directives/has-role.directive';
+import { UserService } from '../../../../core/services/user/user.service';
 
 @Component({
-  selector: "app-member-filter",
+  selector: 'app-member-filter',
   imports: [
     InputComponent,
     SelectComponent,
@@ -29,15 +29,15 @@ import { UserService } from "../../../../core/services/user/user.service";
     SelectStaffComponent,
     HasRoleDirective,
   ],
-  templateUrl: "./member-filter.component.html",
-  styleUrl: "./member-filter.component.scss",
+  templateUrl: './member-filter.component.html',
+  styleUrl: './member-filter.component.scss',
 })
 export class MemberFilterComponent {
   translationTemplate: TranslationTemplates = TranslationTemplates.MEMBERSHIP;
   memberService = inject(MemberService);
   branchesService = inject(BranchesService);
   filters: AllMembersFilter = {
-    membershipId: "",
+    membershipId: '',
     isActive: true,
     isCanceled: false,
   };
@@ -55,11 +55,11 @@ export class MemberFilterComponent {
     this.branchesService.currentBranch$
       .pipe(
         filter((branch) => !!branch),
-        takeUntil(this.destroyed$),
+        takeUntil(this.destroyed$)
       )
       .subscribe((branch) => {
         this.filters.branchId = branch.id;
-        if (this.userService.currentUser?.role === "Sales") {
+        if (this.userService.currentUser?.role === 'Sales') {
           this.filters.salesId = this.userService.currentUser.id;
         }
         this.getAll();
@@ -69,11 +69,12 @@ export class MemberFilterComponent {
   getAll(isExport = false) {
     this.loading.set(true);
 
-    this.memberService.getAllMembers(
-      this.filters,
-      isExport ? 1 : this.pageNumber(),
-      isExport ? 10000 : this.pageSize(),
-    )
+    this.memberService
+      .getAllMembers(
+        this.filters,
+        isExport ? 1 : this.pageNumber(),
+        isExport ? 10000 : this.pageSize()
+      )
       .pipe(finalize(() => this.loading.set(false)))
       .subscribe((res) => {
         if (res.data) {
@@ -89,9 +90,10 @@ export class MemberFilterComponent {
 
   reset() {
     this.filters = {
-      membershipId: "",
+      membershipId: '',
+      branchId: this.filters.branchId,
     };
-    if (this.userService.currentUser?.role === "Sales") {
+    if (this.userService.currentUser?.role === 'Sales') {
       this.filters.salesId = this.userService.currentUser.id;
     }
     this.search();
@@ -112,26 +114,26 @@ export class MemberFilterComponent {
    * @returns The CSV string.
    */
   exportToCSV(data: MemberAccount[]): string {
-    if (!data || !data.length) return "";
+    if (!data || !data.length) return '';
 
     // Define CSV headers.
     const headers = [
-      "ID",
-      "Branch",
-      "Name",
-      "Mobile",
-      "Membership",
-      "Membership Type",
-      "Start Date",
-      "End Date",
-      "Created At",
-      "Sales",
-      "Price",
+      'ID',
+      'Branch',
+      'Name',
+      'Mobile',
+      'Membership',
+      'Membership Type',
+      'Start Date',
+      'End Date',
+      'Created At',
+      'Sales',
+      'Price',
     ];
 
     // Helper function to escape CSV fields.
     const escapeCSV = (value: any): string => {
-      if (value == null) return "";
+      if (value == null) return '';
       let str = value.toString();
       // Enclose fields in double quotes if they contain commas, quotes, or newlines.
       if (/[",\n]/.test(str)) {
@@ -142,12 +144,12 @@ export class MemberFilterComponent {
 
     // Helper function to format a date string as yyyy/mm/dd.
     const formatDate = (dateStr: string): string => {
-      if (!dateStr) return "";
+      if (!dateStr) return '';
       const date = new Date(dateStr);
       if (isNaN(date.getTime())) return dateStr;
       const year = date.getFullYear();
-      const month = (date.getMonth() + 1).toString().padStart(2, "0");
-      const day = date.getDate().toString().padStart(2, "0");
+      const month = (date.getMonth() + 1).toString().padStart(2, '0');
+      const day = date.getDate().toString().padStart(2, '0');
       return `${year}/${month}/${day}`;
     };
 
@@ -157,25 +159,25 @@ export class MemberFilterComponent {
       // ID from MemberAccount (using memberId property)
       const id = item.memberId;
       // Branch from current branch name (via BranchesService)
-      const branch = this.branchesService.currentBranch?.name || "";
+      const branch = this.branchesService.currentBranch?.name || '';
       // Name: combine firstName and lastName.
       const name = `${item.firstName} ${item.lastName}`;
       // Mobile number.
-      const mobile = item.phoneNumber || "";
+      const mobile = item.phoneNumber || '';
       // Membership: membership name from UserMembership.
-      const membership = mShip?.name || "";
+      const membership = mShip?.name || '';
       // Membership Type.
-      const membershipType = mShip?.type || "";
+      const membershipType = mShip?.type || '';
       // Start Date, End Date, and Created At formatted to yyyy/mm/dd.
-      const startDate = formatDate(mShip?.startDate || "");
-      const endDate = formatDate(mShip?.endDate || "");
-      const createdAt = formatDate(mShip?.createdAt || "");
+      const startDate = formatDate(mShip?.startDate || '');
+      const endDate = formatDate(mShip?.endDate || '');
+      const createdAt = formatDate(mShip?.createdAt || '');
       // Sales: if salesStaff exists, use its firstName and lastName; otherwise, salesId.
       const sales = mShip?.salesStaff
         ? `${mShip.salesStaff.firstName} ${mShip.salesStaff.lastName}`
-        : mShip?.salesId || "";
+        : mShip?.salesId || '';
       // Price from UserMembership.pricePaid.
-      const price = mShip?.pricePaid != null ? mShip.pricePaid : "";
+      const price = mShip?.pricePaid != null ? mShip.pricePaid : '';
 
       const row = [
         id,
@@ -190,7 +192,7 @@ export class MemberFilterComponent {
         sales,
         price,
       ];
-      return row.map(escapeCSV).join(",");
+      return row.map(escapeCSV).join(',');
     });
 
     // Calculate the total sum of all rows' price.
@@ -202,21 +204,21 @@ export class MemberFilterComponent {
     // Create a final row with the total sum in the Price column.
     // Leave other cells blank (or include a label in one of the cells).
     const totalRow = [
-      "", // ID
-      "", // Branch
-      "", // Name
-      "", // Mobile
-      "", // Membership
-      "", // Membership Type
-      "", // Start Date
-      "", // End Date
-      "", // Created At
-      "Total Price", // Sales column (label)
+      '', // ID
+      '', // Branch
+      '', // Name
+      '', // Mobile
+      '', // Membership
+      '', // Membership Type
+      '', // Start Date
+      '', // End Date
+      '', // Created At
+      'Total Price', // Sales column (label)
       totalSum, // Price column: total
     ];
 
     // Combine header, data rows, and the total row.
-    return [headers.join(","), ...csvRows, totalRow.join(",")].join("\n");
+    return [headers.join(','), ...csvRows, totalRow.join(',')].join('\n');
   }
 
   /**
@@ -226,11 +228,11 @@ export class MemberFilterComponent {
    */
   downloadCSV(data: MemberAccount[]): void {
     const csvContent = this.exportToCSV(data);
-    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
+    const link = document.createElement('a');
     link.href = url;
-    link.setAttribute("download", "export.csv");
+    link.setAttribute('download', 'export.csv');
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
