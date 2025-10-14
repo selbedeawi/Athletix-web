@@ -25,6 +25,7 @@
         [(value)]="member().firstName"
         [isRequired]="true"
         [type]="bridgesInputType.TEXT"
+        [isDisabled]="readOnly()"
       ></brdgs-input>
       <brdgs-input
         class="col-12 col-md-6"
@@ -32,6 +33,7 @@
         [(value)]="member().lastName"
         [isRequired]="true"
         [type]="bridgesInputType.TEXT"
+        [isDisabled]="readOnly()"
       ></brdgs-input>
       <brdgs-select
         class="col-12 col-md-6"
@@ -42,6 +44,7 @@
           { key: t('MALE'), value: 'male' },
           { key: t('FEMALE'), value: 'female' }
         ]"
+        [isDisabled]="readOnly()"
       ></brdgs-select>
       <brdgs-input
         class="col-12 col-md-6"
@@ -50,12 +53,14 @@
         [isRequired]="true"
         [type]="bridgesInputType.TEXT"
         mask="000 00 00 00 000 00"
+        [isDisabled]="readOnly()"
       ></brdgs-input>
       <brdgs-date-picker
         class="col-12 col-md-6"
         [label]="t('DATE_OF_BIRTH')"
         [(value)]="member().dateOfBirth"
         [isRequired]="true"
+        [isDisabled]="readOnly()"
       ></brdgs-date-picker>
     </mat-card-content>
   </mat-card>
@@ -74,7 +79,7 @@
         [(value)]="member().email"
         [isRequired]="true"
         [type]="bridgesInputType.EMAIL"
-        [isDisabled]="!!member().id"
+        [isDisabled]="!!member().id || readOnly()"
       ></brdgs-input>
       <brdgs-input
         class="col-12 col-md-6"
@@ -83,6 +88,7 @@
         [isRequired]="true"
         [type]="bridgesInputType.TEXT"
         mask="000 0000 0000"
+        [isDisabled]="readOnly()"
       ></brdgs-input>
 
       <!-- @if(!member().id){

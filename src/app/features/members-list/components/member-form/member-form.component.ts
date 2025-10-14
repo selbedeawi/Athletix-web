@@ -31,4 +31,5 @@ export class MemberFormComponent {
   member = model.required<MemberAccount>();
   translationTemplate = input.required<TranslationTemplates>();
   bridgesInputType = BridgesInputType;
+  readOnly = input(false);
 }
