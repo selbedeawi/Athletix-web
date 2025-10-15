@@ -81,7 +81,9 @@ export class MemberService {
       filters.coachId
     ) {
       query = query.in('UserMembership.type', filters.types);
-      query = query.eq('UserMembership.coachId', filters.coachId);
+      query = query.or(`coachId.eq.${filters.coachId},coachId.is.null`, {
+        referencedTable: 'UserMembership',
+      });
     } else {
       // When no special coachId condition is needed, apply type filtering as usual.
       if (filters.type) {
