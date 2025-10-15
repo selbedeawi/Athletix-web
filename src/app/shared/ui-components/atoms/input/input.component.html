@@ -11,6 +11,7 @@
     #valueInput="ngModel"
     name="{{ rondom }}-{{ label() }}"
     [disabled]="isDisabled()"
+    [readonly]="isReadOnly()"
     mask="{{ mask() }}"
     [validation]="allowValidation()"
   />
