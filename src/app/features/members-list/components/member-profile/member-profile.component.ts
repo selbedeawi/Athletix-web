@@ -17,6 +17,9 @@ import { ChangePasswordDialogComponent } from '../../../../shared/ui-components/
 import { UpdateEmailDialogComponent } from '../../../../shared/ui-components/templates/change-email-dialog/change-email-dialog';
 import { HasRoleDirective } from '../../../../core/directives/has-role.directive';
 
+import { UserService } from '../../../../core/services/user/user.service';
+import { take } from 'rxjs/operators';
+
 @Component({
   selector: 'app-member-profile',
   imports: [
@@ -41,15 +44,24 @@ export class MemberProfileComponent implements OnInit {
 
   private memberService = inject(MemberService);
   private snackbarService = inject(SnackbarService);
+  private userService = inject(UserService);
+  isCoach = signal(false);
   // nationalIdRegExp = /^(2|3)\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])\d{7}$/;
 
   ngOnInit(): void {
+    this.userService.currentUser$.pipe(take(1)).subscribe((user) => {
+      const role = user?.role?.toLowerCase() ?? '';
+      this.isCoach.set(role === 'coach');
+    });
     this.memberService.getMember(this.id()).subscribe((res) => {
       this.member.set(res);
       this.cloneMember = structuredClone(res);
     });
   }
   update() {
+    if (this.isCoach()) {
+      return;
+    }
     this.memberService.updateMember(this.id(), this.member()).subscribe(() => {
       this.snackbarService.success(`UPDATE_MEMBER_SUCCESS`);
     });

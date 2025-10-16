@@ -1,5 +1,8 @@
 <ng-container *transloco="let t; prefix: translationTemplate">
-  <div class="d-flex">
+  <div
+    *appHasRole="['SuperAdmin', 'Sales', 'Receptionist', 'SalesManager']"
+    class="d-flex"
+  >
     <button
       mat-icon-button
       class="ms-auto"
@@ -47,9 +50,11 @@
     <app-member-form
       [translationTemplate]="translationTemplate"
       [(member)]="member"
+      [readOnly]="isCoach()"
     ></app-member-form>
     <div class="d-flex py-3">
       <button
+        *appHasRole="['SuperAdmin', 'Sales', 'Receptionist', 'SalesManager']"
         mat-flat-button
         type="submit"
         class="ms-auto"

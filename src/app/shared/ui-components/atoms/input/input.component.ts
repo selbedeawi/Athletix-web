@@ -46,6 +46,7 @@ export class InputComponent {
     "text" | "number" | "email" | "tel" | "password" | "postalCode"
   >();
   public isDisabled = input<boolean>(false);
+  public isReadOnly = input<boolean>(false);
   public placeholder = input<string>();
   public prefix = input<string>();
   public suffix = input<string>();

@@ -43,6 +43,7 @@ export const routes: Routes = [
         "Sales",
         "Receptionist",
         "SalesManager",
+        "Coach",
       ]),
     ],
   },

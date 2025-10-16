@@ -1,20 +1,22 @@
-import { MemberService } from './../../services/member.service';
-import { Component, inject, signal } from '@angular/core';
-import { InputComponent } from '../../../../shared/ui-components/atoms/input/input.component';
-import { SelectComponent } from '../../../../shared/ui-components/atoms/select/select.component';
-import { filter, finalize, Subject, takeUntil } from 'rxjs';
-import { TranslationTemplates } from '../../../../shared/enums/translation-templates-enum';
-import { BridgesInputType } from '../../../../shared/ui-components/atoms/input/enum/bridges-input-type.enum';
-import { FormsModule } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
-import { TranslocoDirective } from '@jsverse/transloco';
-import { SelectMembershipComponent } from '../../../../shared/ui-components/molecules/select-membership/select-membership.component';
-import { DatePickerComponent } from '../../../../shared/ui-components/atoms/date-picker/date-picker.component';
-import { AllMembersFilter, MemberAccount } from '../../models/member';
-import { SelectStaffComponent } from '../../../../shared/ui-components/molecules/select-staff/select-staff.component';
-import { BranchesService } from '../../../../core/services/branches/branches.service';
-import { HasRoleDirective } from '../../../../core/directives/has-role.directive';
-import { UserService } from '../../../../core/services/user/user.service';
+
+import { MemberService } from "./../../services/member.service";
+import { Component, inject, OnDestroy, signal } from "@angular/core";
+import { InputComponent } from "../../../../shared/ui-components/atoms/input/input.component";
+import { SelectComponent } from "../../../../shared/ui-components/atoms/select/select.component";
+import { filter, finalize, Subject, takeUntil } from "rxjs";
+import { TranslationTemplates } from "../../../../shared/enums/translation-templates-enum";
+import { BridgesInputType } from "../../../../shared/ui-components/atoms/input/enum/bridges-input-type.enum";
+import { FormsModule } from "@angular/forms";
+import { MatButtonModule } from "@angular/material/button";
+import { TranslocoDirective } from "@jsverse/transloco";
+import { SelectMembershipComponent } from "../../../../shared/ui-components/molecules/select-membership/select-membership.component";
+import { DatePickerComponent } from "../../../../shared/ui-components/atoms/date-picker/date-picker.component";
+import { AllMembersFilter, MemberAccount } from "../../models/member";
+import { SelectStaffComponent } from "../../../../shared/ui-components/molecules/select-staff/select-staff.component";
+import { BranchesService } from "../../../../core/services/branches/branches.service";
+import { HasRoleDirective } from "../../../../core/directives/has-role.directive";
+import { UserService } from "../../../../core/services/user/user.service";
+
 
 @Component({
   selector: 'app-member-filter',
@@ -32,7 +34,7 @@ import { UserService } from '../../../../core/services/user/user.service';
   templateUrl: './member-filter.component.html',
   styleUrl: './member-filter.component.scss',
 })
-export class MemberFilterComponent {
+export class MemberFilterComponent implements OnDestroy {
   translationTemplate: TranslationTemplates = TranslationTemplates.MEMBERSHIP;
   memberService = inject(MemberService);
   branchesService = inject(BranchesService);
@@ -52,6 +54,15 @@ export class MemberFilterComponent {
   originalCount = signal(0);
   private destroyed$ = new Subject<void>();
   constructor() {
+    this.userService.currentUser$
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe(() => {
+        this.applyRoleBasedFilters();
+        if (this.filters.branchId) {
+          this.getAll();
+        }
+      });
+
     this.branchesService.currentBranch$
       .pipe(
         filter((branch) => !!branch),
@@ -59,11 +70,27 @@ export class MemberFilterComponent {
       )
       .subscribe((branch) => {
         this.filters.branchId = branch.id;
-        if (this.userService.currentUser?.role === 'Sales') {
-          this.filters.salesId = this.userService.currentUser.id;
-        }
+        this.applyRoleBasedFilters();
         this.getAll();
       });
+  }
+
+  private applyRoleBasedFilters() {
+    const currentUser = this.userService.currentUser;
+
+    if (!currentUser) {
+      return;
+    }
+
+    if (currentUser.role === "Sales") {
+      this.filters.salesId = currentUser.id;
+    }
+
+    if (currentUser.role === "Coach") {
+      this.filters.type = "PrivateCoach";
+      this.filters.types = ["PrivateCoach"];
+      this.filters.coachId = currentUser.id;
+    }
   }
 
   getAll(isExport = false) {
@@ -93,9 +120,9 @@ export class MemberFilterComponent {
       membershipId: '',
       branchId: this.filters.branchId,
     };
-    if (this.userService.currentUser?.role === 'Sales') {
-      this.filters.salesId = this.userService.currentUser.id;
-    }
+
+    this.applyRoleBasedFilters();
+
     this.search();
   }
 
@@ -238,6 +265,7 @@ export class MemberFilterComponent {
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
   }
+
   ngOnDestroy(): void {
     this.destroyed$.next();
     this.destroyed$.complete();
