@@ -98,9 +98,15 @@ serve(async (req) => {
     const jwt = authHeader.replace('Bearer ', '');
     const { data: requester, error: jwtErr } = await supabase.auth.getUser(jwt);
     if (jwtErr || !requester.user) throw new Error('Unauthorized');
-    if (requester.user.app_metadata?.role !== 'SuperAdmin') {
-      throw new Error('Insufficient permissions');
-    }
+   
+    const role = requester.user.app_metadata?.role;
+    const allowed = new Set(['SuperAdmin', 'Sales', 'Receptionist']);
+
+    const isAlowed = allowed.has(role);
+
+      if (!isAllowed) {
+        throw new Error('Insufficient permissions');
+      }
 
     // fetch target user from Auth
     const {
