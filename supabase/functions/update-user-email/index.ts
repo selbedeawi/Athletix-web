@@ -99,10 +99,10 @@ serve(async (req) => {
     const { data: requester, error: jwtErr } = await supabase.auth.getUser(jwt);
     if (jwtErr || !requester.user) throw new Error('Unauthorized');
    
-    const role = requester.user.app_metadata?.role;
+    const loggedInRole = requester.user.app_metadata?.role;
     const allowed = new Set(['SuperAdmin', 'Sales', 'Receptionist']);
 
-    const isAlowed = allowed.has(role);
+    const isAllowed = allowed.has(loggedInRole);
 
       if (!isAllowed) {
         throw new Error('Insufficient permissions');
