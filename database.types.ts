@@ -7,7 +7,7 @@ export type Json =
   | Json[]
 
 export type Database = {
-  // Allows to automatically instanciate createClient with right options
+  // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
     PostgrestVersion: "12.2.3 (519615d)"
@@ -111,6 +111,7 @@ export type Database = {
           email: string
           firstName: string
           gender: Database["public"]["Enums"]["user-gender"]
+          hasActiveMembership: boolean | null
           id: string
           isActive: boolean
           isDeleted: boolean
@@ -127,6 +128,7 @@ export type Database = {
           email: string
           firstName: string
           gender: Database["public"]["Enums"]["user-gender"]
+          hasActiveMembership?: boolean | null
           id: string
           isActive?: boolean
           isDeleted?: boolean
@@ -143,6 +145,7 @@ export type Database = {
           email?: string
           firstName?: string
           gender?: Database["public"]["Enums"]["user-gender"]
+          hasActiveMembership?: boolean | null
           id?: string
           isActive?: boolean
           isDeleted?: boolean
@@ -1147,10 +1150,10 @@ export type Database = {
     Functions: {
       book_pt_session: {
         Args: {
-          p_membership_id: string
+          p_booking_date: string
           p_branch_id: string
           p_coach_id: string
-          p_booking_date: string
+          p_membership_id: string
           p_time: string
         }
         Returns: {
@@ -1165,8 +1168,8 @@ export type Database = {
           p_scheduled_session_id: string
         }
         Returns: {
-          new_user_session_id: string
           new_remaining_group_sessions: number
+          new_user_session_id: string
         }[]
       }
       cancel_book_session: {
@@ -1187,10 +1190,7 @@ export type Database = {
         Args: { p_scheduled_session_id: string }
         Returns: undefined
       }
-      daily_update_membership_status: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
+      daily_update_membership_status: { Args: never; Returns: undefined }
       deduct_membership_visit: {
         Args: { membership_id: string }
         Returns: undefined
@@ -1205,9 +1205,9 @@ export type Database = {
       get_branch_device: {
         Args: { member_id: string }
         Returns: {
+          machine_serial_number: string
           member_name: string
           member_text_id: string
-          machine_serial_number: string
           user_id: string
         }[]
       }
@@ -1218,53 +1218,68 @@ export type Database = {
         }[]
       }
       get_branches_with_scan_permission: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           branchid: string
           branchname: string
-          machineserialnumber: string
           id: string
+          machineserialnumber: string
         }[]
       }
-      update_staff_with_branches: {
-        Args:
-          | {
-              staff_id: string
+      refresh_members_has_active_membership: { Args: never; Returns: number }
+      update_staff_with_branches:
+        | {
+            Args: {
               first_name: string
-              last_name: string
               is_active: boolean
-              phone_number: string
+              last_name: string
               new_branch_ids: string[]
-            }
-          | {
+              phone_number: string
               staff_id: string
+            }
+            Returns: {
+              message: string
+              success: boolean
+              updated_staff_id: string
+            }[]
+          }
+        | {
+            Args: {
               first_name: string
-              last_name: string
-              new_email: string
               is_active: boolean
+              last_name: string
+              new_branch_ids: string[]
+              new_email: string
               new_role: Database["public"]["Enums"]["user_role"]
               phone_number: string
-              new_branch_ids: string[]
-            }
-          | {
               staff_id: string
-              first_name: string
-              last_name: string
-              user_name: string
-              email: string
-              is_active: boolean
-              role: Database["public"]["Enums"]["user_role"]
-              phone_number: string
+            }
+            Returns: {
+              message: string
+              success: boolean
+              updated_staff_id: string
+            }[]
+          }
+        | {
+            Args: {
               date_of_birth: string
+              email: string
+              first_name: string
+              is_active: boolean
+              last_name: string
               national_id: string
               new_branch_ids: string[]
+              phone_number: string
+              role: Database["public"]["Enums"]["user_role"]
+              staff_id: string
+              user_name: string
             }
-        Returns: {
-          updated_staff_id: string
-          success: boolean
-          message: string
-        }[]
-      }
+            Returns: {
+              message: string
+              success: boolean
+              updated_staff_id: string
+            }[]
+          }
     }
     Enums: {
       membership_type: "Individual" | "PrivateCoach" | "SessionBased"

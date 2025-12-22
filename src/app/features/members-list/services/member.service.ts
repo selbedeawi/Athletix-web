@@ -46,7 +46,7 @@ export class MemberService {
     filters: AllMembersFilter,
     page: number = 1,
     pageSize: number = 10
-  ): Observable<BEResponse<MemberAccount[]>> {
+  ) {
     const start = (page - 1) * pageSize;
     const end = start + pageSize - 1;
 
@@ -122,7 +122,7 @@ export class MemberService {
       query.eq('UserMembership.isActive', filters.isActive);
     }
     if (typeof filters.isActiveUser === 'boolean') {
-      query.eq('isActive', filters.isActiveUser);
+      query.eq('hasActiveMembership', filters.isActiveUser);
     }
     if (filters.salesId) {
       query.eq('UserMembership.salesId', filters.salesId);
@@ -136,33 +136,7 @@ export class MemberService {
     }
     query = query.eq('isDeleted', false);
     query = query.range(start, end);
-    return from(query).pipe(
-      map((response) => {
-        const finalMembers: MemberAccount[] = [];
-        if (response.data) {
-          response.data.forEach((member) => {
-            // Check if the member has an array of UserMembership records
-            if (
-              Array.isArray(member.UserMembership) &&
-              member.UserMembership.length > 0
-            ) {
-              member.UserMembership.forEach((userMembership) => {
-                // Create a new object that matches the final MemberAccount shape,
-                // copying member properties and assigning the current userMembership.
-                const newMember = {
-                  ...member,
-                  UserMembership: userMembership as any,
-                };
-                finalMembers.push(newMember as any);
-              });
-            }
-          });
-        }
-        return { ...response, data: finalMembers } as BEResponse<
-          MemberAccount[]
-        >;
-      })
-    );
+    return from(query);
   }
 
   /**

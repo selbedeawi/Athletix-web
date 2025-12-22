@@ -14,8 +14,9 @@ export class MemberAccount implements Tables<'Members'> {
   phoneNumber!: string | null;
 
   isFirstTime!: boolean;
+  hasActiveMembership!: boolean;
 
-  password!: string;
+  password?: string;
   email!: string;
 
   gender!: 'male' | 'female';
@@ -24,6 +25,7 @@ export class MemberAccount implements Tables<'Members'> {
   createdBy!: string;
   //FE
   UserMembership!: UserMembership;
+  UserMembershipArray?: UserMembership[];
 
   constructor() {}
   isDeleted!: boolean;
