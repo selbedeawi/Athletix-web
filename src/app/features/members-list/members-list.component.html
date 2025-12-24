@@ -15,7 +15,7 @@
       </button>
       @if(allowSync()){
       <button
-        *appHasRole="['SuperAdmin', 'SalesManager','Sales','Receptionist']"
+        *appHasRole="['SuperAdmin', 'SalesManager', 'Sales', 'Receptionist']"
         mat-stroked-button
         class="mb-2 me-3"
         color="primary"
@@ -113,7 +113,7 @@
           </span>
 
           <span>
-            {{ member.UserMembership.name }}
+            {{ member.UserMembershipArray?.[0]?.name }}
           </span>
         </td>
         <td class="col-12 col-sm-6 col-lg-2">
@@ -122,7 +122,7 @@
           </span>
           <div class="text-truncate pe-2">
             <span>
-              {{ member.UserMembership.endDate }}
+              {{ member.UserMembershipArray?.[0]?.endDate }}
             </span>
           </div>
         </td>
@@ -132,8 +132,8 @@
           </span>
           <div class="text-truncate pe-2">
             <span>
-              {{ member.UserMembership.salesStaff.firstName }}
-              {{ member.UserMembership.salesStaff.lastName }}
+              {{ member.UserMembershipArray?.[0]?.salesStaff?.firstName }}
+              {{ member.UserMembershipArray?.[0]?.salesStaff?.lastName }}
             </span>
           </div>
         </td>

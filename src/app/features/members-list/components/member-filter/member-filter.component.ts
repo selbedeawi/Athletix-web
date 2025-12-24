@@ -1,22 +1,20 @@
-
-import { MemberService } from "./../../services/member.service";
-import { Component, inject, OnDestroy, signal } from "@angular/core";
-import { InputComponent } from "../../../../shared/ui-components/atoms/input/input.component";
-import { SelectComponent } from "../../../../shared/ui-components/atoms/select/select.component";
-import { filter, finalize, Subject, takeUntil } from "rxjs";
-import { TranslationTemplates } from "../../../../shared/enums/translation-templates-enum";
-import { BridgesInputType } from "../../../../shared/ui-components/atoms/input/enum/bridges-input-type.enum";
-import { FormsModule } from "@angular/forms";
-import { MatButtonModule } from "@angular/material/button";
-import { TranslocoDirective } from "@jsverse/transloco";
-import { SelectMembershipComponent } from "../../../../shared/ui-components/molecules/select-membership/select-membership.component";
-import { DatePickerComponent } from "../../../../shared/ui-components/atoms/date-picker/date-picker.component";
-import { AllMembersFilter, MemberAccount } from "../../models/member";
-import { SelectStaffComponent } from "../../../../shared/ui-components/molecules/select-staff/select-staff.component";
-import { BranchesService } from "../../../../core/services/branches/branches.service";
-import { HasRoleDirective } from "../../../../core/directives/has-role.directive";
-import { UserService } from "../../../../core/services/user/user.service";
-
+import { MemberService } from './../../services/member.service';
+import { Component, inject, OnDestroy, signal } from '@angular/core';
+import { InputComponent } from '../../../../shared/ui-components/atoms/input/input.component';
+import { SelectComponent } from '../../../../shared/ui-components/atoms/select/select.component';
+import { filter, finalize, Subject, takeUntil } from 'rxjs';
+import { TranslationTemplates } from '../../../../shared/enums/translation-templates-enum';
+import { BridgesInputType } from '../../../../shared/ui-components/atoms/input/enum/bridges-input-type.enum';
+import { FormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { TranslocoDirective } from '@jsverse/transloco';
+import { SelectMembershipComponent } from '../../../../shared/ui-components/molecules/select-membership/select-membership.component';
+import { DatePickerComponent } from '../../../../shared/ui-components/atoms/date-picker/date-picker.component';
+import { AllMembersFilter, MemberAccount } from '../../models/member';
+import { SelectStaffComponent } from '../../../../shared/ui-components/molecules/select-staff/select-staff.component';
+import { BranchesService } from '../../../../core/services/branches/branches.service';
+import { HasRoleDirective } from '../../../../core/directives/has-role.directive';
+import { UserService } from '../../../../core/services/user/user.service';
 
 @Component({
   selector: 'app-member-filter',
@@ -82,13 +80,13 @@ export class MemberFilterComponent implements OnDestroy {
       return;
     }
 
-    if (currentUser.role === "Sales") {
+    if (currentUser.role === 'Sales') {
       this.filters.salesId = currentUser.id;
     }
 
-    if (currentUser.role === "Coach") {
-      this.filters.type = "PrivateCoach";
-      this.filters.types = ["PrivateCoach"];
+    if (currentUser.role === 'Coach') {
+      this.filters.type = 'PrivateCoach';
+      this.filters.types = ['PrivateCoach'];
       this.filters.coachId = currentUser.id;
     }
   }
@@ -106,9 +104,57 @@ export class MemberFilterComponent implements OnDestroy {
       .subscribe((res) => {
         if (res.data) {
           if (isExport) {
-            this.downloadCSV(res.data);
+            const finalMembers: MemberAccount[] = [];
+            if (res.data) {
+              res.data.forEach((member) => {
+                // Check if the member has an array of UserMembership records
+                if (
+                  Array.isArray(member.UserMembership) &&
+                  member.UserMembership.length > 0
+                ) {
+                  member.UserMembership.forEach((userMembership) => {
+                    // Create a new object that matches the final MemberAccount shape,
+                    // copying member properties and assigning the current userMembership.
+                    const newMember = {
+                      ...member,
+                      UserMembership: userMembership as any,
+                    };
+                    finalMembers.push(newMember as any);
+                  });
+                }
+              });
+            }
+
+            this.downloadCSV(finalMembers);
           } else {
-            this.members.set(res.data);
+            const finalMembers: MemberAccount[] = [];
+            if (res.data) {
+              res.data.forEach((member) => {
+                // Check if the member has an array of UserMembership records
+                if (
+                  Array.isArray(member.UserMembership) &&
+                  member.UserMembership.length > 0
+                ) {
+                  finalMembers.push({
+                    ...member,
+                    UserMembershipArray: [
+                      ...member.UserMembership.sort((a, b) => {
+                        const activeCompare =
+                          Number(b.isActive) - Number(a.isActive);
+                        if (activeCompare !== 0) {
+                          return activeCompare;
+                        }
+                        const aTime = new Date(a.createdAt).getTime();
+                        const bTime = new Date(b.createdAt).getTime();
+                        return bTime - aTime;
+                      }),
+                    ],
+                  } as any);
+                }
+              });
+            }
+
+            this.members.set(finalMembers as any);
           }
           this.originalCount.set((res as any).count || res.data?.length);
         }
