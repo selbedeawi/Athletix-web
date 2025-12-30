@@ -124,7 +124,7 @@ export class ScheduleSingleSessionComponent {
       )
       .subscribe((branch) => {
         this.sessionService
-          .getAllSessions({ branchIds: [branch.id] })
+          .getAllSessions({ branchIds: [branch.id] }, 1, 1000)
           .subscribe((res) => {
             this.sessionOptions.set(
               res.data?.map((s) => {
