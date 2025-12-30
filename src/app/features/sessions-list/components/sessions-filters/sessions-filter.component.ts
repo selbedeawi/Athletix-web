@@ -58,7 +58,25 @@ export class SessionsFilterComponent {
       .getAllSessions(this.filter, this.pageNumber(), this.pageSize())
       .pipe(finalize(() => this.loading.set(false)))
       .subscribe((res) => {
-        this.sessions.set(res.data);
+        const normalized =
+          res.data?.map((session) => {
+            const seen = new Set<string>();
+            const uniqueBranches =
+              session.SessionsBranches?.filter((sb) => {
+                if (!sb.branchId || seen.has(sb.branchId)) {
+                  return false;
+                }
+                seen.add(sb.branchId);
+                return true;
+              }) || [];
+
+            return {
+              ...session,
+              SessionsBranches: uniqueBranches,
+            };
+          }) || [];
+
+        this.sessions.set(normalized);
         this.originalCount.set(res.count || res.data?.length);
       });
   }
