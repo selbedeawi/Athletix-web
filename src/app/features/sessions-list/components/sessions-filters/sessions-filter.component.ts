@@ -1,19 +1,19 @@
-import { Component, inject, signal } from "@angular/core";
-import { Sessions } from "../../models/sessions";
-import { AsyncPipe } from "@angular/common";
-import { FormsModule } from "@angular/forms";
-import { MatButtonModule } from "@angular/material/button";
-import { TranslocoDirective } from "@jsverse/transloco";
-import { LookupService } from "../../../../core/services/lookup/lookup.service";
-import { BridgesInputType } from "../../../../shared/ui-components/atoms/input/enum/bridges-input-type.enum";
-import { InputComponent } from "../../../../shared/ui-components/atoms/input/input.component";
-import { SelectComponent } from "../../../../shared/ui-components/atoms/select/select.component";
-import { TranslationTemplates } from "../../../../shared/enums/translation-templates-enum";
-import { finalize } from "rxjs";
-import { SessionService } from "../../services/session.service";
+import { Component, inject, signal } from '@angular/core';
+import { Sessions } from '../../models/sessions';
+import { AsyncPipe } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { TranslocoDirective } from '@jsverse/transloco';
+import { LookupService } from '../../../../core/services/lookup/lookup.service';
+import { BridgesInputType } from '../../../../shared/ui-components/atoms/input/enum/bridges-input-type.enum';
+import { InputComponent } from '../../../../shared/ui-components/atoms/input/input.component';
+import { SelectComponent } from '../../../../shared/ui-components/atoms/select/select.component';
+import { TranslationTemplates } from '../../../../shared/enums/translation-templates-enum';
+import { finalize } from 'rxjs';
+import { SessionService } from '../../services/session.service';
 
 @Component({
-  selector: "app-session-filter",
+  selector: 'app-session-filter',
   imports: [
     InputComponent,
     SelectComponent,
@@ -22,8 +22,8 @@ import { SessionService } from "../../services/session.service";
     MatButtonModule,
     AsyncPipe,
   ],
-  templateUrl: "./sessions-filter.component.html",
-  styleUrl: "./sessions-filter.component.scss",
+  templateUrl: './sessions-filter.component.html',
+  styleUrl: './sessions-filter.component.scss',
 })
 export class SessionsFilterComponent {
   translationTemplate: TranslationTemplates = TranslationTemplates.SESSIONS;
@@ -35,7 +35,7 @@ export class SessionsFilterComponent {
     name?: string;
     branchIds?: string[];
   } = {
-    name: "",
+    name: '',
     branchIds: [],
   };
 
@@ -58,32 +58,14 @@ export class SessionsFilterComponent {
       .getAllSessions(this.filter, this.pageNumber(), this.pageSize())
       .pipe(finalize(() => this.loading.set(false)))
       .subscribe((res) => {
-        const normalized =
-          res.data?.map((session) => {
-            const seen = new Set<string>();
-            const uniqueBranches =
-              session.SessionsBranches?.filter((sb) => {
-                if (!sb.branchId || seen.has(sb.branchId)) {
-                  return false;
-                }
-                seen.add(sb.branchId);
-                return true;
-              }) || [];
-
-            return {
-              ...session,
-              SessionsBranches: uniqueBranches,
-            };
-          }) || [];
-
-        this.sessions.set(normalized);
+        this.sessions.set(res.data);
         this.originalCount.set(res.count || res.data?.length);
       });
   }
 
   reset() {
     this.filter = {
-      name: "",
+      name: '',
       branchIds: [],
     };
     this.search();
