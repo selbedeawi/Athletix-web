@@ -79,7 +79,9 @@
     "Invalid login credentials": "Invalid login credentials",
     "BATCH_SYNC_SUCCESS": "Updated Members to Gate Successfully",
     "ADDED_TO_GATE_SUCCESS": "Member Added to Gate Successfully",
-    "DELETE_STAFF_SUCCESS": "Staff Deleted Successfully"
+    "DELETE_STAFF_SUCCESS": "Staff Deleted Successfully",
+    "EDIT_SESSION_ERROR": "Failed to update session. Please try again.",
+    "BELOW_BOOKED_COUNT_ERROR": "Cannot reduce the space limit — the session already has more bookings than the limit you entered."
   },
   "Member": {
     "EDIT_MEMBER_SUCCESS": "Member Updated Successfully",
@@ -306,7 +308,15 @@
     "CANCEL_SESSION_HEADER": "Cancel Session",
     "CANCEL_SESSION_CONTENT": "Are you sure you want to cancel the session?\n\nThis action will remove all bookings for this session.",
     "CANCEL_BOOKING_HEADER": "Cancel Booking",
-    "CANCEL_BOOKING_CONTENT": "Are you sure you want to cancel booking?"
+    "CANCEL_BOOKING_CONTENT": "Are you sure you want to cancel booking?",
+    "LIMIT_SPOTS": "Limit Spaces",
+    "MAX_SPOTS": "Maximum Spaces",
+    "EDIT": "Edit",
+    "EDIT_SESSION_TITLE": "Edit Session",
+    "SAVE": "Save",
+    "SESSION_FULL_ERROR": "This session is fully booked. No spaces remaining.",
+    "SPOTS_LEFT": "spaces left",
+    "FULL": "Full"
   },
   "Memberships": {
     "SEARCH": "Search",

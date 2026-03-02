@@ -1,1 +1,43 @@
-{}
+{
+    "Global": {
+        "EDIT_SESSION_ERROR": "فشل تحديث الجلسة. يرجى المحاولة مرة أخرى."
+    },
+    "ScheduledSession": {
+        "TITLE": "إدارة الجدول",
+        "YES": "نعم",
+        "NO": "لا",
+        "SCHEDULE": "جدولة جلسة",
+        "SELECT_SESSION": "اختر الجلسة",
+        "START_DATE": "تاريخ البدء",
+        "END_DATE": "تاريخ الانتهاء",
+        "WEEK_DAY": "اختر اليوم",
+        "START_TIME": "وقت البدء",
+        "CANCEL": "إلغاء",
+        "SCHEDULE_A_SESSION": "جدولة جلسة",
+        "ADD_DETAILS": "يرجى إدخال التفاصيل أدناه",
+        "ADD_DAY": "+ إضافة يوم آخر",
+        "ADD_MEMBER": "إضافة عضو",
+        "REMOVE": "إزالة",
+        "SELECT_COACH": "اختر المدرب",
+        "SESSION_DETAILS": "تفاصيل الجلسة",
+        "BOOKED_MEMBERS": "الأعضاء المحجوزون",
+        "DOES_IT_REPEAT": "هل تتكرر؟",
+        "TODAY": "اليوم",
+        "BOOK_A_SESSION": "احجز جلسة",
+        "POPUP_TITLE": "حجز جلسة للعضو",
+        "BOOK_MEMBER": "حجز",
+        "CL_SCH_SES": "إلغاء",
+        "CANCEL_SESSION_HEADER": "إلغاء الجلسة",
+        "CANCEL_SESSION_CONTENT": "هل أنت متأكد أنك تريد إلغاء الجلسة؟\n\nسيؤدي هذا الإجراء إلى إزالة جميع الحجوزات لهذه الجلسة.",
+        "CANCEL_BOOKING_HEADER": "إلغاء الحجز",
+        "CANCEL_BOOKING_CONTENT": "هل أنت متأكد أنك تريد إلغاء الحجز؟",
+        "LIMIT_SPOTS": "تحديد الأماكن",
+        "MAX_SPOTS": "الحد الأقصى للأماكن",
+        "EDIT": "تعديل",
+        "EDIT_SESSION_TITLE": "تعديل الجلسة",
+        "SAVE": "حفظ",
+        "SESSION_FULL_ERROR": "هذه الجلسة محجوزة بالكامل. لا توجد أماكن متاحة.",
+        "SPOTS_LEFT": "أماكن متبقية",
+        "FULL": "ممتلئة"
+    }
+}

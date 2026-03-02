@@ -22,7 +22,7 @@ export interface ScheduledSessionFilter {
 export class ScheduledSessionService {
   private supabaseService = inject(SupabaseService);
 
-  constructor() {}
+  constructor() { }
 
   /**
    * Add a single ScheduledSession along with its associated SheduleCoaches.
@@ -261,6 +261,57 @@ export class ScheduledSessionService {
         if (res.error) {
           throw res.error;
         }
+        return res.data;
+      })
+    );
+  }
+
+  /**
+   * Updates the maxSpots and coaches of an existing ScheduledSession.
+   * Coaches are fully replaced (delete all existing, then re-insert).
+   *
+   * @param scheduledSessionId - The ID of the ScheduledSession to update.
+   * @param maxSpots - The new spot limit, or null for unlimited.
+   * @param coachIds - The new list of coach IDs.
+   */
+  updateScheduledSession(
+    scheduledSessionId: string,
+    maxSpots: number | null,
+    coachIds: string[]
+  ): Observable<any> {
+    // 1. Update maxSpots atomically via RPC — re-reads live booking count
+    //    inside a FOR UPDATE lock, preventing a race condition where a member
+    //    books a spot between when the dialog loaded and Save was clicked.
+    return from(
+      this.supabaseService.sb.rpc('update_session_capacity' as any, {
+        p_scheduled_session_id: scheduledSessionId,
+        p_max_spots: maxSpots,
+      })
+    ).pipe(
+      switchMap((res: any) => {
+        if (res.error) throw res.error;
+        // 2. Delete existing coaches for this session
+        return from(
+          this.supabaseService.sb
+            .from('SheduleCoaches')
+            .delete()
+            .eq('scheduledSessionId', scheduledSessionId)
+        );
+      }),
+      switchMap((res: any) => {
+        if (res.error) throw res.error;
+        // 3. Insert new coaches (if any)
+        if (coachIds.length === 0) return from(Promise.resolve({ error: null }));
+        const rows: SheduleCoachesInsert[] = coachIds.map((coachId) => ({
+          coachId,
+          scheduledSessionId,
+        }));
+        return from(
+          this.supabaseService.sb.from('SheduleCoaches').insert(rows)
+        );
+      }),
+      map((res: any) => {
+        if (res.error) throw res.error;
         return res.data;
       })
     );

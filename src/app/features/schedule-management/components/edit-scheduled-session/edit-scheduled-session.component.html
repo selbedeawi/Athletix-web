@@ -1,0 +1,50 @@
+<ng-container *transloco="let t; read: translationTemplate">
+    <div class="bg-secondary">
+        <p class="ms-3 mat-title-large on-primary-color">{{ t("EDIT_SESSION_TITLE") }}</p>
+    </div>
+
+    <mat-dialog-content class="bg-on-primary pt-3">
+        <form>
+            <div class="row gx-3 gy-2">
+
+                <!-- Coaches -->
+                <app-select-staff class="col-12" [(staffId)]="staffId" [role]="'Coach'" [isMultiple]="true"
+                    [isRequired]="true" [label]="t('SELECT_COACH')"
+                    [translationTemplate]="translationTemplate"></app-select-staff>
+
+                <!-- Spots capacity -->
+                <div class="col-12 d-flex align-items-center gap-3 mt-1">
+                    <mat-slide-toggle [checked]="limitSpots()"
+                        (change)="limitSpots.set($event.checked); maxSpots.set(null)">
+                        {{ t("LIMIT_SPOTS") }}
+                    </mat-slide-toggle>
+                </div>
+
+                @if (limitSpots()) {
+                <mat-form-field class="col-6" appearance="outline">
+                    <mat-label>{{ t("MAX_SPOTS") }}</mat-label>
+                    <input matInput type="number" [min]="bookedCount || 1" name="maxSpots" [ngModel]="maxSpots()"
+                        (ngModelChange)="maxSpots.set($event)" />
+                    @if (isBelowBooked) {
+                    <mat-hint align="start" style="color: var(--mat-sys-error)">
+                        Minimum {{ bookedCount }} — {{ bookedCount === 1 ? '1 member has' : bookedCount + ' members
+                        have' }} already booked
+                    </mat-hint>
+                    }
+                </mat-form-field>
+                }
+
+            </div>
+        </form>
+    </mat-dialog-content>
+
+    <mat-dialog-actions align="end">
+        <button mat-stroked-button color="primary" matDialogClose>
+            {{ t("CANCEL") }}
+        </button>
+        <button mat-flat-button color="primary" [disabled]="loading() || (limitSpots() && !maxSpots()) || isBelowBooked"
+            (click)="save()">
+            {{ t("SAVE") }}
+        </button>
+    </mat-dialog-actions>
+</ng-container>

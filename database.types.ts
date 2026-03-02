@@ -388,6 +388,7 @@ export type Database = {
           createdBy: string | null
           endTime: string | null
           id: string
+          maxSpots: number | null
           scheduledDate: string | null
           sessionId: string
           startTime: string | null
@@ -398,6 +399,7 @@ export type Database = {
           createdBy?: string | null
           endTime?: string | null
           id?: string
+          maxSpots?: number | null
           scheduledDate?: string | null
           sessionId: string
           startTime?: string | null
@@ -408,6 +410,7 @@ export type Database = {
           createdBy?: string | null
           endTime?: string | null
           id?: string
+          maxSpots?: number | null
           scheduledDate?: string | null
           sessionId?: string
           startTime?: string | null

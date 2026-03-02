@@ -10,6 +10,7 @@ export class ScheduleSession implements Tables<"ScheduledSession"> {
   id!: string;
   isPrivate!: boolean;
   memberId!: string | null;
+  maxSpots!: number | null;
   scheduledDate!: string | null;
   sessionId!: string;
   branchId!: string | null;
@@ -17,6 +18,7 @@ export class ScheduleSession implements Tables<"ScheduledSession"> {
   // FE only
   Sessions!: Sessions;
   coachIds!: string[];
+  bookedCount?: number;
   SheduleCoaches?: {
     Staff: StaffAccount;
     slotId: string;
