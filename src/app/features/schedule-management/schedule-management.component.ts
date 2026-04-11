@@ -27,6 +27,8 @@ import { ScheduleSingleSessionComponent } from "./components/schedule-single-ses
 import { BranchesService } from "../../core/services/branches/branches.service";
 import { UserService } from "../../core/services/user/user.service";
 import { HasRoleDirective } from "../../core/directives/has-role.directive";
+import { BatchCancelSessionsComponent } from './components/batch-cancel-sessions/batch-cancel-sessions.component';
+import { BatchAssignCoachComponent } from './components/batch-assign-coach/batch-assign-coach.component';
 
 @Component({
   selector: "app-schedule-management",
@@ -104,7 +106,7 @@ export class ScheduleManagementComponent {
                 session.scheduledDate! + "T" + session.startTime,
               ),
               end: new Date(session.scheduledDate! + "T" + session.endTime),
-              title: session.Sessions.name,
+              title: session.Sessions?.name ?? '',
               meta: { ...session },
             });
           });
@@ -138,6 +140,24 @@ export class ScheduleManagementComponent {
         if (result) {
           this.getFilteredSessions();
         }
+      });
+  }
+
+  batchCancel() {
+    this.dialog
+      .open(BatchCancelSessionsComponent, { minWidth: 620 })
+      .afterClosed()
+      .subscribe((result) => {
+        if (result) this.getFilteredSessions();
+      });
+  }
+
+  batchAssignCoach() {
+    this.dialog
+      .open(BatchAssignCoachComponent, { minWidth: 620 })
+      .afterClosed()
+      .subscribe((result) => {
+        if (result) this.getFilteredSessions();
       });
   }
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {

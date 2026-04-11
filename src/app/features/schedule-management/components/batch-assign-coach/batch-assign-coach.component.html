@@ -1,0 +1,102 @@
+<ng-container *transloco="let t; read: translationTemplate">
+    <div class="bg-secondary">
+        <p class="ms-3 mat-title-large on-primary-color">{{ t("BATCH_ASSIGN_TITLE") }}</p>
+    </div>
+
+    <mat-dialog-content class="bg-on-primary pt-3" style="min-width: 580px;">
+
+        <!-- Filters -->
+        <form #filterForm="ngForm">
+            <div class="row gx-3 gy-2 mb-3">
+                <brdgs-date-picker class="col-6" [label]="t('DATE_FROM')" [(value)]="dateFrom" [isRequired]="true"
+                    [datePickerMin]="today">
+                </brdgs-date-picker>
+                <brdgs-date-picker class="col-6" [label]="t('DATE_TO')" [datePickerMin]="dateFrom()" [(value)]="dateTo"
+                    [isRequired]="true">
+                </brdgs-date-picker>
+                <brdgs-select class="col-12" [label]="t('SELECT_SESSION')" [isRequired]="false"
+                    [options]="sessionOptions()" [(value)]="filterSessionId">
+                </brdgs-select>
+                <app-select-staff
+                    class="col-12"
+                    [(staffId)]="coachId"
+                    [role]="'Coach'"
+                    [isMultiple]="true"
+                    [isRequired]="true"
+                    [label]="t('SELECT_COACH')"
+                    [translationTemplate]="translationTemplate">
+                </app-select-staff>
+                <div class="col-12">
+                    <button mat-flat-button color="primary" type="button"
+                        [disabled]="!dateFrom() || !dateTo() || loading()" (click)="search()">
+                        {{ t("SEARCH") }}
+                    </button>
+                </div>
+            </div>
+        </form>
+
+        <mat-divider></mat-divider>
+
+        <!-- Loading -->
+        @if (loading()) {
+        <div class="d-flex justify-content-center mt-4">
+            <mat-spinner diameter="36"></mat-spinner>
+        </div>
+        }
+
+        <!-- Results -->
+        @if (!loading() && sessions().length > 0) {
+        <div class="mt-3">
+            <div class="d-flex align-items-center px-2 py-1 bg-surface-variant rounded-4-px mb-2">
+                <mat-checkbox [checked]="allSelected" [indeterminate]="someSelected"
+                    (change)="toggleAll($event.checked)">
+                    <span class="mat-label-large ms-1">
+                        {{ t("SELECT_ALL") }} ({{ selectedIds().size }} / {{ sessions().length }})
+                    </span>
+                </mat-checkbox>
+            </div>
+            <div style="max-height: 260px; overflow-y: auto;">
+                @for (session of sessions(); track session.id) {
+                <div class="d-flex align-items-center px-2 py-2 border-surface-dim-1 rounded-4-px mb-1">
+                    <mat-checkbox [checked]="isSelected(session.id)" (change)="toggle(session.id, $event.checked)">
+                    </mat-checkbox>
+                    <div class="flex-grow-1 ms-2">
+                        <p class="m-0 mat-label-large primary-container-color">{{ session.Sessions?.name }}</p>
+                        <p class="m-0 mat-label-medium on-secondary-fixed-variant-color">
+                            {{ session.scheduledDate | date: 'EEE, MMM d, y' }}
+                            &nbsp;·&nbsp;
+                            {{ ('2000-01-01T' + session.startTime) | date: 'h:mm a' }}
+                            –
+                            {{ ('2000-01-01T' + session.endTime) | date: 'h:mm a' }}
+                        </p>
+                        @if (session.SheduleCoaches?.length > 0) {
+                        <p class="m-0 mat-label-small on-secondary-fixed-variant-color">
+                            {{ coachNames(session.SheduleCoaches) }}
+                        </p>
+                        }
+                    </div>
+                    @if ((session.bookedCount ?? 0) > 0) {
+                    <span class="badge bg-warning text-dark mat-label-small ms-2">
+                        {{ session.bookedCount }} {{ t("BOOKED") }}
+                    </span>
+                    }
+                </div>
+                }
+            </div>
+        </div>
+        }
+
+        @if (!loading() && sessions().length === 0 && dateFrom() && dateTo()) {
+        <p class="text-center on-secondary-fixed-variant-color mt-4">{{ t("NO_SESSIONS_FOUND") }}</p>
+        }
+
+    </mat-dialog-content>
+
+    <mat-dialog-actions align="end">
+        <button mat-stroked-button color="primary" matDialogClose>{{ t("CANCEL") }}</button>
+        <button mat-flat-button color="primary" [disabled]="!canAssign" (click)="assign()">
+            @if (assigning()) { {{ t("ASSIGNING") }} }
+            @else { {{ t("ASSIGN_SELECTED") }} ({{ selectedIds().size }}) }
+        </button>
+    </mat-dialog-actions>
+</ng-container>

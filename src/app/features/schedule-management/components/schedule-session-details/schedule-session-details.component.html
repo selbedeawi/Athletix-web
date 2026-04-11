@@ -1,4 +1,5 @@
 <ng-container *transloco="let t; read: translationTemplate">
+<div class="panel-wrapper">
   <!-- header -->
   <div class="d-flex align-items-center justify-content-between m-3">
     <p class="m-0 mat-title-large">
@@ -48,7 +49,6 @@
       }
     </p>
     <button mat-flat-button cdkFocusInitial color="primary" class="mb-3 mb-md-0 mt-1" type="button"
-      [disabled]="selectedSession.meta?.maxSpots !== null && selectedSession.meta?.maxSpots !== undefined && originalCount() >= (selectedSession.meta?.maxSpots || 0)"
       (click)="addMember()">
       {{ t("BOOK_MEMBER") }}
     </button>
@@ -58,23 +58,26 @@
       [type]="bridgesInputType.TEXT" [(value)]="filter.searchKey" (valueChange)="getAllSessions()"></brdgs-input>
   </form>
   <!-- members -->
-  @for ( session of bookedSessions(); track $index) {
-  <div class="bg-surface-bright border-surface-dim-1 rounded-8 mb-2 mx-3 px-2 py-1">
-    <div class="d-flex align-items-center justify-content-between">
-      <div>
-        <p class="m-0 mat-label-large primary-container-color">
-          {{ session?.firstName }}
-          {{ session?.lastName }}
-        </p>
-        <p class="m-0 mat-label-large on-secondary-fixed-variant-color">
-          {{ session?.phoneNumber }}
-        </p>
+  <div class="members-list">
+    @for ( session of bookedSessions(); track $index) {
+    <div class="bg-surface-bright border-surface-dim-1 rounded-8 mb-2 mx-3 px-2 py-1">
+      <div class="d-flex align-items-center justify-content-between">
+        <div>
+          <p class="m-0 mat-label-large primary-container-color">
+            {{ session?.firstName }}
+            {{ session?.lastName }}
+          </p>
+          <p class="m-0 mat-label-large on-secondary-fixed-variant-color">
+            {{ session?.phoneNumber }}
+          </p>
+        </div>
+        <button mat-button cdkFocusInitial color="error" class="mb-3 mb-md-0 mt-1" type="button"
+          (click)="removeBooking(session.user_session_id || '')">
+          {{ t("REMOVE") }}
+        </button>
       </div>
-      <button mat-button cdkFocusInitial color="error" class="mb-3 mb-md-0 mt-1" type="button"
-        (click)="removeBooking(session.user_session_id || '')">
-        {{ t("REMOVE") }}
-      </button>
     </div>
+    }
   </div>
-  }
+</div>
 </ng-container>

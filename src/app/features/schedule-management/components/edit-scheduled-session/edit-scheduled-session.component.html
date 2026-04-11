@@ -7,9 +7,44 @@
         <form>
             <div class="row gx-3 gy-2">
 
+                <!-- Session type -->
+                <brdgs-select
+                    class="col-12"
+                    [label]="t('SELECT_SESSION')"
+                    [isRequired]="true"
+                    [options]="sessionOptions()"
+                    [(value)]="sessionId">
+                </brdgs-select>
+
+                <!-- Date -->
+                <brdgs-date-picker
+                    class="col-12"
+                    [label]="t('START_DATE')"
+                    [datePickerMin]="today.toISOString()"
+                    [(value)]="scheduledDate"
+                    [isRequired]="true">
+                </brdgs-date-picker>
+
+                <!-- Start / End time -->
+                <brdgs-time-picker
+                    class="col-6"
+                    [label]="t('START_TIME')"
+                    [(value)]="startTime"
+                    [isRequired]="true"
+                    [timepickerMax]="'23:00'"
+                    (valueChange)="updateEndTime($event)">
+                </brdgs-time-picker>
+
+                <brdgs-time-picker
+                    class="col-6"
+                    [label]="t('END_TIME')"
+                    [(value)]="endTime"
+                    [isRequired]="true">
+                </brdgs-time-picker>
+
                 <!-- Coaches -->
                 <app-select-staff class="col-12" [(staffId)]="staffId" [role]="'Coach'" [isMultiple]="true"
-                    [isRequired]="true" [label]="t('SELECT_COACH')"
+                    [isRequired]="false" [label]="t('SELECT_COACH')"
                     [translationTemplate]="translationTemplate"></app-select-staff>
 
                 <!-- Spots capacity -->
@@ -42,7 +77,8 @@
         <button mat-stroked-button color="primary" matDialogClose>
             {{ t("CANCEL") }}
         </button>
-        <button mat-flat-button color="primary" [disabled]="loading() || (limitSpots() && !maxSpots()) || isBelowBooked"
+        <button mat-flat-button color="primary"
+            [disabled]="loading() || !sessionId() || !scheduledDate() || !startTime() || !endTime() || (limitSpots() && !maxSpots()) || isBelowBooked"
             (click)="save()">
             {{ t("SAVE") }}
         </button>

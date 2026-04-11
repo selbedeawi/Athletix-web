@@ -16,7 +16,7 @@ export class ScheduleSession implements Tables<"ScheduledSession"> {
   branchId!: string | null;
 
   // FE only
-  Sessions!: Sessions;
+  Sessions!: Sessions | null;
   coachIds!: string[];
   bookedCount?: number;
   SheduleCoaches?: {

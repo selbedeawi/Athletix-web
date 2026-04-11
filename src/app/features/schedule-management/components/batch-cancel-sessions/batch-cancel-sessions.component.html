@@ -1,0 +1,93 @@
+<ng-container *transloco="let t; read: translationTemplate">
+    <div class="bg-secondary">
+        <p class="ms-3 mat-title-large on-primary-color">{{ t("BATCH_CANCEL_TITLE") }}</p>
+    </div>
+
+    <mat-dialog-content class="bg-on-primary pt-3" style="min-width: 580px;">
+
+        <!-- Filters -->
+        <form #filterForm="ngForm">
+            <div class="row gx-3 gy-2 mb-3">
+                <brdgs-date-picker class="col-6" [label]="t('DATE_FROM')" [(value)]="dateFrom" [isRequired]="true" [datePickerMin]="today">
+                </brdgs-date-picker>
+                <brdgs-date-picker class="col-6" [label]="t('DATE_TO')" [datePickerMin]="dateFrom()" [(value)]="dateTo"
+                    [isRequired]="true">
+                </brdgs-date-picker>
+                <brdgs-select class="col-12" [label]="t('SELECT_SESSION')" [isRequired]="false"
+                    [options]="sessionOptions()" [(value)]="filterSessionId">
+                </brdgs-select>
+                <div class="col-12">
+                    <button mat-flat-button color="primary" type="button"
+                        [disabled]="!dateFrom() || !dateTo() || loading()" (click)="search()">
+                        {{ t("SEARCH") }}
+                    </button>
+                </div>
+            </div>
+        </form>
+
+        <mat-divider></mat-divider>
+
+        <!-- Loading -->
+        @if (loading()) {
+        <div class="d-flex justify-content-center mt-4">
+            <mat-spinner diameter="36"></mat-spinner>
+        </div>
+        }
+
+        <!-- Results -->
+        @if (!loading() && sessions().length > 0) {
+        <div class="mt-3">
+            <div class="d-flex align-items-center px-2 py-1 bg-surface-variant rounded-4-px mb-2">
+                <mat-checkbox [checked]="allSelected" [indeterminate]="someSelected"
+                    (change)="toggleAll($event.checked)">
+                    <span class="mat-label-large ms-1">
+                        {{ t("SELECT_ALL") }} ({{ selectedIds().size }} / {{ sessions().length }})
+                    </span>
+                </mat-checkbox>
+            </div>
+            <div style="max-height: 300px; overflow-y: auto;">
+                @for (session of sessions(); track session.id) {
+                <div class="d-flex align-items-center px-2 py-2 border-surface-dim-1 rounded-4-px mb-1">
+                    <mat-checkbox [checked]="isSelected(session.id)" (change)="toggle(session.id, $event.checked)">
+                    </mat-checkbox>
+                    <div class="flex-grow-1 ms-2">
+                        <p class="m-0 mat-label-large primary-container-color">{{ session.Sessions?.name }}</p>
+                        <p class="m-0 mat-label-medium on-secondary-fixed-variant-color">
+                            {{ session.scheduledDate | date: 'EEE, MMM d, y' }}
+                            &nbsp;·&nbsp;
+                            {{ ('2000-01-01T' + session.startTime) | date: 'h:mm a' }}
+                            –
+                            {{ ('2000-01-01T' + session.endTime) | date: 'h:mm a' }}
+                        </p>
+                    </div>
+                    @if ((session.bookedCount ?? 0) > 0) {
+                    <span class="badge bg-warning text-dark mat-label-small ms-2">{{ session.bookedCount }} {{
+                        t("BOOKED") }}</span>
+                    }
+                </div>
+                }
+            </div>
+        </div>
+        }
+
+        @if (!loading() && sessions().length === 0 && dateFrom() && dateTo()) {
+        <p class="text-center on-secondary-fixed-variant-color mt-4">{{ t("NO_SESSIONS_FOUND") }}</p>
+        }
+
+    </mat-dialog-content>
+
+    <div class="d-flex align-items-start gap-2 px-4 py-2"
+        style="background: rgba(183,28,28,0.08); border-top: 1px solid rgba(183,28,28,0.2)">
+        <mat-icon class="icon-error" style="color:#b71c1c; flex-shrink:0"></mat-icon>
+        <p class="m-0 mat-label-medium" style="color:#b71c1c">{{ t("BATCH_CANCEL_WARNING") }}</p>
+    </div>
+
+    <mat-dialog-actions align="end">
+        <button mat-stroked-button color="primary" matDialogClose>{{ t("CANCEL") }}</button>
+        <button mat-flat-button color="warn" [disabled]="selectedIds().size === 0 || cancelling()"
+            (click)="confirmAndCancel()">
+            @if (cancelling()) { {{ t("CANCELLING") }} }
+            @else { {{ t("CANCEL_SELECTED") }} ({{ selectedIds().size }}) }
+        </button>
+    </mat-dialog-actions>
+</ng-container>

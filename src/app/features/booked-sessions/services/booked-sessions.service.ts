@@ -47,7 +47,7 @@ export class BookedSessionsService {
     membershipId: string,
   ): Observable<any> {
     return from(
-      this.supabaseService.sb.rpc("book_session", {
+      this.supabaseService.sb.rpc("book_session_admin" as any, {
         p_branch_id: booking.branchId as any,
         p_scheduled_session_id: booking.scheduledSessionId,
         p_membership_id: membershipId,

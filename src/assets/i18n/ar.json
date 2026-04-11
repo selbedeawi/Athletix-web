@@ -1,6 +1,8 @@
 {
     "Global": {
-        "EDIT_SESSION_ERROR": "فشل تحديث الجلسة. يرجى المحاولة مرة أخرى."
+        "EDIT_SESSION_ERROR": "فشل تحديث الجلسة. يرجى المحاولة مرة أخرى.",
+        "BATCH_CANCEL_SUCCESS": "تم إلغاء الجلسات بنجاح.",
+        "BATCH_ASSIGN_SUCCESS": "تم تعيين المدرب بنجاح."
     },
     "ScheduledSession": {
         "TITLE": "إدارة الجدول",
@@ -12,6 +14,7 @@
         "END_DATE": "تاريخ الانتهاء",
         "WEEK_DAY": "اختر اليوم",
         "START_TIME": "وقت البدء",
+        "END_TIME": "وقت الانتهاء",
         "CANCEL": "إلغاء",
         "SCHEDULE_A_SESSION": "جدولة جلسة",
         "ADD_DETAILS": "يرجى إدخال التفاصيل أدناه",
@@ -38,6 +41,23 @@
         "SAVE": "حفظ",
         "SESSION_FULL_ERROR": "هذه الجلسة محجوزة بالكامل. لا توجد أماكن متاحة.",
         "SPOTS_LEFT": "أماكن متبقية",
-        "FULL": "ممتلئة"
+        "FULL": "ممتلئة",
+        "BATCH_CANCEL": "إلغاء جماعي",
+        "BATCH_CANCEL_TITLE": "إلغاء جماعي للجلسات",
+        "BATCH_ASSIGN": "تعيين مدرب",
+        "BATCH_ASSIGN_TITLE": "تعيين مدرب جماعي",
+        "ASSIGN_SELECTED": "تعيين للمحدد",
+        "ASSIGNING": "جارٍ التعيين...",
+        "DATE_FROM": "من تاريخ",
+        "DATE_TO": "إلى تاريخ",
+        "SEARCH": "بحث",
+        "SELECT_ALL": "تحديد الكل",
+        "BOOKED": "محجوز",
+        "NO_SESSIONS_FOUND": "لا توجد جلسات في النطاق المحدد.",
+        "CANCEL_SELECTED": "إلغاء المحدد",
+        "CANCELLING": "جارٍ الإلغاء...",
+        "BATCH_CANCEL_WARNING": "إلغاء الجلسة سيؤدي أيضاً إلى إلغاء جميع الحجوزات تحتها واسترداد رصيد الجلسات للأعضاء.",
+        "BATCH_CANCEL_CONFIRM_HEADER": "تأكيد الإلغاء الجماعي",
+        "BATCH_CANCEL_CONFIRM_CONTENT": "هل أنت متأكد أنك تريد إلغاء الجلسات المحددة؟ سيؤدي هذا إلى إلغاء جميع الحجوزات تحتها واسترداد رصيد الجلسات للأعضاء."
     }
 }

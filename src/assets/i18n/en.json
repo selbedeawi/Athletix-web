@@ -81,7 +81,9 @@
     "ADDED_TO_GATE_SUCCESS": "Member Added to Gate Successfully",
     "DELETE_STAFF_SUCCESS": "Staff Deleted Successfully",
     "EDIT_SESSION_ERROR": "Failed to update session. Please try again.",
-    "BELOW_BOOKED_COUNT_ERROR": "Cannot reduce the space limit — the session already has more bookings than the limit you entered."
+    "BELOW_BOOKED_COUNT_ERROR": "Cannot reduce the space limit — the session already has more bookings than the limit you entered.",
+    "BATCH_CANCEL_SUCCESS": "Sessions cancelled successfully.",
+    "BATCH_ASSIGN_SUCCESS": "Coach assigned successfully."
   },
   "Member": {
     "EDIT_MEMBER_SUCCESS": "Member Updated Successfully",
@@ -316,7 +318,25 @@
     "SAVE": "Save",
     "SESSION_FULL_ERROR": "This session is fully booked. No spaces remaining.",
     "SPOTS_LEFT": "spaces left",
-    "FULL": "Full"
+    "FULL": "Full",
+    "BATCH_CANCEL": "Batch Cancel",
+    "BATCH_CANCEL_TITLE": "Batch Cancel Sessions",
+    "BATCH_ASSIGN": "Assign Coach",
+    "BATCH_ASSIGN_TITLE": "Batch Assign Coach",
+    "ASSIGN_SELECTED": "Assign to Selected",
+    "ASSIGNING": "Assigning...",
+    "DATE_FROM": "Date From",
+    "DATE_TO": "Date To",
+    "SEARCH": "Search",
+    "SELECT_ALL": "Select all",
+    "BOOKED": "booked",
+    "NO_SESSIONS_FOUND": "No sessions found for the selected range.",
+    "CANCEL_SELECTED": "Cancel Selected",
+    "CANCELLING": "Cancelling...",
+    "BATCH_CANCEL_WARNING": "Cancelling a session will also cancel all bookings under it.",
+    "BATCH_CANCEL_CONFIRM_HEADER": "Confirm Batch Cancel",
+    "BATCH_CANCEL_CONFIRM_CONTENT": "Are you sure you want to cancel the selected sessions? This will also cancel all bookings under them.",
+    "END_TIME": "End Time"
   },
   "Memberships": {
     "SEARCH": "Search",
