@@ -48,26 +48,28 @@
                     [translationTemplate]="translationTemplate"></app-select-staff>
 
                 <!-- Spots capacity -->
-                <div class="col-12 d-flex align-items-center gap-3 mt-1">
+                <div class="col-12 mt-1">
                     <mat-slide-toggle [checked]="limitSpots()"
                         (change)="limitSpots.set($event.checked); maxSpots.set(null)">
                         {{ t("LIMIT_SPOTS") }}
                     </mat-slide-toggle>
-                </div>
-
-                @if (limitSpots()) {
-                <mat-form-field class="col-6" appearance="outline">
-                    <mat-label>{{ t("MAX_SPOTS") }}</mat-label>
-                    <input matInput type="number" [min]="bookedCount || 1" name="maxSpots" [ngModel]="maxSpots()"
-                        (ngModelChange)="maxSpots.set($event)" />
-                    @if (isBelowBooked) {
-                    <mat-hint align="start" style="color: var(--mat-sys-error)">
-                        Minimum {{ bookedCount }} — {{ bookedCount === 1 ? '1 member has' : bookedCount + ' members
-                        have' }} already booked
-                    </mat-hint>
+                    @if (limitSpots()) {
+                    <div class="mt-2" style="max-width: 180px;">
+                        <brdgs-input
+                            [label]="t('MAX_SPOTS')"
+                            [type]="'number'"
+                            [isRequired]="true"
+                            [min]="bookedCount || 1"
+                            [(value)]="maxSpots">
+                        </brdgs-input>
+                        @if (isBelowBooked) {
+                        <small class="text-danger">
+                            Minimum {{ bookedCount }} — {{ bookedCount === 1 ? '1 member has' : bookedCount + ' members have' }} already booked
+                        </small>
+                        }
+                    </div>
                     }
-                </mat-form-field>
-                }
+                </div>
 
             </div>
         </form>

@@ -2,8 +2,6 @@ import { ChangeDetectionStrategy, Component, inject, model, signal } from '@angu
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { TranslationTemplates } from '../../../../shared/enums/translation-templates-enum';
@@ -11,6 +9,7 @@ import { SelectStaffComponent } from '../../../../shared/ui-components/molecules
 import { SelectComponent } from '../../../../shared/ui-components/atoms/select/select.component';
 import { DatePickerComponent } from '../../../../shared/ui-components/atoms/date-picker/date-picker.component';
 import { TimePickerComponent } from '../../../../shared/ui-components/atoms/time-picker/time-picker.component';
+import { InputComponent } from '../../../../shared/ui-components/atoms/input/input.component';
 import { ScheduledSessionService } from '../../services/schedule-sessions.service';
 import { SnackbarService } from '../../../../core/services/snackbar/snackbar.service';
 import { ScheduleSession } from '../../models/schedule-session';
@@ -26,13 +25,12 @@ import { format } from 'date-fns';
         FormsModule,
         MatButtonModule,
         MatDialogModule,
-        MatFormFieldModule,
-        MatInputModule,
         MatSlideToggleModule,
         SelectStaffComponent,
         SelectComponent,
         DatePickerComponent,
         TimePickerComponent,
+        InputComponent,
         TranslocoDirective,
     ],
     templateUrl: './edit-scheduled-session.component.html',
