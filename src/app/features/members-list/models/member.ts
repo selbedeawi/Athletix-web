@@ -23,6 +23,7 @@ export class MemberAccount implements Tables<'Members'> {
 
   isActive!: boolean;
   createdBy!: string;
+  bookingStreak!: number;
   //FE
   UserMembership!: UserMembership;
   UserMembershipArray?: UserMembership[];
@@ -80,7 +81,7 @@ export class UserMembership implements Tables<'UserMembership'> {
   receiptNumber!: string | null;
 
   // FE only
-  Members!: MemberAccount;
+  Members!: MemberAccount & { UserMembership: UserMembership[] };
   coach?: StaffAccount;
   salesStaff!: StaffAccount;
 }
