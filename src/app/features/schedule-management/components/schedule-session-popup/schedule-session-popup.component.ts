@@ -51,7 +51,7 @@ export class ScheduleSessionPopupComponent {
 
   translationTemplate: TranslationTemplates =
     TranslationTemplates.SCHEDULEDSESSION;
-  constructor() {}
+  constructor() { }
 
   scheduleSession() {
     // this.loading.set(true);
@@ -68,6 +68,14 @@ export class ScheduleSessionPopupComponent {
         next: (res) => {
           this.snackBar.success('SESSION_BOOK_SUCCESSFULLY');
           this.dialogRef.close(true);
+        },
+        error: (err) => {
+          const msg = err?.message || err?.code || '';
+          if (msg.includes('SESSION_FULL')) {
+            this.snackBar.error('SESSION_FULL_ERROR');
+          } else {
+            this.snackBar.error(msg || 'BOOKING_ERROR');
+          }
         },
       });
   }

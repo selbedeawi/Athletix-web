@@ -20,6 +20,7 @@ import {
 } from "../../../../shared/services/brdgs-overlay.service";
 import { MatDialog } from "@angular/material/dialog";
 import { ScheduleSessionPopupComponent } from "../schedule-session-popup/schedule-session-popup.component";
+import { EditScheduledSessionComponent } from "../edit-scheduled-session/edit-scheduled-session.component";
 import { TranslocoDirective } from "@jsverse/transloco";
 import { TranslationTemplates } from "../../../../shared/enums/translation-templates-enum";
 import {
@@ -84,6 +85,18 @@ export class ScheduleSessionDetailsComponent {
     }).afterClosed().subscribe((result) => {
       if (result) {
         this.getAllSessions();
+      }
+    });
+  }
+
+  editSession() {
+    this.dialog.open(EditScheduledSessionComponent, {
+      data: this.selectedSession.meta,
+      minWidth: 500,
+    }).afterClosed().subscribe((result) => {
+      if (result) {
+        this.getAllSessions();
+        this.overlayRef.close(true); // refresh calendar
       }
     });
   }

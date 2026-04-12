@@ -14,6 +14,21 @@ export type Database = {
   }
   public: {
     Tables: {
+      app_config: {
+        Row: {
+          key: string
+          value: string
+        }
+        Insert: {
+          key: string
+          value: string
+        }
+        Update: {
+          key?: string
+          value?: string
+        }
+        Relationships: []
+      }
       Banners: {
         Row: {
           id: number
@@ -106,6 +121,7 @@ export type Database = {
       }
       Members: {
         Row: {
+          bookingStreak: number
           createdBy: string | null
           dateOfBirth: string | null
           email: string
@@ -123,6 +139,7 @@ export type Database = {
           role: Database["public"]["Enums"]["user_role"]
         }
         Insert: {
+          bookingStreak?: number
           createdBy?: string | null
           dateOfBirth?: string | null
           email: string
@@ -140,6 +157,7 @@ export type Database = {
           role?: Database["public"]["Enums"]["user_role"]
         }
         Update: {
+          bookingStreak?: number
           createdBy?: string | null
           dateOfBirth?: string | null
           email?: string
@@ -388,6 +406,7 @@ export type Database = {
           createdBy: string | null
           endTime: string | null
           id: string
+          maxSpots: number | null
           scheduledDate: string | null
           sessionId: string
           startTime: string | null
@@ -398,6 +417,7 @@ export type Database = {
           createdBy?: string | null
           endTime?: string | null
           id?: string
+          maxSpots?: number | null
           scheduledDate?: string | null
           sessionId: string
           startTime?: string | null
@@ -408,6 +428,7 @@ export type Database = {
           createdBy?: string | null
           endTime?: string | null
           id?: string
+          maxSpots?: number | null
           scheduledDate?: string | null
           sessionId?: string
           startTime?: string | null
@@ -496,14 +517,17 @@ export type Database = {
       SessionsBranches: {
         Row: {
           branchId: string | null
+          id: string
           sessionId: string | null
         }
         Insert: {
           branchId?: string | null
+          id?: string
           sessionId?: string | null
         }
         Update: {
           branchId?: string | null
+          id?: string
           sessionId?: string | null
         }
         Relationships: [
@@ -1172,6 +1196,21 @@ export type Database = {
           new_user_session_id: string
         }[]
       }
+      book_session_admin: {
+        Args: {
+          p_branch_id: string
+          p_membership_id: string
+          p_scheduled_session_id: string
+        }
+        Returns: {
+          new_user_session_id: string
+          remaining_group_sessions: number
+        }[]
+      }
+      calculate_member_streak: {
+        Args: { p_member_id: string }
+        Returns: number
+      }
       cancel_book_session: {
         Args: { p_user_session_id: string }
         Returns: {
@@ -1227,6 +1266,19 @@ export type Database = {
         }[]
       }
       refresh_members_has_active_membership: { Args: never; Returns: number }
+      update_member_streak:
+        | {
+            Args: { p_booking_date: string; p_member_id: string }
+            Returns: undefined
+          }
+        | {
+            Args: { p_booking_date: string; p_member_id: string }
+            Returns: undefined
+          }
+      update_session_capacity: {
+        Args: { p_max_spots: number; p_scheduled_session_id: string }
+        Returns: undefined
+      }
       update_staff_with_branches:
         | {
             Args: {

@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { from, Observable } from 'rxjs';
+import { from, forkJoin, of, Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { TablesInsert } from '../../../../../database.types';
 import { SupabaseService } from '../../../core/services/supabase/supabase.service';
@@ -22,7 +22,7 @@ export interface ScheduledSessionFilter {
 export class ScheduledSessionService {
   private supabaseService = inject(SupabaseService);
 
-  constructor() {}
+  constructor() { }
 
   /**
    * Add a single ScheduledSession along with its associated SheduleCoaches.
@@ -51,6 +51,9 @@ export class ScheduledSessionService {
         // Assuming a single record was returned
         const insertedSession = res.data[0];
         const sessionId = insertedSession.id;
+        if (coachIds.length === 0) {
+          return of({ scheduledSession: insertedSession, sheduleCoaches: [] });
+        }
         const sheduleCoachesInserts: SheduleCoachesInsert[] = coachIds.map(
           (coachId) => ({
             coachId,
@@ -110,6 +113,9 @@ export class ScheduledSessionService {
           }));
           sheduleCoachesInserts = sheduleCoachesInserts.concat(coachRows);
         });
+        if (sheduleCoachesInserts.length === 0) {
+          return of({ scheduledSessions: insertedSessions, sheduleCoaches: [] });
+        }
         return from(
           this.supabaseService.sb
             .from('SheduleCoaches')
@@ -199,9 +205,13 @@ export class ScheduledSessionService {
     filters: ScheduledSessionFilter
   ): Observable<ScheduleSession[]> {
     // Start with the base query, including the related SheduleCoaches.
+    const coachJoin = filters.coachIds && filters.coachIds.length > 0
+      ? 'SheduleCoaches!inner(*)'
+      : 'SheduleCoaches(*)';
+
     let query = this.supabaseService.sb
       .from('ScheduledSession')
-      .select('*,Sessions(*), SheduleCoaches!inner(*)');
+      .select(`*,Sessions(*), ${coachJoin}`);
 
     // Apply scheduledDate range filters if provided.
     if (filters.scheduledDateFrom) {
@@ -242,6 +252,74 @@ export class ScheduledSessionService {
   }
 
   /**
+   * Like filterSessionsForBatchCancel but also includes assigned coaches (with names)
+   * for use in the batch assign coach dialog.
+   */
+  filterSessionsForBatchAssign(
+    filters: ScheduledSessionFilter
+  ): Observable<any[]> {
+    let query = this.supabaseService.sb
+      .from('ScheduledSession')
+      .select('*, Sessions(*), SheduleCoaches(coachId, Staff(firstName, lastName))');
+
+    if (filters.scheduledDateFrom) {
+      const d = new Date(filters.scheduledDateFrom);
+      query = query.gte('scheduledDate', `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`);
+    }
+    if (filters.scheduledDateTo) {
+      const d = new Date(filters.scheduledDateTo);
+      query = query.lte('scheduledDate', `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`);
+    }
+    if (filters.branchId) {
+      query = query.eq('branchId', filters.branchId);
+    }
+    if (filters.sessionId) {
+      query = query.eq('sessionId', filters.sessionId);
+    }
+
+    return from(query).pipe(
+      map((res: any) => {
+        if (res.error) throw res.error;
+        return res.data;
+      })
+    );
+  }
+
+  /**
+   * Like filterScheduledSessions but returns deduplicated rows (no coach join)
+   * for use in the batch cancel dialog.
+   */
+  filterSessionsForBatchCancel(
+    filters: ScheduledSessionFilter
+  ): Observable<ScheduleSession[]> {
+    let query = this.supabaseService.sb
+      .from('ScheduledSession')
+      .select('*, Sessions(*)');
+
+    if (filters.scheduledDateFrom) {
+      const d = new Date(filters.scheduledDateFrom);
+      query = query.gte('scheduledDate', `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`);
+    }
+    if (filters.scheduledDateTo) {
+      const d = new Date(filters.scheduledDateTo);
+      query = query.lte('scheduledDate', `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`);
+    }
+    if (filters.branchId) {
+      query = query.eq('branchId', filters.branchId);
+    }
+    if (filters.sessionId) {
+      query = query.eq('sessionId', filters.sessionId);
+    }
+
+    return from(query).pipe(
+      map((res: any) => {
+        if (res.error) throw res.error;
+        return res.data;
+      })
+    );
+  }
+
+  /**
    * Cancels all bookings for a ScheduledSession and deletes the ScheduledSession.
    *
    * This function calls the `cancel_scheduled_session` RPC on the database,
@@ -262,6 +340,111 @@ export class ScheduledSessionService {
           throw res.error;
         }
         return res.data;
+      })
+    );
+  }
+
+  /**
+   * Updates all editable fields of an existing ScheduledSession.
+   * Fields updated: sessionId, scheduledDate, startTime, endTime, maxSpots, coaches.
+   */
+  updateScheduledSession(
+    scheduledSessionId: string,
+    maxSpots: number | null,
+    coachIds: string[],
+    sessionId?: string,
+    scheduledDate?: string,
+    startTime?: string,
+    endTime?: string
+  ): Observable<any> {
+    // 1. Update direct fields on the row
+    const directUpdate: Record<string, any> = {};
+    if (sessionId) directUpdate['sessionId'] = sessionId;
+    if (scheduledDate) directUpdate['scheduledDate'] = scheduledDate;
+    if (startTime) directUpdate['startTime'] = startTime;
+    if (endTime) directUpdate['endTime'] = endTime;
+
+    const directUpdate$: Observable<any> = Object.keys(directUpdate).length > 0
+      ? from(
+        this.supabaseService.sb
+          .from('ScheduledSession')
+          .update(directUpdate)
+          .eq('id', scheduledSessionId)
+      )
+      : from(Promise.resolve({ error: null }));
+
+    // 2. Update maxSpots atomically via RPC — re-reads live booking count
+    //    inside a FOR UPDATE lock, preventing a race condition.
+    return directUpdate$.pipe(
+      switchMap((res: any) => {
+        if (res.error) throw res.error;
+        return from(
+          this.supabaseService.sb.rpc('update_session_capacity' as any, {
+            p_scheduled_session_id: scheduledSessionId,
+            p_max_spots: maxSpots,
+          })
+        );
+      }),
+      switchMap((res: any) => {
+        if (res.error) throw res.error;
+        // 3. Delete existing coaches for this session
+        return from(
+          this.supabaseService.sb
+            .from('SheduleCoaches')
+            .delete()
+            .eq('scheduledSessionId', scheduledSessionId)
+        );
+      }),
+      switchMap((res: any) => {
+        if (res.error) throw res.error;
+        // 4. Insert new coaches (if any)
+        if (coachIds.length === 0) return from(Promise.resolve({ error: null }));
+        const rows: SheduleCoachesInsert[] = coachIds.map((coachId) => ({
+          coachId,
+          scheduledSessionId,
+        }));
+        return from(
+          this.supabaseService.sb.from('SheduleCoaches').insert(rows)
+        );
+      }),
+      map((res: any) => {
+        if (res.error) throw res.error;
+        return res.data;
+      })
+    );
+  }
+
+  /**
+   * Batch cancel: cancels all sessions in parallel.
+   */
+  batchCancelSessions(ids: string[]): Observable<any[]> {
+    return forkJoin(ids.map(id => this.cancelScheduledSession(id)));
+  }
+
+  /**
+   * Batch assign: replaces all coaches on the selected sessions with the given coach.
+   * Deletes existing assignments first, then inserts the new one.
+   */
+  batchAssignCoach(sessionIds: string[], coachIds: string[]): Observable<void> {
+    return from(
+      this.supabaseService.sb
+        .from('SheduleCoaches')
+        .delete()
+        .in('scheduledSessionId', sessionIds)
+    ).pipe(
+      switchMap((res: any) => {
+        if (res.error) throw res.error;
+        const rows: SheduleCoachesInsert[] = sessionIds.flatMap(sessionId =>
+          coachIds.map(coachId => ({ scheduledSessionId: sessionId, coachId }))
+        );
+        return from(
+          this.supabaseService.sb
+            .from('SheduleCoaches')
+            .insert(rows)
+        );
+      }),
+      map((res: any) => {
+        if (res.error) throw res.error;
       })
     );
   }

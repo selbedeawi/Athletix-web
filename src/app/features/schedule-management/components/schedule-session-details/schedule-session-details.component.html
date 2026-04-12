@@ -1,47 +1,32 @@
 <ng-container *transloco="let t; read: translationTemplate">
+<div class="panel-wrapper">
   <!-- header -->
   <div class="d-flex align-items-center justify-content-between m-3">
     <p class="m-0 mat-title-large">
       {{ t("SESSION_DETAILS") }}
     </p>
-    <i
-      class="cursor-pointer f-24 icon-close on-secondary-container-color"
-      (click)="closeOverlay()"
-    ></i>
+    <i class="cursor-pointer f-24 icon-close on-secondary-container-color" (click)="closeOverlay()"></i>
   </div>
   <mat-divider></mat-divider>
   <!-- details -->
   <div class="m-3">
-    <p
-      class="m-0 mat-title-large mb-2 primary-color d-flex justify-content-between align-items-center"
-    >
+    <p class="m-0 mat-title-large mb-2 primary-color d-flex justify-content-between align-items-center">
       <span>{{ selectedSession.meta?.Sessions?.name }}</span>
-      <span>
-        <button
-          *appHasRole="['SuperAdmin', 'SessionManager']"
-          mat-stroked-button
-          cdkFocusInitial
-          color="primary"
-          class="mb-3 mb-md-0 mt-1"
-          type="button"
-          (click)="cancelScheduledSession(selectedSession.meta?.id || '')"
-        >
+      <span class="d-flex gap-2">
+        <button *appHasRole="['SuperAdmin', 'SessionManager']" mat-stroked-button color="primary"
+          class="mb-3 mb-md-0 mt-1" type="button" (click)="editSession()">
+          {{ t("EDIT") }}
+        </button>
+        <button *appHasRole="['SuperAdmin', 'SessionManager']" mat-stroked-button cdkFocusInitial color="primary"
+          class="mb-3 mb-md-0 mt-1" type="button" (click)="cancelScheduledSession(selectedSession.meta?.id || '')">
           {{ t("CL_SCH_SES") }}
         </button>
       </span>
     </p>
-    <p
-      class="d-flex align-items-center m-0 mat-body-medium mb-2 on-secondary-fixed-variant-color"
-    >
-      <i
-        style="margin: 2px"
-        class="f-24 icon-today on-secondary-container-color"
-      ></i>
+    <p class="d-flex align-items-center m-0 mat-body-medium mb-2 on-secondary-fixed-variant-color">
+      <i style="margin: 2px" class="f-24 icon-today on-secondary-container-color"></i>
       <span>{{ selectedSession.start | date : "EEEE, LLL dd, yyyy" }}</span>
-      <mat-icon
-        style="margin: 2px"
-        class="f-24 icon-schedule ms-4 on-secondary-container-color"
-      ></mat-icon>
+      <mat-icon style="margin: 2px" class="f-24 icon-schedule ms-4 on-secondary-container-color"></mat-icon>
       <span class="">{{ selectedSession.start | date : "h:mm a" }}</span>
       <span style="margin: 2px">-</span>
       <span>{{ selectedSession.end | date : "h:mm a" }}</span>
@@ -54,55 +39,45 @@
   <div class="d-flex align-items-center justify-content-between m-3">
     <p class="mat-label-large-prominent">
       {{ t("BOOKED_MEMBERS") }}
-      ({{ originalCount() }})
+      ({{ originalCount() }}
+      @if (selectedSession.meta?.maxSpots !== null && selectedSession.meta?.maxSpots !== undefined) {
+      / {{ selectedSession.meta?.maxSpots }}
+      })
+      @if (selectedSession.meta?.maxSpots !== null && selectedSession.meta?.maxSpots !== undefined && originalCount() >=
+      (selectedSession.meta?.maxSpots || 0)) {
+      <span class="ms-2 badge bg-danger mat-label-small">{{ t("FULL") }}</span>
+      }
     </p>
-    <button
-      mat-flat-button
-      cdkFocusInitial
-      color="primary"
-      class="mb-3 mb-md-0 mt-1"
-      type="button"
-      (click)="addMember()"
-    >
+    <button mat-flat-button cdkFocusInitial color="primary" class="mb-3 mb-md-0 mt-1" type="button"
+      (click)="addMember()">
       {{ t("BOOK_MEMBER") }}
     </button>
   </div>
   <form class="m-3 mb-2">
-    <brdgs-input
-      [label]="'Search member name, ID, Phone or email'"
-      [prefix]="'icon-search'"
-      [isRequired]="false"
-      [type]="bridgesInputType.TEXT"
-      [(value)]="filter.searchKey"
-      (valueChange)="getAllSessions()"
-    ></brdgs-input>
+    <brdgs-input [label]="'Search member name, ID, Phone or email'" [prefix]="'icon-search'" [isRequired]="false"
+      [type]="bridgesInputType.TEXT" [(value)]="filter.searchKey" (valueChange)="getAllSessions()"></brdgs-input>
   </form>
   <!-- members -->
-  @for ( session of bookedSessions(); track $index) {
-  <div
-    class="bg-surface-bright border-surface-dim-1 rounded-8 mb-2 mx-3 px-2 py-1"
-  >
-    <div class="d-flex align-items-center justify-content-between">
-      <div>
-        <p class="m-0 mat-label-large primary-container-color">
-          {{ session?.firstName }}
-          {{ session?.lastName }}
-        </p>
-        <p class="m-0 mat-label-large on-secondary-fixed-variant-color">
-          {{ session?.phoneNumber }}
-        </p>
+  <div class="members-list">
+    @for ( session of bookedSessions(); track $index) {
+    <div class="bg-surface-bright border-surface-dim-1 rounded-8 mb-2 mx-3 px-2 py-1">
+      <div class="d-flex align-items-center justify-content-between">
+        <div>
+          <p class="m-0 mat-label-large primary-container-color">
+            {{ session?.firstName }}
+            {{ session?.lastName }}
+          </p>
+          <p class="m-0 mat-label-large on-secondary-fixed-variant-color">
+            {{ session?.phoneNumber }}
+          </p>
+        </div>
+        <button mat-button cdkFocusInitial color="error" class="mb-3 mb-md-0 mt-1" type="button"
+          (click)="removeBooking(session.user_session_id || '')">
+          {{ t("REMOVE") }}
+        </button>
       </div>
-      <button
-        mat-button
-        cdkFocusInitial
-        color="error"
-        class="mb-3 mb-md-0 mt-1"
-        type="button"
-        (click)="removeBooking(session.user_session_id || '')"
-      >
-        {{ t("REMOVE") }}
-      </button>
     </div>
+    }
   </div>
-  }
+</div>
 </ng-container>

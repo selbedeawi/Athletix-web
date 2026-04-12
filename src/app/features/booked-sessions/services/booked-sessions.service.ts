@@ -1,11 +1,11 @@
-import { inject, Injectable } from "@angular/core";
-import { from, Observable } from "rxjs";
-import { map } from "rxjs/operators";
-import { TablesInsert } from "../../../../../database.types";
-import { SupabaseService } from "../../../core/services/supabase/supabase.service";
+import { inject, Injectable } from '@angular/core';
+import { from, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { TablesInsert } from '../../../../../database.types';
+import { SupabaseService } from '../../../core/services/supabase/supabase.service';
 
 // Define the type for inserting into UserSessions
-export type UserSessionInsert = TablesInsert<"UserSessions">;
+export type UserSessionInsert = TablesInsert<'UserSessions'>;
 
 export interface BookedSessionFilter {
   /** A search key to match against member details. */
@@ -27,7 +27,7 @@ export interface BookedSessionFilter {
 }
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class BookedSessionsService {
   private supabaseService = inject(SupabaseService);
@@ -47,8 +47,8 @@ export class BookedSessionsService {
     membershipId: string,
   ): Observable<any> {
     return from(
-      this.supabaseService.sb.rpc("book_session", {
-        p_branch_id: booking.branchId as any,
+      this.supabaseService.sb.rpc('book_session_admin', {
+        p_branch_id: booking.branchId,
         p_scheduled_session_id: booking.scheduledSessionId,
         p_membership_id: membershipId,
       }),
@@ -88,8 +88,8 @@ export class BookedSessionsService {
 
     // Query from the flattened view.
     let query = this.supabaseService.sb
-      .from("flattened_user_sessions_full")
-      .select("*", { count: "exact" });
+      .from('flattened_user_sessions_full')
+      .select('*', { count: 'exact' });
 
     // Build the OR filter to search across member details.
     if (filters.searchKey) {
@@ -100,21 +100,21 @@ export class BookedSessionsService {
         `member_memberid.ilike.${pattern}`,
         `nationalId.ilike.${pattern}`,
         `phoneNumber.ilike.${pattern}`,
-      ].join(",");
+      ].join(',');
       query = query.or(searchFilter);
     }
 
     // Filter by scheduled session ID.
     if (filters.sessionId) {
-      query = query.eq("sessionId", filters.sessionId);
+      query = query.eq('sessionId', filters.sessionId);
     }
     if (filters.scheduledSessionId) {
-      query = query.eq("scheduledSessionId", filters.scheduledSessionId);
+      query = query.eq('scheduledSessionId', filters.scheduledSessionId);
     }
 
     // Filter by branch ID (using the alias from UserSessions in the view).
     if (filters.branchId) {
-      query = query.eq("user_session_branchid", filters.branchId);
+      query = query.eq('user_session_branchid', filters.branchId);
     }
 
     // Filter by scheduled date range (from the ScheduledSession join).
@@ -122,27 +122,27 @@ export class BookedSessionsService {
     if (filters.scheduledDateFrom) {
       const d = new Date(filters.scheduledDateFrom);
       query = query.gte(
-        "scheduledDate",
+        'scheduledDate',
         `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`,
       );
     }
     if (filters.scheduledDateTo) {
       const d = new Date(filters.scheduledDateTo);
       query = query.lte(
-        "scheduledDate",
+        'scheduledDate',
         `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`,
       );
     }
     if (filters.scheduledTimeFrom) {
-      query = query.gte("startTime", filters.scheduledTimeFrom);
+      query = query.gte('startTime', filters.scheduledTimeFrom);
     }
     if (filters.scheduledTimeTo) {
-      query = query.lte("startTime", filters.scheduledTimeTo);
+      query = query.lte('startTime', filters.scheduledTimeTo);
     }
 
     if (filters.coachId) {
       // Use ilike to check if the coach_ids string contains the desired coachId.
-      query = query.ilike("coach_ids", `%${filters.coachId}%`);
+      query = query.ilike('coach_ids', `%${filters.coachId}%`);
     }
 
     query = query.range(start, end);
@@ -158,7 +158,7 @@ export class BookedSessionsService {
    */
   deleteSession(sessionId: string) {
     return from(
-      this.supabaseService.sb.rpc("cancel_book_session", {
+      this.supabaseService.sb.rpc('cancel_book_session', {
         p_user_session_id: sessionId,
       }),
     ).pipe(

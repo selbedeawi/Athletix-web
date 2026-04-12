@@ -28,6 +28,9 @@ import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { SnackbarService } from '../../../../core/services/snackbar/snackbar.service';
 import { addDays, format } from 'date-fns';
 import { SelectStaffComponent } from '../../../../shared/ui-components/molecules/select-staff/select-staff.component';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 export interface sessionOption {
   key: string;
   value: string;
@@ -47,6 +50,9 @@ export interface sessionOption {
     MatOptionModule,
     MatDialogModule,
     SelectStaffComponent,
+    MatSlideToggleModule,
+    MatFormFieldModule,
+    MatInputModule,
   ],
   templateUrl: './schedule-single-session.component.html',
   styleUrl: './schedule-single-session.component.scss',
@@ -95,6 +101,8 @@ export class ScheduleSingleSessionComponent {
   ]);
   isRepeated = signal(false);
   loading = signal(false);
+  limitSpots = signal(false);
+  maxSpots = signal<number | null>(null);
 
   bridgesInputType = BridgesInputType;
   filterCoach: {
@@ -103,18 +111,18 @@ export class ScheduleSingleSessionComponent {
     role: AccountType;
     branchIds: string[];
   } = {
-    name: '',
-    isActive: true,
-    role: 'Coach',
-    branchIds: [],
-  };
+      name: '',
+      isActive: true,
+      role: 'Coach',
+      branchIds: [],
+    };
   filter: {
     name?: string;
     branchIds?: string[];
   } = {
-    name: '',
-    branchIds: [],
-  };
+      name: '',
+      branchIds: [],
+    };
   private destroyed$ = new Subject<void>();
   constructor() {
     this.branchService.currentBranch$
@@ -151,11 +159,11 @@ export class ScheduleSingleSessionComponent {
       sessionId: this.sessionId(),
       startTime: this.scheduledSessions()[0].startTime,
       endTime: this.scheduledSessions()[0].endTime,
-      scheduledDate: `${scheduledDate.getFullYear()}-${
-        scheduledDate.getMonth() + 1
-      }-${scheduledDate.getDate()}`,
+      scheduledDate: `${scheduledDate.getFullYear()}-${scheduledDate.getMonth() + 1
+        }-${scheduledDate.getDate()}`,
       branchId: this.branchService.currentBranch?.id,
       createdBy: this.userService.currentUser?.id,
+      maxSpots: this.limitSpots() ? this.maxSpots() : null,
     };
     this.scheduledSessionService
       .addSingleScheduledSession(insertedSession, this.coachesId())
@@ -185,11 +193,11 @@ export class ScheduleSingleSessionComponent {
               sessionId: this.sessionId(),
               startTime: this.scheduledSessions()[i].startTime,
               endTime: this.scheduledSessions()[i].endTime,
-              scheduledDate: `${day.getFullYear()}-${
-                day.getMonth() + 1
-              }-${day.getDate()}`,
+              scheduledDate: `${day.getFullYear()}-${day.getMonth() + 1
+                }-${day.getDate()}`,
               branchId: this.branchService.currentBranch?.id,
               createdBy: this.userService.currentUser?.id,
+              maxSpots: this.limitSpots() ? this.maxSpots() : null,
             },
             coachIds: [...this.coachesId()],
           });

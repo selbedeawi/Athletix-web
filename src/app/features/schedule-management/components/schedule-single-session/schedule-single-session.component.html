@@ -12,7 +12,7 @@
           <app-select-staff
             class="col-12"
             [(staffId)]="coachesId"
-            [isRequired]="true"
+            [isRequired]="false"
             [label]="t('SELECT_COACH')"
             [role]="'Coach'"
             [isMultiple]="true"
@@ -99,6 +99,32 @@
               {{ t("ADD_DAY") }}
             </button>
           </div>
+          }
+        </div>
+
+        <!-- Spots capacity -->
+        <div class="row gx-3 gy-1 mt-2">
+          <div class="col-12 d-flex align-items-center gap-3">
+            <mat-slide-toggle
+              [checked]="limitSpots()"
+              (change)="limitSpots.set($event.checked); maxSpots.set(null)"
+            >
+              {{ t("LIMIT_SPOTS") }}
+            </mat-slide-toggle>
+          </div>
+          @if (limitSpots()) {
+          <mat-form-field class="col-6" appearance="outline">
+            <mat-label>{{ t("MAX_SPOTS") }}</mat-label>
+            <input
+              matInput
+              type="number"
+              [min]="1"
+              required
+              [ngModel]="maxSpots()"
+              (ngModelChange)="maxSpots.set($event)"
+              name="maxSpots"
+            />
+          </mat-form-field>
           }
         </div>
       </div>
