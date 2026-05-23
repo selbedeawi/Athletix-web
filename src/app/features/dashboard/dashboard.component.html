@@ -1,1 +1,108 @@
-<p>dashboard works!</p>
+<div class="dashboard">
+
+  <!-- Header -->
+  <div class="d-flex justify-content-between align-items-center mb-1">
+    <h2 class="mat-headline-small primary-color mb-0">Dashboard</h2>
+    <div class="period-toggle">
+      <button [class.active]="selectedPeriod() === 'this_month'" (click)="setPeriod('this_month')">This Month</button>
+      <button [class.active]="selectedPeriod() === 'last_month'" (click)="setPeriod('last_month')">Last Month</button>
+      <button [class.active]="selectedPeriod() === 'last_3'" (click)="setPeriod('last_3')">Last 3 Months</button>
+    </div>
+  </div>
+  <mat-divider class="mb-3"></mat-divider>
+
+  <!-- Stat Cards -->
+  <div class="stat-grid mb-3">
+    @for (card of statCards; track $index) {
+    <mat-card class="stat-card">
+      <mat-card-content>
+        <div class="d-flex justify-content-between align-items-start mb-3">
+          <div class="stat-card__icon-wrap" [style.background]="card.color + '18'">
+            <span class="{{ card.icon }} f-20" [style.color]="card.color"></span>
+          </div>
+          <span class="stat-card__trend {{ card.trend }}">
+            <span class="icon-{{ card.trend === 'up' ? 'arrow_upward' : card.trend === 'down' ? 'arrow_downward' : 'remove' }} f-12"></span>
+            {{ card.trendValue }}
+          </span>
+        </div>
+        <p class="mat-headline-small mb-0">{{ card.value }}</p>
+        <p class="mat-label-medium on-secondary-fixed-variant-color mb-0 mt-1">{{ card.label }}</p>
+      </mat-card-content>
+    </mat-card>
+    }
+  </div>
+
+  <!-- Charts -->
+  <div class="charts-row mb-3">
+
+    <mat-card class="flex-grow-1">
+      <mat-card-content>
+        <p class="mat-title-medium primary-color mb-0">Monthly Revenue</p>
+        <p class="mat-label-small on-secondary-fixed-variant-color mb-2">Last 6 months</p>
+        <apx-chart
+          [series]="revenueChartOptions.series"
+          [chart]="revenueChartOptions.chart"
+          [xaxis]="revenueChartOptions.xaxis"
+          [colors]="revenueChartOptions.colors"
+          [dataLabels]="revenueChartOptions.dataLabels"
+          [plotOptions]="revenueChartOptions.plotOptions"
+          [tooltip]="revenueChartOptions.tooltip"
+          [grid]="revenueChartOptions.grid"
+          [yaxis]="revenueChartOptions.yaxis">
+        </apx-chart>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="breakdown-card">
+      <mat-card-content>
+        <p class="mat-title-medium primary-color mb-0">Membership Mix</p>
+        <p class="mat-label-small on-secondary-fixed-variant-color mb-2">Active members by type</p>
+        <apx-chart
+          [series]="membershipChartOptions.series"
+          [chart]="membershipChartOptions.chart"
+          [labels]="membershipChartOptions.labels"
+          [colors]="membershipChartOptions.colors"
+          [fill]="membershipChartOptions.fill"
+          [stroke]="membershipChartOptions.stroke"
+          [dataLabels]="membershipChartOptions.dataLabels"
+          [plotOptions]="membershipChartOptions.plotOptions"
+          [legend]="membershipChartOptions.legend"
+          [tooltip]="membershipChartOptions.tooltip"
+          [responsive]="membershipChartOptions.responsive">
+        </apx-chart>
+      </mat-card-content>
+    </mat-card>
+
+  </div>
+
+  <!-- Sessions Activity -->
+  <mat-card>
+    <mat-card-content>
+      <p class="mat-title-medium primary-color mb-0">Sessions Activity</p>
+      <p class="mat-label-small on-secondary-fixed-variant-color mb-3">Bookings by session type — this month</p>
+      <div class="session-rows">
+        @for (s of sessionStats; track $index) {
+        <div class="session-row">
+          <span class="session-row__name mat-label-medium">{{ s.name }}</span>
+          <div class="session-row__track">
+            <div class="session-row__fill" [style.width.%]="s.percent" [style.background]="s.color"></div>
+          </div>
+          <span class="session-row__count mat-label-medium">{{ s.count }}</span>
+        </div>
+        }
+      </div>
+      <mat-divider class="mt-3 mb-3"></mat-divider>
+      <div class="d-flex gap-4">
+        <div>
+          <p class="mat-headline-small primary-color mb-0">215</p>
+          <p class="mat-label-small on-secondary-fixed-variant-color mb-0">This Month</p>
+        </div>
+        <div>
+          <p class="mat-headline-small mb-0">189</p>
+          <p class="mat-label-small on-secondary-fixed-variant-color mb-0">Last Month</p>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+</div>

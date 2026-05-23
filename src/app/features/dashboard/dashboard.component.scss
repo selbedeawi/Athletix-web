@@ -1,0 +1,133 @@
+.dashboard {
+  padding-bottom: 32px;
+}
+
+// ── Period Toggle ─────────────────────────────────────────────────────────────
+.period-toggle {
+  display: flex;
+  background: var(--sys-surface-container);
+  border-radius: 8px;
+  padding: 3px;
+  gap: 2px;
+
+  button {
+    border: none;
+    background: transparent;
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    color: var(--sys-on-surface-variant);
+    transition: all 0.15s;
+
+    &.active {
+      background: var(--sys-primary);
+      color: var(--sys-on-primary);
+      font-weight: 600;
+    }
+
+    &:hover:not(.active) {
+      background: var(--sys-surface-container-high);
+    }
+  }
+}
+
+// ── Stat Cards ────────────────────────────────────────────────────────────────
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+
+  @media (max-width: 992px) { grid-template-columns: repeat(2, 1fr); }
+  @media (max-width: 560px)  { grid-template-columns: 1fr; }
+}
+
+.stat-card {
+  mat-card-content {
+    padding: 16px !important;
+  }
+
+  &__icon-wrap {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  &__trend {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 99px;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+
+    &.up      { background: #e8f5e9; color: #2e7d32; }
+    &.down    { background: #fdecea; color: #c62828; }
+    &.neutral { background: var(--sys-surface-container); color: var(--sys-on-surface-variant); }
+  }
+}
+
+// ── Charts Row ────────────────────────────────────────────────────────────────
+.charts-row {
+  display: flex;
+  gap: 16px;
+
+  @media (max-width: 768px) { flex-direction: column; }
+
+  mat-card-content {
+    padding: 16px !important;
+  }
+}
+
+.breakdown-card {
+  width: 320px;
+  flex-shrink: 0;
+
+  @media (max-width: 768px) { width: 100%; }
+}
+
+// ── Sessions Activity ─────────────────────────────────────────────────────────
+.session-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.session-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  &__name {
+    width: 130px;
+    flex-shrink: 0;
+    color: var(--sys-on-surface);
+  }
+
+  &__track {
+    flex: 1;
+    height: 6px;
+    background: var(--sys-surface-container);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+
+  &__fill {
+    height: 100%;
+    border-radius: 99px;
+  }
+
+  &__count {
+    width: 28px;
+    text-align: right;
+    flex-shrink: 0;
+    color: var(--sys-on-surface);
+    font-weight: 600;
+  }
+}
