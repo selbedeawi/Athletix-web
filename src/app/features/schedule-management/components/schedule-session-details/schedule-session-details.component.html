@@ -48,7 +48,8 @@
       <span class="ms-2 badge bg-danger mat-label-small">{{ t("FULL") }}</span>
       }
     </p>
-    <button mat-flat-button cdkFocusInitial color="primary" class="mb-3 mb-md-0 mt-1" type="button"
+    <button *appHasRole="['SuperAdmin', 'SessionManager', 'Receptionist']"
+      mat-flat-button cdkFocusInitial color="primary" class="mb-3 mb-md-0 mt-1" type="button"
       (click)="addMember()">
       {{ t("BOOK_MEMBER") }}
     </button>
@@ -71,7 +72,8 @@
             {{ session?.phoneNumber }}
           </p>
         </div>
-        <button mat-button cdkFocusInitial color="error" class="mb-3 mb-md-0 mt-1" type="button"
+        <button *appHasRole="['SuperAdmin', 'SessionManager', 'Receptionist']"
+          mat-button cdkFocusInitial color="error" class="mb-3 mb-md-0 mt-1" type="button"
           (click)="removeBooking(session.user_session_id || '')">
           {{ t("REMOVE") }}
         </button>

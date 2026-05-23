@@ -68,7 +68,6 @@ export class ScheduleManagementComponent {
   translationTemplate = TranslationTemplates.SCHEDULEDSESSION;
   branchId!: string;
   branchesService = inject(BranchesService);
-  coachIds: string[] = [];
   private destroyed$ = new Subject<void>();
   constructor() {
     this.branchesService.currentBranch$
@@ -78,10 +77,6 @@ export class ScheduleManagementComponent {
       )
       .subscribe((branch) => {
         this.branchId = branch.id;
-        if (this.userService.currentUser?.role === "Coach") {
-          this.coachIds = [this.userService.currentUser.id];
-        }
-
         this.getFilteredSessions();
       });
   }
@@ -91,7 +86,7 @@ export class ScheduleManagementComponent {
       scheduledDateFrom: this.monthStart(),
       scheduledDateTo: this.monthEnd(),
       branchId: this.branchId,
-      coachIds: this.coachIds,
+      coachIds: [],
     };
     this.scheduleSessionService
       .filterScheduledSessions(filter)
@@ -118,7 +113,7 @@ export class ScheduleManagementComponent {
 
   openSingleSession(event: CalendarEvent<ScheduleSession>) {
     if (
-      ["SuperAdmin", "SessionManager", "Receptionist"].includes(
+      ["SuperAdmin", "SessionManager", "Receptionist", "Coach"].includes(
         this.userService.currentUser?.role || "",
       )
     ) {
